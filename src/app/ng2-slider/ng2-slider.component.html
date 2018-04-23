@@ -1,3 +1,40 @@
-<p>
-  ng2-slider works!
-</p>
+<div class="rzslider">
+  <!-- // 0 (left) Highlight outside two handles -->
+  <span class="rz-bar-wrapper rz-left-out-selection">
+    <span class=rz-bar></span>
+  </span>
+  <!-- // 1 (right) Highlight outside two handles -->
+  <span class="rz-bar-wrapper rz-right-out-selection">
+    <span class=rz-bar></span>
+  </span>
+  <!-- // 2 The slider bar -->
+  <span class="rz-bar-wrapper">
+    <span class="rz-bar"></span>
+  </span>
+  <!-- // 3 Highlight between two handles -->
+  <span class="rz-bar-wrapper">
+    <span class="rz-bar rz-selection" [ngStyle]="barStyle"></span>
+  </span>
+  <!-- // 4 Left slider handle -->
+  <span class="rz-pointer rz-pointer-min" [ngStyle]=minPointerStyle></span>
+  <!-- // 5 Right slider handle -->
+  <span class="rz-pointer rz-pointer-max" [ngStyle]=maxPointerStyle></span>
+  <!-- // 6 Floor label -->
+  <span class="rz-bubble rz-limit rz-floor"></span>
+  <!-- // 7 Ceiling label -->
+  <span class="rz-bubble rz-limit rz-ceil"></span>
+  <!-- // 8 Label above left slider handle -->
+  <span class="rz-bubble rz-model-value"></span>
+  <!-- // 9 Label above right slider handle -->
+  <span class="rz-bubble rz-model-high"></span>
+  <!-- // 10 Range label when the slider handles are close ex. 15 - 17 -->
+  <span class="rz-bubble"></span>
+  <!-- // 11 The ticks -->
+  <ul *ngIf="showTicks" class="rz-ticks">
+    <li *ngFor="let t of ticks" class="rz-tick" [ngClass]="{'rz-selected': t.selected}" [ngStyle]="t.style" [attr.uib-tooltip]="t.tooltip"
+      [attr.tooltip-placement]="t.tooltipPlacement" [attr.tooltip-append-to-body]="t.tooltip ? true : undefined">
+      <span *ngIf="t.value != null" class="rz-tick-value" [attr.uib-tooltip]="t.valueTooltip" [attr.tooltip-placement]="t.valueTooltipPlacement">{{ t.value }}</span>
+      <span *ngIf="t.legend != null" class="rz-tick-legend">{{ t.legend }}</span>
+    </li>
+  </ul>
+</div>

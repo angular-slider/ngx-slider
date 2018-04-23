@@ -1,0 +1,33 @@
+@mixin rounded($radius: 2px){
+    -webkit-border-radius: $radius;
+    -moz-border-radius: $radius;
+    border-radius: $radius;
+  }
+
+  $handleActiveColor: #451aff;
+  $handleHoverColor: #fff;
+  $labelTextColor: #55637d;
+  $handleBgColor: #0db9f0;
+  $handleInnerColor: #fff;
+  $handleDisabledColor: #d8e0f3;
+  $limitLabelTextColor: $labelTextColor;
+  $barFillColor: $handleBgColor;
+  $barDisabledFillColor: #8b91a2;
+  $barNormalColor: #d8e0f3;
+  $barLeftOutSelectionColor: #df002d;
+  $barRightOutSelectionColor: #03a688;
+
+  $ticksColor: $barNormalColor;
+  $selectedTicksColor: $barFillColor;
+  $ticksWidth: 10px;
+  $ticksHeight: 10px;
+  $ticksValuePosition: -30px;
+  $ticksLegendPosition: 24px;
+  $ticksValuePositionOnVertical: 24px;
+
+  $handleSize: 32px;
+  $handlePointerSize: 8px;
+  $bubblePadding: 1px 3px;
+  $barDimension: 4px;
+
+  $withLegendMargin: 40px;
