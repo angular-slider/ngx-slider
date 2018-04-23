@@ -31,9 +31,10 @@
   <span class="rz-bubble"></span>
   <!-- // 11 The ticks -->
   <ul *ngIf="showTicks" class="rz-ticks">
-    <li *ngFor="let t of ticks" class="rz-tick" [ngClass]="{'rz-selected': t.selected}" [ngStyle]="t.style" [attr.uib-tooltip]="t.tooltip"
-      [attr.tooltip-placement]="t.tooltipPlacement" [attr.tooltip-append-to-body]="t.tooltip ? true : undefined">
-      <span *ngIf="t.value != null" class="rz-tick-value" [attr.uib-tooltip]="t.valueTooltip" [attr.tooltip-placement]="t.valueTooltipPlacement">{{ t.value }}</span>
+    <li *ngFor="let t of ticks" class="rz-tick" [ngClass]="{'rz-selected': t.selected}" [ngStyle]="t.style"
+        [ngbTooltip]="t.tooltip" [placement]="t.tooltipPlacement" container="body">
+      <span *ngIf="t.value != null" class="rz-tick-value"
+            [ngbTooltip]="t.valueTooltip" [placement]="t.valueTooltipPlacement">{{ t.value }}</span>
       <span *ngIf="t.legend != null" class="rz-tick-legend">{{ t.legend }}</span>
     </li>
   </ul>

@@ -20,6 +20,7 @@ export class Ng2SliderComponent implements OnInit {
   barStyle: string = '';
   minPointerStyle: string = '';
   maxPointerStyle: string = '';
+  showTicks: boolean = false;
   ticks: Tick[] = [];
 
   constructor() { }
@@ -27,5 +28,5 @@ export class Ng2SliderComponent implements OnInit {
   ngOnInit() {
   }
 
-  
+
 }
