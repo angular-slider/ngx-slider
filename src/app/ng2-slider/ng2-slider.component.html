@@ -1,36 +1,36 @@
-<div class="rzslider">
+<div slider-elem class="rzslider">
   <!-- // 0 (left) Highlight outside two handles -->
-  <span class="rz-bar-wrapper rz-left-out-selection">
+  <span left-out-sel-elem class="rz-bar-wrapper rz-left-out-selection">
     <span class=rz-bar></span>
   </span>
   <!-- // 1 (right) Highlight outside two handles -->
-  <span class="rz-bar-wrapper rz-right-out-selection">
+  <span right-out-sel-elem class="rz-bar-wrapper rz-right-out-selection">
     <span class=rz-bar></span>
   </span>
   <!-- // 2 The slider bar -->
-  <span class="rz-bar-wrapper">
+  <span full-bar-elem class="rz-bar-wrapper">
     <span class="rz-bar"></span>
   </span>
   <!-- // 3 Highlight between two handles -->
-  <span class="rz-bar-wrapper">
+  <span sel-bar-elem class="rz-bar-wrapper">
     <span class="rz-bar rz-selection" [ngStyle]="barStyle"></span>
   </span>
   <!-- // 4 Left slider handle -->
-  <span class="rz-pointer rz-pointer-min" [ngStyle]=minPointerStyle></span>
+  <span min-h-elem class="rz-pointer rz-pointer-min" [ngStyle]=minPointerStyle></span>
   <!-- // 5 Right slider handle -->
-  <span class="rz-pointer rz-pointer-max" [ngStyle]=maxPointerStyle></span>
+  <span max-h-elem class="rz-pointer rz-pointer-max" [ngStyle]=maxPointerStyle></span>
   <!-- // 6 Floor label -->
-  <span class="rz-bubble rz-limit rz-floor"></span>
+  <span flr-lab-elem class="rz-bubble rz-limit rz-floor"></span>
   <!-- // 7 Ceiling label -->
-  <span class="rz-bubble rz-limit rz-ceil"></span>
+  <span ceil-lab-elem class="rz-bubble rz-limit rz-ceil"></span>
   <!-- // 8 Label above left slider handle -->
-  <span class="rz-bubble rz-model-value"></span>
+  <span min-lab-elem class="rz-bubble rz-model-value"></span>
   <!-- // 9 Label above right slider handle -->
-  <span class="rz-bubble rz-model-high"></span>
+  <span max-lab-elem class="rz-bubble rz-model-high"></span>
   <!-- // 10 Range label when the slider handles are close ex. 15 - 17 -->
-  <span class="rz-bubble"></span>
+  <span cmb-lab-elem class="rz-bubble"></span>
   <!-- // 11 The ticks -->
-  <ul *ngIf="showTicks" class="rz-ticks">
+  <ul ticks-elem *ngIf="showTicks" class="rz-ticks">
     <li *ngFor="let t of ticks" class="rz-tick" [ngClass]="{'rz-selected': t.selected}" [ngStyle]="t.style"
         [ngbTooltip]="t.tooltip" [placement]="t.tooltipPlacement" container="body">
       <span *ngIf="t.value != null" class="rz-tick-value"

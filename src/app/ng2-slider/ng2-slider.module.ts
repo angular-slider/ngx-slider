@@ -1,7 +1,22 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { Ng2SliderComponent } from './ng2-slider.component';
+import {
+  Ng2SliderComponent,
+  SliderDirective,
+  RightOutSelDirective,
+  LeftOutSelDirective,
+  FullBarDirective,
+  SelBarDirective,
+  MinHDirective,
+  MaxHDirective,
+  FlrLabDirective,
+  CeilLabDirective,
+  MinLabDirective,
+  MaxLabDirective,
+  CmbLabDirective,
+  TicksDirective
+ } from './ng2-slider.component';
 
 @NgModule({
   imports: [
@@ -9,7 +24,20 @@ import { Ng2SliderComponent } from './ng2-slider.component';
     NgbModule
   ],
   declarations: [
-    Ng2SliderComponent
+    Ng2SliderComponent,
+    SliderDirective,
+    RightOutSelDirective,
+    LeftOutSelDirective,
+    FullBarDirective,
+    SelBarDirective,
+    MinHDirective,
+    MaxHDirective,
+    FlrLabDirective,
+    CeilLabDirective,
+    MinLabDirective,
+    MaxLabDirective,
+    CmbLabDirective,
+    TicksDirective
   ],
   exports: [
     Ng2SliderComponent
