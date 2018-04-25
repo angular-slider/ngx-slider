@@ -8,7 +8,7 @@ import {
   HostListener,
   Input,
   ElementRef,
-  Renderer
+  Renderer2
 } from '@angular/core';
 
 class Options {
@@ -87,20 +87,74 @@ class JqLiteWrapper {
   rzsv: string;
   rzsd: number;
   alwaysHide: boolean = false;
+  private eventListeners: { [eventName: string]: [() => void] } = {};
 
-  // TODO: implement jqLite methods or find an angular way of doing this?
-  addClass(clazz) {}
-  removeClass(clazz) {}
-  hasClass(clazz) {}
-  html(html) {}
-  css(property, style = {}) {}
-  attr(attr, value = {}) {}
-  getBoundingClientRect(): ClientRect { return this.elemRef.nativeElement.getBoundingClientRect(); }
-  focus(): void {}
-  on(event, callback): void {}
-  off(event?): void {}
+  constructor(private elemRef: ElementRef, private renderer: Renderer2) {
+  }
 
-  constructor(private elemRef: ElementRef, private renderer: Renderer) {
+  // TODO: slowly rewrite to angular
+  addClass(clazz: string): void {
+    this.renderer.addClass(this.elemRef.nativeElement, clazz);
+  }
+
+  removeClass(clazz: string): void {
+    this.renderer.removeClass(this.elemRef.nativeElement, clazz);
+  }
+
+  hasClass(clazz: string): boolean {
+    return this.elemRef.nativeElement.classList.contains(clazz);
+  }
+
+  html(html: string): void {
+    this.elemRef.nativeElement.innerHTML = html;
+  }
+
+  css(style: string, value: string): void {
+    if (value !== '') {
+      this.renderer.setStyle(this.elemRef.nativeElement, style, value);
+    } else {
+      this.renderer.removeStyle(this.elemRef.nativeElement, style);
+    }
+  }
+
+  attr(attr: string, value: string): void {
+    if (value !== null) {
+      this.renderer.setAttribute(this.elemRef.nativeElement, attr, value);
+    } else {
+      this.renderer.removeAttribute(this.elemRef.nativeElement, attr);
+    }
+  }
+
+  getBoundingClientRect(): ClientRect {
+    return this.elemRef.nativeElement.getBoundingClientRect();
+  }
+
+  focus(): void {
+    this.elemRef.nativeElement.focus();
+  }
+
+  on(eventName: string, callback: (event: any) => boolean|void): void {
+    if (!this.eventListeners.hasOwnProperty(eventName)) {
+      this.eventListeners[eventName] = <[() => void]>[];
+    }
+
+    const unsubscribe = this.renderer.listen(this.elemRef.nativeElement, eventName, callback);
+    this.eventListeners[eventName].push(unsubscribe);
+  }
+
+  off(eventName?: string): void {
+    if (eventName) {
+      if (this.eventListeners.hasOwnProperty(eventName)) {
+        for (const unsubscribe of this.eventListeners[eventName]) {
+          unsubscribe();
+        }
+        delete this.eventListeners[eventName];
+      }
+    } else {
+      for (const eName of Object.keys(this.eventListeners)) {
+        this.off(eName);
+      }
+    }
   }
 }
 
@@ -156,91 +210,91 @@ class ThrottledFunc {
 
 @Directive({selector: '[slider-elem]'})
 export class SliderDirective extends JqLiteWrapper {
-  constructor(elemRef: ElementRef, renderer: Renderer) {
+  constructor(elemRef: ElementRef, renderer: Renderer2) {
     super(elemRef, renderer);
   }
 }
 
 @Directive({selector: '[right-out-sel-elem]'})
 export class RightOutSelDirective extends JqLiteWrapper {
-  constructor(elemRef: ElementRef, renderer: Renderer) {
+  constructor(elemRef: ElementRef, renderer: Renderer2) {
     super(elemRef, renderer);
   }
 }
 
 @Directive({selector: '[left-out-sel-elem]'})
 export class LeftOutSelDirective extends JqLiteWrapper {
-  constructor(elemRef: ElementRef, renderer: Renderer) {
+  constructor(elemRef: ElementRef, renderer: Renderer2) {
     super(elemRef, renderer);
   }
 }
 
 @Directive({selector: '[full-bar-elem]'})
 export class FullBarDirective extends JqLiteWrapper {
-  constructor(elemRef: ElementRef, renderer: Renderer) {
+  constructor(elemRef: ElementRef, renderer: Renderer2) {
     super(elemRef, renderer);
   }
 }
 
 @Directive({selector: '[sel-bar-elem]'})
 export class SelBarDirective extends JqLiteWrapper {
-  constructor(elemRef: ElementRef, renderer: Renderer) {
+  constructor(elemRef: ElementRef, renderer: Renderer2) {
     super(elemRef, renderer);
   }
 }
 
 @Directive({selector: '[min-h-elem]'})
 export class MinHDirective extends JqLiteWrapper {
-  constructor(elemRef: ElementRef, renderer: Renderer) {
+  constructor(elemRef: ElementRef, renderer: Renderer2) {
     super(elemRef, renderer);
   }
 }
 
 @Directive({selector: '[max-h-elem]'})
 export class MaxHDirective extends JqLiteWrapper {
-  constructor(elemRef: ElementRef, renderer: Renderer) {
+  constructor(elemRef: ElementRef, renderer: Renderer2) {
     super(elemRef, renderer);
   }
 }
 
 @Directive({selector: '[flr-lab-elem]'})
 export class FlrLabDirective extends JqLiteWrapper {
-  constructor(elemRef: ElementRef, renderer: Renderer) {
+  constructor(elemRef: ElementRef, renderer: Renderer2) {
     super(elemRef, renderer);
   }
 }
 
 @Directive({selector: '[ceil-lab-elem]'})
 export class CeilLabDirective extends JqLiteWrapper {
-  constructor(elemRef: ElementRef, renderer: Renderer) {
+  constructor(elemRef: ElementRef, renderer: Renderer2) {
     super(elemRef, renderer);
   }
 }
 
 @Directive({selector: '[min-lab-elem]'})
 export class MinLabDirective extends JqLiteWrapper {
-  constructor(elemRef: ElementRef, renderer: Renderer) {
+  constructor(elemRef: ElementRef, renderer: Renderer2) {
     super(elemRef, renderer);
   }
 }
 
 @Directive({selector: '[max-lab-elem]'})
 export class MaxLabDirective extends JqLiteWrapper {
-  constructor(elemRef: ElementRef, renderer: Renderer) {
+  constructor(elemRef: ElementRef, renderer: Renderer2) {
     super(elemRef, renderer);
   }
 }
 
 @Directive({selector: '[cmb-lab-elem]'})
 export class CmbLabDirective extends JqLiteWrapper {
-  constructor(elemRef: ElementRef, renderer: Renderer) {
+  constructor(elemRef: ElementRef, renderer: Renderer2) {
     super(elemRef, renderer);
   }
 }
 
 @Directive({selector: '[ticks-elem]'})
 export class TicksDirective extends JqLiteWrapper {
-  constructor(elemRef: ElementRef, renderer: Renderer) {
+  constructor(elemRef: ElementRef, renderer: Renderer2) {
     super(elemRef, renderer);
   }
 }
@@ -416,7 +470,10 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   private isDragging: boolean;
   private touchId: number;
 
-  constructor() { }
+  private onMoveUnsubscribe: () => void = null;
+  private onEndUnsubscribe: () => void = null;
+
+  constructor(private renderer: Renderer2) { }
 
   ngOnInit() {
   }
@@ -632,7 +689,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.options.showTicks = this.options.showTicks ||
       this.options.showTicksValues ||
       !!this.options.ticksArray;
-    this.showTicks = this.options.showTicks;
+    this.showTicks = !!this.options.showTicks;
 
     if ((<any>this.options.showTicks) instanceof Number || this.options.ticksArray) {
       this.intermediateTicks = true;
@@ -942,27 +999,16 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // Updates aria attributes according to current values
   private updateAriaAttributes(): void {
-    this.minHElem.attr({
-      'aria-valuenow': this.value,
-      'aria-valuetext': this.customTrFn(
-        this.value,
-        this.options.id,
-        'model'
-      ),
-      'aria-valuemin': this.minValue,
-      'aria-valuemax': this.maxValue,
-    });
+    this.minHElem.attr('aria-valuenow', this.value.toString());
+    this.minHElem.attr('aria-valuetext', this.customTrFn(this.value, this.options.id, 'model'));
+    this.minHElem.attr('aria-valuemin', this.minValue.toString());
+    this.minHElem.attr('aria-valuemax', this.maxValue.toString());
+
     if (this.range) {
-      this.maxHElem.attr({
-        'aria-valuenow': this.highValue,
-        'aria-valuetext': this.customTrFn(
-          this.highValue,
-          this.options.id,
-          'high'
-        ),
-        'aria-valuemin': this.minValue,
-        'aria-valuemax': this.maxValue,
-      });
+      this.maxHElem.attr('aria-valuenow', this.highValue.toString());
+      this.maxHElem.attr('aria-valuetext', this.customTrFn(this.highValue, this.options.id, 'high'));
+      this.maxHElem.attr('aria-valuemin', this.minValue.toString());
+      this.maxHElem.attr('aria-valuemax', this.maxValue.toString());
     }
   }
 
@@ -1459,9 +1505,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // Hide element
   private hideEl(element: JqLiteWrapper): void {
-    element.css({
-      visibility: 'hidden',
-    });
+    element.css('visibility', 'hidden');
   }
 
   // Show element
@@ -1470,17 +1514,13 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
       return;
     }
 
-    element.css({
-      visibility: 'visible',
-    });
+    element.css('visibility', 'visible');
   }
 
   // Set element left/top position depending on whether slider is horizontal or vertical
   private setPosition(elem, pos) {
     elem.rzsp = pos;
-    const css = {};
-    css[this.positionProperty] = Math.round(pos) + 'px';
-    elem.css(css);
+    elem.css(this.positionProperty, Math.round(pos) + 'px');
     return pos;
   }
 
@@ -1498,9 +1538,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   // Set element width/height depending on whether slider is horizontal or vertical
   private setDimension(elem: JqLiteWrapper, dim: number): number {
     elem.rzsd = dim;
-    const css = {};
-    css[this.dimensionProperty] = Math.round(dim) + 'px';
-    elem.css(css);
+    elem.css(this.dimensionProperty, Math.round(dim) + 'px');
     return dim;
   }
 
@@ -1650,7 +1688,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     let barTracking, barStart, barMove;
 
     if (this.options.draggableRange) {
-      barTracking = 'rzSliderDrag';
+      barTracking = 'rzSliderDrag'; // TODO: find out how this is supposed to work...
       barStart = this.onDragStart;
       barMove = this.onDragMove;
     } else {
@@ -1719,7 +1757,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   // onStart event handler
-  private onStart(pointer: JqLiteWrapper, ref?: HandleType, event?): void {
+  private onStart(pointer: JqLiteWrapper, ref: HandleType, event: any): void {
     const eventNames = this.getEventNames(event);
 
     event.stopPropagation();
@@ -1742,13 +1780,18 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
       this.focusElement(pointer);
     }
 
-    const ehMove = () => this.dragging.active ? this.onDragMove(pointer) : this.onMove(pointer);
-    const ehEnd = () => this.onEnd(ehMove);
+    const ehMove = (e: any) => this.dragging.active ? this.onDragMove(pointer, e) : this.onMove(pointer, e);
 
-    // TODO: global event handling
-    /*$document.on(eventNames.moveEvent, ehMove);
-    $document.on(eventNames.endEvent, ehEnd);
-    this.endHandlerToBeRemovedOnEnd = ehEnd;*/
+    if (this.onMoveUnsubscribe !== null) {
+      this.onMoveUnsubscribe();
+    }
+    this.onMoveUnsubscribe = this.renderer.listen('document', eventNames.moveEvent, ehMove);
+
+    const ehEnd = (e: any) => this.onEnd(e);
+    if (this.onEndUnsubscribe !== null) {
+      this.onEndUnsubscribe();
+    }
+    this.onEndUnsubscribe = this.renderer.listen('document', eventNames.endEvent, ehEnd);
 
     this.callOnStart();
 
@@ -1763,7 +1806,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   // onMove event handler
-  private onMove(pointer, event?, fromTick?): void {
+  private onMove(pointer: JqLiteWrapper, event: any, fromTick?: boolean): void {
     const changedTouches = event.changedTouches;
     let touchForThisSlider;
     if (changedTouches) {
@@ -1804,7 +1847,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.positionTrackingHandle(newValue);
   }
 
-  private onEnd(ehMove, event?): void {
+  private onEnd(event: any): void {
     const changedTouches = event.changedTouches;
     if (changedTouches && changedTouches[0].identifier !== this.touchId) {
       return;
@@ -1820,19 +1863,22 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.dragging.active = false;
 
     const eventNames = this.getEventNames(event);
-    // TODO: global event handling
-    /*$document.off(eventNames.moveEvent, ehMove);
-    $document.off(eventNames.endEvent, this.endHandlerToBeRemovedOnEnd);
-    this.endHandlerToBeRemovedOnEnd = null; */
+
+    if (this.onMoveUnsubscribe !== null) {
+      this.onMoveUnsubscribe();
+    }
+    if (this.onEndUnsubscribe !== null) {
+      this.onEndUnsubscribe();
+    }
 
     this.callOnEnd();
   }
 
-  private onTickClick(pointer, event?): void {
+  private onTickClick(pointer: JqLiteWrapper, event: any): void {
     this.onMove(pointer, event, true);
   }
 
-  private onPointerFocus(pointer: JqLiteWrapper, ref): void {
+  private onPointerFocus(pointer: JqLiteWrapper, ref: HandleType): void {
     this.tracking = ref;
     pointer.on('blur', (event) => this.onPointerBlur(pointer));
     pointer.on('keydown', (event) => this.onKeyboardEvent(event));
@@ -1852,6 +1898,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private onPointerBlur(pointer: JqLiteWrapper): void {
+    pointer.off('blur');
     pointer.off('keydown');
     pointer.off('keyup');
     pointer.removeClass('rz-active');
@@ -1861,7 +1908,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  private getKeyActions(currentValue) {
+  private getKeyActions(currentValue: number): {[key: string]: number} {
     let increaseStep = currentValue + this.step,
       decreaseStep = currentValue - this.step,
       increasePage = currentValue + this.valueRange / 10,
@@ -1898,7 +1945,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     return actions;
   }
 
-  private onKeyboardEvent(event) {
+  private onKeyboardEvent(event: any): void {
     const currentValue = this.getCurrentTrackingValue();
     const keyCode = event.keyCode || event.which;
     const keys = {
@@ -1952,7 +1999,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   // onDragStart event handler, handles dragging of the middle bar
-  private onDragStart(pointer, ref, event) {
+  private onDragStart(pointer: JqLiteWrapper, ref: HandleType, event: any): void {
     const position = this.getEventPosition(event);
 
     this.dragging = new Dragging();

@@ -30,7 +30,7 @@
   <!-- // 10 Range label when the slider handles are close ex. 15 - 17 -->
   <span cmb-lab-elem class="rz-bubble"></span>
   <!-- // 11 The ticks -->
-  <ul ticks-elem *ngIf="showTicks" class="rz-ticks">
+  <ul ticks-elem [hidden]="!showTicks" class="rz-ticks">
     <li *ngFor="let t of ticks" class="rz-tick" [ngClass]="{'rz-selected': t.selected}" [ngStyle]="t.style"
         [ngbTooltip]="t.tooltip" [placement]="t.tooltipPlacement" container="body">
       <span *ngIf="t.value != null" class="rz-tick-value"
