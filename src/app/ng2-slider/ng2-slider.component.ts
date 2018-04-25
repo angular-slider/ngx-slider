@@ -1,4 +1,15 @@
-import { Component, OnInit, Directive, ViewChild, AfterViewInit, OnDestroy, HostListener, Input } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Directive,
+  ViewChild,
+  AfterViewInit,
+  OnDestroy,
+  HostListener,
+  Input,
+  ElementRef,
+  Renderer
+} from '@angular/core';
 
 class Options {
   floor: number = 0;
@@ -84,10 +95,13 @@ class JqLiteWrapper {
   html(html) {}
   css(property, style = {}) {}
   attr(attr, value = {}) {}
-  getBoundingClientRect(): ClientRect { return null; }
+  getBoundingClientRect(): ClientRect { return this.elemRef.nativeElement.getBoundingClientRect(); }
   focus(): void {}
   on(event, callback): void {}
   off(event?): void {}
+
+  constructor(private elemRef: ElementRef, private renderer: Renderer) {
+  }
 }
 
 class Dragging {
@@ -141,43 +155,95 @@ class ThrottledFunc {
 }
 
 @Directive({selector: '[slider-elem]'})
-export class SliderDirective extends JqLiteWrapper {}
+export class SliderDirective extends JqLiteWrapper {
+  constructor(elemRef: ElementRef, renderer: Renderer) {
+    super(elemRef, renderer);
+  }
+}
 
 @Directive({selector: '[right-out-sel-elem]'})
-export class RightOutSelDirective extends JqLiteWrapper {}
+export class RightOutSelDirective extends JqLiteWrapper {
+  constructor(elemRef: ElementRef, renderer: Renderer) {
+    super(elemRef, renderer);
+  }
+}
 
 @Directive({selector: '[left-out-sel-elem]'})
-export class LeftOutSelDirective extends JqLiteWrapper {}
+export class LeftOutSelDirective extends JqLiteWrapper {
+  constructor(elemRef: ElementRef, renderer: Renderer) {
+    super(elemRef, renderer);
+  }
+}
 
 @Directive({selector: '[full-bar-elem]'})
-export class FullBarDirective extends JqLiteWrapper {}
+export class FullBarDirective extends JqLiteWrapper {
+  constructor(elemRef: ElementRef, renderer: Renderer) {
+    super(elemRef, renderer);
+  }
+}
 
 @Directive({selector: '[sel-bar-elem]'})
-export class SelBarDirective extends JqLiteWrapper {}
+export class SelBarDirective extends JqLiteWrapper {
+  constructor(elemRef: ElementRef, renderer: Renderer) {
+    super(elemRef, renderer);
+  }
+}
 
 @Directive({selector: '[min-h-elem]'})
-export class MinHDirective extends JqLiteWrapper {}
+export class MinHDirective extends JqLiteWrapper {
+  constructor(elemRef: ElementRef, renderer: Renderer) {
+    super(elemRef, renderer);
+  }
+}
 
 @Directive({selector: '[max-h-elem]'})
-export class MaxHDirective extends JqLiteWrapper {}
+export class MaxHDirective extends JqLiteWrapper {
+  constructor(elemRef: ElementRef, renderer: Renderer) {
+    super(elemRef, renderer);
+  }
+}
 
 @Directive({selector: '[flr-lab-elem]'})
-export class FlrLabDirective extends JqLiteWrapper {}
+export class FlrLabDirective extends JqLiteWrapper {
+  constructor(elemRef: ElementRef, renderer: Renderer) {
+    super(elemRef, renderer);
+  }
+}
 
 @Directive({selector: '[ceil-lab-elem]'})
-export class CeilLabDirective extends JqLiteWrapper {}
+export class CeilLabDirective extends JqLiteWrapper {
+  constructor(elemRef: ElementRef, renderer: Renderer) {
+    super(elemRef, renderer);
+  }
+}
 
 @Directive({selector: '[min-lab-elem]'})
-export class MinLabDirective extends JqLiteWrapper {}
+export class MinLabDirective extends JqLiteWrapper {
+  constructor(elemRef: ElementRef, renderer: Renderer) {
+    super(elemRef, renderer);
+  }
+}
 
 @Directive({selector: '[max-lab-elem]'})
-export class MaxLabDirective extends JqLiteWrapper {}
+export class MaxLabDirective extends JqLiteWrapper {
+  constructor(elemRef: ElementRef, renderer: Renderer) {
+    super(elemRef, renderer);
+  }
+}
 
 @Directive({selector: '[cmb-lab-elem]'})
-export class CmbLabDirective extends JqLiteWrapper {}
+export class CmbLabDirective extends JqLiteWrapper {
+  constructor(elemRef: ElementRef, renderer: Renderer) {
+    super(elemRef, renderer);
+  }
+}
 
 @Directive({selector: '[ticks-elem]'})
-export class TicksDirective extends JqLiteWrapper {}
+export class TicksDirective extends JqLiteWrapper {
+  constructor(elemRef: ElementRef, renderer: Renderer) {
+    super(elemRef, renderer);
+  }
+}
 
 
 @Component({
