@@ -203,7 +203,7 @@ class ThrottledFunc {
       this.previous = now;
       this.func();
     } else if (!this.timeout) {
-      this.timeout = setTimeout(this.later, remaining);
+      this.timeout = setTimeout(() => this.later, remaining);
     }
   }
 }
