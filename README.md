@@ -1,27 +1,21 @@
-# AngularSlider
+# Ng2Slider
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.7.3.
+A rewrite of [angularjs-slider](https://github.com/angular-slider/angularjs-slider) for Angular 2.
 
-## Development server
+Work still in progress, but results are encouraging.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Basic slider functionality is working as of v0.1.0.
 
-## Code scaffolding
+## TODO
+ * test to see what is still broken
+ * finish adding TypeScript type signatures
+ * create an npm package
+ * unit tests
+ * documentation
+ * refactoring
+   - look into getting rid of JqLiteWrapper in favour of bindings in sub-components
+   - look into moving parts of code into separate classes to make the codebase more manageable
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## License
 
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+Licensed under the MIT license
