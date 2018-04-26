@@ -1518,10 +1518,9 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   // Set element left/top position depending on whether slider is horizontal or vertical
-  private setPosition(elem, pos) {
+  private setPosition(elem: JqLiteWrapper, pos: number): void {
     elem.rzsp = pos;
     elem.css(this.positionProperty, Math.round(pos) + 'px');
-    return pos;
   }
 
   // Get element width/height depending on whether slider is horizontal or vertical
