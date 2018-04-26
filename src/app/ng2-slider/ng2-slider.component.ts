@@ -503,7 +503,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   onChangeOptions(oldValue: Options, newValue: Options): void {
-    if (newValue === oldValue) {
+    if (!this.initHasRun || newValue === oldValue) {
       return;
     }
 
@@ -516,7 +516,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   onChangeValue(oldValue: number, newValue: number): void {
-    if (this.internalChange || newValue === oldValue) {
+    if (!this.initHasRun || this.internalChange || newValue === oldValue) {
       return;
     }
 
@@ -524,7 +524,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   onChangeHighValue(oldValue: number, newValue: number): void {
-    if (this.internalChange || newValue === oldValue) {
+    if (!this.initHasRun || this.internalChange || newValue === oldValue) {
       return;
     }
     if (newValue != null) {
