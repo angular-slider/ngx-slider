@@ -6,6 +6,9 @@
 /tmp
 /out-tsc
 
+# temp directory for Chrome debugging
+/out-debug
+
 # dependencies
 /node_modules
 
@@ -22,7 +25,7 @@
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
-!.vscode/launch.json
+#!.vscode/launch.json
 !.vscode/extensions.json
 
 # misc
