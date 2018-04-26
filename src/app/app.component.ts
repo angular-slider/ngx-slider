@@ -7,4 +7,9 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'app';
+  sliderValue: number = 200;
+  sliderOptions = {
+    floor: 0,
+    ceil: 500
+  };
 }
