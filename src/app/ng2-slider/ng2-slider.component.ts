@@ -8,7 +8,9 @@ import {
   HostListener,
   Input,
   ElementRef,
-  Renderer2
+  Renderer2,
+  EventEmitter,
+  Output
 } from '@angular/core';
 
 class Options {
@@ -315,6 +317,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   get value(): number {
      return this._value;
   }
+  @Output() valueChange: EventEmitter<number> = new EventEmitter();
 
   // Model for high value slider. Providing both value and highValue will render range slider.
   private _highValue: number;
@@ -325,6 +328,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   get highValue(): number {
      return this._highValue;
   }
+  @Output() highValueChange: EventEmitter<number> = new EventEmitter();
 
   // An object with all the other options of the slider.
   // Each option can be updated at runtime and the slider will automatically be re-rendered.
@@ -2275,7 +2279,12 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private applyModel() {
-    // TODO: @Output...
+    this.internalChange = true;
+
+    this.valueChange.emit(this.value);
+    this.highValueChange.emit(this.highValue);
+
+    this.internalChange = false;
   }
 
   // TODO: support options callbacks?
