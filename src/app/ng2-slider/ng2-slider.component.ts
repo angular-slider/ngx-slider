@@ -19,7 +19,11 @@ import {
   GetLegendFunction,
   TranslateLabel,
   TranslateFunction,
+  ValueToPositionFunction,
+  PositionToValueFunction,
 } from './ng2-slider-options';
+
+import { ValuePositionConverter } from './value-position-converter';
 
 import { JqLiteWrapper } from './jq-lite-wrapper';
 
@@ -1383,11 +1387,11 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // Translate value to pixel position
   private valueToPosition(val: number): number {
-    let fn = this.linearValueToPosition;
+    let fn: ValueToPositionFunction  = ValuePositionConverter.linearValueToPosition;
     if (this.viewOptions.customValueToPosition) {
       fn = this.viewOptions.customValueToPosition;
     } else if (this.viewOptions.logScale) {
-      fn = this.logValueToPosition;
+      fn = ValuePositionConverter.logValueToPosition;
     }
 
     val = this.sanitizeValue(val);
@@ -1398,43 +1402,19 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     return percent * this.maxPos;
   }
 
-  private linearValueToPosition(val: number, minVal: number, maxVal: number): number {
-    const range = maxVal - minVal;
-    return (val - minVal) / range;
-  }
-
-  private logValueToPosition(val: number, minVal: number, maxVal: number): number {
-    val = Math.log(val);
-    minVal = Math.log(minVal);
-    maxVal = Math.log(maxVal);
-    const range = maxVal - minVal;
-    return (val - minVal) / range;
-  }
-
   // Translate position to model value
   private positionToValue(position: number): number {
     let percent = position / this.maxPos;
     if (this.viewOptions.rightToLeft) {
       percent = 1 - percent;
     }
-    let fn = this.linearPositionToValue;
+    let fn: PositionToValueFunction = ValuePositionConverter.linearPositionToValue;
     if (this.viewOptions.customPositionToValue) {
       fn = this.viewOptions.customPositionToValue;
     } else if (this.viewOptions.logScale) {
-      fn = this.logPositionToValue;
+      fn = ValuePositionConverter.logPositionToValue;
     }
     return fn(percent, this.minValue, this.maxValue) || 0;
-  }
-
-  private linearPositionToValue(percent: number, minVal: number, maxVal: number): number {
-    return percent * (maxVal - minVal) + minVal;
-  }
-
-  private logPositionToValue(percent: number, minVal: number, maxVal: number): number {
-    minVal = Math.log(minVal);
-    maxVal = Math.log(maxVal);
-    const value = percent * (maxVal - minVal) + minVal;
-    return Math.exp(value);
   }
 
   // Get the X-coordinate or Y-coordinate of an event

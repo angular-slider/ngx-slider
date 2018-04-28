@@ -1,6 +1,8 @@
 export type TranslateLabel = 'model'|'high'|'floor'|'ceil'|'cmb'|'tick-value';
 export type TranslateFunction = (value: number, sliderId: any, label: TranslateLabel) => string;
 export type GetLegendFunction = (value: number, siderId: any) => string;
+export type ValueToPositionFunction = (val: number, minVal: number, maxVal: number) => number;
+export type PositionToValueFunction = (percent: number, minVal: number, maxVal: number) => number;
 
 export interface CustomStepDefinition {
   value: number;
@@ -224,11 +226,11 @@ export class Options {
 
   /** Function that returns the position on the slider for a given value.
     The position must be a percentage between 0 and 1. */
-  customValueToPosition: (val: number, minVal: number, maxVal: number) => number = null;
+  customValueToPosition: ValueToPositionFunction = null;
 
   /** Function that returns the value for a given position on the slider.
     The position is a percentage between 0 and 1. */
-  customPositionToValue: (percent: number, minVal: number, maxVal: number) => number = null;
+  customPositionToValue: PositionToValueFunction = null;
 
   /** Use to display the selection bar as a gradient.
     The given object must contain from and to properties which are colors. */
