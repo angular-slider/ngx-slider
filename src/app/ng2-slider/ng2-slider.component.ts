@@ -13,64 +13,262 @@ import {
   Output
 } from '@angular/core';
 
+type TranslateLabel = 'model'|'high'|'floor'|'ceil'|'cmb'|'tick-value';
+type TranslateFunction = (value: number, sliderId: any, label: TranslateLabel) => string;
+type GetLegendFunction = (value: number, siderId: any) => string;
+
+interface CustomStepDefinition {
+  value: number|Date;
+  legend?: string;
+}
+
+function isCustomStepDefinition(object: any): object is CustomStepDefinition {
+  return 'value' in object;
+}
+
+/** Slider options */
 class Options {
+  /** Minimum value for a slider. */
   floor: number = 0;
+
+  /** Maximum value for a slider (defaults to value model). */
   ceil: number = null;
+
+  /** Step between each value. */
   step: number = 1;
+
+  /** The precision to display values with. The toFixed() is used internally for this. */
   precision: number = 0;
-  minRange: any = null; // TODO: type?
-  maxRange: any = null; // TODO: type?
+
+  /** The minimum range authorized on the slider. Applies to range slider only. */
+  minRange: number = null;
+
+  /** The maximum range authorized on the slider. Applies to range slider only. */
+  maxRange: number = null;
+
+  /** Set to true to have a push behavior. When the min handle goes above the max,
+    the max is moved as well (and vice-versa). The range between min and max is
+    defined by the step option (defaults to 1) and can also be override by
+    the minRange option. Applies to range slider only. */
   pushRange: boolean = false;
-  minLimit: any = null; // TODO: type?
-  maxLimit: any = null; // TODO: type?
-  id: any = null; // TODO: type?
-  translate: any = null; // TODO: type?
-  getLegend: any = null; // TODO: type?
-  stepsArray: any = null; // TODO: type?
+
+  /** The minimum value authorized on the slider. */
+  minLimit: number = null;
+
+  /** The maximum value authorized on the slider. */
+  maxLimit: number = null;
+
+  /** If you want to use the same translate function for several sliders, just set the id
+    to anything you want, and it will be passed to the translate(value, sliderId) function
+    as a second argument. */
+  id: any = null;
+
+  /** Custom translate function. Use this if you want to translate values displayed
+      on the slider. sliderId can be used to determine the slider for which we are
+      translating the value. */
+  translate: TranslateFunction = null;
+
+  /** Use to display legend under ticks (thus, it needs to be used along with
+     showTicks or showTicksValues). The function will be called with each tick
+     value and returned content will be displayed under the tick as a legend.
+     If the returned value is null, then no legend is displayed under
+     the corresponding tick.You can also directly provide the legend values
+     in the stepsArray option. */
+  getLegend: GetLegendFunction = null;
+
+  /** If you want to display a slider with non linear/number steps.
+     Just pass an array with each slider value and that's it; the floor, ceil and step settings
+     of the slider will be computed automatically.
+     By default, the value model and valueHigh model values will be the value of the selected item
+     in the stepsArray.
+     They can also be bound to the index of the selected item by setting the bindIndexForStepsArray
+     option to true. */
+  stepsArray: [CustomStepDefinition|Date] = null;
+
+  /** Set to true to bind the index of the selected item to value model and valueHigh model. */
   bindIndexForStepsArray: boolean = false;
+
+  /** When set to true and using a range slider, the range can be dragged by the selection bar.
+    Applies to range slider only. */
   draggableRange: boolean = false;
+
+  /** Same as draggableRange but the slider range can't be changed.
+    Applies to range slider only. */
   draggableRangeOnly: boolean = false;
+
+  /** Set to true to always show the selection bar before the slider handle. */
   showSelectionBar: boolean = false;
+
+  /** Set to true to always show the selection bar after the slider handle. */
   showSelectionBarEnd: boolean = false;
-  showSelectionBarFromValue: any = null;
+
+  /**  Set a number to draw the selection bar between this value and the slider handle. */
+  showSelectionBarFromValue: number = null;
+
+  /**  Only for range slider. Set to true to visualize in different colour the areas
+    on the left/right (top/bottom for vertical range slider) of selection bar between the handles. */
   showOuterSelectionBars: boolean = false;
+
+  /** Set to true to hide pointer labels */
   hidePointerLabels: boolean = false;
+
+  /** Set to true to hide min / max labels  */
   hideLimitLabels: boolean = false;
+
+  /** Set to false to disable the auto-hiding behavior of the limit labels. */
   autoHideLimitLabels: boolean = true;
+
+  /** Set to true to make the slider read-only. */
   readOnly: boolean = false;
+
+  /** Set to true to disable the slider. */
   disabled: boolean = false;
+
+  /** Number of milliseconds to wait between two updates of the slider.
+    Internally, a throttle function (See http://underscorejs.org/#throttle) is used when the model
+    or high values of the slider are changed from outside the slider. This is to prevent from
+    re-rendering the slider too many times in a row. interval is the timeout value used on the
+    throttle function. */
   interval: number = 350;
+
+  /** Set to true to display a tick for each step of the slider.
+    Set a number to display ticks at intermediate positions.
+    This number corresponds to the step between each tick. */
   showTicks: boolean|number = false;
+
+  /** Set to true to display a tick and the step value for each step of the slider.
+    Set a number to display ticks and the step value at intermediate positions.
+    This number corresponds to the step between each tick. */
   showTicksValues: boolean|number = false;
-  ticksArray: any = null; // TODO: type?
-  ticksTooltip: any = null; // TODO: type?
-  ticksValuesTooltip: any = null; // TODO: type?
+
+  /** Use to display ticks at specific positions.
+    The array contains the index of the ticks that should be displayed.
+    For example, [0, 1, 5] will display a tick for the first, second and sixth values. */
+  ticksArray: [number] = null;
+
+  /** Used to display a tooltip when a tick is hovered.
+    Set to a function that returns the tooltip content for a given value. */
+  ticksTooltip: (value: number) => string = null;
+
+  /** Same as ticksTooltip but for ticks values. */
+  ticksValuesTooltip: (value: number) => string = null;
+
+  /** Set to true to display the slider vertically.
+    The slider will take the full height of its parent.
+    Changing this value at runtime is not currently supported. */
   vertical: boolean = false;
-  getSelectionBarColor: any = null; // TODO: type?
-  getTickColor: any = null; // TODO: type?
-  getPointerColor: any = null; // TODO: type?
+
+  /** Function that returns the current color of the selection bar.
+    If your color won't change, don't use this option but set it through CSS.
+    If the returned color depends on a model value (either value or valueHigh),
+    you should use the argument passed to the function.
+    Indeed, when the function is called, there is no certainty that the model
+    has already been updated.*/
+  getSelectionBarColor: (minValue: number, maxValue?: number) => string = null;
+
+  /** Function that returns the color of a tick. showTicks must be enabled. */
+  getTickColor: (value: string) => string = null;
+
+  /** Function that returns the current color of a pointer.
+    If your color won't change, don't use this option but set it through CSS.
+    If the returned color depends on a model value (either value or valueHigh),
+    you should use the argument passed to the function.
+    Indeed, when the function is called, there is no certainty that the model has already been updated.
+    To handle range slider pointers independently, you should evaluate pointerType within the given
+    function where "min" stands for value model and "max" for valueHigh model values. */
+  getPointerColor: (value: number, pointerType: 'min'|'max') => string = null;
+
+  /** Handles are focusable (on click or with tab) and can be modified using the following keyboard controls:
+    Left/bottom arrows: -1
+    Right/top arrows: +1
+    Page-down: -10%
+    Page-up: +10%
+    Home: minimum value
+    End: maximum value
+   */
   keyboardSupport: boolean = true;
+
+  /** If you display the slider in an element that uses transform: scale(0.5), set the scale value to 2
+    so that the slider is rendered properly and the events are handled correctly. */
   scale: number = 1;
+
+  /** Set to true to force the value to be rounded to the step, even when modified from the outside.
+    When set to false, if the model values are modified from outside the slider, they are not rounded
+    and can be between two steps. */
   enforceStep: boolean = true;
+
+  /** Set to true to round the value model and valueHigh model to the slider range even when modified
+    from outside the slider. When set to false, if the model values are modified from outside the slider,
+    they are not rounded but they are still rendered properly on the slider. */
   enforceRange: boolean = false;
+
+  /** Set to true to prevent to user from switching the min and max handles. Applies to range slider only. */
   noSwitching: boolean = false;
+
+  /** Set to true to only bind events on slider handles. */
   onlyBindHandles: boolean = false;
+
+
+  // Callbacks - TODO: add support?
   onStart: any = null; // TODO: type?
   onChange: any = null; // TODO: type?
   onEnd: any = null; // TODO: type?
+
+  /** Set to true to show graphs right to left.
+    If vertical is true it will be from top to bottom and left / right arrow functions reversed. */
   rightToLeft: boolean = false;
+
+  /** Set to true to reverse keyboard navigation:
+    Right/top arrows: -1
+    Left/bottom arrows: +1
+    Page-up: -10%
+    Page-down: +10%
+    End: minimum value
+    Home: maximum value
+   */
   reversedControls: boolean = false;
+
+  /** Set to true to keep the slider labels inside the slider bounds. */
   boundPointerLabels: boolean = true;
+
+  /** Set to true to merge the range labels if they are the same.
+    For instance, if min and max are 50, the label will be "50 - 50"
+    if mergeRangeLabelsIfSame: false,  else "50". */
   mergeRangeLabelsIfSame: boolean = false;
+
+  /** Separator to use when the labels overlap.
+    For instance, if min and max are -1 and 1, the label will be "-1 .. 1"
+    if labelOverlapSeparator: ' .. '.  */
   labelOverlapSeparator: string = ' - ';
+
+  /** Set to true to use a logarithmic scale to display the slider.  */
   logScale: boolean = false;
-  customValueToPosition: any = null; // TODO: type?
-  customPositionToValue: any = null; // TODO: type?
-  selectionBarGradient: any = null; // TODO: type?
-  ariaLabel: any = null; // TODO: type?
-  ariaLabelledBy: any = null; // TODO: type?
-  ariaLabelHigh: any = null; // TODO: type?
-  ariaLabelledByHigh: any = null; // TODO: type?
+
+  /** Function that returns the position on the slider for a given value.
+    The position must be a percentage between 0 and 1. */
+  customValueToPosition: (val: number, minVal: number, maxVal: number) => number = null;
+
+  /** Function that returns the value for a given position on the slider.
+    The position is a percentage between 0 and 1. */
+  customPositionToValue: (percent: number, minVal: number, maxVal: number) => number = null;
+
+  /** Use to display the selection bar as a gradient.
+    The given object must contain from and to properties which are colors. */
+  selectionBarGradient: {from: string, to: string} = null;
+
+  /** Use to add a label directly to the slider for accessibility. Adds the aria-label attribute. */
+  ariaLabel: string = null;
+
+  /** Use instead of ariaLabel to reference the id of an element which will be used to label the slider.
+    Adds the aria-labelledby attribute. */
+  ariaLabelledBy: string = null;
+
+  /** Use to add a label directly to the slider range for accessibility. Adds the aria-label attribute. */
+  ariaLabelHigh: string = null;
+
+  /** Use instead of ariaLabelHigh to reference the id of an element which will be used to label the slider range.
+    Adds the aria-labelledby attribute. */
+  ariaLabelledByHigh: string = null;
 }
 
 class Tick {
@@ -175,7 +373,7 @@ enum HandleType {
 }
 
 class ThrottledFunc {
-  func: Function;
+  func: () => void;
   wait: number;
   previous: number = 0;
   timeout: any = null;
@@ -417,10 +615,10 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   private dragging: Dragging = new Dragging();
 
   // Property that handles position (defaults to left for horizontal)
-  private positionProperty: string = 'left'; // TODO: left|bottom enum?
+  private positionProperty: 'left'|'bottom' = 'left';
 
   /// Property that handles dimension (defaults to width for horizontal)
-  private dimensionProperty: string = 'width';
+  private dimensionProperty: 'width'|'height' = 'width';
 
   // Half of the width or height of the slider handles
   private handleHalfDim: number = 0;
@@ -451,7 +649,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   private intermediateTicks: boolean = false;
 
   // Set to true if init method already executed
-  private initHasRun: boolean = false; // TODO: necessary?
+  private initHasRun: boolean = false;
 
   // Used to call onStart on the first keydown event
   private firstKeyDown: boolean = false;
@@ -463,12 +661,12 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   private cmbLabelShown: boolean = false;
 
   // Internal variable to keep track of the focus element
-  private currentFocusElement: any = null; // TODO: type?
+  private currentFocusElement: {pointer: JqLiteWrapper, ref: HandleType} = null;
 
   private barDimension: number;
 
-  private customTrFn: Function;
-  private getLegend: Function;
+  private customTrFn: TranslateFunction;
+  private getLegend: GetLegendFunction;
 
   private thrOnLowHandleChange: ThrottledFunc;
   private thrOnHighHandleChange: ThrottledFunc;
@@ -568,15 +766,15 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
       if (step === modelValue) {
         index = i;
         break;
-      } else if (step instanceof Date) {
-        if (step.getTime() === modelValue.getTime()) {
-          index = i;
-          break;
-        }
-      } else if (step instanceof Object) {
+      } else if (isCustomStepDefinition(step)) {
         if ( (step.value instanceof Date &&
               step.value.getTime() === modelValue.getTime()) ||
               step.value === modelValue) {
+          index = i;
+          break;
+        }
+      } else if (step instanceof Date) {
+        if (step.getTime() === modelValue.getTime()) {
           index = i;
           break;
         }
@@ -611,10 +809,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private getStepValue(sliderValue): any /* TODO: type? */ {
     const step = this.viewOptions.stepsArray[sliderValue];
-    if (step instanceof Date) {
-      return step;
-    }
-    if (step instanceof Object) {
+    if (isCustomStepDefinition(step)) {
       return step.value;
     }
     return step;
@@ -700,7 +895,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
       !!this.viewOptions.ticksArray;
     this.showTicks = !!this.viewOptions.showTicks;
 
-    if ((<any>this.viewOptions.showTicks) instanceof Number || this.viewOptions.ticksArray) {
+    if (typeof this.viewOptions.showTicks === 'number' || this.viewOptions.ticksArray) {
       this.intermediateTicks = true;
     }
 
@@ -726,7 +921,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  private parseStepsArray(): any /* TODO: type? */ {
+  private parseStepsArray(): void {
     this.viewOptions.floor = 0;
     this.viewOptions.ceil = this.viewOptions.stepsArray.length - 1;
     this.viewOptions.step = 1;
@@ -744,7 +939,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.getLegend = (index) => {
       const step = this.viewOptions.stepsArray[index];
-      if (step instanceof Object) {
+      if (isCustomStepDefinition(step)) {
         return step.legend;
       }
       return null;
@@ -890,7 +1085,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   // Translate value to human readable format
-  private translateFn(value: number|string, label: JqLiteWrapper, which: string, useCustomTr?: boolean): any {
+  private translateFn(value: number, label: JqLiteWrapper, which: TranslateLabel, useCustomTr?: boolean): any {
     useCustomTr = useCustomTr === undefined ? true : useCustomTr;
 
     let valStr = '';
@@ -1083,7 +1278,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
         tick.tooltipPlacement = this.viewOptions.vertical ? 'right' : 'top';
       }
       if (this.viewOptions.showTicksValues === true ||
-          (<any>this.viewOptions.showTicksValues instanceof Number && value % <number>this.viewOptions.showTicksValues === 0)) {
+          (typeof this.viewOptions.showTicksValues === 'number' && value % (this.viewOptions.showTicksValues as number) === 0)) {
         tick.value = this.getDisplayValue(value, 'tick-value');
         if (this.viewOptions.ticksValuesTooltip) {
           tick.valueTooltip = this.viewOptions.ticksValuesTooltip(value);
@@ -1455,7 +1650,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     if (isLabelOverlap) {
       const lowTr = this.getDisplayValue(this.viewLowValue, 'model');
       const highTr = this.getDisplayValue(this.viewHighValue, 'high');
-      let labelVal = '';
+      let labelVal;
       if (this.viewOptions.mergeRangeLabelsIfSame && lowTr === highTr) {
         labelVal = lowTr;
       } else {
@@ -1646,7 +1841,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   // Get event names for move and event end
-  private getEventNames(event) /* TODO: type? */ {
+  private getEventNames(event): {moveEvent: string, endEvent: string} {
     const eventNames = {
       moveEvent: '',
       endEvent: '',
@@ -1846,8 +2041,8 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
       newValue = ceilValue;
     } else {
       newValue = this.positionToValue(newPos);
-      if (fromTick && <any>this.viewOptions.showTicks instanceof Number) {
-        newValue = this.roundStep(newValue, <number>this.viewOptions.showTicks);
+      if (fromTick && typeof this.viewOptions.showTicks === 'number') {
+        newValue = this.roundStep(newValue, this.viewOptions.showTicks as number);
       } else {
         newValue = this.roundStep(newValue);
       }
