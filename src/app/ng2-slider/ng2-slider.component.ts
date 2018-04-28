@@ -21,6 +21,8 @@ import {
   TranslateFunction,
 } from './ng2-slider-options';
 
+import { JqLiteWrapper } from './jq-lite-wrapper';
+
 import { ThrottledFunc } from './throttled-func';
 
 class Tick {
@@ -32,82 +34,6 @@ class Tick {
   valueTooltip: string;
   valueTooltipPlacement: string;
   legend: string;
-}
-
-class JqLiteWrapper {
-  rzsp: number = 0;
-  rzsv: string;
-  rzsd: number;
-  alwaysHide: boolean = false;
-  private eventListeners: { [eventName: string]: [() => void] } = {};
-
-  constructor(private elemRef: ElementRef, private renderer: Renderer2) {
-  }
-
-  // TODO: slowly rewrite to angular
-  addClass(clazz: string): void {
-    this.renderer.addClass(this.elemRef.nativeElement, clazz);
-  }
-
-  removeClass(clazz: string): void {
-    this.renderer.removeClass(this.elemRef.nativeElement, clazz);
-  }
-
-  hasClass(clazz: string): boolean {
-    return this.elemRef.nativeElement.classList.contains(clazz);
-  }
-
-  html(html: string): void {
-    this.elemRef.nativeElement.innerHTML = html;
-  }
-
-  css(style: string, value: string): void {
-    if (value !== '') {
-      this.renderer.setStyle(this.elemRef.nativeElement, style, value);
-    } else {
-      this.renderer.removeStyle(this.elemRef.nativeElement, style);
-    }
-  }
-
-  attr(attr: string, value: string): void {
-    if (value !== null) {
-      this.renderer.setAttribute(this.elemRef.nativeElement, attr, value);
-    } else {
-      this.renderer.removeAttribute(this.elemRef.nativeElement, attr);
-    }
-  }
-
-  getBoundingClientRect(): ClientRect {
-    return this.elemRef.nativeElement.getBoundingClientRect();
-  }
-
-  focus(): void {
-    this.elemRef.nativeElement.focus();
-  }
-
-  on(eventName: string, callback: (event: any) => boolean|void): void {
-    if (!this.eventListeners.hasOwnProperty(eventName)) {
-      this.eventListeners[eventName] = <[() => void]>[];
-    }
-
-    const unsubscribe = this.renderer.listen(this.elemRef.nativeElement, eventName, callback);
-    this.eventListeners[eventName].push(unsubscribe);
-  }
-
-  off(eventName?: string): void {
-    if (eventName) {
-      if (this.eventListeners.hasOwnProperty(eventName)) {
-        for (const unsubscribe of this.eventListeners[eventName]) {
-          unsubscribe();
-        }
-        delete this.eventListeners[eventName];
-      }
-    } else {
-      for (const eName of Object.keys(this.eventListeners)) {
-        this.off(eName);
-      }
-    }
-  }
 }
 
 class Dragging {
@@ -124,92 +50,104 @@ enum HandleType {
   High
 }
 
+// TODO: slowly rewrite to angular
+class SliderElement extends JqLiteWrapper {
+  rzsp: number = 0;
+  rzsv: string;
+  rzsd: number;
+  alwaysHide: boolean = false;
+
+  constructor(elemRef: ElementRef, renderer: Renderer2) {
+    super(elemRef, renderer);
+  }
+}
+
 @Directive({selector: '[slider-elem]'})
-export class SliderDirective extends JqLiteWrapper {
+export class SliderDirective extends SliderElement {
   constructor(elemRef: ElementRef, renderer: Renderer2) {
     super(elemRef, renderer);
   }
 }
 
 @Directive({selector: '[right-out-sel-elem]'})
-export class RightOutSelDirective extends JqLiteWrapper {
+export class RightOutSelDirective extends SliderElement {
   constructor(elemRef: ElementRef, renderer: Renderer2) {
     super(elemRef, renderer);
   }
 }
 
 @Directive({selector: '[left-out-sel-elem]'})
-export class LeftOutSelDirective extends JqLiteWrapper {
+export class LeftOutSelDirective extends SliderElement {
   constructor(elemRef: ElementRef, renderer: Renderer2) {
     super(elemRef, renderer);
   }
 }
 
 @Directive({selector: '[full-bar-elem]'})
-export class FullBarDirective extends JqLiteWrapper {
+export class FullBarDirective extends SliderElement {
   constructor(elemRef: ElementRef, renderer: Renderer2) {
     super(elemRef, renderer);
   }
 }
 
 @Directive({selector: '[sel-bar-elem]'})
-export class SelBarDirective extends JqLiteWrapper {
+export class SelBarDirective extends SliderElement {
   constructor(elemRef: ElementRef, renderer: Renderer2) {
     super(elemRef, renderer);
   }
 }
 
 @Directive({selector: '[min-h-elem]'})
-export class MinHDirective extends JqLiteWrapper {
+export class MinHDirective extends SliderElement {
   constructor(elemRef: ElementRef, renderer: Renderer2) {
     super(elemRef, renderer);
   }
 }
 
 @Directive({selector: '[max-h-elem]'})
-export class MaxHDirective extends JqLiteWrapper {
+export class MaxHDirective extends SliderElement {
   constructor(elemRef: ElementRef, renderer: Renderer2) {
     super(elemRef, renderer);
   }
 }
 
 @Directive({selector: '[flr-lab-elem]'})
-export class FlrLabDirective extends JqLiteWrapper {
+export class FlrLabDirective extends SliderElement {
   constructor(elemRef: ElementRef, renderer: Renderer2) {
     super(elemRef, renderer);
   }
 }
 
 @Directive({selector: '[ceil-lab-elem]'})
-export class CeilLabDirective extends JqLiteWrapper {
+export class CeilLabDirective extends SliderElement {
   constructor(elemRef: ElementRef, renderer: Renderer2) {
     super(elemRef, renderer);
   }
 }
 
 @Directive({selector: '[min-lab-elem]'})
-export class MinLabDirective extends JqLiteWrapper {
+export class MinLabDirective extends SliderElement {
   constructor(elemRef: ElementRef, renderer: Renderer2) {
     super(elemRef, renderer);
   }
 }
 
 @Directive({selector: '[max-lab-elem]'})
-export class MaxLabDirective extends JqLiteWrapper {
+export class MaxLabDirective extends SliderElement {
   constructor(elemRef: ElementRef, renderer: Renderer2) {
     super(elemRef, renderer);
   }
 }
 
 @Directive({selector: '[cmb-lab-elem]'})
-export class CmbLabDirective extends JqLiteWrapper {
+export class CmbLabDirective extends SliderElement {
   constructor(elemRef: ElementRef, renderer: Renderer2) {
     super(elemRef, renderer);
   }
 }
 
 @Directive({selector: '[ticks-elem]'})
-export class TicksDirective extends JqLiteWrapper {
+export class TicksDirective extends SliderElement {
   constructor(elemRef: ElementRef, renderer: Renderer2) {
     super(elemRef, renderer);
   }
@@ -272,55 +210,55 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // Main slider element
   @ViewChild(SliderDirective)
-  private sliderElem: JqLiteWrapper;
+  private sliderElem: SliderElement;
 
   // Left highlight outside two handles
   @ViewChild(LeftOutSelDirective)
-  private leftOutSelBar: JqLiteWrapper;
+  private leftOutSelBar: SliderElement;
 
   // Right highlight outside two handles
   @ViewChild(RightOutSelDirective)
-  private rightOutSelBar: JqLiteWrapper;
+  private rightOutSelBar: SliderElement;
 
   // The whole slider bar
   @ViewChild(FullBarDirective)
-  private fullBarElem: JqLiteWrapper;
+  private fullBarElem: SliderElement;
 
   // Highlight between two handles
   @ViewChild(SelBarDirective)
-  private selBarElem: JqLiteWrapper;
+  private selBarElem: SliderElement;
 
   // Left slider handle
   @ViewChild(MinHDirective)
-  private minHElem: JqLiteWrapper;
+  private minHElem: SliderElement;
 
   // Right slider handle
   @ViewChild(MaxHDirective)
-  private maxHElem: JqLiteWrapper;
+  private maxHElem: SliderElement;
 
   // Floor label
   @ViewChild(FlrLabDirective)
-  private flrLabElem: JqLiteWrapper;
+  private flrLabElem: SliderElement;
 
   // Ceiling label
   @ViewChild(CeilLabDirective)
-  private ceilLabElem: JqLiteWrapper;
+  private ceilLabElem: SliderElement;
 
   // Label above the low value
   @ViewChild(MinLabDirective)
-  private minLabElem: JqLiteWrapper;
+  private minLabElem: SliderElement;
 
   // Label above the high value
   @ViewChild(MaxLabDirective)
-  private maxLabElem: JqLiteWrapper;
+  private maxLabElem: SliderElement;
 
   // Combined label
   @ViewChild(CmbLabDirective)
-  private cmbLabElem: JqLiteWrapper;
+  private cmbLabElem: SliderElement;
 
   // The ticks
   @ViewChild(TicksDirective)
-  private ticksElem: JqLiteWrapper;
+  private ticksElem: SliderElement;
 
   // Slider type, true means range slider
   get range(): boolean {
@@ -377,7 +315,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   private cmbLabelShown: boolean = false;
 
   // Internal variable to keep track of the focus element
-  private currentFocusElement: {pointer: JqLiteWrapper, ref: HandleType} = null;
+  private currentFocusElement: {pointer: SliderElement, ref: HandleType} = null;
 
   private barDimension: number;
 
@@ -726,7 +664,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  private alwaysHide(el: JqLiteWrapper, hide: boolean): void {
+  private alwaysHide(el: SliderElement, hide: boolean): void {
     el.alwaysHide = hide;
     if (hide) {
       this.hideEl(el);
@@ -782,7 +720,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   // Translate value to human readable format
-  private translateFn(value: number, label: JqLiteWrapper, which: TranslateLabel, useCustomTr?: boolean): void {
+  private translateFn(value: number, label: SliderElement, which: TranslateLabel, useCustomTr?: boolean): void {
     useCustomTr = useCustomTr === undefined ? true : useCustomTr;
 
     let valStr = '';
@@ -1176,7 +1114,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  private isLabelBelowFloorLab(label: JqLiteWrapper): boolean {
+  private isLabelBelowFloorLab(label: SliderElement): boolean {
     const isRTL = this.viewOptions.rightToLeft,
       pos = label.rzsp,
       dim = label.rzsd,
@@ -1187,7 +1125,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
       : pos <= floorPos + floorDim + 2;
   }
 
-  private isLabelAboveCeilLab(label: JqLiteWrapper): boolean {
+  private isLabelAboveCeilLab(label: SliderElement): boolean {
     const isRTL = this.viewOptions.rightToLeft,
       pos = label.rzsp,
       dim = label.rzsd,
@@ -1401,12 +1339,12 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   // Hide element
-  private hideEl(element: JqLiteWrapper): void {
+  private hideEl(element: SliderElement): void {
     element.css('visibility', 'hidden');
   }
 
   // Show element
-  private showEl(element: JqLiteWrapper): void {
+  private showEl(element: SliderElement): void {
     if (!!element.alwaysHide) {
       return;
     }
@@ -1415,13 +1353,13 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   // Set element left/top position depending on whether slider is horizontal or vertical
-  private setPosition(elem: JqLiteWrapper, pos: number): void {
+  private setPosition(elem: SliderElement, pos: number): void {
     elem.rzsp = pos;
     elem.css(this.positionProperty, Math.round(pos) + 'px');
   }
 
   // Get element width/height depending on whether slider is horizontal or vertical
-  private getDimension(elem: JqLiteWrapper): number {
+  private getDimension(elem: SliderElement): number {
     const val = elem.getBoundingClientRect();
     if (this.viewOptions.vertical) {
       elem.rzsd = (val.bottom - val.top) * this.viewOptions.scale;
@@ -1432,7 +1370,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   // Set element width/height depending on whether slider is horizontal or vertical
-  private setDimension(elem: JqLiteWrapper, dim: number): number {
+  private setDimension(elem: SliderElement, dim: number): number {
     elem.rzsd = dim;
     elem.css(this.dimensionProperty, Math.round(dim) + 'px');
     return dim;
@@ -1534,7 +1472,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   // Get the handle closest to an event
-  private getNearestHandle(event: MouseEvent|TouchEvent): JqLiteWrapper {
+  private getNearestHandle(event: MouseEvent|TouchEvent): SliderElement {
     if (!this.range) {
       return this.minHElem;
     }
@@ -1557,7 +1495,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   // Wrapper function to focus an angular element
-  private focusElement(el: JqLiteWrapper): void {
+  private focusElement(el: SliderElement): void {
     el.focus();
   }
 
@@ -1635,7 +1573,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   // onStart event handler
-  private onStart(pointer: JqLiteWrapper, ref: HandleType, event: MouseEvent|TouchEvent): void {
+  private onStart(pointer: SliderElement, ref: HandleType, event: MouseEvent|TouchEvent): void {
     let moveEvent: string = '';
     let endEvent: string = '';
 
@@ -1690,7 +1628,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   // onMove event handler
-  private onMove(pointer: JqLiteWrapper, event: MouseEvent|TouchEvent, fromTick?: boolean): void {
+  private onMove(pointer: SliderElement, event: MouseEvent|TouchEvent, fromTick?: boolean): void {
     let touchForThisSlider;
 
     if (event instanceof TouchEvent) {
@@ -1758,11 +1696,11 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  private onTickClick(pointer: JqLiteWrapper, event: MouseEvent|TouchEvent): void {
+  private onTickClick(pointer: SliderElement, event: MouseEvent|TouchEvent): void {
     this.onMove(pointer, event, true);
   }
 
-  private onPointerFocus(pointer: JqLiteWrapper, ref: HandleType): void {
+  private onPointerFocus(pointer: SliderElement, ref: HandleType): void {
     this.tracking = ref;
     pointer.on('blur', (event) => this.onPointerBlur(pointer));
     pointer.on('keydown', (event: KeyboardEvent) => this.onKeyboardEvent(event));
@@ -1780,7 +1718,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.firstKeyDown = true;
   }
 
-  private onPointerBlur(pointer: JqLiteWrapper): void {
+  private onPointerBlur(pointer: SliderElement): void {
     pointer.off('blur');
     pointer.off('keydown');
     pointer.off('keyup');
@@ -1881,7 +1819,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   // onDragStart event handler, handles dragging of the middle bar
-  private onDragStart(pointer: JqLiteWrapper, ref: HandleType, event: MouseEvent|TouchEvent): void {
+  private onDragStart(pointer: SliderElement, ref: HandleType, event: MouseEvent|TouchEvent): void {
     const position = this.getEventPosition(event);
 
     this.dragging = new Dragging();
@@ -1945,7 +1883,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     return this.roundStep(value);
   }
 
-  private onDragMove(pointer: JqLiteWrapper, event?: MouseEvent|TouchEvent): void {
+  private onDragMove(pointer: SliderElement, event?: MouseEvent|TouchEvent): void {
     const newPos = this.getEventPosition(event);
 
     let ceilLimit, flrLimit, flrHElem, ceilHElem;
