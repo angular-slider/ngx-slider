@@ -204,12 +204,6 @@ class Options {
   /** Set to true to only bind events on slider handles. */
   onlyBindHandles: boolean = false;
 
-
-  // Callbacks - TODO: add support?
-  onStart: any = null; // TODO: type?
-  onChange: any = null; // TODO: type?
-  onEnd: any = null; // TODO: type?
-
   /** Set to true to show graphs right to left.
     If vertical is true it will be from top to bottom and left / right arrow functions reversed. */
   rightToLeft: boolean = false;
@@ -1969,8 +1963,6 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     this.onEndUnsubscribe = this.renderer.listen('document', endEvent, ehEnd);
 
-    this.callOnStart();
-
     if (event instanceof TouchEvent && event.changedTouches) {
       // Store the touch identifier
       if (!this.touchId) {
@@ -2047,8 +2039,6 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.onEndUnsubscribe !== null) {
       this.onEndUnsubscribe();
     }
-
-    this.callOnEnd();
   }
 
   private onTickClick(pointer: JqLiteWrapper, event: MouseEvent|TouchEvent): void {
@@ -2071,7 +2061,6 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private onKeyUp(): void {
     this.firstKeyDown = true;
-    this.callOnEnd();
   }
 
   private onPointerBlur(pointer: JqLiteWrapper): void {
@@ -2146,7 +2135,6 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
 
     if (this.firstKeyDown) {
       this.firstKeyDown = false;
-      this.callOnStart();
     }
 
     const newValue = this.roundStep(this.sanitizeValue(action));
@@ -2455,11 +2443,4 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.internalChange = false;
   }
-
-  // TODO: support options callbacks?
-  private callOnStart() {}
-
-  private callOnChange() {}
-
-  private callOnEnd() {}
 }
