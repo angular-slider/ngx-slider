@@ -18,12 +18,8 @@ type TranslateFunction = (value: number, sliderId: any, label: TranslateLabel) =
 type GetLegendFunction = (value: number, siderId: any) => string;
 
 interface CustomStepDefinition {
-  value: number|Date;
+  value: number;
   legend?: string;
-}
-
-function isCustomStepDefinition(object: any): object is CustomStepDefinition {
-  return 'value' in object;
 }
 
 /** Slider options */
@@ -83,7 +79,7 @@ class Options {
      in the stepsArray.
      They can also be bound to the index of the selected item by setting the bindIndexForStepsArray
      option to true. */
-  stepsArray: [CustomStepDefinition|Date] = null;
+  stepsArray: [CustomStepDefinition] = null;
 
   /** Set to true to bind the index of the selected item to value model and valueHigh model. */
   bindIndexForStepsArray: boolean = false;
@@ -679,7 +675,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(private renderer: Renderer2) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
   }
 
   ngAfterViewInit(): void {
@@ -759,25 +755,13 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     return this.tracking === HandleType.Low ? this.viewLowValue : this.viewHighValue;
   }
 
-  private findStepIndex(modelValue: any /* TODO: type */): number {
+  private findStepIndex(modelValue: number): number {
     let index = 0;
     for (let i = 0; i < this.viewOptions.stepsArray.length; i++) {
       const step = this.viewOptions.stepsArray[i];
-      if (step === modelValue) {
+      if (step.value === modelValue) {
         index = i;
         break;
-      } else if (isCustomStepDefinition(step)) {
-        if ( (step.value instanceof Date &&
-              step.value.getTime() === modelValue.getTime()) ||
-              step.value === modelValue) {
-          index = i;
-          break;
-        }
-      } else if (step instanceof Date) {
-        if (step.getTime() === modelValue.getTime()) {
-          index = i;
-          break;
-        }
       }
     }
     return index;
@@ -807,12 +791,9 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  private getStepValue(sliderValue): any /* TODO: type? */ {
+  private getStepValue(sliderValue: number): number {
     const step = this.viewOptions.stepsArray[sliderValue];
-    if (isCustomStepDefinition(step)) {
-      return step.value;
-    }
-    return step;
+    return step.value;
   }
 
   private applyLowValue(): void {
@@ -864,7 +845,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   // Reflow the slider when the high handle changes (called with throttle)
-  private onHighHandleChange() {
+  private onHighHandleChange(): void {
     this.syncLowValue();
     this.syncHighValue();
     this.setMinAndMax();
@@ -929,20 +910,17 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.viewOptions.translate) {
       this.customTrFn = this.viewOptions.translate;
     } else {
-      this.customTrFn = (modelValue) => {
+      this.customTrFn = (modelValue: number) => {
         if (this.viewOptions.bindIndexForStepsArray) {
-          return this.getStepValue(modelValue);
+          return String(this.getStepValue(modelValue));
         }
-        return modelValue;
+        return String(modelValue);
       };
     }
 
     this.getLegend = (index) => {
       const step = this.viewOptions.stepsArray[index];
-      if (isCustomStepDefinition(step)) {
-        return step.legend;
-      }
-      return null;
+      return step.legend;
     };
   }
 
@@ -977,11 +955,15 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.alwaysHide(
       this.flrLabElem,
-      this.viewOptions.showTicksValues || this.viewOptions.hideLimitLabels
+      typeof this.viewOptions.showTicksValues === 'number' ||
+       (this.viewOptions.showTicksValues as boolean) ||
+        this.viewOptions.hideLimitLabels
     );
     this.alwaysHide(
       this.ceilLabElem,
-      this.viewOptions.showTicksValues || this.viewOptions.hideLimitLabels
+      typeof this.viewOptions.showTicksValues === 'number' ||
+       (this.viewOptions.showTicksValues as boolean) ||
+        this.viewOptions.hideLimitLabels
     );
 
     const hideLabelsForTicks = this.viewOptions.showTicksValues && !this.intermediateTicks;
@@ -1029,7 +1011,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  private alwaysHide(el: JqLiteWrapper, hide: any): void {
+  private alwaysHide(el: JqLiteWrapper, hide: boolean): void {
     el.alwaysHide = hide;
     if (hide) {
       this.hideEl(el);
@@ -1064,7 +1046,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // Initialize slider handles positions and labels
   // Run only once during initialization and every time view port changes size
-  private initHandles() {
+  private initHandles(): void {
     this.updateLowHandle(this.valueToPosition(this.viewLowValue));
 
     /*
@@ -1085,7 +1067,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   // Translate value to human readable format
-  private translateFn(value: number, label: JqLiteWrapper, which: TranslateLabel, useCustomTr?: boolean): any {
+  private translateFn(value: number, label: JqLiteWrapper, which: TranslateLabel, useCustomTr?: boolean): void {
     useCustomTr = useCustomTr === undefined ? true : useCustomTr;
 
     let valStr = '';
@@ -1297,11 +1279,11 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  private getTicksArray(): any[] /* TODO: type? */ {
+  private getTicksArray(): number[] {
     let step = this.step;
     const ticksArray = [];
     if (this.intermediateTicks) {
-      step = <number>this.viewOptions.showTicks;
+      step = this.viewOptions.showTicks as number;
     }
     for (let value = this.minValue; value <= this.maxValue; value += step) {
       ticksArray.push(value);
@@ -1309,7 +1291,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     return ticksArray;
   }
 
-  isTickSelected(value): boolean {
+  private isTickSelected(value: number): boolean {
     if (!this.range) {
       if (this.viewOptions.showSelectionBarFromValue !== null) {
         const center = this.viewOptions.showSelectionBarFromValue;
@@ -1413,7 +1395,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   // Update high slider handle position and label
-  private updateHighHandle(newPos: number) {
+  private updateHighHandle(newPos: number): void {
     this.setPosition(this.maxHElem, newPos);
     this.translateFn(this.viewHighValue, this.maxLabElem, 'high');
     this.setPosition(
@@ -1607,7 +1589,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   // Wrapper around the getSelectionBarColor of the user to pass to correct parameters
-  private getSelectionBarColor() {
+  private getSelectionBarColor(): string {
     if (this.range) {
       return this.viewOptions.getSelectionBarColor(
         this.value,
@@ -1618,7 +1600,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   // Wrapper around the getPointerColor of the user to pass to  correct parameters
-  private getPointerColor(pointerType) {
+  private getPointerColor(pointerType: 'min'|'max'): string {
     if (pointerType === 'max') {
       return this.viewOptions.getPointerColor(
         this.highValue,
@@ -1632,7 +1614,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   // Wrapper around the getTickColor of the user to pass to correct parameters
-  private getTickColor(value) {
+  private getTickColor(value): string {
     return this.viewOptions.getTickColor(value);
   }
 
@@ -1691,7 +1673,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   // Return the translated value if a translate function is provided else the original value
-  private getDisplayValue(value, which) /* TODO: type? */ {
+  private getDisplayValue(value: number, which: TranslateLabel): string {
     if (this.viewOptions.stepsArray && !this.viewOptions.bindIndexForStepsArray) {
       value = this.getStepValue(value);
     }
@@ -1767,12 +1749,12 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     return percent * this.maxPos;
   }
 
-  private linearValueToPosition(val, minVal, maxVal): number {
+  private linearValueToPosition(val: number, minVal: number, maxVal: number): number {
     const range = maxVal - minVal;
     return (val - minVal) / range;
   }
 
-  private logValueToPosition(val, minVal, maxVal): number {
+  private logValueToPosition(val: number, minVal: number, maxVal: number): number {
     val = Math.log(val);
     minVal = Math.log(minVal);
     maxVal = Math.log(maxVal);
@@ -1795,11 +1777,11 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     return fn(percent, this.minValue, this.maxValue) || 0;
   }
 
-  private linearPositionToValue(percent, minVal, maxVal): number {
+  private linearPositionToValue(percent: number, minVal: number, maxVal: number): number {
     return percent * (maxVal - minVal) + minVal;
   }
 
-  private logPositionToValue(percent, minVal, maxVal): number {
+  private logPositionToValue(percent: number, minVal: number, maxVal: number): number {
     minVal = Math.log(minVal);
     maxVal = Math.log(maxVal);
     const value = percent * (maxVal - minVal) + minVal;
@@ -1807,29 +1789,29 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   // Get the X-coordinate or Y-coordinate of an event
-  private getEventXY(event, targetTouchId): number {
-    const clientXY = this.viewOptions.vertical ? 'clientY' : 'clientX';
-    if (event[clientXY] !== undefined) {
-      return event[clientXY];
+  private getEventXY(event: MouseEvent|TouchEvent, targetTouchId: number): number {
+    if (event instanceof MouseEvent) {
+      return this.viewOptions.vertical ? event.clientY : event.clientX;
     }
 
+    let touchIndex = 0;
     const touches = event.touches;
-
     if (targetTouchId !== undefined) {
       for (let i = 0; i < touches.length; i++) {
         if (touches[i].identifier === targetTouchId) {
-          return touches[i][clientXY];
+          touchIndex = i;
+          break;
         }
       }
     }
 
-    // If no target touch or the target touch was not found in the event
+    // Return the target touch or if the target touch was not found in the event
     // returns the coordinates of the first touch
-    return touches[0][clientXY];
+    return this.viewOptions.vertical ? touches[touchIndex].clientY : touches[touchIndex].clientX;
   }
 
   // Compute the event position depending on whether the slider is horizontal or vertical
-  private getEventPosition(event, targetTouchId?) {
+  private getEventPosition(event: MouseEvent|TouchEvent, targetTouchId?: number): number {
     const sliderPos = this.sliderElem.rzsp;
     let eventPos = 0;
     if (this.viewOptions.vertical) {
@@ -1840,26 +1822,8 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     return eventPos * this.viewOptions.scale - this.handleHalfDim;
   }
 
-  // Get event names for move and event end
-  private getEventNames(event): {moveEvent: string, endEvent: string} {
-    const eventNames = {
-      moveEvent: '',
-      endEvent: '',
-    };
-
-    if (event.touches) {
-      eventNames.moveEvent = 'touchmove';
-      eventNames.endEvent = 'touchend';
-    } else {
-      eventNames.moveEvent = 'mousemove';
-      eventNames.endEvent = 'mouseup';
-    }
-
-    return eventNames;
-  }
-
   // Get the handle closest to an event
-  private getNearestHandle(event): JqLiteWrapper {
+  private getNearestHandle(event: MouseEvent|TouchEvent): JqLiteWrapper {
     if (!this.range) {
       return this.minHElem;
     }
@@ -1960,8 +1924,17 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   // onStart event handler
-  private onStart(pointer: JqLiteWrapper, ref: HandleType, event: any): void {
-    const eventNames = this.getEventNames(event);
+  private onStart(pointer: JqLiteWrapper, ref: HandleType, event: MouseEvent|TouchEvent): void {
+    let moveEvent: string = '';
+    let endEvent: string = '';
+
+    if (event instanceof TouchEvent) {
+      moveEvent = 'touchmove';
+      endEvent = 'touchend';
+    } else {
+      moveEvent = 'mousemove';
+      endEvent = 'mouseup';
+    }
 
     event.stopPropagation();
     event.preventDefault();
@@ -1983,46 +1956,46 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
       this.focusElement(pointer);
     }
 
-    const ehMove = (e: any) => this.dragging.active ? this.onDragMove(pointer, e) : this.onMove(pointer, e);
+    const ehMove = (e: MouseEvent|TouchEvent) => this.dragging.active ? this.onDragMove(pointer, e) : this.onMove(pointer, e);
 
     if (this.onMoveUnsubscribe !== null) {
       this.onMoveUnsubscribe();
     }
-    this.onMoveUnsubscribe = this.renderer.listen('document', eventNames.moveEvent, ehMove);
+    this.onMoveUnsubscribe = this.renderer.listen('document', moveEvent, ehMove);
 
-    const ehEnd = (e: any) => this.onEnd(e);
+    const ehEnd = (e: MouseEvent|TouchEvent) => this.onEnd(e);
     if (this.onEndUnsubscribe !== null) {
       this.onEndUnsubscribe();
     }
-    this.onEndUnsubscribe = this.renderer.listen('document', eventNames.endEvent, ehEnd);
+    this.onEndUnsubscribe = this.renderer.listen('document', endEvent, ehEnd);
 
     this.callOnStart();
 
-    const changedTouches = event.changedTouches;
-    if (changedTouches) {
+    if (event instanceof TouchEvent && event.changedTouches) {
       // Store the touch identifier
       if (!this.touchId) {
         this.isDragging = true;
-        this.touchId = changedTouches[0].identifier;
+        this.touchId = event.changedTouches[0].identifier;
       }
     }
   }
 
   // onMove event handler
-  private onMove(pointer: JqLiteWrapper, event: any, fromTick?: boolean): void {
-    const changedTouches = event.changedTouches;
+  private onMove(pointer: JqLiteWrapper, event: MouseEvent|TouchEvent, fromTick?: boolean): void {
     let touchForThisSlider;
-    if (changedTouches) {
+
+    if (event instanceof TouchEvent) {
+      const changedTouches = event.changedTouches;
       for (let i = 0; i < changedTouches.length; i++) {
         if (changedTouches[i].identifier === this.touchId) {
           touchForThisSlider = changedTouches[i];
           break;
         }
       }
-    }
 
-    if (changedTouches && !touchForThisSlider) {
-      return;
+      if (!touchForThisSlider) {
+        return;
+      }
     }
 
     const newPos = this.getEventPosition(
@@ -2050,11 +2023,14 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.positionTrackingHandle(newValue);
   }
 
-  private onEnd(event: any): void {
-    const changedTouches = event.changedTouches;
-    if (changedTouches && changedTouches[0].identifier !== this.touchId) {
-      return;
+  private onEnd(event: MouseEvent|TouchEvent): void {
+    if (event instanceof TouchEvent) {
+      const changedTouches = event.changedTouches;
+      if (changedTouches[0].identifier !== this.touchId) {
+        return;
+      }
     }
+
     this.isDragging = false;
     this.touchId = null;
 
@@ -2064,8 +2040,6 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
       this.tracking = null;
     }
     this.dragging.active = false;
-
-    const eventNames = this.getEventNames(event);
 
     if (this.onMoveUnsubscribe !== null) {
       this.onMoveUnsubscribe();
@@ -2077,15 +2051,15 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.callOnEnd();
   }
 
-  private onTickClick(pointer: JqLiteWrapper, event: any): void {
+  private onTickClick(pointer: JqLiteWrapper, event: MouseEvent|TouchEvent): void {
     this.onMove(pointer, event, true);
   }
 
   private onPointerFocus(pointer: JqLiteWrapper, ref: HandleType): void {
     this.tracking = ref;
     pointer.on('blur', (event) => this.onPointerBlur(pointer));
-    pointer.on('keydown', (event) => this.onKeyboardEvent(event));
-    pointer.on('keyup', (event) => this.onKeyUp());
+    pointer.on('keydown', (event: KeyboardEvent) => this.onKeyboardEvent(event));
+    pointer.on('keyup', (event: KeyboardEvent) => this.onKeyUp());
     this.firstKeyDown = true;
     pointer.addClass('rz-active');
 
@@ -2148,7 +2122,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     return actions;
   }
 
-  private onKeyboardEvent(event: any): void {
+  private onKeyboardEvent(event: KeyboardEvent): void {
     const currentValue = this.getCurrentTrackingValue();
     const keyCode = event.keyCode || event.which;
     const keys = {
@@ -2202,7 +2176,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   // onDragStart event handler, handles dragging of the middle bar
-  private onDragStart(pointer: JqLiteWrapper, ref: HandleType, event: any): void {
+  private onDragStart(pointer: JqLiteWrapper, ref: HandleType, event: MouseEvent|TouchEvent): void {
     const position = this.getEventPosition(event);
 
     this.dragging = new Dragging();
@@ -2266,7 +2240,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     return this.roundStep(value);
   }
 
-  private onDragMove(pointer, event?) {
+  private onDragMove(pointer: JqLiteWrapper, event?: MouseEvent|TouchEvent): void {
     const newPos = this.getEventPosition(event);
 
     let ceilLimit, flrLimit, flrHElem, ceilHElem;
@@ -2307,7 +2281,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   // Set the new value and position for the entire bar
-  private positionTrackingBar(newMinValue, newMaxValue) {
+  private positionTrackingBar(newMinValue: number, newMaxValue: number): void {
     if (this.viewOptions.minLimit != null &&
         newMinValue < this.viewOptions.minLimit) {
       newMinValue = this.viewOptions.minLimit;
@@ -2331,7 +2305,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   // Set the new value and position to the current tracking handle
-  private positionTrackingHandle(newValue): void {
+  private positionTrackingHandle(newValue: number): void {
     let valueChanged = false;
     newValue = this.applyMinMaxLimit(newValue);
     if (this.range) {
@@ -2473,7 +2447,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     return newValue;
   }
 
-  private applyModel() {
+  private applyModel(): void {
     this.internalChange = true;
 
     this.valueChange.emit(this.value);
