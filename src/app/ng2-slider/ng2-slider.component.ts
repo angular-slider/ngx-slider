@@ -127,15 +127,18 @@ class Options {
     throttle function. */
   interval: number = 350;
 
-  /** Set to true to display a tick for each step of the slider.
-    Set a number to display ticks at intermediate positions.
-    This number corresponds to the step between each tick. */
-  showTicks: boolean|number = false;
+  /** Set to true to display a tick for each step of the slider. */
+  showTicks: boolean = false;
 
-  /** Set to true to display a tick and the step value for each step of the slider.
-    Set a number to display ticks and the step value at intermediate positions.
-    This number corresponds to the step between each tick. */
-  showTicksValues: boolean|number = false;
+  /** Set to true to display a tick and the step value for each step of the slider.. */
+  showTicksValues: boolean = false;
+
+  /* The step between each tick to display. If not set, the step value is used.
+    Only applies when Not used when ticksArray is specified. */
+  tickStep: number = null;
+
+  /* The step between displaying each tick step value. */
+  tickValueStep: number = 1;
 
   /** Use to display ticks at specific positions.
     The array contains the index of the ticks that should be displayed.
@@ -539,7 +542,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   private barStyle: any = {};
   private minPointerStyle: any = {};
   private maxPointerStyle: any = {};
-  private showTicks: boolean|number = false;
+  private showTicks: boolean = false;
   private ticks: Tick[] = [];
 
   /* Slider DOM elements */
@@ -634,8 +637,8 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   // The delta between min and max value
   private valueRange: number = 0;
 
-  /* If showTicks/showTicksValues options are number.
-   * In this case, ticks values should be displayed below the slider. */
+  /* If tickStep is set or ticksArray is specified.
+    In this case, ticks values should be displayed below the slider. */
   private intermediateTicks: boolean = false;
 
   // Set to true if init method already executed
@@ -868,11 +871,10 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.viewOptions.showTicks = this.viewOptions.showTicks ||
       this.viewOptions.showTicksValues ||
       !!this.viewOptions.ticksArray;
-    this.showTicks = !!this.viewOptions.showTicks;
-
-    if (typeof this.viewOptions.showTicks === 'number' || this.viewOptions.ticksArray) {
+    if (this.viewOptions.showTicks && (this.viewOptions.tickStep !== null || this.viewOptions.ticksArray)) {
       this.intermediateTicks = true;
     }
+    this.showTicks = this.viewOptions.showTicks;
 
     this.viewOptions.showSelectionBar = this.viewOptions.showSelectionBar ||
       this.viewOptions.showSelectionBarEnd ||
@@ -949,15 +951,11 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.alwaysHide(
       this.flrLabElem,
-      typeof this.viewOptions.showTicksValues === 'number' ||
-       (this.viewOptions.showTicksValues as boolean) ||
-        this.viewOptions.hideLimitLabels
+      this.viewOptions.showTicksValues || this.viewOptions.hideLimitLabels
     );
     this.alwaysHide(
       this.ceilLabElem,
-      typeof this.viewOptions.showTicksValues === 'number' ||
-       (this.viewOptions.showTicksValues as boolean) ||
-        this.viewOptions.hideLimitLabels
+      this.viewOptions.showTicksValues || this.viewOptions.hideLimitLabels
     );
 
     const hideLabelsForTicks = this.viewOptions.showTicksValues && !this.intermediateTicks;
@@ -1000,7 +998,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
       this.selBarElem.removeClass('rz-draggable');
     }
 
-    if (this.intermediateTicks && this.viewOptions.showTicksValues) {
+    if (this.intermediateTicks && this.options.showTicksValues) {
       this.ticksElem.addClass('rz-ticks-values-under');
     }
   }
@@ -1253,8 +1251,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
         tick.tooltip = this.viewOptions.ticksTooltip(value);
         tick.tooltipPlacement = this.viewOptions.vertical ? 'right' : 'top';
       }
-      if (this.viewOptions.showTicksValues === true ||
-          (typeof this.viewOptions.showTicksValues === 'number' && value % (this.viewOptions.showTicksValues as number) === 0)) {
+      if (this.viewOptions.showTicksValues && (value % this.viewOptions.tickValueStep === 0)) {
         tick.value = this.getDisplayValue(value, 'tick-value');
         if (this.viewOptions.ticksValuesTooltip) {
           tick.valueTooltip = this.viewOptions.ticksValuesTooltip(value);
@@ -1274,11 +1271,8 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private getTicksArray(): number[] {
-    let step = this.step;
-    const ticksArray = [];
-    if (this.intermediateTicks) {
-      step = this.viewOptions.showTicks as number;
-    }
+    const step: number = (this.viewOptions.tickStep !== null) ? this.viewOptions.tickStep : this.step;
+    const ticksArray: number[] = [];
     for (let value = this.minValue; value <= this.maxValue; value += step) {
       ticksArray.push(value);
     }
@@ -2006,9 +2000,9 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
       newValue = ceilValue;
     } else {
       newValue = this.positionToValue(newPos);
-      if (fromTick && typeof this.viewOptions.showTicks === 'number') {
-        newValue = this.roundStep(newValue, this.viewOptions.showTicks as number);
-      } else {
+      if (fromTick && this.viewOptions.tickStep !== null) {
+        newValue = this.roundStep(newValue, this.viewOptions.tickStep);
+      } else { // TODO: what if tickArray option is specified?
         newValue = this.roundStep(newValue);
       }
     }
