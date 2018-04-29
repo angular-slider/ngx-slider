@@ -1484,26 +1484,16 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // Bind mouse and touch events to slider handles
   private bindEvents(): void {
-    let barTracking, barStart, barMove;
-
-    if (this.viewOptions.draggableRange) {
-      barTracking = 'rzSliderDrag'; // TODO: find out how this is supposed to work...
-      barStart = this.onDragStart;
-      barMove = this.onDragMove;
-    } else {
-      barTracking = HandleType.Low;
-      barStart = this.onStart;
-      barMove = this.onMove;
-    }
+    const draggableRange = this.viewOptions.draggableRange;
 
     if (!this.viewOptions.onlyBindHandles) {
-      this.selBarElem.on('mousedown', (event) => barStart(null, barTracking, event));
-      this.selBarElem.on('mousedown', (event) => barMove(this.selBarElem, event));
+      this.selBarElem.on('mousedown', (event) => this.onBarStart(draggableRange, null, event));
+      this.selBarElem.on('mousedown', (event) => this.onBarMove(draggableRange, this.selBarElem, event));
     }
 
     if (this.viewOptions.draggableRangeOnly) {
-      this.minHElem.on('mousedown', (event) => barStart(null, barTracking, event));
-      this.maxHElem.on('mousedown', (event) => barStart(null, barTracking, event));
+      this.minHElem.on('mousedown', (event) => this.onBarStart(draggableRange, null, event));
+      this.maxHElem.on('mousedown', (event) => this.onBarStart(draggableRange, null, event));
     } else {
       this.minHElem.on('mousedown', (event) => this.onStart(this.minHElem, HandleType.Low, event));
 
@@ -1519,12 +1509,12 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     if (!this.viewOptions.onlyBindHandles) {
-      this.selBarElem.on('touchstart', (event) => barStart(null, barTracking, event));
-      this.selBarElem.on('touchstart', (event) => barMove(this.selBarElem, event));
+      this.selBarElem.on('touchstart', (event) => this.onBarStart(draggableRange, null, event));
+      this.selBarElem.on('touchstart', (event) => this.onBarMove(draggableRange, this.selBarElem, event));
     }
     if (this.viewOptions.draggableRangeOnly) {
-      this.minHElem.on('touchstart', (event) => barStart(null, barTracking, event));
-      this.maxHElem.on('touchstart', (event) => barStart(null, barTracking, event));
+      this.minHElem.on('touchstart', (event) => this.onBarStart(draggableRange, null, event));
+      this.maxHElem.on('touchstart', (event) => this.onBarStart(draggableRange, null, event));
     } else {
       this.minHElem.on('touchstart', (event) => this.onStart(this.minHElem, HandleType.Low, event));
       if (this.range) {
@@ -1554,6 +1544,23 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.selBarElem.off();
     this.ticksElem.off();
   }
+
+  private onBarStart(draggableRange: boolean, pointer: SliderElement, event: MouseEvent|TouchEvent): void {
+    if (draggableRange) {
+      this.onDragStart(pointer, HandleType.High, event); // original: ref='rzSliderDrag', TODO: find out how this is supposed to work...
+    } else {
+      this.onStart(pointer, HandleType.Low, event);
+    }
+  }
+
+  private onBarMove(draggableRange: boolean, pointer: SliderElement, event: MouseEvent|TouchEvent): void {
+    if (draggableRange) {
+      this.onDragMove(pointer, event);
+    } else {
+      this.onMove(pointer, event);
+    }
+  }
+
 
   // onStart event handler
   private onStart(pointer: SliderElement, ref: HandleType, event: MouseEvent|TouchEvent): void {
