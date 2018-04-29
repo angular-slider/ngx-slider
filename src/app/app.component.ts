@@ -1,4 +1,16 @@
 import { Component } from '@angular/core';
+import { Ng2SliderOptions } from './ng2-slider/ng2-slider.module';
+
+interface SimpleSliderModel {
+  value: number;
+  options: Ng2SliderOptions;
+}
+
+interface RangeSliderModel {
+  minValue: number;
+  maxValue: number;
+  options: Ng2SliderOptions;
+}
 
 @Component({
   selector: 'app-root',
@@ -6,10 +18,21 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'app';
-  sliderValue: number = 200;
-  sliderOptions = {
-    floor: 0,
-    ceil: 500
+  simpleSlider: SimpleSliderModel = {
+    value: 200,
+    options: {
+      floor: 0,
+      ceil: 500
+    }
+  };
+
+  rangeSlider: RangeSliderModel = {
+    minValue: 10,
+    maxValue: 90,
+    options: {
+      floor: 0,
+      ceil: 100,
+       step: 10
+    }
   };
 }
