@@ -37,3 +37,52 @@ Min value: <input type="text" [(ngModel)]="rangeSlider.maxValue">
 
 <h2>Range slider with minimum range of 10, maximum of 30 and pushRange option</h2>
 <ng2-slider [(value)]="minMaxAndPushRangeSlider.minValue" [(highValue)]="minMaxAndPushRangeSlider.maxValue" [options]="minMaxAndPushRangeSlider.options"></ng2-slider>
+
+
+<h2>Slider with visible selection bar</h2>
+<ng2-slider [(value)]="selectionBarSlider.value" [options]="selectionBarSlider.options"></ng2-slider>
+
+
+<h2>Slider with visible selection bar at the end</h2>
+<ng2-slider [(value)]="selectionBarAtEndSlider.value" [options]="selectionBarAtEndSlider.options"></ng2-slider>
+
+
+<h2>Slider with selection bar gradient</h2>
+<ng2-slider [(value)]="selectionBarWithGradientSlider.minValue" [(highValue)]="selectionBarWithGradientSlider.maxValue" [options]="selectionBarWithGradientSlider.options"></ng2-slider>
+
+
+<h2>Slider with dynamic selection bar color</h2>
+<ng2-slider [(value)]="selectionBarWithDynamicColorSlider.value" [options]="selectionBarWithDynamicColorSlider.options"></ng2-slider>
+
+
+<h2>Slider with dynamic pointer color</h2>
+<ng2-slider [(value)]="dynamicPointerColorSlider.value" [options]="dynamicPointerColorSlider.options"></ng2-slider>
+
+
+<h2>Slider with custom floor/ceil/step</h2>
+<ng2-slider [(value)]="floorCeilStepSlider.value" [options]="floorCeilStepSlider.options"></ng2-slider>
+
+
+<h2>Right to left slider</h2>
+<ng2-slider [(value)]="rtlSlider.value" [options]="rtlSlider.options"></ng2-slider>
+
+
+<h2>Slider with floating values</h2>
+<ng2-slider [(value)]="floatSlider.value" [options]="floatSlider.options"></ng2-slider>
+
+
+<h2>Slider with custom display function</h2>
+<ng2-slider [(value)]="customDisplayFunctionSlider.minValue" [(highValue)]="customDisplayFunctionSlider.maxValue" [options]="customDisplayFunctionSlider.options"></ng2-slider>
+
+
+<h2>Slider with custom display function using HTML formatting</h2>
+<ng2-slider [(value)]="customDisplayFunctionHtmlSlider.minValue" [(highValue)]="customDisplayFunctionHtmlSlider.maxValue" [options]="customDisplayFunctionHtmlSlider.options"></ng2-slider>
+
+
+<h2>Slider with alphabet</h2>
+Current letter: {{this.indexToLetter(alphabetSlider.value)}}
+<ng2-slider [(value)]="alphabetSlider.value" [options]="alphabetSlider.options"></ng2-slider>
+
+
+<h2>Slider with dates</h2>
+<ng2-slider [(value)]="dateSlider.value" [options]="dateSlider.options"></ng2-slider>
