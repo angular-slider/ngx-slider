@@ -13,7 +13,7 @@ export class ThrottledFunc {
     return Date.now();
   }
 
-  later() {
+  callLater() {
     this.previous = this.getTime();
     this.timeout = null;
     this.func();
@@ -28,8 +28,8 @@ export class ThrottledFunc {
       this.timeout = null;
       this.previous = now;
       this.func();
-    } else if (!this.timeout) {
-      this.timeout = setTimeout(() => this.later, remaining);
+    } else if (this.timeout === null) {
+      this.timeout = setTimeout(() => this.callLater(), remaining);
     }
   }
 }
