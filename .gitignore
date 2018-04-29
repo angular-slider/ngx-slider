@@ -6,9 +6,6 @@
 /tmp
 /out-tsc
 
-# temp directory for Chrome debugging
-/out-debug
-
 # dependencies
 /node_modules
 
@@ -24,9 +21,12 @@
 # IDE - VSCode
 .vscode/*
 !.vscode/settings.json
-!.vscode/tasks.json
+#!.vscode/tasks.json
 #!.vscode/launch.json
 !.vscode/extensions.json
+
+# NVM
+.nvmrc
 
 # misc
 /.sass-cache
