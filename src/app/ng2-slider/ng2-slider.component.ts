@@ -21,7 +21,7 @@ import {
   TranslateFunction,
   ValueToPositionFunction,
   PositionToValueFunction,
-} from './ng2-slider-options';
+} from './options';
 
 import { ValuePositionConverter } from './value-position-converter';
 

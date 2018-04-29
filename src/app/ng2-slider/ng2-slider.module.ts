@@ -44,3 +44,5 @@ import {
   ]
 })
 export class Ng2SliderModule { }
+
+export { Options as Ng2SliderOptions } from './options';
