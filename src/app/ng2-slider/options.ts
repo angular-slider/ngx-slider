@@ -66,7 +66,7 @@ export class Options {
      in the stepsArray.
      They can also be bound to the index of the selected item by setting the bindIndexForStepsArray
      option to true. */
-  stepsArray?: [CustomStepDefinition] = null;
+  stepsArray?: CustomStepDefinition[] = null;
 
   /** Set to true to bind the index of the selected item to value model and valueHigh model. */
   bindIndexForStepsArray?: boolean = false;
@@ -130,7 +130,7 @@ export class Options {
   /** Use to display ticks at specific positions.
     The array contains the index of the ticks that should be displayed.
     For example, [0, 1, 5] will display a tick for the first, second and sixth values. */
-  ticksArray?: [number] = null;
+  ticksArray?: number[] = null;
 
   /** Used to display a tooltip when a tick is hovered.
     Set to a function that returns the tooltip content for a given value. */
