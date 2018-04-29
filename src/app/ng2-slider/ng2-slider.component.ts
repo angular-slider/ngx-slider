@@ -166,9 +166,10 @@ export class TicksDirective extends SliderElement {
 export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   // Model for low value slider. If only value is provided single slider will be rendered.
   private _value: number;
-  @Input() set value(value: number) {
-    this.onChangeValue(this._value, value);
-    this._value = value;
+  @Input() set value(newValue: number) {
+    const oldValue = this._value;
+    this._value = newValue;
+    this.onChangeValue(oldValue, newValue);
   }
   get value(): number {
      return this._value;
@@ -177,9 +178,10 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // Model for high value slider. Providing both value and highValue will render range slider.
   private _highValue: number;
-  @Input() set highValue(highValue: number) {
-    this.onChangeHighValue(this._highValue, highValue);
-    this._highValue = highValue;
+  @Input() set highValue(newHighValue: number) {
+    const oldHighValue = this._highValue;
+    this._highValue = newHighValue;
+    this.onChangeHighValue(oldHighValue, newHighValue);
   }
   get highValue(): number {
      return this._highValue;
@@ -189,9 +191,10 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   // An object with all the other options of the slider.
   // Each option can be updated at runtime and the slider will automatically be re-rendered.
   private _options: Options = new Options();
-  @Input() set options(options: Options) {
-    this.onChangeOptions(this._options, options);
-    this._options = options;
+  @Input() set options(newOptions: Options) {
+    const oldOptions = this._options;
+    this._options = newOptions;
+    this.onChangeOptions(oldOptions, newOptions);
   }
   get options(): Options {
      return this._options;
