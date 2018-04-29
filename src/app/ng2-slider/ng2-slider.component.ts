@@ -10,7 +10,8 @@ import {
   ElementRef,
   Renderer2,
   EventEmitter,
-  Output
+  Output,
+  ViewEncapsulation
 } from '@angular/core';
 
 import {
@@ -161,7 +162,8 @@ export class TicksDirective extends SliderElement {
 @Component({
   selector: 'ng2-slider',
   templateUrl: './ng2-slider.component.html',
-  styleUrls: ['./ng2-slider.component.scss']
+  styleUrls: ['./ng2-slider.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   // Model for low value slider. If only value is provided single slider will be rendered.
