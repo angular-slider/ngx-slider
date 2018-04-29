@@ -346,6 +346,15 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
+    this.thrOnLowHandleChange = new ThrottledFunc(() => { this.onLowHandleChange(); }, this.viewOptions.interval);
+    this.thrOnHighHandleChange = new ThrottledFunc(() => { this.onHighHandleChange(); }, this.viewOptions.interval);
+
+    /* We have to run the rest of the actual init function later, in separate Angular tick cycle,
+     because this one has been checked and it will lead to ExpressionChangedAfterItHasBeenCheckedError */
+    setTimeout(() => this.init(), 0);
+  }
+
+  init(): void {
     this.applyOptions();
     this.syncLowValue();
 
@@ -362,9 +371,6 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.updateFloorLab();
     this.initHandles();
     this.manageEventsBindings();
-
-    this.thrOnLowHandleChange = new ThrottledFunc(() => { this.onLowHandleChange(); }, this.viewOptions.interval);
-    this.thrOnHighHandleChange = new ThrottledFunc(() => { this.onHighHandleChange(); }, this.viewOptions.interval);
 
     this.initHasRun = true;
   }
@@ -877,7 +883,6 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
       this.updateFloorLab();
       this.updateCeilLab();
       this.initHandles();
-      this.updateTicksScale(); // TODO: correct???
     }
   }
 
