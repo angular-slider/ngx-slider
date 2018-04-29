@@ -8,7 +8,6 @@ Basic slider functionality is working as of v0.1.0.
 
 ## TODO
  * test to see what is still broken
- * finish adding TypeScript type signatures
  * create an npm package
  * unit tests
  * documentation
