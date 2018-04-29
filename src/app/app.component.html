@@ -21,3 +21,19 @@ Min value: <input type="text" [(ngModel)]="rangeSlider.maxValue">
 <div class="custom-slider">
   <ng2-slider [(value)]="styledSlider.minValue" [(highValue)]="styledSlider.maxValue" [options]="styledSlider.options"></ng2-slider>
 </div>
+
+
+<h2>Slider with min limit set to 10 and max limit set to 90</h2>
+<ng2-slider [(value)]="minMaxLimitSlider.value" [options]="minMaxLimitSlider.options"></ng2-slider>
+
+
+<h2>Range slider with a minimal range set to 10 and maximum of 50</h2>
+<ng2-slider [(value)]="minMaxRangeSlider.minValue" [(highValue)]="minMaxRangeSlider.maxValue" [options]="minMaxRangeSlider.options"></ng2-slider>
+
+
+<h2>Range slider with noSwitching=true</h2>
+<ng2-slider [(value)]="noSwitchingRangeSlider.minValue" [(highValue)]="noSwitchingRangeSlider.maxValue" [options]="noSwitchingRangeSlider.options"></ng2-slider>
+
+
+<h2>Range slider with minimum range of 10, maximum of 30 and pushRange option</h2>
+<ng2-slider [(value)]="minMaxAndPushRangeSlider.minValue" [(highValue)]="minMaxAndPushRangeSlider.maxValue" [options]="minMaxAndPushRangeSlider.options"></ng2-slider>
