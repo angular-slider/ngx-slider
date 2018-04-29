@@ -15,7 +15,7 @@ interface RangeSliderModel {
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
   simpleSlider: SimpleSliderModel = {
@@ -33,6 +33,17 @@ export class AppComponent {
       floor: 0,
       ceil: 100,
        step: 10
+    }
+  };
+
+  styledSlider: RangeSliderModel = {
+    minValue: 10,
+    maxValue: 90,
+    options: {
+      floor: 0,
+      ceil: 100,
+      step: 10,
+      showTicks: true
     }
   };
 }
