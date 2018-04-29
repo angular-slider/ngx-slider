@@ -2024,7 +2024,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private applyMinMaxRange(newValue: number): number {
-    const oppositeValue = this.tracking === HandleType.High ? this.viewHighValue : this.viewLowValue;
+    const oppositeValue = this.tracking === HandleType.Low ? this.viewHighValue : this.viewLowValue;
     const difference = Math.abs(newValue - oppositeValue);
     if (this.viewOptions.minRange != null) {
       if (difference < this.viewOptions.minRange) {
