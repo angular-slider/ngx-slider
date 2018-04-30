@@ -899,7 +899,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
       ticksArray.reverse();
     }
 
-    this.ticks = ticksArray.map((value) => {
+    this.ticks = ticksArray.map((value: number): Tick => {
       let position: number = this.valueToPosition(value);
 
       if (this.viewOptions.vertical) {
@@ -1277,7 +1277,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   // Wrapper around the getTickColor of the user to pass to correct parameters
-  private getTickColor(value): string {
+  private getTickColor(value: number): string {
     return this.viewOptions.getTickColor(value);
   }
 

@@ -153,7 +153,7 @@ export class Options {
   getSelectionBarColor?: (minValue: number, maxValue?: number) => string = null;
 
   /** Function that returns the color of a tick. showTicks must be enabled. */
-  getTickColor?: (value: string) => string = null;
+  getTickColor?: (value: number) => string = null;
 
   /** Function that returns the current color of a pointer.
     If your color won't change, don't use this option but set it through CSS.
