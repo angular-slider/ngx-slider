@@ -155,3 +155,32 @@ Current letter: {{this.indexToLetter(alphabetSlider.value)}}
 <ng2-slider [(value)]="readOnlySlider.value" [options]="readOnlySlider.options"></ng2-slider>
 
 
+<!-- TODO: Fix CSS styling where the sliders fall apart -->
+<h2>Vertical sliders</h2>
+<div class="container">
+  <div class="row" style="height: 300px;">
+    <div class="col-2">
+      <ng2-slider [(value)]="verticalSlider1.value" [options]="verticalSlider1.options"></ng2-slider>
+    </div>
+
+    <div class="col-2">
+      <ng2-slider [(value)]="verticalSlider2.minValue" [(highValue)]="verticalSlider2.maxValue" [options]="verticalSlider2.options"></ng2-slider>
+    </div>
+
+    <div class="col-2">
+      <ng2-slider [(value)]="verticalSlider3.value" [options]="verticalSlider3.options"></ng2-slider>
+    </div>
+
+    <div class="col-2">
+      <ng2-slider [(value)]="verticalSlider4.minValue" [(highValue)]="verticalSlider4.maxValue" [options]="verticalSlider4.options"></ng2-slider>
+    </div>
+
+    <div class="col-2">
+      <ng2-slider [(value)]="verticalSlider5.value" [options]="verticalSlider5.options"></ng2-slider>
+    </div>
+
+    <div class="col-2">
+      <ng2-slider [(value)]="verticalSlider6.value" [options]="verticalSlider6.options"></ng2-slider>
+    </div>
+  </div>
+</div>
