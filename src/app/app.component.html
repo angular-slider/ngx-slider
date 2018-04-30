@@ -86,3 +86,59 @@ Current letter: {{this.indexToLetter(alphabetSlider.value)}}
 
 <h2>Slider with dates</h2>
 <ng2-slider [(value)]="dateSlider.value" [options]="dateSlider.options"></ng2-slider>
+
+
+<h2>Slider with ticks</h2>
+<ng2-slider [(value)]="ticksSlider.value" [options]="ticksSlider.options"></ng2-slider>
+
+
+<h2>Slider with ticks at intermediate values</h2>
+<ng2-slider [(value)]="intermediateTicksSlider.value" [options]="intermediateTicksSlider.options"></ng2-slider>
+
+
+<h2>Slider with ticks at specific positions</h2>
+<ng2-slider [(value)]="ticksArraySlider.value" [options]="ticksArraySlider.options"></ng2-slider>
+
+
+<h2>Slider with ticks values and legend</h2>
+<!-- Margin because the last legend label otherwise sticks out to the right
+     TODO: should be fixed? -->
+<div style="margin-left: 2em; margin-right: 2em;">
+  <ng2-slider [(value)]="ticksLegedSlider.value" [options]="ticksLegedSlider.options"></ng2-slider>
+</div>
+
+
+<h2>Slider with ticks and tooltips</h2>
+<ng2-slider [(value)]="ticksAndTooltipsSlider.value" [options]="ticksAndTooltipsSlider.options"></ng2-slider>
+
+
+<h2>Slider with ticks and values (and tooltips)</h2>
+<ng2-slider [(value)]="ticksValuesAndTooltipsSlider.value" [options]="ticksValuesAndTooltipsSlider.options"></ng2-slider>
+
+
+<h2>Range slider with ticks and values</h2>
+<ng2-slider [(value)]="rangeTicksValuesSlider.minValue" [(highValue)]="rangeTicksValuesSlider.maxValue" [options]="rangeTicksValuesSlider.options"></ng2-slider>
+
+
+<h2>Range slider with ticks and values at intermediate positions</h2>
+<ng2-slider [(value)]="rangeIntermediateTicksSlider.minValue" [(highValue)]="rangeIntermediateTicksSlider.maxValue" [options]="rangeIntermediateTicksSlider.options"></ng2-slider>
+
+
+<h2>Slider with dynamic tick color</h2>
+<ng2-slider [(value)]="dynamicTickColorSlider.value" [options]="dynamicTickColorSlider.options"></ng2-slider>
+
+
+<h2>Slider with logarithmic scale</h2>
+<ng2-slider [(value)]="logScaleSlider.value" [options]="logScaleSlider.options"></ng2-slider>
+
+
+<h2>Slider with custom scale</h2>
+<ng2-slider [(value)]="customScaleSlider.value" [options]="customScaleSlider.options"></ng2-slider>
+
+
+<h2>Slider with draggable range</h2>
+<ng2-slider [(value)]="draggableRangeSlider.minValue" [(highValue)]="draggableRangeSlider.maxValue" [options]="draggableRangeSlider.options"></ng2-slider>
+
+
+<h2>Slider with draggable range only</h2>
+<ng2-slider [(value)]="draggableRangeOnlySlider.minValue" [(highValue)]="draggableRangeOnlySlider.maxValue" [options]="draggableRangeOnlySlider.options"></ng2-slider>

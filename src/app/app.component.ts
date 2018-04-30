@@ -248,9 +248,176 @@ export class AppComponent {
       stepsArray: this.createDateRange().map((date: Date) => {
         return { value: date.getTime() };
       }),
-      translate: (value: number, sliderId: any, label: any) => {
+      translate: (value: number, sliderId: any, label: any): string => {
         return new Date(value).toDateString();
       }
+    }
+  };
+
+  ticksSlider: SimpleSliderModel = {
+    value: 5,
+    options: {
+      floor: 0,
+      ceil: 10,
+      showTicks: true
+    }
+  };
+
+  intermediateTicksSlider: SimpleSliderModel = {
+    value: 55,
+    options: {
+      floor: 0,
+      ceil: 100,
+      showTicks: true,
+      tickStep: 10
+    }
+  };
+
+  ticksArraySlider: SimpleSliderModel = {
+    value: 55,
+    options: {
+      floor: 0,
+      ceil: 100,
+      ticksArray: [0, 10, 25, 50, 100]
+    }
+  };
+
+  ticksLegedSlider: SimpleSliderModel = {
+    value: 5,
+    options: {
+      showTicksValues: true,
+      stepsArray: [
+        {value: 1, legend: 'Very poor'},
+        {value: 2},
+        {value: 3, legend: 'Fair'},
+        {value: 4},
+        {value: 5, legend: 'Average'},
+        {value: 6},
+        {value: 7, legend: 'Good'},
+        {value: 8},
+        {value: 9, legend: 'Excellent'}
+      ]
+    }
+  };
+
+  ticksAndTooltipsSlider: SimpleSliderModel = {
+    value: 5,
+    options: {
+      floor: 0,
+      ceil: 10,
+      showTicks: true,
+      ticksTooltip: (v: number): string => {
+        return 'Tooltip for ' + v;
+      }
+    }
+  };
+
+  ticksValuesAndTooltipsSlider: SimpleSliderModel = {
+    value: 5,
+    options: {
+      floor: 0,
+      ceil: 10,
+      showTicksValues: true,
+      ticksValuesTooltip: (v: number): string => {
+        return 'Tooltip for ' + v;
+      }
+    }
+  };
+
+  rangeTicksValuesSlider: RangeSliderModel = {
+    minValue: 1,
+    maxValue: 8,
+    options: {
+      floor: 0,
+      ceil: 10,
+      showTicksValues: true
+    }
+  };
+
+  rangeIntermediateTicksSlider: RangeSliderModel = {
+    minValue: 15,
+    maxValue: 85,
+    options: {
+      floor: 0,
+      ceil: 100,
+      showTicksValues: true,
+      tickStep: 10,
+      tickValueStep: 10
+    }
+  };
+
+  dynamicTickColorSlider: SimpleSliderModel = {
+    value: 0,
+    options: {
+      ceil: 12,
+      floor: 0,
+      showSelectionBar: true,
+      showTicks: true,
+      getTickColor: (value: number): string => {
+        if (value < 3) {
+          return 'red';
+        }
+        if (value < 6) {
+          return 'orange';
+        }
+        if (value < 9) {
+          return 'yellow';
+        }
+        return '#2AE02A';
+      }
+    }
+  };
+
+  logScaleSlider: SimpleSliderModel = {
+    value: 1,
+    options: {
+      floor: 1,
+      ceil: 100,
+      logScale: true,
+      showTicks: true
+    }
+  };
+
+  customScaleSlider: SimpleSliderModel = {
+    value: 50,
+    options: {
+      floor: 0,
+      ceil: 100,
+      step: 10,
+      showTicksValues: true,
+      customValueToPosition: (val: number, minVal: number, maxVal: number): number => {
+        val = Math.sqrt(val);
+        minVal = Math.sqrt(minVal);
+        maxVal = Math.sqrt(maxVal);
+        const range = maxVal - minVal;
+        return (val - minVal) / range;
+      },
+      customPositionToValue: (percent: number, minVal: number, maxVal: number): number => {
+        minVal = Math.sqrt(minVal);
+        maxVal = Math.sqrt(maxVal);
+        const value = percent * (maxVal - minVal) + minVal;
+        return Math.pow(value, 2);
+      }
+    }
+  };
+
+  draggableRangeSlider: RangeSliderModel = {
+    minValue: 1,
+    maxValue: 8,
+    options: {
+      floor: 0,
+      ceil: 10,
+      draggableRange: true
+    }
+  };
+
+  draggableRangeOnlySlider: RangeSliderModel = {
+    minValue: 4,
+    maxValue: 6,
+    options: {
+      floor: 0,
+      ceil: 10,
+      draggableRangeOnly: true
     }
   };
 
