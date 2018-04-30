@@ -142,3 +142,16 @@ Current letter: {{this.indexToLetter(alphabetSlider.value)}}
 
 <h2>Slider with draggable range only</h2>
 <ng2-slider [(value)]="draggableRangeOnlySlider.minValue" [(highValue)]="draggableRangeOnlySlider.maxValue" [options]="draggableRangeOnlySlider.options"></ng2-slider>
+
+
+<h2>Disabled slider</h2>
+<!-- [(ngModel)]="disabledSliderDisabled" -->
+<label>Disabled <input type="checkbox"  [(ngModel)]="disabledSliderCheckbox" (change)="onChangeDisabledSliderCheckbox()"></label>
+<ng2-slider [(value)]="disabledSlider.minValue" [(highValue)]="disabledSlider.maxValue" [options]="disabledSlider.options"></ng2-slider>
+
+
+<h2>Read-only slider</h2>
+<label>Read-only <input type="checkbox" [(ngModel)]="readOnlySliderCheckbox" (change)="onChangeReadOnlySliderCheckbox()"></label>
+<ng2-slider [(value)]="readOnlySlider.value" [options]="readOnlySlider.options"></ng2-slider>
+
+

@@ -421,6 +421,32 @@ export class AppComponent {
     }
   };
 
+  disabledSliderCheckbox: boolean = true;
+
+  disabledSlider: RangeSliderModel = {
+    minValue: 20,
+    maxValue: 80,
+    options: {
+      floor: 0,
+      ceil: 100,
+      step: 10,
+      disabled: true,
+      showTicks: true,
+      draggableRange: true
+    }
+  };
+
+  readOnlySliderCheckbox: boolean = true;
+
+  readOnlySlider: SimpleSliderModel = {
+    value: 50,
+    options: {
+      floor: 0,
+      ceil: 100,
+      readOnly: true
+    }
+  };
+
   createDateRange(): Date[] {
     const dates: Date[] = [];
     for (let i = 1; i <= 31; i++) {
@@ -435,5 +461,17 @@ export class AppComponent {
 
   letterToIndex(letter: string): number {
     return 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.indexOf(letter);
+  }
+
+  /* TODO: For better or worse, Angular 2+ does not run deep checks on change detection, unlike $watch in angularjs
+     The only sane workaround for now is creating a new options object for every update that needs to be done.
+     Otherwise, it's a long way down the rabbithole of costly custom check detection
+     In future refactoring, I think it's better to move away from nested options to simply a list of @Inputs */
+  onChangeDisabledSliderCheckbox() {
+    this.disabledSlider.options = Object.assign({}, this.disabledSlider.options, {disabled: this.disabledSliderCheckbox});
+  }
+
+  onChangeReadOnlySliderCheckbox() {
+    this.readOnlySlider.options = Object.assign({}, this.readOnlySlider.options, {readOnly: this.readOnlySliderCheckbox});
   }
 }
