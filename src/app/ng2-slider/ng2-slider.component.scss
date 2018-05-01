@@ -194,7 +194,7 @@
       .rz-bar-wrapper {
         top: auto;
         left: 0;
-        margin: 0 0 0 -$handleSize / 2;
+        margin: 0 0 0 (-$handleSize / 2);
         padding: 0 0 0 $handleSize / 2;
         height: 100%;
         width: $handleSize;
