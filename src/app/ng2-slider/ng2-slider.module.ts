@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import {
   Ng2SliderComponent,
-  SliderDirective,
   RightOutSelDirective,
   LeftOutSelDirective,
   FullBarDirective,
@@ -25,7 +24,6 @@ import {
   ],
   declarations: [
     Ng2SliderComponent,
-    SliderDirective,
     RightOutSelDirective,
     LeftOutSelDirective,
     FullBarDirective,

@@ -1,41 +1,39 @@
-<div slider-elem class="rzslider">
-  <!-- // 0 (left) Highlight outside two handles -->
-  <span left-out-sel-elem class="rz-bar-wrapper rz-left-out-selection">
-    <span class=rz-bar></span>
-  </span>
-  <!-- // 1 (right) Highlight outside two handles -->
-  <span right-out-sel-elem class="rz-bar-wrapper rz-right-out-selection">
-    <span class=rz-bar></span>
-  </span>
-  <!-- // 2 The slider bar -->
-  <span full-bar-elem class="rz-bar-wrapper">
-    <span class="rz-bar"></span>
-  </span>
-  <!-- // 3 Highlight between two handles -->
-  <span sel-bar-elem class="rz-bar-wrapper">
-    <span class="rz-bar rz-selection" [ngStyle]="barStyle"></span>
-  </span>
-  <!-- // 4 Left slider handle -->
-  <span min-h-elem class="rz-pointer rz-pointer-min" [ngStyle]=minPointerStyle></span>
-  <!-- // 5 Right slider handle -->
-  <span max-h-elem class="rz-pointer rz-pointer-max" [ngStyle]=maxPointerStyle></span>
-  <!-- // 6 Floor label -->
-  <span flr-lab-elem class="rz-bubble rz-limit rz-floor"></span>
-  <!-- // 7 Ceiling label -->
-  <span ceil-lab-elem class="rz-bubble rz-limit rz-ceil"></span>
-  <!-- // 8 Label above left slider handle -->
-  <span min-lab-elem class="rz-bubble rz-model-value"></span>
-  <!-- // 9 Label above right slider handle -->
-  <span max-lab-elem class="rz-bubble rz-model-high"></span>
-  <!-- // 10 Range label when the slider handles are close ex. 15 - 17 -->
-  <span cmb-lab-elem class="rz-bubble"></span>
-  <!-- // 11 The ticks -->
-  <ul ticks-elem [hidden]="!showTicks" class="rz-ticks">
-    <li *ngFor="let t of ticks" class="rz-tick" [ngClass]="{'rz-selected': t.selected}" [ngStyle]="t.style"
-        [ngbTooltip]="t.tooltip" [placement]="t.tooltipPlacement" container="body">
-      <span *ngIf="t.value != null" class="rz-tick-value"
-            [ngbTooltip]="t.valueTooltip" [placement]="t.valueTooltipPlacement">{{ t.value }}</span>
-      <span *ngIf="t.legend != null" class="rz-tick-legend">{{ t.legend }}</span>
-    </li>
-  </ul>
-</div>
+<!-- // 0 (left) Highlight outside two handles -->
+<span left-out-sel-elem class="rz-bar-wrapper rz-left-out-selection">
+  <span class=rz-bar></span>
+</span>
+<!-- // 1 (right) Highlight outside two handles -->
+<span right-out-sel-elem class="rz-bar-wrapper rz-right-out-selection">
+  <span class=rz-bar></span>
+</span>
+<!-- // 2 The slider bar -->
+<span full-bar-elem class="rz-bar-wrapper">
+  <span class="rz-bar"></span>
+</span>
+<!-- // 3 Highlight between two handles -->
+<span sel-bar-elem class="rz-bar-wrapper">
+  <span class="rz-bar rz-selection" [ngStyle]="barStyle"></span>
+</span>
+<!-- // 4 Left slider handle -->
+<span min-h-elem class="rz-pointer rz-pointer-min" [ngStyle]=minPointerStyle></span>
+<!-- // 5 Right slider handle -->
+<span max-h-elem class="rz-pointer rz-pointer-max" [ngStyle]=maxPointerStyle></span>
+<!-- // 6 Floor label -->
+<span flr-lab-elem class="rz-bubble rz-limit rz-floor"></span>
+<!-- // 7 Ceiling label -->
+<span ceil-lab-elem class="rz-bubble rz-limit rz-ceil"></span>
+<!-- // 8 Label above left slider handle -->
+<span min-lab-elem class="rz-bubble rz-model-value"></span>
+<!-- // 9 Label above right slider handle -->
+<span max-lab-elem class="rz-bubble rz-model-high"></span>
+<!-- // 10 Range label when the slider handles are close ex. 15 - 17 -->
+<span cmb-lab-elem class="rz-bubble"></span>
+<!-- // 11 The ticks -->
+<ul ticks-elem [hidden]="!showTicks" class="rz-ticks">
+  <li *ngFor="let t of ticks" class="rz-tick" [ngClass]="{'rz-selected': t.selected}" [ngStyle]="t.style"
+      [ngbTooltip]="t.tooltip" [placement]="t.tooltipPlacement" container="body">
+    <span *ngIf="t.value != null" class="rz-tick-value"
+          [ngbTooltip]="t.valueTooltip" [placement]="t.valueTooltipPlacement">{{ t.value }}</span>
+    <span *ngIf="t.legend != null" class="rz-tick-legend">{{ t.legend }}</span>
+  </li>
+</ul>

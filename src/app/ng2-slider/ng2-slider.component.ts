@@ -5,6 +5,7 @@ import {
   ViewChild,
   AfterViewInit,
   OnDestroy,
+  HostBinding,
   HostListener,
   Input,
   ElementRef,
@@ -62,13 +63,6 @@ class SliderElement extends JqLiteWrapper {
   dimension: number;
   alwaysHide: boolean = false;
 
-  constructor(elemRef: ElementRef, renderer: Renderer2) {
-    super(elemRef, renderer);
-  }
-}
-
-@Directive({selector: '[slider-elem]'})
-export class SliderDirective extends SliderElement {
   constructor(elemRef: ElementRef, renderer: Renderer2) {
     super(elemRef, renderer);
   }
@@ -163,7 +157,8 @@ export class TicksDirective extends SliderElement {
   selector: 'ng2-slider',
   templateUrl: './ng2-slider.component.html',
   styleUrls: ['./ng2-slider.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
+  host: { class: 'rzslider' }
 })
 export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   // Model for low value slider. If only value is provided single slider will be rendered.
@@ -217,10 +212,6 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /* Slider DOM elements */
 
-  // Main slider element
-  @ViewChild(SliderDirective)
-  private sliderElem: SliderElement;
-
   // Left highlight outside two handles
   @ViewChild(LeftOutSelDirective)
   private leftOutSelBar: SliderElement;
@@ -268,6 +259,15 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   // The ticks
   @ViewChild(TicksDirective)
   private ticksElem: SliderElement;
+
+  @HostBinding('class.rz-vertical')
+  private sliderElementVerticalClass: boolean = false;
+
+  @HostBinding('attr.disabled')
+  private sliderElementDisabledAttr: string = null;
+
+  /** Viewport position of the slider element (the host element) */
+  private sliderElementPosition: number = 0;
 
   // Slider type, true means range slider
   get range(): boolean {
@@ -340,7 +340,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   private onMoveUnsubscribe: () => void = null;
   private onEndUnsubscribe: () => void = null;
 
-  constructor(private renderer: Renderer2) { }
+  constructor(private renderer: Renderer2, private elementRef: ElementRef) { }
 
   ngOnInit(): void {
   }
@@ -664,8 +664,12 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
       this.fullBarElem.addClass('rz-transparent');
     }
 
-    if (this.viewOptions.vertical) {
-      this.sliderElem.addClass('rz-vertical');
+    if (this.sliderElementVerticalClass !== this.viewOptions.vertical) {
+      this.sliderElementVerticalClass = this.viewOptions.vertical;
+      // The above change in host component class will not be applied until the end of this cycle
+      // However, functions calculating the slider position expect the slider to be already styled as vertical
+      // So as a workaround, we need to reset the slider once again to compute the correct values
+      setTimeout(() => { this.resetSlider(); });
     }
 
     if (this.viewOptions.draggableRange) {
@@ -699,11 +703,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // Set the disabled state based on disabled option
   private setDisabledState(): void {
-    if (this.viewOptions.disabled) {
-      this.sliderElem.attr('disabled', 'disabled');
-    } else {
-      this.sliderElem.attr('disabled', null);
-    }
+    this.sliderElementDisabledAttr = this.viewOptions.disabled ? 'disabled' : null;
   }
 
   // Reset label values
@@ -879,8 +879,9 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.maxPos = this.barDimension - handleWidth;
 
-    this.calculateElementDimension(this.sliderElem);
-    this.sliderElem.position = this.sliderElem.getBoundingClientRect()[this.positionProperty];
+    const sliderElementBoundingRect = this.elementRef.nativeElement.getBoundingClientRect();
+    this.sliderElementPosition = sliderElementBoundingRect[this.positionProperty];
+    console.log(this.sliderElementPosition);
 
     if (this.initHasRun) {
       this.updateFloorLab();
@@ -1455,7 +1456,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // Compute the event position depending on whether the slider is horizontal or vertical
   private getEventPosition(event: MouseEvent|TouchEvent, targetTouchId?: number): number {
-    const sliderPos = this.sliderElem.position;
+    const sliderPos = this.sliderElementPosition;
     let eventPos = 0;
     if (this.viewOptions.vertical) {
       eventPos = -this.getEventXY(event, targetTouchId) + sliderPos;

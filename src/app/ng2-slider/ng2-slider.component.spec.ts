@@ -4,7 +4,6 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import {
   Ng2SliderComponent,
-  SliderDirective,
   RightOutSelDirective,
   LeftOutSelDirective,
   FullBarDirective,
@@ -31,7 +30,6 @@ describe('Ng2SliderComponent', () => {
       declarations: [
         Ng2SliderComponent,
         Ng2SliderComponent,
-        SliderDirective,
         RightOutSelDirective,
         LeftOutSelDirective,
         FullBarDirective,
