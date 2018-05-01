@@ -739,7 +739,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     useCustomTr = useCustomTr === undefined ? true : useCustomTr;
 
     let valStr = '';
-    let getDimension = false;
+    let recalculateDimension = false;
     const noLabelInjection = label.hasClass('no-label-injection');
 
     if (useCustomTr) {
@@ -754,7 +754,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     if (label.rzsv === undefined ||
         label.rzsv.length !== valStr.length ||
        (label.rzsv.length > 0 && label.rzsd === 0)) {
-      getDimension = true;
+      recalculateDimension = true;
       label.rzsv = valStr;
     }
 
@@ -763,8 +763,8 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     // Update width only when length of the label have changed
-    if (getDimension) {
-      this.getDimension(label);
+    if (recalculateDimension) {
+      this.calculateElementDimension(label);
     }
   }
 
@@ -869,14 +869,17 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   // Calculate dimensions that are dependent on view port size
   // Run once during initialization and every time view port changes size.
   private calcViewDimensions(): void {
-    const handleWidth = this.getDimension(this.minHElem);
+    this.calculateElementDimension(this.minHElem);
+
+    const handleWidth = this.minHElem.rzsd;
 
     this.handleHalfDim = handleWidth / 2;
-    this.barDimension = this.getDimension(this.fullBarElem);
+    this.calculateElementDimension(this.fullBarElem);
+    this.barDimension = this.fullBarElem.rzsd;
 
     this.maxPos = this.barDimension - handleWidth;
 
-    this.getDimension(this.sliderElem);
+    this.calculateElementDimension(this.sliderElem);
     this.sliderElem.rzsp = this.sliderElem.getBoundingClientRect()[this.positionProperty];
 
     if (this.initHasRun) {
@@ -986,7 +989,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   // Update position of the floor label
   private updateFloorLab(): void {
     this.translateFn(this.minValue, this.flrLabElem, 'floor');
-    this.getDimension(this.flrLabElem);
+    this.calculateElementDimension(this.flrLabElem);
     const position = this.viewOptions.rightToLeft
       ? this.barDimension - this.flrLabElem.rzsd
       : 0;
@@ -996,7 +999,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   // Update position of the ceiling label
   private updateCeilLab(): void {
     this.translateFn(this.maxValue, this.ceilLabElem, 'ceil');
-    this.getDimension(this.ceilLabElem);
+    this.calculateElementDimension(this.ceilLabElem);
     const position = this.viewOptions.rightToLeft
       ? 0
       : this.barDimension - this.ceilLabElem.rzsd;
@@ -1191,17 +1194,19 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
       if (this.viewOptions.rightToLeft) {
         this.setDimension(this.rightOutSelBar, position);
         this.setPosition(this.rightOutSelBar, 0);
+        this.calculateElementDimension(this.fullBarElem);
         this.setDimension(
           this.leftOutSelBar,
-          this.getDimension(this.fullBarElem) - (position + dimension)
+          this.fullBarElem.rzsd - (position + dimension)
         );
         this.setPosition(this.leftOutSelBar, position + dimension);
       } else {
         this.setDimension(this.leftOutSelBar, position);
         this.setPosition(this.leftOutSelBar, 0);
+        this.calculateElementDimension(this.fullBarElem);
         this.setDimension(
           this.rightOutSelBar,
-          this.getDimension(this.fullBarElem) - (position + dimension)
+          this.fullBarElem.rzsd - (position + dimension)
         );
         this.setPosition(this.rightOutSelBar, position + dimension);
       }
@@ -1372,15 +1377,14 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     elem.css(this.positionProperty, Math.round(pos) + 'px');
   }
 
-  // Get element width/height depending on whether slider is horizontal or vertical
-  private getDimension(elem: SliderElement): number {
+  // Calculate element's width/height depending on whether slider is horizontal or vertical
+  private calculateElementDimension(elem: SliderElement) {
     const val = elem.getBoundingClientRect();
     if (this.viewOptions.vertical) {
       elem.rzsd = (val.bottom - val.top) * this.viewOptions.scale;
     } else {
       elem.rzsd = (val.right - val.left) * this.viewOptions.scale;
     }
-    return elem.rzsd;
   }
 
   // Set element width/height depending on whether slider is horizontal or vertical
