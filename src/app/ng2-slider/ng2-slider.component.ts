@@ -57,9 +57,9 @@ enum HandleType {
 
 // TODO: slowly rewrite to angular
 class SliderElement extends JqLiteWrapper {
-  rzsp: number = 0;
-  rzsv: string;
-  rzsd: number;
+  position: number = 0;
+  value: string; // TODO: this only applies to label elements; it should be moved to the specific directives where it's used
+  dimension: number;
   alwaysHide: boolean = false;
 
   constructor(elemRef: ElementRef, renderer: Renderer2) {
@@ -708,8 +708,8 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // Reset label values
   private resetLabelsValue(): void {
-    this.minLabElem.rzsv = undefined;
-    this.maxLabElem.rzsv = undefined;
+    this.minLabElem.value = undefined;
+    this.maxLabElem.value = undefined;
   }
 
   // Initialize slider handles positions and labels
@@ -751,11 +751,11 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
       valStr = String(value);
     }
 
-    if (label.rzsv === undefined ||
-        label.rzsv.length !== valStr.length ||
-       (label.rzsv.length > 0 && label.rzsd === 0)) {
+    if (label.value === undefined ||
+        label.value.length !== valStr.length ||
+       (label.value.length > 0 && label.dimension === 0)) {
       recalculateDimension = true;
-      label.rzsv = valStr;
+      label.value = valStr;
     }
 
     if (!noLabelInjection) {
@@ -871,16 +871,16 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   private calcViewDimensions(): void {
     this.calculateElementDimension(this.minHElem);
 
-    const handleWidth = this.minHElem.rzsd;
+    const handleWidth = this.minHElem.dimension;
 
     this.handleHalfDim = handleWidth / 2;
     this.calculateElementDimension(this.fullBarElem);
-    this.barDimension = this.fullBarElem.rzsd;
+    this.barDimension = this.fullBarElem.dimension;
 
     this.maxPos = this.barDimension - handleWidth;
 
     this.calculateElementDimension(this.sliderElem);
-    this.sliderElem.rzsp = this.sliderElem.getBoundingClientRect()[this.positionProperty];
+    this.sliderElem.position = this.sliderElem.getBoundingClientRect()[this.positionProperty];
 
     if (this.initHasRun) {
       this.updateFloorLab();
@@ -991,7 +991,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.translateFn(this.minValue, this.flrLabElem, 'floor');
     this.calculateElementDimension(this.flrLabElem);
     const position = this.viewOptions.rightToLeft
-      ? this.barDimension - this.flrLabElem.rzsd
+      ? this.barDimension - this.flrLabElem.dimension
       : 0;
     this.setPosition(this.flrLabElem, position);
   }
@@ -1002,7 +1002,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.calculateElementDimension(this.ceilLabElem);
     const position = this.viewOptions.rightToLeft
       ? 0
-      : this.barDimension - this.ceilLabElem.rzsd;
+      : this.barDimension - this.ceilLabElem.dimension;
     this.setPosition(this.ceilLabElem, position);
   }
 
@@ -1023,9 +1023,9 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // Helper function to work out the position for handle labels depending on RTL or not
   private getHandleLabelPos(labelName: string, newPos: number): number {
-    const labelRzsd = labelName === 'minLab' ? this.minLabElem.rzsd : this.maxLabElem.rzsd;
-    const nearHandlePos = newPos - labelRzsd / 2 + this.handleHalfDim;
-    const endOfBarPos = this.barDimension - labelRzsd;
+    const labelDimension = labelName === 'minLab' ? this.minLabElem.dimension : this.maxLabElem.dimension;
+    const nearHandlePos = newPos - labelDimension / 2 + this.handleHalfDim;
+    const endOfBarPos = this.barDimension - labelDimension;
 
     if (!this.viewOptions.boundPointerLabels) {
       return nearHandlePos;
@@ -1133,10 +1133,10 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private isLabelBelowFloorLab(label: SliderElement): boolean {
     const isRTL = this.viewOptions.rightToLeft,
-      pos = label.rzsp,
-      dim = label.rzsd,
-      floorPos = this.flrLabElem.rzsp,
-      floorDim = this.flrLabElem.rzsd;
+      pos = label.position,
+      dim = label.dimension,
+      floorPos = this.flrLabElem.position,
+      floorDim = this.flrLabElem.dimension;
     return isRTL
       ? pos + dim >= floorPos - 2
       : pos <= floorPos + floorDim + 2;
@@ -1144,10 +1144,10 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private isLabelAboveCeilLab(label: SliderElement): boolean {
     const isRTL = this.viewOptions.rightToLeft,
-      pos = label.rzsp,
-      dim = label.rzsd,
-      ceilPos = this.ceilLabElem.rzsp,
-      ceilDim = this.ceilLabElem.rzsd;
+      pos = label.position,
+      dim = label.dimension,
+      ceilPos = this.ceilLabElem.position,
+      ceilDim = this.ceilLabElem.dimension;
     return isRTL ? pos <= ceilPos + ceilDim + 2 : pos + dim >= ceilPos - 2;
   }
 
@@ -1159,11 +1159,11 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
         ? !this.viewOptions.showSelectionBarEnd
         : this.viewOptions.showSelectionBarEnd;
     const positionForRange = this.viewOptions.rightToLeft
-        ? this.maxHElem.rzsp + this.handleHalfDim
-        : this.minHElem.rzsp + this.handleHalfDim;
+        ? this.maxHElem.position + this.handleHalfDim
+        : this.minHElem.position + this.handleHalfDim;
 
     if (this.range) {
-      dimension = Math.abs(this.maxHElem.rzsp - this.minHElem.rzsp);
+      dimension = Math.abs(this.maxHElem.position - this.minHElem.position);
       position = positionForRange;
     } else {
       if (this.viewOptions.showSelectionBarFromValue !== null) {
@@ -1173,18 +1173,18 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
             ? this.viewLowValue <= center
             : this.viewLowValue > center;
         if (isModelGreaterThanCenter) {
-          dimension = this.minHElem.rzsp - centerPosition;
+          dimension = this.minHElem.position - centerPosition;
           position = centerPosition + this.handleHalfDim;
         } else {
-          dimension = centerPosition - this.minHElem.rzsp;
-          position = this.minHElem.rzsp + this.handleHalfDim;
+          dimension = centerPosition - this.minHElem.position;
+          position = this.minHElem.position + this.handleHalfDim;
         }
       } else if (isSelectionBarFromRight) {
         dimension =
-          Math.abs(this.maxPos - this.minHElem.rzsp) + this.handleHalfDim;
-        position = this.minHElem.rzsp + this.handleHalfDim;
+          Math.abs(this.maxPos - this.minHElem.position) + this.handleHalfDim;
+        position = this.minHElem.position + this.handleHalfDim;
       } else {
-        dimension = this.minHElem.rzsp + this.handleHalfDim;
+        dimension = this.minHElem.position + this.handleHalfDim;
         position = 0;
       }
     }
@@ -1197,7 +1197,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
         this.calculateElementDimension(this.fullBarElem);
         this.setDimension(
           this.leftOutSelBar,
-          this.fullBarElem.rzsd - (position + dimension)
+          this.fullBarElem.dimension - (position + dimension)
         );
         this.setPosition(this.leftOutSelBar, position + dimension);
       } else {
@@ -1206,7 +1206,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
         this.calculateElementDimension(this.fullBarElem);
         this.setDimension(
           this.rightOutSelBar,
-          this.fullBarElem.rzsd - (position + dimension)
+          this.fullBarElem.dimension - (position + dimension)
         );
         this.setPosition(this.rightOutSelBar, position + dimension);
       }
@@ -1291,10 +1291,10 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     let isLabelOverlap = null;
     if (this.viewOptions.rightToLeft) {
       isLabelOverlap =
-        this.minLabElem.rzsp - this.minLabElem.rzsd - 10 <= this.maxLabElem.rzsp;
+        this.minLabElem.position - this.minLabElem.dimension - 10 <= this.maxLabElem.position;
     } else {
       isLabelOverlap =
-        this.minLabElem.rzsp + this.minLabElem.rzsd + 10 >= this.maxLabElem.rzsp;
+        this.minLabElem.position + this.minLabElem.dimension + 10 >= this.maxLabElem.position;
     }
 
     if (isLabelOverlap) {
@@ -1313,14 +1313,14 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
       const pos = this.viewOptions.boundPointerLabels
         ? Math.min(
             Math.max(
-              this.selBarElem.rzsp +
-                this.selBarElem.rzsd / 2 -
-                this.cmbLabElem.rzsd / 2,
+              this.selBarElem.position +
+                this.selBarElem.dimension / 2 -
+                this.cmbLabElem.dimension / 2,
               0
             ),
-            this.barDimension - this.cmbLabElem.rzsd
+            this.barDimension - this.cmbLabElem.dimension
           )
-        : this.selBarElem.rzsp + this.selBarElem.rzsd / 2 - this.cmbLabElem.rzsd / 2;
+        : this.selBarElem.position + this.selBarElem.dimension / 2 - this.cmbLabElem.dimension / 2;
 
       this.setPosition(this.cmbLabElem, pos);
       this.cmbLabelShown = true;
@@ -1373,7 +1373,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // Set element left/top position depending on whether slider is horizontal or vertical
   private setPosition(elem: SliderElement, pos: number): void {
-    elem.rzsp = pos;
+    elem.position = pos;
     elem.css(this.positionProperty, Math.round(pos) + 'px');
   }
 
@@ -1381,15 +1381,15 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   private calculateElementDimension(elem: SliderElement) {
     const val = elem.getBoundingClientRect();
     if (this.viewOptions.vertical) {
-      elem.rzsd = (val.bottom - val.top) * this.viewOptions.scale;
+      elem.dimension = (val.bottom - val.top) * this.viewOptions.scale;
     } else {
-      elem.rzsd = (val.right - val.left) * this.viewOptions.scale;
+      elem.dimension = (val.right - val.left) * this.viewOptions.scale;
     }
   }
 
   // Set element width/height depending on whether slider is horizontal or vertical
   private setDimension(elem: SliderElement, dim: number): number {
-    elem.rzsd = dim;
+    elem.dimension = dim;
     elem.css(this.dimensionProperty, Math.round(dim) + 'px');
     return dim;
   }
@@ -1455,7 +1455,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // Compute the event position depending on whether the slider is horizontal or vertical
   private getEventPosition(event: MouseEvent|TouchEvent, targetTouchId?: number): number {
-    const sliderPos = this.sliderElem.rzsp;
+    const sliderPos = this.sliderElem.position;
     let eventPos = 0;
     if (this.viewOptions.vertical) {
       eventPos = -this.getEventXY(event, targetTouchId) + sliderPos;
@@ -1472,8 +1472,8 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     const position = this.getEventPosition(event);
-    const distanceMin = Math.abs(position - this.minHElem.rzsp);
-    const distanceMax = Math.abs(position - this.maxHElem.rzsp);
+    const distanceMin = Math.abs(position - this.minHElem.position);
+    const distanceMax = Math.abs(position - this.maxHElem.position);
 
     if (distanceMin < distanceMax) {
       return this.minHElem;
@@ -1481,10 +1481,10 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
       return this.maxHElem;
     } else if (!this.viewOptions.rightToLeft) {
       // if event is at the same distance from min/max then if it's at left of minH, we return minH else maxH
-      return position < this.minHElem.rzsp ? this.minHElem : this.maxHElem;
+      return position < this.minHElem.position ? this.minHElem : this.maxHElem;
     } else {
       // reverse in rtl
-      return position > this.minHElem.rzsp ? this.minHElem : this.maxHElem;
+      return position > this.minHElem.position ? this.minHElem : this.maxHElem;
     }
   }
 
@@ -1828,11 +1828,11 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.dragging.value = this.positionToValue(position);
     this.dragging.difference = this.viewHighValue - this.viewLowValue;
     this.dragging.lowLimit = this.viewOptions.rightToLeft
-        ? this.minHElem.rzsp - position
-        : position - this.minHElem.rzsp;
+        ? this.minHElem.position - position
+        : position - this.minHElem.position;
     this.dragging.highLimit = this.viewOptions.rightToLeft
-        ? position - this.maxHElem.rzsp
-        : this.maxHElem.rzsp - position;
+        ? position - this.maxHElem.position
+        : this.maxHElem.position - position;
 
     this.onStart(pointer, ref, event);
   }
@@ -1887,7 +1887,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   private onDragMove(pointer: SliderElement, event?: MouseEvent|TouchEvent): void {
     const newPos = this.getEventPosition(event);
 
-    let ceilLimit, flrLimit, flrHElem, ceilHElem;
+    let ceilLimit: number, flrLimit: number, flrHElem: SliderElement, ceilHElem: SliderElement;
     if (this.viewOptions.rightToLeft) {
       ceilLimit = this.dragging.lowLimit;
       flrLimit = this.dragging.highLimit;
@@ -1905,13 +1905,13 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
 
     let newMinValue, newMaxValue;
     if (isUnderFlrLimit) {
-      if (flrHElem.rzsp === 0) {
+      if (flrHElem.position === 0) {
         return;
       }
       newMinValue = this.getValue('min', newPos, true, false);
       newMaxValue = this.getValue('max', newPos, true, false);
     } else if (isOverCeilLimit) {
-      if (ceilHElem.rzsp === this.maxPos) {
+      if (ceilHElem.position === this.maxPos) {
         return;
       }
       newMaxValue = this.getValue('max', newPos, true, true);
@@ -1971,7 +1971,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
           this.viewLowValue = this.viewHighValue;
           this.applyLowValue();
           this.applyModel();
-          this.updateHandles(HandleType.Low, this.maxHElem.rzsp);
+          this.updateHandles(HandleType.Low, this.maxHElem.position);
           this.updateAriaAttributes();
           this.tracking = HandleType.High;
           this.minHElem.removeClass('rz-active');
@@ -1985,7 +1985,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
           this.viewHighValue = this.viewLowValue;
           this.applyHighValue();
           this.applyModel();
-          this.updateHandles(HandleType.High, this.minHElem.rzsp);
+          this.updateHandles(HandleType.High, this.minHElem.position);
           this.updateAriaAttributes();
           this.tracking = HandleType.Low;
           this.maxHElem.removeClass('rz-active');
