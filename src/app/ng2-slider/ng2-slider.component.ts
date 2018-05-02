@@ -1562,7 +1562,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private onBarStart(draggableRange: boolean, pointer: SliderElement, event: MouseEvent|TouchEvent): void {
     if (draggableRange) {
-      this.onDragStart(pointer, HandleType.High, event); // original: ref='rzSliderDrag', TODO: find out how this is supposed to work...
+      this.onDragStart(pointer, HandleType.High, event);
     } else {
       this.onStart(pointer, HandleType.Low, event);
     }
