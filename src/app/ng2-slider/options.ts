@@ -1,5 +1,18 @@
-export type TranslateLabel = 'model'|'high'|'floor'|'ceil'|'cmb'|'tick-value';
-export type TranslateFunction = (value: number, sliderId: any, label: TranslateLabel) => string;
+export enum LabelType {
+  Low,
+  High,
+  Combined,
+  Floor,
+  Ceil,
+  TickValue
+}
+
+export enum PointerType {
+  Min,
+  Max
+}
+
+export type TranslateFunction = (value: number, sliderId: any, label: LabelType) => string;
 export type GetLegendFunction = (value: number, siderId: any) => string;
 export type ValueToPositionFunction = (val: number, minVal: number, maxVal: number) => number;
 export type PositionToValueFunction = (percent: number, minVal: number, maxVal: number) => number;
@@ -162,7 +175,7 @@ export class Options {
     Indeed, when the function is called, there is no certainty that the model has already been updated.
     To handle range slider pointers independently, you should evaluate pointerType within the given
     function where "min" stands for value model and "max" for valueHigh model values. */
-  getPointerColor?: (value: number, pointerType: 'min'|'max') => string = null;
+  getPointerColor?: (value: number, pointerType: PointerType) => string = null;
 
   /** Handles are focusable (on click or with tab) and can be modified using the following keyboard controls:
     Left/bottom arrows: -1

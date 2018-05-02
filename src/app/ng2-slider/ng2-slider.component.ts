@@ -16,13 +16,13 @@ import {
 } from '@angular/core';
 
 import {
-  CustomStepDefinition,
   Options,
   GetLegendFunction,
-  TranslateLabel,
+  LabelType,
   TranslateFunction,
   ValueToPositionFunction,
   PositionToValueFunction,
+  PointerType,
 } from './options';
 
 import { ValuePositionConverter } from './value-position-converter';
@@ -735,7 +735,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   // Translate value to human readable format
-  private translateFn(value: number, label: SliderElement, which: TranslateLabel, useCustomTr?: boolean): void {
+  private translateFn(value: number, label: SliderElement, which: LabelType, useCustomTr?: boolean): void {
     useCustomTr = useCustomTr === undefined ? true : useCustomTr;
 
     let valStr = '';
@@ -854,13 +854,13 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   // Updates aria attributes according to current values
   private updateAriaAttributes(): void {
     this.minHElem.attr('aria-valuenow', this.value.toString());
-    this.minHElem.attr('aria-valuetext', this.customTrFn(this.value, this.viewOptions.id, 'model'));
+    this.minHElem.attr('aria-valuetext', this.customTrFn(this.value, this.viewOptions.id, LabelType.Low));
     this.minHElem.attr('aria-valuemin', this.minValue.toString());
     this.minHElem.attr('aria-valuemax', this.maxValue.toString());
 
     if (this.range) {
       this.maxHElem.attr('aria-valuenow', this.highValue.toString());
-      this.maxHElem.attr('aria-valuetext', this.customTrFn(this.highValue, this.viewOptions.id, 'high'));
+      this.maxHElem.attr('aria-valuetext', this.customTrFn(this.highValue, this.viewOptions.id, LabelType.High));
       this.maxHElem.attr('aria-valuemin', this.minValue.toString());
       this.maxHElem.attr('aria-valuemax', this.maxValue.toString());
     }
@@ -931,7 +931,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
         tick.tooltipPlacement = this.viewOptions.vertical ? 'right' : 'top';
       }
       if (this.viewOptions.showTicksValues && (value % this.viewOptions.tickValueStep === 0)) {
-        tick.value = this.getDisplayValue(value, 'tick-value');
+        tick.value = this.getDisplayValue(value, LabelType.TickValue);
         if (this.viewOptions.ticksValuesTooltip) {
           tick.valueTooltip = this.viewOptions.ticksValuesTooltip(value);
           tick.valueTooltipPlacement = this.viewOptions.vertical
@@ -989,7 +989,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // Update position of the floor label
   private updateFloorLab(): void {
-    this.translateFn(this.minValue, this.flrLabElem, 'floor');
+    this.translateFn(this.minValue, this.flrLabElem, LabelType.Floor);
     this.calculateElementDimension(this.flrLabElem);
     const position = this.viewOptions.rightToLeft
       ? this.barDimension - this.flrLabElem.dimension
@@ -999,7 +999,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // Update position of the ceiling label
   private updateCeilLab(): void {
-    this.translateFn(this.maxValue, this.ceilLabElem, 'ceil');
+    this.translateFn(this.maxValue, this.ceilLabElem, LabelType.Ceil);
     this.calculateElementDimension(this.ceilLabElem);
     const position = this.viewOptions.rightToLeft
       ? 0
@@ -1043,14 +1043,14 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   // Update low slider handle position and label
   private updateLowHandle(newPos: number): void {
     this.setPosition(this.minHElem, newPos);
-    this.translateFn(this.viewLowValue, this.minLabElem, 'model');
+    this.translateFn(this.viewLowValue, this.minLabElem, LabelType.Low);
     this.setPosition(
       this.minLabElem,
       this.getHandleLabelPos('minLab', newPos)
     );
 
     if (this.viewOptions.getPointerColor) {
-      const pointercolor = this.getPointerColor('min');
+      const pointercolor = this.getPointerColor(PointerType.Min);
       this.minPointerStyle = {
         backgroundColor: pointercolor,
       };
@@ -1064,14 +1064,14 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   // Update high slider handle position and label
   private updateHighHandle(newPos: number): void {
     this.setPosition(this.maxHElem, newPos);
-    this.translateFn(this.viewHighValue, this.maxLabElem, 'high');
+    this.translateFn(this.viewHighValue, this.maxLabElem, LabelType.High);
     this.setPosition(
       this.maxLabElem,
       this.getHandleLabelPos('maxLab', newPos)
     );
 
     if (this.viewOptions.getPointerColor) {
-      const pointercolor = this.getPointerColor('max');
+      const pointercolor = this.getPointerColor(PointerType.Max);
       this.maxPointerStyle = {
         backgroundColor: pointercolor,
       };
@@ -1269,8 +1269,8 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   // Wrapper around the getPointerColor of the user to pass to  correct parameters
-  private getPointerColor(pointerType: 'min'|'max'): string {
-    if (pointerType === 'max') {
+  private getPointerColor(pointerType: PointerType): string {
+    if (pointerType === PointerType.Max) {
       return this.viewOptions.getPointerColor(
         this.highValue,
         pointerType
@@ -1299,8 +1299,8 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     if (isLabelOverlap) {
-      const lowTr = this.getDisplayValue(this.viewLowValue, 'model');
-      const highTr = this.getDisplayValue(this.viewHighValue, 'high');
+      const lowTr = this.getDisplayValue(this.viewLowValue, LabelType.Low);
+      const highTr = this.getDisplayValue(this.viewHighValue, LabelType.High);
       let labelVal;
       if (this.viewOptions.mergeRangeLabelsIfSame && lowTr === highTr) {
         labelVal = lowTr;
@@ -1310,7 +1310,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
           : lowTr + this.viewOptions.labelOverlapSeparator + highTr;
       }
 
-      this.translateFn(labelVal, this.cmbLabElem, 'cmb', false);
+      this.translateFn(labelVal, this.cmbLabElem, LabelType.Combined, false);
       const pos = this.viewOptions.boundPointerLabels
         ? Math.min(
             Math.max(
@@ -1342,7 +1342,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   // Return the translated value if a translate function is provided else the original value
-  private getDisplayValue(value: number, which: TranslateLabel): string {
+  private getDisplayValue(value: number, which: LabelType): string {
     if (this.viewOptions.stepsArray && !this.viewOptions.bindIndexForStepsArray) {
       value = this.getStepValue(value);
     }
