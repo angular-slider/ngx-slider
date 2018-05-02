@@ -1,7 +1,6 @@
 export enum LabelType {
   Low,
   High,
-  Combined,
   Floor,
   Ceil,
   TickValue

@@ -728,32 +728,20 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.updateTicksScale();
   }
 
-  // Translate value to human readable format
-  private translateFn(value: number, label: SliderElement, which: LabelType, useCustomTr?: boolean): void {
-    useCustomTr = useCustomTr === undefined ? true : useCustomTr;
-
-    let valStr = '';
-    let recalculateDimension = false;
-    const noLabelInjection = label.hasClass('no-label-injection');
-
-    if (useCustomTr) {
-      if (this.viewOptions.stepsArray && !this.viewOptions.bindIndexForStepsArray) {
-        value = this.getStepValue(value);
-      }
-      valStr = String(this.customTrFn(value, this.viewOptions.id, which));
-    } else {
-      valStr = String(value);
-    }
+  // Set label value and recalculate label dimensions
+  private setLabelValue(value: string, label: SliderElement): void {
+    let recalculateDimension: boolean = false;
+    const noLabelInjection: boolean = label.hasClass('no-label-injection');
 
     if (label.value === undefined ||
-        label.value.length !== valStr.length ||
+        label.value.length !== value.length ||
        (label.value.length > 0 && label.dimension === 0)) {
       recalculateDimension = true;
-      label.value = valStr;
+      label.value = value;
     }
 
     if (!noLabelInjection) {
-      label.html(valStr);
+      label.html(value);
     }
 
     // Update width only when length of the label have changed
@@ -984,7 +972,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // Update position of the floor label
   private updateFloorLab(): void {
-    this.translateFn(this.minValue, this.flrLabElem, LabelType.Floor);
+    this.setLabelValue(this.getDisplayValue(this.minValue, LabelType.Floor), this.flrLabElem);
     this.calculateElementDimension(this.flrLabElem);
     const position = this.viewOptions.rightToLeft
       ? this.barDimension - this.flrLabElem.dimension
@@ -994,7 +982,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // Update position of the ceiling label
   private updateCeilLab(): void {
-    this.translateFn(this.maxValue, this.ceilLabElem, LabelType.Ceil);
+    this.setLabelValue(this.getDisplayValue(this.maxValue, LabelType.Ceil), this.ceilLabElem);
     this.calculateElementDimension(this.ceilLabElem);
     const position = this.viewOptions.rightToLeft
       ? 0
@@ -1038,7 +1026,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   // Update low slider handle position and label
   private updateLowHandle(newPos: number): void {
     this.setPosition(this.minHElem, newPos);
-    this.translateFn(this.viewLowValue, this.minLabElem, LabelType.Low);
+    this.setLabelValue(this.getDisplayValue(this.viewLowValue, LabelType.Low), this.minLabElem);
     this.setPosition(
       this.minLabElem,
       this.getHandleLabelPos(HandleLabelType.Min, newPos)
@@ -1059,7 +1047,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   // Update high slider handle position and label
   private updateHighHandle(newPos: number): void {
     this.setPosition(this.maxHElem, newPos);
-    this.translateFn(this.viewHighValue, this.maxLabElem, LabelType.High);
+    this.setLabelValue(this.getDisplayValue(this.viewHighValue, LabelType.High), this.maxLabElem);
     this.setPosition(
       this.maxLabElem,
       this.getHandleLabelPos(HandleLabelType.Max, newPos)
@@ -1305,7 +1293,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
           : lowTr + this.viewOptions.labelOverlapSeparator + highTr;
       }
 
-      this.translateFn(labelVal, this.cmbLabElem, LabelType.Combined, false);
+      this.setLabelValue(labelVal, this.cmbLabElem);
       const pos = this.viewOptions.boundPointerLabels
         ? Math.min(
             Math.max(
