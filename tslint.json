@@ -125,6 +125,16 @@
     "use-life-cycle-interface": true,
     "use-pipe-transform-interface": true,
     "component-class-suffix": true,
-    "directive-class-suffix": true
+    "directive-class-suffix": true,
+    "typedef": [
+      true,
+      "member-variable-declaration",
+      "property-declaration",
+      "variable-declaration",
+      "parameter",
+      "call-signature",
+      "arrow-parameter",
+      "arrow-call-signature"
+    ]
   }
 }
