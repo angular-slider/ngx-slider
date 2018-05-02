@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Ng2SliderOptions } from './ng2-slider/ng2-slider.module';
-import { LabelType } from './ng2-slider/options';
+import { LabelType, CustomStepDefinition } from './ng2-slider/options';
 
 interface SimpleSliderModel {
   value: number;
@@ -137,7 +137,7 @@ export class AppComponent {
     value: 12,
     options: {
       showSelectionBar: true,
-      getSelectionBarColor: (value: number) => {
+      getSelectionBarColor: (value: number): string => {
         if (value <= 3) {
             return 'red';
         }
@@ -156,7 +156,7 @@ export class AppComponent {
     value: 12,
     options: {
         showSelectionBar: true,
-        getPointerColor: (value: number) => {
+        getPointerColor: (value: number): string => {
             if (value <= 3) {
                 return 'red';
             }
@@ -206,7 +206,7 @@ export class AppComponent {
     options: {
       floor: 0,
       ceil: 500,
-      translate: (value: number) => {
+      translate: (value: number): string => {
         return '$' + value;
       }
     }
@@ -234,7 +234,7 @@ export class AppComponent {
   alphabetSlider: SimpleSliderModel = {
     value: this.letterToIndex('E'),
     options: {
-      stepsArray: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').map((letter) => {
+      stepsArray: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').map((letter: string): CustomStepDefinition => {
         return { value: this.letterToIndex(letter) };
       }),
       translate: (value: number, sliderId: any, label: LabelType): string => {
@@ -390,13 +390,13 @@ export class AppComponent {
         val = Math.sqrt(val);
         minVal = Math.sqrt(minVal);
         maxVal = Math.sqrt(maxVal);
-        const range = maxVal - minVal;
+        const range: number = maxVal - minVal;
         return (val - minVal) / range;
       },
       customPositionToValue: (percent: number, minVal: number, maxVal: number): number => {
         minVal = Math.sqrt(minVal);
         maxVal = Math.sqrt(maxVal);
-        const value = percent * (maxVal - minVal) + minVal;
+        const value: number = percent * (maxVal - minVal) + minVal;
         return Math.pow(value, 2);
       }
     }
@@ -506,7 +506,7 @@ export class AppComponent {
       vertical: true,
       showSelectionBar: true,
       showTicksValues: true,
-      ticksValuesTooltip: function (v) {
+      ticksValuesTooltip: (v: number): string => {
         return 'Tooltip for ' + v;
       }
     }
@@ -514,7 +514,7 @@ export class AppComponent {
 
   createDateRange(): Date[] {
     const dates: Date[] = [];
-    for (let i = 1; i <= 31; i++) {
+    for (let i: number = 1; i <= 31; i++) {
       dates.push(new Date(2016, 7, i));
     }
     return dates;
@@ -532,11 +532,11 @@ export class AppComponent {
      The only sane workaround for now is creating a new options object for every update that needs to be done.
      Otherwise, it's a long way down the rabbithole of costly custom check detection
      In future refactoring, I think it's better to move away from nested options to simply a list of @Inputs */
-  onChangeDisabledSliderCheckbox() {
+  onChangeDisabledSliderCheckbox(): void {
     this.disabledSlider.options = Object.assign({}, this.disabledSlider.options, {disabled: this.disabledSliderCheckbox});
   }
 
-  onChangeReadOnlySliderCheckbox() {
+  onChangeReadOnlySliderCheckbox(): void {
     this.readOnlySlider.options = Object.assign({}, this.readOnlySlider.options, {readOnly: this.readOnlySliderCheckbox});
   }
 }

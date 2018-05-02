@@ -52,7 +52,7 @@ export class JqLiteWrapper {
       this.eventListeners[eventName] = <[() => void]>[];
     }
 
-    const unsubscribe = this.renderer.listen(this.elemRef.nativeElement, eventName, callback);
+    const unsubscribe: () => void = this.renderer.listen(this.elemRef.nativeElement, eventName, callback);
     this.eventListeners[eventName].push(unsubscribe);
   }
 

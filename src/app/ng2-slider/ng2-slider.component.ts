@@ -23,6 +23,7 @@ import {
   ValueToPositionFunction,
   PositionToValueFunction,
   PointerType,
+  CustomStepDefinition,
 } from './options';
 
 import { ValuePositionConverter } from './value-position-converter';
@@ -169,7 +170,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   // Model for low value slider. If only value is provided single slider will be rendered.
   private _value: number;
   @Input() set value(newValue: number) {
-    const oldValue = this._value;
+    const oldValue: number = this._value;
     this._value = newValue;
     this.onChangeValue(oldValue, newValue);
   }
@@ -181,7 +182,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   // Model for high value slider. Providing both value and highValue will render range slider.
   private _highValue: number;
   @Input() set highValue(newHighValue: number) {
-    const oldHighValue = this._highValue;
+    const oldHighValue: number = this._highValue;
     this._highValue = newHighValue;
     this.onChangeHighValue(oldHighValue, newHighValue);
   }
@@ -194,7 +195,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   // Each option can be updated at runtime and the slider will automatically be re-rendered.
   private _options: Options = new Options();
   @Input() set options(newOptions: Options) {
-    const oldOptions = this._options;
+    const oldOptions: Options = this._options;
     this._options = newOptions;
     this.onChangeOptions(oldOptions, newOptions);
   }
@@ -203,7 +204,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   // Options synced to model options, based on defaults
-  private viewOptions = new Options();
+  private viewOptions: Options = new Options();
   // Low value synced to model low value
   private viewLowValue: number;
   // High value synced to model high value
@@ -345,12 +346,12 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    this.thrOnLowHandleChange = new ThrottledFunc(() => { this.onLowHandleChange(); }, this.viewOptions.interval);
-    this.thrOnHighHandleChange = new ThrottledFunc(() => { this.onHighHandleChange(); }, this.viewOptions.interval);
+    this.thrOnLowHandleChange = new ThrottledFunc((): void => { this.onLowHandleChange(); }, this.viewOptions.interval);
+    this.thrOnHighHandleChange = new ThrottledFunc((): void => { this.onHighHandleChange(); }, this.viewOptions.interval);
 
     /* We have to run the rest of the actual init function later, in separate Angular tick cycle,
      because this one has been checked and it will lead to ExpressionChangedAfterItHasBeenCheckedError */
-    setTimeout(() => this.init(), 0);
+    setTimeout((): void => this.init(), 0);
   }
 
   init(): void {
@@ -410,7 +411,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   @HostListener('window:resize', ['$event'])
-  onResize(event): void {
+  onResize(event: any): void {
     this.calcViewDimensions();
   }
 
@@ -428,9 +429,9 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private findStepIndex(modelValue: number): number {
-    let index = 0;
-    for (let i = 0; i < this.viewOptions.stepsArray.length; i++) {
-      const step = this.viewOptions.stepsArray[i];
+    let index: number = 0;
+    for (let i: number = 0; i < this.viewOptions.stepsArray.length; i++) {
+      const step: CustomStepDefinition = this.viewOptions.stepsArray[i];
       if (step.value === modelValue) {
         index = i;
         break;
@@ -464,7 +465,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private getStepValue(sliderValue: number): number {
-    const step = this.viewOptions.stepsArray[sliderValue];
+    const step: CustomStepDefinition = this.viewOptions.stepsArray[sliderValue];
     return step.value;
   }
 
@@ -561,7 +562,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
       if (this.viewOptions.translate) {
         this.customTrFn = this.viewOptions.translate;
       } else {
-        this.customTrFn = (value) => String(value);
+        this.customTrFn = (value: number): string => String(value);
       }
 
       this.getLegend = this.viewOptions.getLegend;
@@ -576,7 +577,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.viewOptions.translate) {
       this.customTrFn = this.viewOptions.translate;
     } else {
-      this.customTrFn = (modelValue: number) => {
+      this.customTrFn = (modelValue: number): string => {
         if (this.viewOptions.bindIndexForStepsArray) {
           return String(this.getStepValue(modelValue));
         }
@@ -584,8 +585,8 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
       };
     }
 
-    this.getLegend = (index) => {
-      const step = this.viewOptions.stepsArray[index];
+    this.getLegend = (index: number): string => {
+      const step: CustomStepDefinition = this.viewOptions.stepsArray[index];
       return step.legend;
     };
   }
@@ -628,7 +629,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
       this.viewOptions.showTicksValues || this.viewOptions.hideLimitLabels
     );
 
-    const hideLabelsForTicks = this.viewOptions.showTicksValues && !this.intermediateTicks;
+    const hideLabelsForTicks: boolean = this.viewOptions.showTicksValues && !this.intermediateTicks;
     this.alwaysHide(
       this.minLabElem,
       hideLabelsForTicks || this.viewOptions.hidePointerLabels
@@ -663,7 +664,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
       // The above change in host component class will not be applied until the end of this cycle
       // However, functions calculating the slider position expect the slider to be already styled as vertical
       // So as a workaround, we need to reset the slider once again to compute the correct values
-      setTimeout(() => { this.resetSlider(); });
+      setTimeout((): void => { this.resetSlider(); });
     }
 
     if (this.viewOptions.draggableRange) {
@@ -853,7 +854,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   private calcViewDimensions(): void {
     this.calculateElementDimension(this.minHElem);
 
-    const handleWidth = this.minHElem.dimension;
+    const handleWidth: number = this.minHElem.dimension;
 
     this.handleHalfDim = handleWidth / 2;
     this.calculateElementDimension(this.fullBarElem);
@@ -861,7 +862,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.maxPos = this.barDimension - handleWidth;
 
-    const sliderElementBoundingRect = this.elementRef.nativeElement.getBoundingClientRect();
+    const sliderElementBoundingRect: ClientRect = this.elementRef.nativeElement.getBoundingClientRect();
     this.sliderElementPosition = this.viewOptions.vertical ?
       sliderElementBoundingRect.bottom : sliderElementBoundingRect.left;
     console.log(this.sliderElementPosition);
@@ -879,8 +880,8 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
       return;
     }
 
-    const ticksArray = this.viewOptions.ticksArray || this.getTicksArray();
-    const translate = this.viewOptions.vertical ? 'translateY' : 'translateX';
+    const ticksArray: number[] = this.viewOptions.ticksArray || this.getTicksArray();
+    const translate: string = this.viewOptions.vertical ? 'translateY' : 'translateX';
 
     if (this.viewOptions.rightToLeft) {
       ticksArray.reverse();
@@ -893,8 +894,8 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
         position = this.maxPos - position;
       }
 
-      const translation = translate + '(' + Math.round(position) + 'px)';
-      const tick = new Tick();
+      const translation: string = translate + '(' + Math.round(position) + 'px)';
+      const tick: Tick = new Tick();
       tick.selected = this.isTickSelected(value);
       tick.style = {
         '-webkit-transform': translation,
@@ -923,7 +924,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       }
       if (this.getLegend) {
-        const legend = this.getLegend(value, this.viewOptions.id);
+        const legend: string = this.getLegend(value, this.viewOptions.id);
         if (legend) {
           tick.legend = legend;
         }
@@ -935,7 +936,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   private getTicksArray(): number[] {
     const step: number = (this.viewOptions.tickStep !== null) ? this.viewOptions.tickStep : this.step;
     const ticksArray: number[] = [];
-    for (let value = this.minValue; value <= this.maxValue; value += step) {
+    for (let value: number = this.minValue; value <= this.maxValue; value += step) {
       ticksArray.push(value);
     }
     return ticksArray;
@@ -944,7 +945,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   private isTickSelected(value: number): boolean {
     if (!this.range) {
       if (this.viewOptions.showSelectionBarFromValue !== null) {
-        const center = this.viewOptions.showSelectionBarFromValue;
+        const center: number = this.viewOptions.showSelectionBarFromValue;
         if (this.viewLowValue > center &&
             value >= center &&
             value <= this.viewLowValue) {
@@ -974,7 +975,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   private updateFloorLab(): void {
     this.setLabelValue(this.getDisplayValue(this.minValue, LabelType.Floor), this.flrLabElem);
     this.calculateElementDimension(this.flrLabElem);
-    const position = this.viewOptions.rightToLeft
+    const position: number = this.viewOptions.rightToLeft
       ? this.barDimension - this.flrLabElem.dimension
       : 0;
     this.setPosition(this.flrLabElem, position);
@@ -984,7 +985,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   private updateCeilLab(): void {
     this.setLabelValue(this.getDisplayValue(this.maxValue, LabelType.Ceil), this.ceilLabElem);
     this.calculateElementDimension(this.ceilLabElem);
-    const position = this.viewOptions.rightToLeft
+    const position: number = this.viewOptions.rightToLeft
       ? 0
       : this.barDimension - this.ceilLabElem.dimension;
     this.setPosition(this.ceilLabElem, position);
@@ -1007,9 +1008,9 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // Helper function to work out the position for handle labels depending on RTL or not
   private getHandleLabelPos(labelType: HandleLabelType, newPos: number): number {
-    const labelDimension = labelType === HandleLabelType.Min ? this.minLabElem.dimension : this.maxLabElem.dimension;
-    const nearHandlePos = newPos - labelDimension / 2 + this.handleHalfDim;
-    const endOfBarPos = this.barDimension - labelDimension;
+    const labelDimension: number = labelType === HandleLabelType.Min ? this.minLabElem.dimension : this.maxLabElem.dimension;
+    const nearHandlePos: number = newPos - labelDimension / 2 + this.handleHalfDim;
+    const endOfBarPos: number = this.barDimension - labelDimension;
 
     if (!this.viewOptions.boundPointerLabels) {
       return nearHandlePos;
@@ -1033,7 +1034,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     );
 
     if (this.viewOptions.getPointerColor) {
-      const pointercolor = this.getPointerColor(PointerType.Min);
+      const pointercolor: string = this.getPointerColor(PointerType.Min);
       this.minPointerStyle = {
         backgroundColor: pointercolor,
       };
@@ -1054,7 +1055,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     );
 
     if (this.viewOptions.getPointerColor) {
-      const pointercolor = this.getPointerColor(PointerType.Max);
+      const pointercolor: string = this.getPointerColor(PointerType.Max);
       this.maxPointerStyle = {
         backgroundColor: pointercolor,
       };
@@ -1070,13 +1071,13 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.viewOptions.hidePointerLabels) {
       return;
     }
-    let flHidden = false;
-    let clHidden = false;
-    const isMinLabAtFloor = this.isLabelBelowFloorLab(this.minLabElem);
-    const isMinLabAtCeil = this.isLabelAboveCeilLab(this.minLabElem);
-    const isMaxLabAtCeil = this.isLabelAboveCeilLab(this.maxLabElem);
-    const isCmbLabAtFloor = this.isLabelBelowFloorLab(this.cmbLabElem);
-    const isCmbLabAtCeil = this.isLabelAboveCeilLab(this.cmbLabElem);
+    let flHidden: boolean = false;
+    let clHidden: boolean = false;
+    const isMinLabAtFloor: boolean = this.isLabelBelowFloorLab(this.minLabElem);
+    const isMinLabAtCeil: boolean = this.isLabelAboveCeilLab(this.minLabElem);
+    const isMaxLabAtCeil: boolean = this.isLabelAboveCeilLab(this.maxLabElem);
+    const isCmbLabAtFloor: boolean = this.isLabelBelowFloorLab(this.cmbLabElem);
+    const isCmbLabAtCeil: boolean = this.isLabelAboveCeilLab(this.cmbLabElem);
 
     if (isMinLabAtFloor) {
       flHidden = true;
@@ -1095,8 +1096,8 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     if (this.range) {
-      const hideCeil = this.cmbLabelShown ? isCmbLabAtCeil : isMaxLabAtCeil;
-      const hideFloor = this.cmbLabelShown
+      const hideCeil: boolean = this.cmbLabelShown ? isCmbLabAtCeil : isMaxLabAtCeil;
+      const hideFloor: boolean = this.cmbLabelShown
         ? isCmbLabAtFloor
         : isMinLabAtFloor;
 
@@ -1116,33 +1117,33 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private isLabelBelowFloorLab(label: SliderElement): boolean {
-    const isRTL = this.viewOptions.rightToLeft,
-      pos = label.position,
-      dim = label.dimension,
-      floorPos = this.flrLabElem.position,
-      floorDim = this.flrLabElem.dimension;
+    const isRTL: boolean = this.viewOptions.rightToLeft;
+    const pos: number = label.position;
+    const dim: number = label.dimension;
+    const floorPos: number = this.flrLabElem.position;
+    const floorDim: number = this.flrLabElem.dimension;
     return isRTL
       ? pos + dim >= floorPos - 2
       : pos <= floorPos + floorDim + 2;
   }
 
   private isLabelAboveCeilLab(label: SliderElement): boolean {
-    const isRTL = this.viewOptions.rightToLeft,
-      pos = label.position,
-      dim = label.dimension,
-      ceilPos = this.ceilLabElem.position,
-      ceilDim = this.ceilLabElem.dimension;
+    const isRTL: boolean = this.viewOptions.rightToLeft;
+    const pos: number = label.position;
+    const dim: number = label.dimension;
+    const ceilPos: number = this.ceilLabElem.position;
+    const ceilDim: number = this.ceilLabElem.dimension;
     return isRTL ? pos <= ceilPos + ceilDim + 2 : pos + dim >= ceilPos - 2;
   }
 
   // Update slider selection bar, combined label and range label
   private updateSelectionBar(): void {
-    let position = 0;
-    let dimension = 0;
-    const isSelectionBarFromRight = this.viewOptions.rightToLeft
+    let position: number = 0;
+    let dimension: number = 0;
+    const isSelectionBarFromRight: boolean = this.viewOptions.rightToLeft
         ? !this.viewOptions.showSelectionBarEnd
         : this.viewOptions.showSelectionBarEnd;
-    const positionForRange = this.viewOptions.rightToLeft
+    const positionForRange: number = this.viewOptions.rightToLeft
         ? this.maxHElem.position + this.handleHalfDim
         : this.minHElem.position + this.handleHalfDim;
 
@@ -1151,9 +1152,9 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
       position = positionForRange;
     } else {
       if (this.viewOptions.showSelectionBarFromValue !== null) {
-        const center = this.viewOptions.showSelectionBarFromValue;
-        const centerPosition = this.valueToPosition(center);
-        const isModelGreaterThanCenter = this.viewOptions.rightToLeft
+        const center: number = this.viewOptions.showSelectionBarFromValue;
+        const centerPosition: number = this.valueToPosition(center);
+        const isModelGreaterThanCenter: boolean = this.viewOptions.rightToLeft
             ? this.viewLowValue <= center
             : this.viewLowValue > center;
         if (isModelGreaterThanCenter) {
@@ -1164,8 +1165,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
           position = this.minHElem.position + this.handleHalfDim;
         }
       } else if (isSelectionBarFromRight) {
-        dimension =
-          Math.abs(this.maxPos - this.minHElem.position) + this.handleHalfDim;
+        dimension = Math.abs(this.maxPos - this.minHElem.position) + this.handleHalfDim;
         position = this.minHElem.position + this.handleHalfDim;
       } else {
         dimension = this.minHElem.position + this.handleHalfDim;
@@ -1196,16 +1196,16 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     }
     if (this.viewOptions.getSelectionBarColor) {
-      const color = this.getSelectionBarColor();
+      const color: string = this.getSelectionBarColor();
       this.barStyle = {
         backgroundColor: color,
       };
     } else if (this.viewOptions.selectionBarGradient) {
-      const offset = this.viewOptions.showSelectionBarFromValue !== null
+      const offset: number = this.viewOptions.showSelectionBarFromValue !== null
             ? this.valueToPosition(this.viewOptions.showSelectionBarFromValue)
             : 0;
-      const reversed = (offset - position > 0 && !isSelectionBarFromRight) || (offset - position <= 0 && isSelectionBarFromRight);
-      const direction = this.viewOptions.vertical
+      const reversed: boolean = (offset - position > 0 && !isSelectionBarFromRight) || (offset - position <= 0 && isSelectionBarFromRight);
+      const direction: string = this.viewOptions.vertical
           ? reversed ? 'bottom' : 'top'
           : reversed ? 'left' : 'right';
       this.barStyle = {
@@ -1272,7 +1272,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // Update combined label position and value
   private updateCmbLabel(): void {
-    let isLabelOverlap = null;
+    let isLabelOverlap: boolean = null;
     if (this.viewOptions.rightToLeft) {
       isLabelOverlap =
         this.minLabElem.position - this.minLabElem.dimension - 10 <= this.maxLabElem.position;
@@ -1282,9 +1282,9 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     if (isLabelOverlap) {
-      const lowTr = this.getDisplayValue(this.viewLowValue, LabelType.Low);
-      const highTr = this.getDisplayValue(this.viewHighValue, LabelType.High);
-      let labelVal;
+      const lowTr: string = this.getDisplayValue(this.viewLowValue, LabelType.Low);
+      const highTr: string = this.getDisplayValue(this.viewHighValue, LabelType.High);
+      let labelVal: string;
       if (this.viewOptions.mergeRangeLabelsIfSame && lowTr === highTr) {
         labelVal = lowTr;
       } else {
@@ -1294,7 +1294,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
       }
 
       this.setLabelValue(labelVal, this.cmbLabElem);
-      const pos = this.viewOptions.boundPointerLabels
+      const pos: number = this.viewOptions.boundPointerLabels
         ? Math.min(
             Math.max(
               this.selBarElem.position +
@@ -1334,10 +1334,10 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // Round value to step and precision based on minValue
   private roundStep(value: number, customStep?: number): number {
-    const step = customStep ? customStep : this.step;
-    let steppedDifference = +( (value - this.minValue) / step ).toPrecision(12);
+    const step: number = customStep ? customStep : this.step;
+    let steppedDifference: number = +( (value - this.minValue) / step ).toPrecision(12);
     steppedDifference = Math.round(steppedDifference) * step;
-    const newValue = (this.minValue + steppedDifference).toFixed(this.precision);
+    const newValue: string = (this.minValue + steppedDifference).toFixed(this.precision);
     return +newValue;
   }
 
@@ -1366,8 +1366,8 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   // Calculate element's width/height depending on whether slider is horizontal or vertical
-  private calculateElementDimension(elem: SliderElement) {
-    const val = elem.getBoundingClientRect();
+  private calculateElementDimension(elem: SliderElement): void {
+    const val: ClientRect = elem.getBoundingClientRect();
     if (this.viewOptions.vertical) {
       elem.dimension = (val.bottom - val.top) * this.viewOptions.scale;
     } else {
@@ -1401,7 +1401,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     val = this.sanitizeValue(val);
-    let percent = fn(val, this.minValue, this.maxValue) || 0;
+    let percent: number = fn(val, this.minValue, this.maxValue) || 0;
     if (this.viewOptions.rightToLeft) {
       percent = 1 - percent;
     }
@@ -1410,7 +1410,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // Translate position to model value
   private positionToValue(position: number): number {
-    let percent = position / this.maxPos;
+    let percent: number = position / this.maxPos;
     if (this.viewOptions.rightToLeft) {
       percent = 1 - percent;
     }
@@ -1429,10 +1429,10 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
       return this.viewOptions.vertical ? event.clientY : event.clientX;
     }
 
-    let touchIndex = 0;
-    const touches = event.touches;
+    let touchIndex: number = 0;
+    const touches: TouchList = event.touches;
     if (targetTouchId !== undefined) {
-      for (let i = 0; i < touches.length; i++) {
+      for (let i: number = 0; i < touches.length; i++) {
         if (touches[i].identifier === targetTouchId) {
           touchIndex = i;
           break;
@@ -1447,8 +1447,8 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // Compute the event position depending on whether the slider is horizontal or vertical
   private getEventPosition(event: MouseEvent|TouchEvent, targetTouchId?: number): number {
-    const sliderPos = this.sliderElementPosition;
-    let eventPos = 0;
+    const sliderPos: number = this.sliderElementPosition;
+    let eventPos: number = 0;
     if (this.viewOptions.vertical) {
       eventPos = -this.getEventXY(event, targetTouchId) + sliderPos;
     } else {
@@ -1463,9 +1463,9 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
       return this.minHElem;
     }
 
-    const position = this.getEventPosition(event);
-    const distanceMin = Math.abs(position - this.minHElem.position);
-    const distanceMax = Math.abs(position - this.maxHElem.position);
+    const position: number = this.getEventPosition(event);
+    const distanceMin: number = Math.abs(position - this.minHElem.position);
+    const distanceMax: number = Math.abs(position - this.maxHElem.position);
 
     if (distanceMin < distanceMax) {
       return this.minHElem;
@@ -1487,54 +1487,54 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // Bind mouse and touch events to slider handles
   private bindEvents(): void {
-    const draggableRange = this.viewOptions.draggableRange;
+    const draggableRange: boolean = this.viewOptions.draggableRange;
 
     if (!this.viewOptions.onlyBindHandles) {
-      this.selBarElem.on('mousedown', (event) => this.onBarStart(draggableRange, null, event));
-      this.selBarElem.on('mousedown', (event) => this.onBarMove(draggableRange, this.selBarElem, event));
+      this.selBarElem.on('mousedown', (event: MouseEvent): void => this.onBarStart(draggableRange, null, event));
+      this.selBarElem.on('mousedown', (event: MouseEvent): void => this.onBarMove(draggableRange, this.selBarElem, event));
     }
 
     if (this.viewOptions.draggableRangeOnly) {
-      this.minHElem.on('mousedown', (event) => this.onBarStart(draggableRange, null, event));
-      this.maxHElem.on('mousedown', (event) => this.onBarStart(draggableRange, null, event));
+      this.minHElem.on('mousedown', (event: MouseEvent): void => this.onBarStart(draggableRange, null, event));
+      this.maxHElem.on('mousedown', (event: MouseEvent): void => this.onBarStart(draggableRange, null, event));
     } else {
-      this.minHElem.on('mousedown', (event) => this.onStart(this.minHElem, HandleType.Low, event));
+      this.minHElem.on('mousedown', (event: MouseEvent): void => this.onStart(this.minHElem, HandleType.Low, event));
 
       if (this.range) {
-        this.maxHElem.on('mousedown', (event) => this.onStart(this.maxHElem, HandleType.High, event));
+        this.maxHElem.on('mousedown', (event: MouseEvent): void => this.onStart(this.maxHElem, HandleType.High, event));
       }
       if (!this.viewOptions.onlyBindHandles) {
-        this.fullBarElem.on('mousedown', (event) => this.onStart(null, null, event));
-        this.fullBarElem.on('mousedown', (event) => this.onMove(this.fullBarElem, event));
-        this.ticksElem.on('mousedown', (event) => this.onStart(null, null, event));
-        this.ticksElem.on('mousedown', (event) => this.onTickClick(this.ticksElem, event));
+        this.fullBarElem.on('mousedown', (event: MouseEvent): void => this.onStart(null, null, event));
+        this.fullBarElem.on('mousedown', (event: MouseEvent): void => this.onMove(this.fullBarElem, event));
+        this.ticksElem.on('mousedown', (event: MouseEvent): void => this.onStart(null, null, event));
+        this.ticksElem.on('mousedown', (event: MouseEvent): void => this.onTickClick(this.ticksElem, event));
       }
     }
 
     if (!this.viewOptions.onlyBindHandles) {
-      this.selBarElem.on('touchstart', (event) => this.onBarStart(draggableRange, null, event));
-      this.selBarElem.on('touchstart', (event) => this.onBarMove(draggableRange, this.selBarElem, event));
+      this.selBarElem.on('touchstart', (event: TouchEvent): void => this.onBarStart(draggableRange, null, event));
+      this.selBarElem.on('touchstart', (event: TouchEvent): void => this.onBarMove(draggableRange, this.selBarElem, event));
     }
     if (this.viewOptions.draggableRangeOnly) {
-      this.minHElem.on('touchstart', (event) => this.onBarStart(draggableRange, null, event));
-      this.maxHElem.on('touchstart', (event) => this.onBarStart(draggableRange, null, event));
+      this.minHElem.on('touchstart', (event: TouchEvent): void => this.onBarStart(draggableRange, null, event));
+      this.maxHElem.on('touchstart', (event: TouchEvent): void => this.onBarStart(draggableRange, null, event));
     } else {
-      this.minHElem.on('touchstart', (event) => this.onStart(this.minHElem, HandleType.Low, event));
+      this.minHElem.on('touchstart', (event: TouchEvent): void => this.onStart(this.minHElem, HandleType.Low, event));
       if (this.range) {
-        this.maxHElem.on('touchstart', (event) => this.onStart(this.maxHElem, HandleType.High, event));
+        this.maxHElem.on('touchstart', (event: TouchEvent): void => this.onStart(this.maxHElem, HandleType.High, event));
       }
       if (!this.viewOptions.onlyBindHandles) {
-        this.fullBarElem.on('touchstart', (event) => this.onStart(null, null, event));
-        this.fullBarElem.on('touchstart', (event) => this.onMove(this.fullBarElem, event));
-        this.ticksElem.on('touchstart', (event) => this.onStart(null, null, event));
-        this.ticksElem.on('touchstart', (event) => this.onTickClick(this.ticksElem, event));
+        this.fullBarElem.on('touchstart', (event: TouchEvent): void => this.onStart(null, null, event));
+        this.fullBarElem.on('touchstart', (event: TouchEvent): void => this.onMove(this.fullBarElem, event));
+        this.ticksElem.on('touchstart', (event: TouchEvent): void => this.onStart(null, null, event));
+        this.ticksElem.on('touchstart', (event: TouchEvent): void => this.onTickClick(this.ticksElem, event));
       }
     }
 
     if (this.viewOptions.keyboardSupport) {
-      this.minHElem.on('focus', () => this.onPointerFocus(this.minHElem, HandleType.Low));
+      this.minHElem.on('focus', (): void => this.onPointerFocus(this.minHElem, HandleType.Low));
       if (this.range) {
-        this.maxHElem.on('focus', () => this.onPointerFocus(this.maxHElem, HandleType.High));
+        this.maxHElem.on('focus', (): void => this.onPointerFocus(this.maxHElem, HandleType.High));
       }
     }
   }
@@ -1598,14 +1598,16 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
       this.focusElement(pointer);
     }
 
-    const ehMove = (e: MouseEvent|TouchEvent) => this.dragging.active ? this.onDragMove(pointer, e) : this.onMove(pointer, e);
+    const ehMove: ((e: MouseEvent|TouchEvent) => void) =
+       (e: MouseEvent|TouchEvent): void => this.dragging.active ? this.onDragMove(pointer, e) : this.onMove(pointer, e);
 
     if (this.onMoveUnsubscribe !== null) {
       this.onMoveUnsubscribe();
     }
     this.onMoveUnsubscribe = this.renderer.listen('document', moveEvent, ehMove);
 
-    const ehEnd = (e: MouseEvent|TouchEvent) => this.onEnd(e);
+    const ehEnd: ((e: MouseEvent|TouchEvent) => void) =
+      (e: MouseEvent|TouchEvent): void => this.onEnd(e);
     if (this.onEndUnsubscribe !== null) {
       this.onEndUnsubscribe();
     }
@@ -1622,11 +1624,11 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // onMove event handler
   private onMove(pointer: SliderElement, event: MouseEvent|TouchEvent, fromTick?: boolean): void {
-    let touchForThisSlider;
+    let touchForThisSlider: Touch;
 
     if (event instanceof TouchEvent) {
-      const changedTouches = event.changedTouches;
-      for (let i = 0; i < changedTouches.length; i++) {
+      const changedTouches: TouchList = event.changedTouches;
+      for (let i: number = 0; i < changedTouches.length; i++) {
         if (changedTouches[i].identifier === this.touchId) {
           touchForThisSlider = changedTouches[i];
           break;
@@ -1638,15 +1640,15 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     }
 
-    const newPos = this.getEventPosition(
+    const newPos: number = this.getEventPosition(
         event,
         touchForThisSlider ? touchForThisSlider.identifier : undefined
       );
-    let newValue;
-    const ceilValue = this.viewOptions.rightToLeft
+    let newValue: number;
+    const ceilValue: number = this.viewOptions.rightToLeft
         ? this.minValue
         : this.maxValue;
-    const flrValue = this.viewOptions.rightToLeft ? this.maxValue : this.minValue;
+    const flrValue: number = this.viewOptions.rightToLeft ? this.maxValue : this.minValue;
 
     if (newPos <= 0) {
       newValue = flrValue;
@@ -1665,7 +1667,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private onEnd(event: MouseEvent|TouchEvent): void {
     if (event instanceof TouchEvent) {
-      const changedTouches = event.changedTouches;
+      const changedTouches: TouchList = event.changedTouches;
       if (changedTouches[0].identifier !== this.touchId) {
         return;
       }
@@ -1695,9 +1697,9 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private onPointerFocus(pointer: SliderElement, ref: HandleType): void {
     this.tracking = ref;
-    pointer.on('blur', (event) => this.onPointerBlur(pointer));
-    pointer.on('keydown', (event: KeyboardEvent) => this.onKeyboardEvent(event));
-    pointer.on('keyup', (event: KeyboardEvent) => this.onKeyUp());
+    pointer.on('blur', (): void => this.onPointerBlur(pointer));
+    pointer.on('keydown', (event: KeyboardEvent): void => this.onKeyboardEvent(event));
+    pointer.on('keyup', (): void => this.onKeyUp());
     this.firstKeyDown = true;
     pointer.addClass('rz-active');
 
@@ -1723,10 +1725,10 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private getKeyActions(currentValue: number): {[key: string]: number} {
-    let increaseStep = currentValue + this.step,
-      decreaseStep = currentValue - this.step,
-      increasePage = currentValue + this.valueRange / 10,
-      decreasePage = currentValue - this.valueRange / 10;
+    let increaseStep: number = currentValue + this.step;
+    let decreaseStep: number = currentValue - this.step;
+    let increasePage: number = currentValue + this.valueRange / 10;
+    let decreasePage: number = currentValue - this.valueRange / 10;
 
     if (this.viewOptions.reversedControls) {
       increaseStep = currentValue - this.step;
@@ -1736,7 +1738,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     // Left to right default actions
-    const actions = {
+    const actions: {[key: string]: number} = {
       UP: increaseStep,
       DOWN: decreaseStep,
       LEFT: decreaseStep,
@@ -1760,9 +1762,9 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private onKeyboardEvent(event: KeyboardEvent): void {
-    const currentValue = this.getCurrentTrackingValue();
-    const keyCode = event.keyCode || event.which;
-    const keys = {
+    const currentValue: number = this.getCurrentTrackingValue();
+    const keyCode: number = event.keyCode || event.which;
+    const keys: {[keyCode: number]: string} = {
         38: 'UP',
         40: 'DOWN',
         37: 'LEFT',
@@ -1772,9 +1774,9 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
         36: 'HOME',
         35: 'END',
       };
-    const actions = this.getKeyActions(currentValue);
-    const key = keys[keyCode];
-    const action = actions[key];
+    const actions: {[key: string]: number} = this.getKeyActions(currentValue);
+    const key: string = keys[keyCode];
+    const action: number = actions[key];
 
     if (action == null || this.tracking === null) {
       return;
@@ -1785,12 +1787,13 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
       this.firstKeyDown = false;
     }
 
-    const newValue = this.roundStep(this.sanitizeValue(action));
+    const newValue: number = this.roundStep(this.sanitizeValue(action));
     if (!this.viewOptions.draggableRangeOnly) {
       this.positionTrackingHandle(newValue);
     } else {
-      const difference = this.viewHighValue - this.viewLowValue;
-      let newMinValue, newMaxValue;
+      const difference: number = this.viewHighValue - this.viewLowValue;
+      let newMinValue: number;
+      let newMaxValue: number;
 
       if (this.tracking === HandleType.Low) {
         newMinValue = newValue;
@@ -1813,7 +1816,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // onDragStart event handler, handles dragging of the middle bar
   private onDragStart(pointer: SliderElement, ref: HandleType, event: MouseEvent|TouchEvent): void {
-    const position = this.getEventPosition(event);
+    const position: number = this.getEventPosition(event);
 
     this.dragging = new Dragging();
     this.dragging.active = true;
@@ -1883,7 +1886,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private onDragMove(pointer: SliderElement, event?: MouseEvent|TouchEvent): void {
-    const newPos = this.getEventPosition(event);
+    const newPos: number = this.getEventPosition(event);
 
     let ceilLimit: number, flrLimit: number, flrHElem: SliderElement, ceilHElem: SliderElement;
     if (this.viewOptions.rightToLeft) {
@@ -1898,10 +1901,11 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
       ceilHElem = this.maxHElem;
     }
 
-    const isUnderFlrLimit = newPos <= flrLimit;
-    const isOverCeilLimit = newPos >= this.maxPos - ceilLimit;
+    const isUnderFlrLimit: boolean = newPos <= flrLimit;
+    const isOverCeilLimit: boolean = newPos >= this.maxPos - ceilLimit;
 
-    let newMinValue, newMaxValue;
+    let newMinValue: number;
+    let newMaxValue: number;
     if (isUnderFlrLimit) {
       if (flrHElem.position === 0) {
         return;
@@ -1948,7 +1952,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // Set the new value and position to the current tracking handle
   private positionTrackingHandle(newValue: number): void {
-    let valueChanged = false;
+    let valueChanged: boolean = false;
     newValue = this.applyMinMaxLimit(newValue);
     if (this.range) {
       if (this.viewOptions.pushRange) {
@@ -2026,8 +2030,8 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private applyMinMaxRange(newValue: number): number {
-    const oppositeValue = this.tracking === HandleType.Low ? this.viewHighValue : this.viewLowValue;
-    const difference = Math.abs(newValue - oppositeValue);
+    const oppositeValue: number = this.tracking === HandleType.Low ? this.viewHighValue : this.viewLowValue;
+    const difference: number = Math.abs(newValue - oppositeValue);
     if (this.viewOptions.minRange != null) {
       if (difference < this.viewOptions.minRange) {
         if (this.tracking === HandleType.Low) {
@@ -2050,14 +2054,14 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private applyPushRange(newValue: number): number {
-    const difference = this.tracking === HandleType.Low
+    const difference: number = this.tracking === HandleType.Low
           ? this.viewHighValue - newValue
           : newValue - this.viewLowValue;
-    const minRange =
+    const minRange: number =
         this.viewOptions.minRange !== null
           ? this.viewOptions.minRange
           : this.viewOptions.step;
-    const maxRange = this.viewOptions.maxRange;
+    const maxRange: number = this.viewOptions.maxRange;
     // if smaller than minRange
     if (difference < minRange) {
       if (this.tracking === HandleType.Low) {
