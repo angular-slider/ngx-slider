@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Ng2SliderOptions } from './ng2-slider/ng2-slider.module';
+import { LabelType } from './ng2-slider/options';
 
 interface SimpleSliderModel {
   value: number;
@@ -217,11 +218,11 @@ export class AppComponent {
     options: {
       floor: 0,
       ceil: 500,
-      translate: (value: number, sliderId: any, label: any) => {
+      translate: (value: number, sliderId: any, label: LabelType): string => {
         switch (label) {
-          case 'model':
+          case LabelType.Low:
             return '<b>Min price:</b> $' + value;
-          case 'high':
+          case LabelType.High:
             return '<b>Max price:</b> $' + value;
           default:
             return '$' + value;
@@ -236,7 +237,7 @@ export class AppComponent {
       stepsArray: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').map((letter) => {
         return { value: this.letterToIndex(letter) };
       }),
-      translate: (value: number, sliderId: any, label: any) => {
+      translate: (value: number, sliderId: any, label: LabelType): string => {
         return this.indexToLetter(value);
       }
     }
@@ -248,7 +249,7 @@ export class AppComponent {
       stepsArray: this.createDateRange().map((date: Date) => {
         return { value: date.getTime() };
       }),
-      translate: (value: number, sliderId: any, label: any): string => {
+      translate: (value: number, sliderId: any, label: LabelType): string => {
         return new Date(value).toDateString();
       }
     }
