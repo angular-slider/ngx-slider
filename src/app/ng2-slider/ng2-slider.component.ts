@@ -865,7 +865,6 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     const sliderElementBoundingRect: ClientRect = this.elementRef.nativeElement.getBoundingClientRect();
     this.sliderElementPosition = this.viewOptions.vertical ?
       sliderElementBoundingRect.bottom : sliderElementBoundingRect.left;
-    console.log(this.sliderElementPosition);
 
     if (this.initHasRun) {
       this.updateFloorLab();
