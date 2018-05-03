@@ -12,7 +12,9 @@ import {
   Renderer2,
   EventEmitter,
   Output,
-  ViewEncapsulation
+  ViewEncapsulation,
+  ContentChild,
+  TemplateRef
 } from '@angular/core';
 
 import {
@@ -63,10 +65,18 @@ enum HandleLabelType {
   Max
 }
 
+/** Label type with purely slider labels (including combined label but excluding tick labels) */
+enum SliderLabelType {
+  Low,
+  High,
+  Floor,
+  Ceil,
+  Combined
+}
+
 // TODO: slowly rewrite to angular
 class SliderElement extends JqLiteWrapper {
   position: number = 0;
-  value: string; // TODO: this only applies to label elements; it should be moved to the specific directives where it's used
   dimension: number;
   alwaysHide: boolean = false;
 
@@ -110,11 +120,19 @@ export class MinHDirective extends SliderElement {
   }
 }
 
+@Directive({selector: '[minLabelTemplate]'})
+export class MinLabelTemplateDirective {
+}
+
 @Directive({selector: '[max-h-elem]'})
 export class MaxHDirective extends SliderElement {
   constructor(elemRef: ElementRef, renderer: Renderer2) {
     super(elemRef, renderer);
   }
+}
+
+@Directive({selector: '[maxLabelTemplate]'})
+export class MaxLabelTemplateDirective {
 }
 
 @Directive({selector: '[flr-lab-elem]'})
@@ -124,11 +142,19 @@ export class FlrLabDirective extends SliderElement {
   }
 }
 
+@Directive({selector: '[floorLabelTemplate]'})
+export class FloorLabelTemplateDirective {
+}
+
 @Directive({selector: '[ceil-lab-elem]'})
 export class CeilLabDirective extends SliderElement {
   constructor(elemRef: ElementRef, renderer: Renderer2) {
     super(elemRef, renderer);
   }
+}
+
+@Directive({selector: '[ceilLabelTemplate]'})
+export class CeilLabelTemplateDirective {
 }
 
 @Directive({selector: '[min-lab-elem]'})
@@ -150,6 +176,10 @@ export class CmbLabDirective extends SliderElement {
   constructor(elemRef: ElementRef, renderer: Renderer2) {
     super(elemRef, renderer);
   }
+}
+
+@Directive({selector: '[combinedLabelTemplate]'})
+export class CombinedLabelTemplateDirective {
 }
 
 @Directive({selector: '[ticks-elem]'})
@@ -341,6 +371,27 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private onMoveUnsubscribe: () => void = null;
   private onEndUnsubscribe: () => void = null;
+
+  private floorLabelValue: string;
+  private ceilLabelValue: string;
+  private minLabelValue: string;
+  private maxLabelValue: string;
+  private combinedLabelValue: string;
+
+  @ContentChild(FloorLabelTemplateDirective, {read: TemplateRef})
+  private floorLabelTemplate: TemplateRef<any>;
+
+  @ContentChild(CeilLabelTemplateDirective, {read: TemplateRef})
+  private ceilLabelTemplate: TemplateRef<any>;
+
+  @ContentChild(MinLabelTemplateDirective, {read: TemplateRef})
+  private minLabelTemplate: TemplateRef<any>;
+
+  @ContentChild(MaxLabelTemplateDirective, {read: TemplateRef})
+  private maxLabelTemplate: TemplateRef<any>;
+
+  @ContentChild(CombinedLabelTemplateDirective, {read: TemplateRef})
+  private combinedLabelTemplate: TemplateRef<any>;
 
   constructor(private renderer: Renderer2, private elementRef: ElementRef) { }
 
@@ -711,12 +762,6 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.sliderElementDisabledAttr = this.viewOptions.disabled ? 'disabled' : null;
   }
 
-  // Reset label values
-  private resetLabelsValue(): void {
-    this.minLabElem.value = undefined;
-    this.maxLabElem.value = undefined;
-  }
-
   // Initialize slider handles positions and labels
   // Run only once during initialization and every time view port changes size
   private initHandles(): void {
@@ -740,24 +785,44 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   // Set label value and recalculate label dimensions
-  private setLabelValue(value: string, label: SliderElement): void {
+  private setLabelValue(value: string, which: SliderLabelType): void {
     let recalculateDimension: boolean = false;
-    const noLabelInjection: boolean = label.hasClass('no-label-injection');
+    let labelElement: SliderElement;
 
-    if (label.value === undefined ||
-        label.value.length !== value.length ||
-       (label.value.length > 0 && label.dimension === 0)) {
-      recalculateDimension = true;
-      label.value = value;
+    switch (which) {
+      case SliderLabelType.Low:      labelElement = this.minLabElem;  break;
+      case SliderLabelType.High:     labelElement = this.maxLabElem;  break;
+      case SliderLabelType.Floor:    labelElement = this.flrLabElem;  break;
+      case SliderLabelType.Ceil:     labelElement = this.ceilLabElem; break;
+      case SliderLabelType.Combined: labelElement = this.cmbLabElem;  break;
     }
 
-    if (!noLabelInjection) {
-      label.html(value);
+    let oldValue: string;
+    switch (which) {
+      case SliderLabelType.Low:      oldValue = this.minLabelValue;      break;
+      case SliderLabelType.High:     oldValue = this.maxLabelValue;      break;
+      case SliderLabelType.Floor:    oldValue = this.floorLabelValue;    break;
+      case SliderLabelType.Ceil:     oldValue = this.ceilLabelValue;     break;
+      case SliderLabelType.Combined: oldValue = this.combinedLabelValue; break;
+    }
+
+    if (oldValue === undefined ||
+        oldValue.length !== value.length ||
+      (oldValue.length > 0 && labelElement.dimension === 0)) {
+      recalculateDimension = true;
+    }
+
+    switch (which) {
+      case SliderLabelType.Low:      this.minLabelValue      = value; break;
+      case SliderLabelType.High:     this.maxLabelValue      = value; break;
+      case SliderLabelType.Floor:    this.floorLabelValue    = value; break;
+      case SliderLabelType.Ceil:     this.ceilLabelValue     = value; break;
+      case SliderLabelType.Combined: this.combinedLabelValue = value; break;
     }
 
     // Update width only when length of the label have changed
     if (recalculateDimension) {
-      this.calculateElementDimension(label);
+      this.calculateElementDimension(labelElement);
     }
   }
 
@@ -982,7 +1047,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // Update position of the floor label
   private updateFloorLab(): void {
-    this.setLabelValue(this.getDisplayValue(this.minValue, LabelType.Floor), this.flrLabElem);
+    this.setLabelValue(this.getDisplayValue(this.minValue, LabelType.Floor), SliderLabelType.Floor);
     this.calculateElementDimension(this.flrLabElem);
     const position: number = this.viewOptions.rightToLeft
       ? this.barDimension - this.flrLabElem.dimension
@@ -992,7 +1057,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // Update position of the ceiling label
   private updateCeilLab(): void {
-    this.setLabelValue(this.getDisplayValue(this.maxValue, LabelType.Ceil), this.ceilLabElem);
+    this.setLabelValue(this.getDisplayValue(this.maxValue, LabelType.Ceil), SliderLabelType.Ceil);
     this.calculateElementDimension(this.ceilLabElem);
     const position: number = this.viewOptions.rightToLeft
       ? 0
@@ -1036,7 +1101,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   // Update low slider handle position and label
   private updateLowHandle(newPos: number): void {
     this.setPosition(this.minHElem, newPos);
-    this.setLabelValue(this.getDisplayValue(this.viewLowValue, LabelType.Low), this.minLabElem);
+    this.setLabelValue(this.getDisplayValue(this.viewLowValue, LabelType.Low), SliderLabelType.Low);
     this.setPosition(
       this.minLabElem,
       this.getHandleLabelPos(HandleLabelType.Min, newPos)
@@ -1057,7 +1122,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   // Update high slider handle position and label
   private updateHighHandle(newPos: number): void {
     this.setPosition(this.maxHElem, newPos);
-    this.setLabelValue(this.getDisplayValue(this.viewHighValue, LabelType.High), this.maxLabElem);
+    this.setLabelValue(this.getDisplayValue(this.viewHighValue, LabelType.High), SliderLabelType.High);
     this.setPosition(
       this.maxLabElem,
       this.getHandleLabelPos(HandleLabelType.Max, newPos)
@@ -1297,7 +1362,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
         ? this.combineLabels(highTr, lowTr)
         : this.combineLabels(lowTr, highTr);
 
-      this.setLabelValue(labelVal, this.cmbLabElem);
+      this.setLabelValue(labelVal, SliderLabelType.Combined);
       const pos: number = this.viewOptions.boundPointerLabels
         ? Math.min(
             Math.max(

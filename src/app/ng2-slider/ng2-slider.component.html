@@ -19,15 +19,40 @@
 <!-- // 5 Right slider handle -->
 <span max-h-elem class="rz-span rz-pointer rz-pointer-max" [ngStyle]=maxPointerStyle></span>
 <!-- // 6 Floor label -->
-<span flr-lab-elem class="rz-span rz-bubble rz-limit rz-floor"></span>
+<span flr-lab-elem class="rz-span rz-bubble rz-limit rz-floor">
+  <ng-container *ngIf="!floorLabelTemplate">{{floorLabelValue}}</ng-container>
+  <ng-container *ngIf="floorLabelTemplate">
+    <ng-template *ngTemplateOutlet="floorLabelTemplate; context: {$implicit: floorLabelValue}"></ng-template>
+  </ng-container>
+</span>
 <!-- // 7 Ceiling label -->
-<span ceil-lab-elem class="rz-span rz-bubble rz-limit rz-ceil"></span>
+<span ceil-lab-elem class="rz-span rz-bubble rz-limit rz-ceil">
+  <ng-container *ngIf="!ceilLabelTemplate">{{ceilLabelValue}}</ng-container>
+  <ng-container *ngIf="ceilLabelTemplate">
+    <ng-template *ngTemplateOutlet="ceilLabelTemplate; context: {$implicit: ceilLabelValue}"></ng-template>
+  </ng-container>
+</span>
 <!-- // 8 Label above left slider handle -->
-<span min-lab-elem class="rz-span rz-bubble rz-model-value"></span>
+<span min-lab-elem class="rz-span rz-bubble rz-model-value">
+  <ng-container *ngIf="!minLabelTemplate">{{minLabelValue}}</ng-container>
+  <ng-container *ngIf="minLabelTemplate">
+    <ng-template *ngTemplateOutlet="minLabelTemplate; context: {$implicit: minLabelValue}"></ng-template>
+  </ng-container>
+</span>
 <!-- // 9 Label above right slider handle -->
-<span max-lab-elem class="rz-span rz-bubble rz-model-high"></span>
+<span max-lab-elem class="rz-span rz-bubble rz-model-high">
+  <ng-container *ngIf="!maxLabelTemplate">{{maxLabelValue}}</ng-container>
+  <ng-container *ngIf="maxLabelTemplate">
+    <ng-template *ngTemplateOutlet="maxLabelTemplate; context: {$implicit: maxLabelValue}"></ng-template>
+  </ng-container>
+</span>
 <!-- // 10 Range label when the slider handles are close ex. 15 - 17 -->
-<span cmb-lab-elem class="rz-span rz-bubble"></span>
+<span cmb-lab-elem class="rz-span rz-bubble">
+  <ng-container *ngIf="!combinedLabelTemplate">{{combinedLabelValue}}</ng-container>
+  <ng-container *ngIf="combinedLabelTemplate">
+    <ng-template *ngTemplateOutlet="combinedLabelTemplate; context: {$implicit: { min: minLabelValue, max: maxLabelValue, combined: combineLabelValue }}"></ng-template>
+  </ng-container>
+</span>
 <!-- // 11 The ticks -->
 <ul ticks-elem [hidden]="!showTicks" class="rz-ticks">
   <li *ngFor="let t of ticks" class="rz-tick" [ngClass]="{'rz-selected': t.selected}" [ngStyle]="t.style"

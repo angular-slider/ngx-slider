@@ -75,8 +75,28 @@ Min value: <input type="text" [(ngModel)]="rangeSlider.maxValue">
 <ng2-slider [(value)]="customDisplayFunctionSlider.minValue" [(highValue)]="customDisplayFunctionSlider.maxValue" [options]="customDisplayFunctionSlider.options"></ng2-slider>
 
 
-<h2>Slider with custom display function using HTML formatting</h2>
-<ng2-slider [(value)]="customDisplayFunctionHtmlSlider.minValue" [(highValue)]="customDisplayFunctionHtmlSlider.maxValue" [options]="customDisplayFunctionHtmlSlider.options"></ng2-slider>
+<h2>Slider with custom templates for label elements</h2>
+<ng2-slider [(value)]="customLabelTemplatesSlider.minValue" [(highValue)]="customLabelTemplatesSlider.maxValue" [options]="customLabelTemplatesSlider.options">
+  <ng-container *floorLabelTemplate="let value">
+    ${{value}}
+  </ng-container>
+
+  <ng-container *ceilLabelTemplate="let value">
+    ${{value}}
+  </ng-container>
+
+  <ng-container *minLabelTemplate="let value">
+    <b>Min price:</b> ${{value}}
+  </ng-container>
+
+  <ng-container *maxLabelTemplate="let value">
+    <b>Max price:</b> ${{value}}
+  </ng-container>
+
+  <ng-container *combinedLabelTemplate="let context">
+    ${{context.min}} - ${{context.max}}
+  </ng-container>
+</ng2-slider>
 
 
 <h2>Slider with custom combine labels function</h2>

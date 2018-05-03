@@ -19,10 +19,6 @@ export class JqLiteWrapper {
     return this.elemRef.nativeElement.classList.contains(clazz);
   }
 
-  html(html: string): void {
-    this.elemRef.nativeElement.innerHTML = html;
-  }
-
   css(style: string, value: string): void {
     if (value !== '') {
       this.renderer.setStyle(this.elemRef.nativeElement, style, value);
