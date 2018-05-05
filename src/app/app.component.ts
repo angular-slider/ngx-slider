@@ -218,7 +218,7 @@ export class AppComponent {
     options: {
       floor: 0,
       ceil: 500,
-      translate: (value: number, sliderId: any, label: LabelType): string => {
+      translate: (value: number, label: LabelType): string => {
         switch (label) {
           case LabelType.Low:
             return '<b>Min price:</b> $' + value;
@@ -237,7 +237,7 @@ export class AppComponent {
       stepsArray: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').map((letter: string): CustomStepDefinition => {
         return { value: this.letterToIndex(letter) };
       }),
-      translate: (value: number, sliderId: any, label: LabelType): string => {
+      translate: (value: number, label: LabelType): string => {
         return this.indexToLetter(value);
       }
     }
@@ -249,7 +249,7 @@ export class AppComponent {
       stepsArray: this.createDateRange().map((date: Date) => {
         return { value: date.getTime() };
       }),
-      translate: (value: number, sliderId: any, label: LabelType): string => {
+      translate: (value: number, label: LabelType): string => {
         return new Date(value).toDateString();
       }
     }
@@ -283,7 +283,7 @@ export class AppComponent {
     }
   };
 
-  ticksLegedSlider: SimpleSliderModel = {
+  ticksLegendSlider: SimpleSliderModel = {
     value: 5,
     options: {
       showTicksValues: true,
@@ -298,6 +298,18 @@ export class AppComponent {
         {value: 8},
         {value: 9, legend: 'Excellent'}
       ]
+    }
+  };
+
+  ticksCustomLegendFunctionSlider: SimpleSliderModel = {
+    value: 5,
+    options: {
+      floor: 0,
+      ceil: 10,
+      showTicks: true,
+      getLegend: (value: number): string => {
+        return 'T' + value;
+      }
     }
   };
 

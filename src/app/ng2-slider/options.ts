@@ -11,8 +11,8 @@ export enum PointerType {
   Max
 }
 
-export type TranslateFunction = (value: number, sliderId: any, label: LabelType) => string;
-export type GetLegendFunction = (value: number, siderId: any) => string;
+export type TranslateFunction = (value: number, label: LabelType) => string;
+export type GetLegendFunction = (value: number) => string;
 export type ValueToPositionFunction = (val: number, minVal: number, maxVal: number) => number;
 export type PositionToValueFunction = (percent: number, minVal: number, maxVal: number) => number;
 
@@ -53,14 +53,8 @@ export class Options {
   /** The maximum value authorized on the slider. */
   maxLimit?: number = null;
 
-  /** If you want to use the same translate function for several sliders, just set the id
-    to anything you want, and it will be passed to the translate(value, sliderId) function
-    as a second argument. */
-  id?: any = null;
-
   /** Custom translate function. Use this if you want to translate values displayed
-      on the slider. sliderId can be used to determine the slider for which we are
-      translating the value. */
+      on the slider. */
   translate?: TranslateFunction = null;
 
   /** Use to display legend under ticks (thus, it needs to be used along with

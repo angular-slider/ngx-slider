@@ -104,7 +104,14 @@ Current letter: {{this.indexToLetter(alphabetSlider.value)}}
 <!-- Margin because the last legend label otherwise sticks out to the right
      TODO: should be fixed? -->
 <div style="margin-left: 2em; margin-right: 2em;">
-  <ng2-slider [(value)]="ticksLegedSlider.value" [options]="ticksLegedSlider.options"></ng2-slider>
+  <ng2-slider [(value)]="ticksLegendSlider.value" [options]="ticksLegendSlider.options"></ng2-slider>
+</div>
+
+
+<!-- Same as above -->
+<div style="margin-left: 2em; margin-right: 2em;">
+  <h2>Slider with ticks values and custom legend function</h2>
+  <ng2-slider [(value)]="ticksCustomLegendFunctionSlider.value" [options]="ticksCustomLegendFunctionSlider.options"></ng2-slider>
 </div>
 
 

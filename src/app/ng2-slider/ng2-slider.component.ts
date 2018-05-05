@@ -837,13 +837,13 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   // Updates aria attributes according to current values
   private updateAriaAttributes(): void {
     this.minHElem.attr('aria-valuenow', this.value.toString());
-    this.minHElem.attr('aria-valuetext', this.customTrFn(this.value, this.viewOptions.id, LabelType.Low));
+    this.minHElem.attr('aria-valuetext', this.customTrFn(this.value, LabelType.Low));
     this.minHElem.attr('aria-valuemin', this.minValue.toString());
     this.minHElem.attr('aria-valuemax', this.maxValue.toString());
 
     if (this.range) {
       this.maxHElem.attr('aria-valuenow', this.highValue.toString());
-      this.maxHElem.attr('aria-valuetext', this.customTrFn(this.highValue, this.viewOptions.id, LabelType.High));
+      this.maxHElem.attr('aria-valuetext', this.customTrFn(this.highValue, LabelType.High));
       this.maxHElem.attr('aria-valuemin', this.minValue.toString());
       this.maxHElem.attr('aria-valuemax', this.maxValue.toString());
     }
@@ -923,7 +923,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       }
       if (this.getLegend) {
-        const legend: string = this.getLegend(value, this.viewOptions.id);
+        const legend: string = this.getLegend(value);
         if (legend) {
           tick.legend = legend;
         }
@@ -1328,7 +1328,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.viewOptions.stepsArray && !this.viewOptions.bindIndexForStepsArray) {
       value = this.getStepValue(value);
     }
-    return this.customTrFn(value, this.viewOptions.id, which);
+    return this.customTrFn(value, which);
   }
 
   // Round value to step and precision based on minValue
