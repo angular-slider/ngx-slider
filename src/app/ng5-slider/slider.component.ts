@@ -75,84 +75,84 @@ class SliderElement extends JqLiteWrapper {
   }
 }
 
-@Directive({selector: '[ng5-slider-right-out-sel-elem]'})
+@Directive({selector: '[ng5SliderRightOutSelElem]'})
 export class RightOutSelDirective extends SliderElement {
   constructor(elemRef: ElementRef, renderer: Renderer2) {
     super(elemRef, renderer);
   }
 }
 
-@Directive({selector: '[ng5-slider-left-out-sel-elem]'})
+@Directive({selector: '[ng5SliderLeftOutSelElem]'})
 export class LeftOutSelDirective extends SliderElement {
   constructor(elemRef: ElementRef, renderer: Renderer2) {
     super(elemRef, renderer);
   }
 }
 
-@Directive({selector: '[ng5-slider-full-bar-elem]'})
+@Directive({selector: '[ng5SliderFullBarElem]'})
 export class FullBarDirective extends SliderElement {
   constructor(elemRef: ElementRef, renderer: Renderer2) {
     super(elemRef, renderer);
   }
 }
 
-@Directive({selector: '[ng5-slider-sel-bar-elem]'})
+@Directive({selector: '[ng5SliderSelBarElem]'})
 export class SelBarDirective extends SliderElement {
   constructor(elemRef: ElementRef, renderer: Renderer2) {
     super(elemRef, renderer);
   }
 }
 
-@Directive({selector: '[ng5-slider-min-h-elem]'})
+@Directive({selector: '[ng5SliderMinHElem]'})
 export class MinHDirective extends SliderElement {
   constructor(elemRef: ElementRef, renderer: Renderer2) {
     super(elemRef, renderer);
   }
 }
 
-@Directive({selector: '[ng5-slider-max-h-elem]'})
+@Directive({selector: '[ng5SliderMaxHElem]'})
 export class MaxHDirective extends SliderElement {
   constructor(elemRef: ElementRef, renderer: Renderer2) {
     super(elemRef, renderer);
   }
 }
 
-@Directive({selector: '[ng5-slider-flr-lab-elem]'})
+@Directive({selector: '[ng5SliderFlrLabElem]'})
 export class FlrLabDirective extends SliderElement {
   constructor(elemRef: ElementRef, renderer: Renderer2) {
     super(elemRef, renderer);
   }
 }
 
-@Directive({selector: '[ng5-slider-ceil-lab-elem]'})
+@Directive({selector: '[ng5SliderCeilLabElem]'})
 export class CeilLabDirective extends SliderElement {
   constructor(elemRef: ElementRef, renderer: Renderer2) {
     super(elemRef, renderer);
   }
 }
 
-@Directive({selector: '[ng5-slider-min-lab-elem]'})
+@Directive({selector: '[ng5SliderMinLabElem]'})
 export class MinLabDirective extends SliderElement {
   constructor(elemRef: ElementRef, renderer: Renderer2) {
     super(elemRef, renderer);
   }
 }
 
-@Directive({selector: '[ng5-slider-max-lab-elem]'})
+@Directive({selector: '[ng5SliderMaxLabElem]'})
 export class MaxLabDirective extends SliderElement {
   constructor(elemRef: ElementRef, renderer: Renderer2) {
     super(elemRef, renderer);
   }
 }
 
-@Directive({selector: '[ng5-slider-cmb-lab-elem]'})
+@Directive({selector: '[ng5SliderCmbLabElem]'})
 export class CmbLabDirective extends SliderElement {
   constructor(elemRef: ElementRef, renderer: Renderer2) {
     super(elemRef, renderer);
   }
 }
 
-@Directive({selector: '[ng5-slider-ticks-elem]'})
+@Directive({selector: '[ng5SliderTicksElem]'})
 export class TicksDirective extends SliderElement {
   constructor(elemRef: ElementRef, renderer: Renderer2) {
     super(elemRef, renderer);
