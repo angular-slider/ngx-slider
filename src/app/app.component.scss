@@ -3,15 +3,15 @@ h2 {
 }
 
 ::ng-deep {
-  .custom-slider .rzslider .rz-bar {
+  .custom-slider .ng5-slider .ng5-slider-bar {
     background: #ffe4d1;
     height: 2px;
   }
-  .custom-slider .rzslider .rz-selection {
+  .custom-slider .ng5-slider .ng5-slider-selection {
     background: orange;
   }
 
-  .custom-slider .rzslider .rz-pointer {
+  .custom-slider .ng5-slider .ng5-slider-pointer {
     width: 8px;
     height: 16px;
     top: auto; /* to remove the default positioning */
@@ -21,20 +21,20 @@ h2 {
     border-top-right-radius: 3px;
   }
 
-  .custom-slider .rzslider .rz-pointer:after {
+  .custom-slider .ng5-slider .ng5-slider-pointer:after {
     display: none;
   }
 
-  .custom-slider .rzslider .rz-bubble {
+  .custom-slider .ng5-slider .ng5-slider-bubble {
     bottom: 14px;
   }
 
-  .custom-slider .rzslider .rz-limit {
+  .custom-slider .ng5-slider .ng5-slider-limit {
     font-weight: bold;
     color: orange;
   }
 
-  .custom-slider .rzslider .rz-tick {
+  .custom-slider .ng5-slider .ng5-slider-tick {
     width: 1px;
     height: 10px;
     margin-left: 4px;
@@ -43,7 +43,7 @@ h2 {
     top: -1px;
   }
 
-  .custom-slider .rzslider .rz-tick.rz-selected {
+  .custom-slider .ng5-slider .ng5-slider-tick.ng5-slider-selected {
     background: orange;
   }
 }

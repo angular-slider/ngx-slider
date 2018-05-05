@@ -1,6 +1,6 @@
 @import 'variables.scss';
 
-.rzslider {
+.ng5-slider {
   display: inline-block;
   position: relative;
   height: $barDimension;
@@ -15,37 +15,37 @@
 
   &[disabled] {
     cursor: not-allowed;
-    .rz-pointer {
+    .ng5-slider-pointer {
       cursor: not-allowed;
       background-color: $handleDisabledColor;
     }
-    .rz-draggable {
+    .ng5-slider-draggable {
       cursor: not-allowed;
     }
-    .rz-selection {
+    .ng5-slider-selection {
       background: $barDisabledFillColor;
     }
-    .rz-tick {
+    .ng5-slider-tick {
       cursor: not-allowed;
-      &.rz-selected {
+      &.ng5-slider-selected {
         background: $barDisabledFillColor;
       }
     }
   }
 
-  .rz-span {
+  .ng5-slider-span {
     white-space: nowrap;
     position: absolute;
     display: inline-block;
   }
 
-  .rz-base {
+  .ng5-slider-base {
     width: 100%;
     height: 100%;
     padding: 0;
   }
 
-  .rz-bar-wrapper {
+  .ng5-slider-bar-wrapper {
     left: 0;
     box-sizing: border-box;
     margin-top: -$handleSize / 2;
@@ -55,11 +55,11 @@
     z-index: 1;
   }
 
-  .rz-draggable {
+  .ng5-slider-draggable {
     cursor: move;
   }
 
-  .rz-bar {
+  .ng5-slider-bar {
     left: 0;
     width: 100%;
     height: $barDimension;
@@ -68,23 +68,23 @@
     @include rounded($barDimension/2);
   }
 
-  .rz-bar-wrapper.rz-transparent .rz-bar {
+  .ng5-slider-bar-wrapper.ng5-slider-transparent .ng5-slider-bar {
     background: transparent;
   }
-  .rz-bar-wrapper.rz-left-out-selection .rz-bar {
+  .ng5-slider-bar-wrapper.ng5-slider-left-out-selection .ng5-slider-bar {
     background: $barLeftOutSelectionColor;
   }
-  .rz-bar-wrapper.rz-right-out-selection .rz-bar {
+  .ng5-slider-bar-wrapper.ng5-slider-right-out-selection .ng5-slider-bar {
     background: $barRightOutSelectionColor;
   }
 
-  .rz-selection {
+  .ng5-slider-selection {
     z-index: 2;
     background: $barFillColor;
     @include rounded($barDimension/2);
   }
 
-  .rz-pointer {
+  .ng5-slider-pointer {
     cursor: pointer;
     width: $handleSize;
     height: $handleSize;
@@ -110,7 +110,7 @@
     &:hover:after {
       background-color: $handleHoverColor;
     }
-    &.rz-active {
+    &.ng5-slider-active {
       z-index: 4;
       &:after {
         background-color: $handleActiveColor;
@@ -118,17 +118,17 @@
     }
   }
 
-  .rz-bubble {
+  .ng5-slider-bubble {
     cursor: default;
     bottom: $handleSize/2;
     padding: $bubblePadding;
     color: $labelTextColor;
-    &.rz-limit {
+    &.ng5-slider-limit {
       color: $limitLabelTextColor;
     }
   }
 
-  .rz-ticks {
+  .ng5-slider-ticks {
     box-sizing: border-box;
     width: 100%;
     height: 0;
@@ -140,14 +140,14 @@
     list-style: none;
   }
 
-  .rz-ticks-values-under {
-    .rz-tick-value {
+  .ng5-slider-ticks-values-under {
+    .ng5-slider-tick-value {
       top: auto;
       bottom: $ticksValuePosition - 2;
     }
   }
 
-  .rz-tick {
+  .ng5-slider-tick {
     text-align: center;
     cursor: pointer;
     width: $ticksWidth;
@@ -158,18 +158,18 @@
     top: 0;
     left: 0;
     margin-left: $handleSize / 2 - $ticksWidth / 2; // for centering
-    &.rz-selected {
+    &.ng5-slider-selected {
       background: $selectedTicksColor;
     }
   }
 
-  .rz-tick-value {
+  .ng5-slider-tick-value {
     position: absolute;
     top: $ticksValuePosition;
     transform: translate(-50%, 0);
   }
 
-  .rz-tick-legend {
+  .ng5-slider-tick-legend {
     position: absolute;
     top: $ticksLegendPosition;
     transform: translate(-50%, 0);
@@ -177,7 +177,7 @@
     white-space: normal;
   }
 
-  &.rz-vertical {
+  &.ng5-slider-vertical {
     position: relative;
     width: $barDimension;
     height: 100%;
@@ -185,13 +185,13 @@
     padding: 0;
     vertical-align: baseline;
 
-    .rz-base {
+    .ng5-slider-base {
       width: 100%;
       height: 100%;
       padding: 0;
     }
 
-    .rz-bar-wrapper {
+    .ng5-slider-bar-wrapper {
       top: auto;
       left: 0;
       margin: 0 0 0 (-$handleSize / 2);
@@ -200,51 +200,51 @@
       width: $handleSize;
     }
 
-    .rz-bar {
+    .ng5-slider-bar {
       bottom: 0;
       left: auto;
       width: $barDimension;
       height: 100%;
     }
 
-    .rz-pointer {
+    .ng5-slider-pointer {
       left: -$handleSize/2 + $barDimension/2 !important;
       top: auto;
       bottom: 0;
     }
 
-    .rz-bubble {
+    .ng5-slider-bubble {
       left: $handleSize/2 !important;
       margin-left: 3px;
       bottom: 0;
     }
 
-    .rz-ticks {
+    .ng5-slider-ticks {
       height: 100%;
       width: 0;
       left: -($ticksHeight - $barDimension) / 2;
       top: 0;
       z-index: 1;
     }
-    .rz-tick {
+    .ng5-slider-tick {
       vertical-align: middle;
       margin-left: auto;
       margin-top: $handleSize / 2 - $ticksWidth / 2; // for centering
     }
-    .rz-tick-value {
+    .ng5-slider-tick-value {
       left: $ticksValuePositionOnVertical;
       top: auto;
       transform: translate(0, -28%);
     }
-    .rz-tick-legend {
+    .ng5-slider-tick-legend {
       top: auto;
       right: $ticksLegendPosition;
       transform: translate(0, -28%);
       max-width: none;
       white-space: nowrap;
     }
-    .rz-ticks-values-under {
-      .rz-tick-value {
+    .ng5-slider-ticks-values-under {
+      .ng5-slider-tick-value {
         bottom: auto;
         left: auto;
         right: $ticksValuePositionOnVertical;

@@ -165,7 +165,7 @@ export class TicksDirective extends SliderElement {
   templateUrl: './ng2-slider.component.html',
   styleUrls: ['./ng2-slider.component.scss'],
   encapsulation: ViewEncapsulation.None,
-  host: { class: 'rzslider' }
+  host: { class: 'ng5-slider' }
 })
 export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   // Model for low value slider. If only value is provided single slider will be rendered.
@@ -267,7 +267,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(TicksDirective)
   private ticksElem: SliderElement;
 
-  @HostBinding('class.rz-vertical')
+  @HostBinding('class.ng5-slider-vertical')
   private sliderElementVerticalClass: boolean = false;
 
   @HostBinding('attr.disabled')
@@ -666,7 +666,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     );
 
     if (this.range && this.viewOptions.showOuterSelectionBars) {
-      this.fullBarElem.addClass('rz-transparent');
+      this.fullBarElem.addClass('ng5-slider-transparent');
     }
 
     if (this.sliderElementVerticalClass !== this.viewOptions.vertical) {
@@ -678,13 +678,13 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     if (this.viewOptions.draggableRange) {
-      this.selBarElem.addClass('rz-draggable');
+      this.selBarElem.addClass('ng5-slider-draggable');
     } else {
-      this.selBarElem.removeClass('rz-draggable');
+      this.selBarElem.removeClass('ng5-slider-draggable');
     }
 
     if (this.intermediateTicks && this.options.showTicksValues) {
-      this.ticksElem.addClass('rz-ticks-values-under');
+      this.ticksElem.addClass('ng5-slider-ticks-values-under');
     }
   }
 
@@ -1596,7 +1596,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
       this.tracking = pointer === this.minHElem ? HandleType.Low : HandleType.High;
     }
 
-    pointer.addClass('rz-active');
+    pointer.addClass('ng5-slider-active');
 
     if (this.viewOptions.keyboardSupport) {
       this.focusElement(pointer);
@@ -1681,8 +1681,8 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.touchId = null;
 
     if (!this.viewOptions.keyboardSupport) {
-      this.minHElem.removeClass('rz-active');
-      this.maxHElem.removeClass('rz-active');
+      this.minHElem.removeClass('ng5-slider-active');
+      this.maxHElem.removeClass('ng5-slider-active');
       this.tracking = null;
     }
     this.dragging.active = false;
@@ -1705,7 +1705,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     pointer.on('keydown', (event: KeyboardEvent): void => this.onKeyboardEvent(event));
     pointer.on('keyup', (): void => this.onKeyUp());
     this.firstKeyDown = true;
-    pointer.addClass('rz-active');
+    pointer.addClass('ng5-slider-active');
 
     this.currentFocusElement = {
       pointer: pointer,
@@ -1721,7 +1721,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     pointer.off('blur');
     pointer.off('keydown');
     pointer.off('keyup');
-    pointer.removeClass('rz-active');
+    pointer.removeClass('ng5-slider-active');
     if (!this.isDragging) {
       this.tracking = null;
       this.currentFocusElement = null;
@@ -1980,8 +1980,8 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
           this.updateHandles(HandleType.Low, this.maxHElem.position);
           this.updateAriaAttributes();
           this.tracking = HandleType.High;
-          this.minHElem.removeClass('rz-active');
-          this.maxHElem.addClass('rz-active');
+          this.minHElem.removeClass('ng5-slider-active');
+          this.maxHElem.addClass('ng5-slider-active');
           if (this.viewOptions.keyboardSupport) {
             this.focusElement(this.maxHElem);
           }
@@ -1994,8 +1994,8 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
           this.updateHandles(HandleType.High, this.minHElem.position);
           this.updateAriaAttributes();
           this.tracking = HandleType.Low;
-          this.maxHElem.removeClass('rz-active');
-          this.minHElem.addClass('rz-active');
+          this.maxHElem.removeClass('ng5-slider-active');
+          this.minHElem.addClass('ng5-slider-active');
           if (this.viewOptions.keyboardSupport) {
             this.focusElement(this.minHElem);
           }
