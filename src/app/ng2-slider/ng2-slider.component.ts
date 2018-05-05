@@ -1174,8 +1174,8 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
           position = this.minHElem.position + this.handleHalfDim;
         }
       } else if (isSelectionBarFromRight) {
-        dimension = Math.abs(this.maxPos - this.minHElem.position) + this.handleHalfDim;
-        position = this.minHElem.position + this.handleHalfDim;
+        dimension = Math.ceil(Math.abs(this.maxPos - this.minHElem.position) + this.handleHalfDim);
+        position = Math.floor(this.minHElem.position + this.handleHalfDim);
       } else {
         dimension = this.minHElem.position + this.handleHalfDim;
         position = 0;
