@@ -212,6 +212,21 @@ export class AppComponent {
     }
   };
 
+  customCombineLabelsFunctionSlider: RangeSliderModel = {
+    minValue: 100,
+    maxValue: 400,
+    options: {
+      floor: 0,
+      ceil: 500,
+      translate: (value: number): string => {
+        return '$' + value;
+      },
+      combineLabels: (minValue: string, maxValue: string): string => {
+        return 'from ' + minValue + ' up to ' + maxValue;
+      }
+    }
+  };
+
   customDisplayFunctionHtmlSlider: RangeSliderModel = {
     minValue: 100,
     maxValue: 400,

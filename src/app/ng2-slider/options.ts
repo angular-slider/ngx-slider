@@ -12,6 +12,7 @@ export enum PointerType {
 }
 
 export type TranslateFunction = (value: number, label: LabelType) => string;
+export type CombineLabelsFunction = (minLabel: string, maxLabel: string) => string;
 export type GetLegendFunction = (value: number) => string;
 export type ValueToPositionFunction = (val: number, minVal: number, maxVal: number) => number;
 export type PositionToValueFunction = (percent: number, minVal: number, maxVal: number) => number;
@@ -56,6 +57,13 @@ export class Options {
   /** Custom translate function. Use this if you want to translate values displayed
       on the slider. */
   translate?: TranslateFunction = null;
+
+  /** Custom function for combining overlapping labels in range slider.
+      It takes the min and max values (already translated with translate fuction)
+      and should return how these two values should be combined.
+      If not provided, the default function will join the two values with
+      ' - ' as separator. */
+  combineLabels?: CombineLabelsFunction = null;
 
   /** Use to display legend under ticks (thus, it needs to be used along with
      showTicks or showTicksValues). The function will be called with each tick
@@ -216,16 +224,6 @@ export class Options {
 
   /** Set to true to keep the slider labels inside the slider bounds. */
   boundPointerLabels?: boolean = true;
-
-  /** Set to true to merge the range labels if they are the same.
-    For instance, if min and max are 50, the label will be "50 - 50"
-    if mergeRangeLabelsIfSame: false,  else "50". */
-  mergeRangeLabelsIfSame?: boolean = false;
-
-  /** Separator to use when the labels overlap.
-    For instance, if min and max are -1 and 1, the label will be "-1 .. 1"
-    if labelOverlapSeparator: ' .. '.  */
-  labelOverlapSeparator?: string = ' - ';
 
   /** Set to true to use a logarithmic scale to display the slider.  */
   logScale?: boolean = false;

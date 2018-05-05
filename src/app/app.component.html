@@ -79,6 +79,10 @@ Min value: <input type="text" [(ngModel)]="rangeSlider.maxValue">
 <ng2-slider [(value)]="customDisplayFunctionHtmlSlider.minValue" [(highValue)]="customDisplayFunctionHtmlSlider.maxValue" [options]="customDisplayFunctionHtmlSlider.options"></ng2-slider>
 
 
+<h2>Slider with custom combine labels function</h2>
+<ng2-slider [(value)]="customCombineLabelsFunctionSlider.minValue" [(highValue)]="customCombineLabelsFunctionSlider.maxValue" [options]="customCombineLabelsFunctionSlider.options"></ng2-slider>
+
+
 <h2>Slider with alphabet</h2>
 Current letter: {{this.indexToLetter(alphabetSlider.value)}}
 <ng2-slider [(value)]="alphabetSlider.value" [options]="alphabetSlider.options"></ng2-slider>

@@ -24,6 +24,7 @@ import {
   PositionToValueFunction,
   PointerType,
   CustomStepDefinition,
+  CombineLabelsFunction,
 } from './options';
 
 import { ValuePositionConverter } from './value-position-converter';
@@ -329,6 +330,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   private barDimension: number;
 
   private translate: TranslateFunction;
+  private combineLabels: CombineLabelsFunction;
   private getLegend: GetLegendFunction;
 
   private thrOnLowHandleChange: ThrottledFunc;
@@ -566,6 +568,14 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
       }
 
       this.getLegend = this.viewOptions.getLegend;
+    }
+
+    if (this.viewOptions.combineLabels) {
+      this.combineLabels = this.viewOptions.combineLabels;
+    } else {
+      this.combineLabels = (minValue: string, maxValue: string): string => {
+        return minValue + ' - ' + maxValue;
+      };
     }
   }
 
@@ -1283,14 +1293,9 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     if (isLabelOverlap) {
       const lowTr: string = this.getDisplayValue(this.viewLowValue, LabelType.Low);
       const highTr: string = this.getDisplayValue(this.viewHighValue, LabelType.High);
-      let labelVal: string;
-      if (this.viewOptions.mergeRangeLabelsIfSame && lowTr === highTr) {
-        labelVal = lowTr;
-      } else {
-        labelVal = this.viewOptions.rightToLeft
-          ? highTr + this.viewOptions.labelOverlapSeparator + lowTr
-          : lowTr + this.viewOptions.labelOverlapSeparator + highTr;
-      }
+      const labelVal: string = this.viewOptions.rightToLeft
+        ? this.combineLabels(highTr, lowTr)
+        : this.combineLabels(lowTr, highTr);
 
       this.setLabelValue(labelVal, this.cmbLabElem);
       const pos: number = this.viewOptions.boundPointerLabels
