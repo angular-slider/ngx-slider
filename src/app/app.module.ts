@@ -5,7 +5,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 import { AppComponent } from './app.component';
-import { Ng2SliderModule } from './ng2-slider/ng2-slider.module';
+import { Ng5SliderModule } from './ng5-slider/ng5-slider.module';
 
 
 @NgModule({
@@ -16,7 +16,7 @@ import { Ng2SliderModule } from './ng2-slider/ng2-slider.module';
     BrowserModule,
     FormsModule,
     NgbModule.forRoot(),
-    Ng2SliderModule
+    Ng5SliderModule
   ],
   providers: [],
   bootstrap: [AppComponent]

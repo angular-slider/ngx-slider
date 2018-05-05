@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import {
-  Ng2SliderComponent,
+  SliderComponent,
   RightOutSelDirective,
   LeftOutSelDirective,
   FullBarDirective,
@@ -16,11 +16,11 @@ import {
   MaxLabDirective,
   CmbLabDirective,
   TicksDirective
- } from './ng2-slider.component';
+ } from './slider.component';
 
-describe('Ng2SliderComponent', () => {
-  let component: Ng2SliderComponent;
-  let fixture: ComponentFixture<Ng2SliderComponent>;
+describe('SliderComponent', () => {
+  let component: SliderComponent;
+  let fixture: ComponentFixture<SliderComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -28,8 +28,7 @@ describe('Ng2SliderComponent', () => {
         NgbModule
       ],
       declarations: [
-        Ng2SliderComponent,
-        Ng2SliderComponent,
+        SliderComponent,
         RightOutSelDirective,
         LeftOutSelDirective,
         FullBarDirective,
@@ -48,7 +47,7 @@ describe('Ng2SliderComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(Ng2SliderComponent);
+    fixture = TestBed.createComponent(SliderComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

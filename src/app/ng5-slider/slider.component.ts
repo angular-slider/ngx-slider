@@ -161,13 +161,13 @@ export class TicksDirective extends SliderElement {
 
 
 @Component({
-  selector: 'ng2-slider',
-  templateUrl: './ng2-slider.component.html',
-  styleUrls: ['./ng2-slider.component.scss'],
+  selector: 'ng5-slider',
+  templateUrl: './slider.component.html',
+  styleUrls: ['./slider.component.scss'],
   encapsulation: ViewEncapsulation.None,
   host: { class: 'ng5-slider' }
 })
-export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
+export class SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   // Model for low value slider. If only value is provided single slider will be rendered.
   private _value: number;
   @Input() set value(newValue: number) {

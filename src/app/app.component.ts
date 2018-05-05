@@ -1,16 +1,16 @@
 import { Component } from '@angular/core';
-import { Ng2SliderOptions } from './ng2-slider/ng2-slider.module';
-import { LabelType, CustomStepDefinition } from './ng2-slider/options';
+import { Options } from './ng5-slider/ng5-slider.module';
+import { LabelType, CustomStepDefinition } from './ng5-slider/options';
 
 interface SimpleSliderModel {
   value: number;
-  options: Ng2SliderOptions;
+  options: Options;
 }
 
 interface RangeSliderModel {
   minValue: number;
   maxValue: number;
-  options: Ng2SliderOptions;
+  options: Options;
 }
 
 @Component({

@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import {
-  Ng2SliderComponent,
+  SliderComponent,
   RightOutSelDirective,
   LeftOutSelDirective,
   FullBarDirective,
@@ -15,7 +15,7 @@ import {
   MaxLabDirective,
   CmbLabDirective,
   TicksDirective
- } from './ng2-slider.component';
+ } from './slider.component';
 
 @NgModule({
   imports: [
@@ -23,7 +23,7 @@ import {
     NgbModule
   ],
   declarations: [
-    Ng2SliderComponent,
+    SliderComponent,
     RightOutSelDirective,
     LeftOutSelDirective,
     FullBarDirective,
@@ -38,9 +38,9 @@ import {
     TicksDirective
   ],
   exports: [
-    Ng2SliderComponent
+    SliderComponent
   ]
 })
-export class Ng2SliderModule { }
+export class Ng5SliderModule { }
 
-export { Options as Ng2SliderOptions } from './options';
+export { Options } from './options';
