@@ -328,7 +328,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private barDimension: number;
 
-  private customTrFn: TranslateFunction;
+  private translate: TranslateFunction;
   private getLegend: GetLegendFunction;
 
   private thrOnLowHandleChange: ThrottledFunc;
@@ -560,9 +560,9 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
       this.parseStepsArray();
     } else {
       if (this.viewOptions.translate) {
-        this.customTrFn = this.viewOptions.translate;
+        this.translate = this.viewOptions.translate;
       } else {
-        this.customTrFn = (value: number): string => String(value);
+        this.translate = (value: number): string => String(value);
       }
 
       this.getLegend = this.viewOptions.getLegend;
@@ -575,9 +575,9 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.viewOptions.step = 1;
 
     if (this.viewOptions.translate) {
-      this.customTrFn = this.viewOptions.translate;
+      this.translate = this.viewOptions.translate;
     } else {
-      this.customTrFn = (modelValue: number): string => {
+      this.translate = (modelValue: number): string => {
         if (this.viewOptions.bindIndexForStepsArray) {
           return String(this.getStepValue(modelValue));
         }
@@ -837,13 +837,13 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   // Updates aria attributes according to current values
   private updateAriaAttributes(): void {
     this.minHElem.attr('aria-valuenow', this.value.toString());
-    this.minHElem.attr('aria-valuetext', this.customTrFn(this.value, LabelType.Low));
+    this.minHElem.attr('aria-valuetext', this.translate(this.value, LabelType.Low));
     this.minHElem.attr('aria-valuemin', this.minValue.toString());
     this.minHElem.attr('aria-valuemax', this.maxValue.toString());
 
     if (this.range) {
       this.maxHElem.attr('aria-valuenow', this.highValue.toString());
-      this.maxHElem.attr('aria-valuetext', this.customTrFn(this.highValue, LabelType.High));
+      this.maxHElem.attr('aria-valuetext', this.translate(this.highValue, LabelType.High));
       this.maxHElem.attr('aria-valuemin', this.minValue.toString());
       this.maxHElem.attr('aria-valuemax', this.maxValue.toString());
     }
@@ -1328,7 +1328,7 @@ export class Ng2SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.viewOptions.stepsArray && !this.viewOptions.bindIndexForStepsArray) {
       value = this.getStepValue(value);
     }
-    return this.customTrFn(value, which);
+    return this.translate(value, which);
   }
 
   // Round value to step and precision based on minValue
