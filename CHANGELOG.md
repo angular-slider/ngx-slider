@@ -1,3 +1,13 @@
+# 0.2.0
+ * add more examples of usage
+ * fix slider behaviour where it was broken in the examples
+ * change slider options following refactoring and code design considerations
+ * complete first iteration of code refactoring:
+   - finish adding TypeScript type signatures everywhere
+   - start extracting code to smaller files
+   - rename some cryptic variables and functions to more descriptive names
+   - start adding Angular bindings for CSS styles currently managed by JqLiteWrapper
+
 # 0.1.0
 
  * rough rewrite of original code into Angular 2

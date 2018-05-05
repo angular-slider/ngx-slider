@@ -7,7 +7,6 @@ Work still in progress, but results are encouraging.
 Basic slider functionality is working as of v0.1.0.
 
 ## TODO
- * test to see what is still broken
  * create an npm package
  * unit tests
  * documentation
