@@ -1,7 +1,22 @@
 {
-  "name": "angular-slider",
-  "version": "0.0.0",
+  "name": "ng5-slider",
+  "version": "0.3.0",
+  "private": true,
+  "description": "Slider component for Angular 5+",
+  "keywords": [
+    "angular",
+    "slider"
+  ],
+  "author": "Piotr Dziwinski",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/piotrdz/ng5-slider.git"
+  },
+  "bugs": {
+    "url": "https://github.com/piotrdz/ng5-slider/issues"
+  },
+  "homepage": "https://github.com/piotrdz/ng5-slider#readme",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -10,7 +25,6 @@
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
-  "private": true,
   "dependencies": {
     "@angular/animations": "^5.2.0",
     "@angular/common": "^5.2.0",
