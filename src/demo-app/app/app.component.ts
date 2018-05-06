@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { Options } from './ng5-slider/ng5-slider.module';
-import { LabelType, CustomStepDefinition } from './ng5-slider/options';
+import { Options, LabelType, CustomStepDefinition } from '@local/ng5-slider';
 
 interface SimpleSliderModel {
   value: number;

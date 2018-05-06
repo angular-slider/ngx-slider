@@ -20,7 +20,9 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --prod",
+    "build": "ng build",
+    "build:demo-app": "ng build --app demo-app-dist",
+    "build:lib": "rimraf dist && ng-packagr -p src/ng5-slider/package.json",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
@@ -42,7 +44,8 @@
   },
   "devDependencies": {
     "@angular/cli": "~1.7.3",
-    "@angular/compiler-cli": "^5.2.0",
+    "@angular/compiler": "^5.2.10",
+    "@angular/compiler-cli": "^5.2.10",
     "@angular/language-service": "^5.2.0",
     "@types/jasmine": "~2.8.3",
     "@types/jasminewd2": "~2.0.2",
@@ -55,6 +58,7 @@
     "karma-coverage-istanbul-reporter": "^1.2.1",
     "karma-jasmine": "~1.1.0",
     "karma-jasmine-html-reporter": "^0.2.2",
+    "ng-packagr": "^2.4.2",
     "protractor": "~5.1.2",
     "ts-node": "~4.1.0",
     "tslint": "~5.9.1",

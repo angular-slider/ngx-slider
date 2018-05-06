@@ -33,7 +33,7 @@ import { JqLiteWrapper } from './jq-lite-wrapper';
 
 import { ThrottledFunc } from './throttled-func';
 
-class Tick {
+export class Tick {
   selected: boolean;
   style: any;
   tooltip: string;
@@ -64,7 +64,7 @@ enum HandleLabelType {
 }
 
 // TODO: slowly rewrite to angular
-class SliderElement extends JqLiteWrapper {
+export class SliderElement extends JqLiteWrapper {
   position: number = 0;
   value: string; // TODO: this only applies to label elements; it should be moved to the specific directives where it's used
   dimension: number;
@@ -211,11 +211,11 @@ export class SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   // High value synced to model high value
   private viewHighValue: number;
 
-  private barStyle: any = {};
-  private minPointerStyle: any = {};
-  private maxPointerStyle: any = {};
-  private showTicks: boolean = false;
-  private ticks: Tick[] = [];
+  public barStyle: any = {};
+  public minPointerStyle: any = {};
+  public maxPointerStyle: any = {};
+  public showTicks: boolean = false;
+  public ticks: Tick[] = [];
 
   /* Slider DOM elements */
 

@@ -42,5 +42,3 @@ import {
   ]
 })
 export class Ng5SliderModule { }
-
-export { Options } from './options';

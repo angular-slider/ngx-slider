@@ -1,0 +1,21 @@
+{
+  "extends": "../../tsconfig.json",
+  "angularCompilerOptions": {
+    "paths": {
+      "@local/ng5-slider": [ "../../dist/ng5-slider" ]
+    }
+  },
+  "compilerOptions": {
+    "outDir": "../../out-tsc/demo-app",
+    "module": "es2015",
+    "baseUrl": "",
+    "types": [],
+    "paths": {
+      "@local/ng5-slider": [ "../../dist/ng5-slider" ]
+    }
+  },
+  "exclude": [
+    "test.ts",
+    "**/*.spec.ts"
+  ]
+}

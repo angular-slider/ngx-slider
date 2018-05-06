@@ -5,7 +5,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 import { AppComponent } from './app.component';
-import { Ng5SliderModule } from './ng5-slider/ng5-slider.module';
+import { Ng5SliderModule } from '@local/ng5-slider';
 
 
 @NgModule({

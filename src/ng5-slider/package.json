@@ -1,0 +1,34 @@
+{
+  "name": "ng5-slider",
+  "version": "0.3.0",
+  "description": "Slider component for Angular 5+",
+  "keywords": [
+    "angular",
+    "slider"
+  ],
+  "author": "Piotr Dziwinski",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/piotrdz/ng5-slider.git"
+  },
+  "bugs": {
+    "url": "https://github.com/piotrdz/ng5-slider/issues"
+  },
+  "homepage": "https://github.com/piotrdz/ng5-slider#readme",
+  "peerDependencies": {
+    "@angular/core": ">=5.2.0",
+    "@angular/common": ">=5.2.0",
+    "@ng-bootstrap/ng-bootstrap": "^1.1.2"
+  },
+  "ngPackage": {
+    "$schema": "./node_modules/ng-packagr/ng-package.schema.json",
+    "lib": {
+      "entryFile": "lib/public_api.ts",
+      "umdModuleIds": {
+        "@ng-bootstrap/ng-bootstrap": "ngb"
+      }
+    },
+    "dest": "../../dist/ng5-slider"
+  }
+}

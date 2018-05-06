@@ -5,8 +5,9 @@
   },
   "apps": [
     {
-      "root": "src",
-      "outDir": "dist",
+      "root": "src/demo-app",
+      "name": "demo-app-dev",
+      "outDir": "dist/demo-app",
       "assets": [
         "assets",
         "favicon.ico"
@@ -15,7 +16,32 @@
       "main": "main.ts",
       "polyfills": "polyfills.ts",
       "test": "test.ts",
-      "tsconfig": "tsconfig.app.json",
+      "tsconfig": "tsconfig.app-dev.json",
+      "testTsconfig": "tsconfig.spec.json",
+      "prefix": "app",
+      "styles": [
+        "styles.css"
+      ],
+      "scripts": [],
+      "environmentSource": "environments/environment.ts",
+      "environments": {
+        "dev": "environments/environment.ts",
+        "prod": "environments/environment.prod.ts"
+      }
+    },
+    {
+      "root": "src/demo-app",
+      "name": "demo-app-dist",
+      "outDir": "dist/demo-app",
+      "assets": [
+        "assets",
+        "favicon.ico"
+      ],
+      "index": "index.html",
+      "main": "main.ts",
+      "polyfills": "polyfills.ts",
+      "test": "test.ts",
+      "tsconfig": "tsconfig.app-dist.json",
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
       "styles": [
@@ -36,11 +62,15 @@
   },
   "lint": [
     {
-      "project": "src/tsconfig.app.json",
+      "project": "src/demo-app/tsconfig.app-dev.json",
       "exclude": "**/node_modules/**"
     },
     {
-      "project": "src/tsconfig.spec.json",
+      "project": "src/demo-app/tsconfig.app-dist.json",
+      "exclude": "**/node_modules/**"
+    },
+    {
+      "project": "src/demo-app/tsconfig.spec.json",
       "exclude": "**/node_modules/**"
     },
     {
