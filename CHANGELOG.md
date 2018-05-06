@@ -1,3 +1,6 @@
+# 0.3.1
+ * add README.md and LICENSE to NPM package
+
 # 0.3.0
  * re-brand to ng5-slider as the target Angular version is 5+
  * create and release NPM package
