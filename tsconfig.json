@@ -19,8 +19,5 @@
     "paths": {
       "@local/ng5-slider": [ "dist/ng5-slider" ]
     }
-  },
-  "exclude": [
-    ".ng_build"
-  ]
+  }
 }
