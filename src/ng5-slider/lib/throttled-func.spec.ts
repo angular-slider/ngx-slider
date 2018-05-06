@@ -1,11 +1,11 @@
 import { ThrottledFunc } from './throttled-func';
 
 describe('ThrottledFunc', () => {
-  let calledTimes;
-  const callback = () => { calledTimes++; };
-  const wait = 100;
+  let calledTimes: number;
+  const callback: () => void = (): void => { calledTimes++; };
+  const wait: number = 100;
   let throttledFunc: ThrottledFunc;
-  const baseTime = new Date(2013, 9, 23);
+  const baseTime: Date = new Date(2013, 9, 23);
 
   beforeEach(() => {
     jasmine.clock().install();

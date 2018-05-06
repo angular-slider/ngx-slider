@@ -1,6 +1,6 @@
 export class ValuePositionConverter {
   static linearValueToPosition(val: number, minVal: number, maxVal: number): number {
-    const range = maxVal - minVal;
+    const range: number = maxVal - minVal;
     return (val - minVal) / range;
   }
 
@@ -8,7 +8,7 @@ export class ValuePositionConverter {
     val = Math.log(val);
     minVal = Math.log(minVal);
     maxVal = Math.log(maxVal);
-    const range = maxVal - minVal;
+    const range: number = maxVal - minVal;
     return (val - minVal) / range;
   }
 
@@ -19,7 +19,7 @@ export class ValuePositionConverter {
   static logPositionToValue(percent: number, minVal: number, maxVal: number): number {
     minVal = Math.log(minVal);
     maxVal = Math.log(maxVal);
-    const value = percent * (maxVal - minVal) + minVal;
+    const value: number = percent * (maxVal - minVal) + minVal;
     return Math.exp(value);
   }
 }
