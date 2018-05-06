@@ -24,5 +24,11 @@ exports.config = {
       project: 'e2e/tsconfig.e2e.json'
     });
     jasmine.getEnv().addReporter(new SpecReporter({ spec: { displayStacktrace: true } }));
-  }
+  },
+  plugins: [{
+    package: 'protractor-console-plugin',
+    failOnWarning:false,
+    failOnError: true,
+    logWarnings: true
+  }]
 };
