@@ -1,3 +1,6 @@
+# 0.3.2
+ * add Plunker example to README
+
 # 0.3.1
  * add README.md and LICENSE to NPM package
 
