@@ -1,3 +1,8 @@
+# 0.3.0
+ * re-brand to ng5-slider as the target Angular version is 5+
+ * create and release NPM package
+
+
 # 0.2.0
  * add more examples of usage
  * fix slider behaviour where it was broken in the examples
