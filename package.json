@@ -4,8 +4,16 @@
   "private": true,
   "description": "Slider component for Angular 5+",
   "keywords": [
+    "slider",
+    "component",
     "angular",
-    "slider"
+    "ng",
+    "angular2",
+    "ng2",
+    "angular4",
+    "ng4",
+    "angular5",
+    "ng5"
   ],
   "author": "Piotr Dziwinski",
   "license": "MIT",
