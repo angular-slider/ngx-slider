@@ -30,7 +30,7 @@
     "start": "ng serve",
     "build": "ng build",
     "build:demo-app": "ng build --app demo-app-dist",
-    "build:lib": "node scripts/generate-package-json.js && rimraf dist && ng-packagr -p src/ng5-slider/package.json",
+    "build:lib": "node scripts/generate-lib-files.js && rimraf dist && ng-packagr -p src/ng5-slider/package.json",
     "docs": "rimraf docs && npx typedoc --excludeExternals --module umd --exclude '**/*.spec.ts' --exclude '**/public_api.ts' --out docs/ src/ng5-slider/",
     "test": "ng test",
     "lint": "ng lint",

@@ -1,2 +1,5 @@
-# package.json is auto-generated from package.json.template
+# package.json is auto-generated from package.json.template and main package.json
 package.json
+
+# README.md is copied from main README.md
+README.md
