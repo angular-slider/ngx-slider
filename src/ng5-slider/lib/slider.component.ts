@@ -11,8 +11,7 @@ import {
   ElementRef,
   Renderer2,
   EventEmitter,
-  Output,
-  ViewEncapsulation
+  Output
 } from '@angular/core';
 
 import {
@@ -164,7 +163,6 @@ export class TicksDirective extends SliderElement {
   selector: 'ng5-slider',
   templateUrl: './slider.component.html',
   styleUrls: ['./slider.component.scss'],
-  encapsulation: ViewEncapsulation.None,
   host: { class: 'ng5-slider' }
 })
 export class SliderComponent implements OnInit, AfterViewInit, OnDestroy {
