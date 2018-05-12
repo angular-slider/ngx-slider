@@ -1,6 +1,11 @@
 import { ElementRef, Renderer2 } from '@angular/core';
 
-
+/**
+ * Wrapper to support legacy jqLite interface
+ *
+ * The aim is to slowly phase out the usage of this wrapper and replace
+ * any manual DOM manipulations with Angular bindings
+ */
 export class JqLiteWrapper {
   private eventListeners: { [eventName: string]: [() => void] } = {};
 

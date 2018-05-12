@@ -1,24 +1,31 @@
+/**
+ * Throttled function
+ *
+ * Throttled function encapsulates a function object and allows calls to it,
+ * but it limits the call rate to not exceed a given wait time.
+ *
+ * If there are multiple calls to the function all within the wait time window,
+ * they will result in a single function call, which will be executed after
+ * the wait time expires.
+ */
 export class ThrottledFunc {
-  func: () => void;
-  wait: number;
-  previous: number = 0;
-  timeout: any = null;
+  private func: () => void;
+  private wait: number;
+  private previous: number = 0;
+  private timeout: any = null;
 
+  /**
+   * Create a new throttled function
+   *
+   * @param func function to call
+   * @param wait wait time in milliseconds
+   */
   constructor(func: () => void, wait: number) {
     this.func = func;
     this.wait = wait;
   }
 
-  getTime(): number {
-    return Date.now();
-  }
-
-  callLater(): void {
-    this.previous = this.getTime();
-    this.timeout = null;
-    this.func();
-  }
-
+  /** Call the function */
   call(): void {
     const now: number = this.getTime();
     const remaining: number = this.wait - (now - this.previous);
@@ -31,5 +38,15 @@ export class ThrottledFunc {
     } else if (this.timeout === null) {
       this.timeout = setTimeout(() => this.callLater(), remaining);
     }
+  }
+
+  private getTime(): number {
+    return Date.now();
+  }
+
+  private callLater(): void {
+    this.previous = this.getTime();
+    this.timeout = null;
+    this.func();
   }
 }

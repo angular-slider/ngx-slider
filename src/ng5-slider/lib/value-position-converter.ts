@@ -1,3 +1,6 @@
+/**
+ *  Collection of functions to convert between value and slider position
+ */
 export class ValuePositionConverter {
   static linearValueToPosition(val: number, minVal: number, maxVal: number): number {
     const range: number = maxVal - minVal;

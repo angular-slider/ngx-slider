@@ -17,6 +17,11 @@ import {
   TicksDirective
  } from './slider.component';
 
+/**
+ * Ng5Slider module
+ *
+ * The module exports the slider component
+ */
 @NgModule({
   imports: [
     CommonModule,

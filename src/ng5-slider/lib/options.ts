@@ -1,24 +1,47 @@
+/** Label type */
 export enum LabelType {
+  /** Label above low pointer */
   Low,
+  /** Label above high pointer */
   High,
+  /** Label for minimum slider value */
   Floor,
+  /** Label for maximum slider value */
   Ceil,
+  /** Label below legend tick */
   TickValue
 }
 
+/** Pointer type */
 export enum PointerType {
+  /** Low pointer */
   Min,
+  /** High pointer */
   Max
 }
 
+/** Function to translate label value into text */
 export type TranslateFunction = (value: number, label: LabelType) => string;
+/** Function to combind */
 export type CombineLabelsFunction = (minLabel: string, maxLabel: string) => string;
+/** Function to provide legend  */
 export type GetLegendFunction = (value: number) => string;
+
+/** Function converting slider value to slider position */
 export type ValueToPositionFunction = (val: number, minVal: number, maxVal: number) => number;
+
+/** Function converting slider position to slider value */
 export type PositionToValueFunction = (percent: number, minVal: number, maxVal: number) => number;
 
+/**
+ * Custom step definition
+ *
+ * This can be used to specify custom values and legend values for slider ticks
+ */
 export interface CustomStepDefinition {
+  /** Value */
   value: number;
+  /** Legend (label for the value) */
   legend?: string;
 }
 
