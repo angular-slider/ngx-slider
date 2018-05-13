@@ -1,3 +1,12 @@
+# 0.4.0
+ * refactored demo app to show the examples with code snippets
+ * reverted view encapsulation of slider component to Angular defaults
+ * removed duplication in package.json and README.md between the main project and the NPM library
+ * added more API documentation
+ * added generation of API documentation using typedoc
+ * added scripts to publish demo app and API documentation to Github Pages
+ * updated README.md and added DEVELOPERS.md
+
 # 0.3.2
  * add Plunker example to README
 
