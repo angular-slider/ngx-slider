@@ -26,16 +26,17 @@
   },
   "homepage": "https://github.com/piotrdz/ng5-slider#readme",
   "scripts": {
-    "ng": "ng",
-    "start": "ng serve",
-    "prebuild": "node scripts/generate-demo-app-templates.js",
-    "build": "ng build",
-    "build:demo-app": "ng build --app demo-app-dist",
-    "build:lib": "node scripts/generate-lib-files.js && rimraf dist && ng-packagr -p src/ng5-slider/package.json",
-    "docs": "rimraf docs && npx typedoc --excludeExternals --module umd --exclude '**/*.spec.ts' --exclude '**/public_api.ts' --out docs/ src/ng5-slider/",
-    "test": "ng test",
-    "lint": "ng lint",
-    "e2e": "ng e2e"
+    "prepare": "npm run prepare:lib && npm run prepare:demo-app",
+    "prepare:lib": "node scripts/generate-lib-files.js",
+    "prepare:demo-app": "node scripts/generate-demo-app-templates.js",
+    "start": "npm run prepare && ng serve",
+    "build": "npm run build:lib && npm run build:demo-app && npm run build:docs",
+    "build:lib": "npm run prepare && rimraf dist/ng5-slider dist/ng5-slider.tgz && ng-packagr -p src/ng5-slider/package.json",
+    "build:demo-app": "npm run prepare && rimraf dist/demo-app && ng build",
+    "build:docs": "npm run prepare && rimraf docs && npx typedoc --excludeExternals --module umd --exclude '**/*.spec.ts' --exclude '**/public_api.ts' --out docs/ src/ng5-slider/",
+    "test": "npm run prepare && ng test",
+    "lint": "npm run prepare && ng lint",
+    "e2e": "npm run prepare && ng e2e"
   },
   "dependencies": {
     "@angular/animations": "^5.2.0",
