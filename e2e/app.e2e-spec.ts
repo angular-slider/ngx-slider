@@ -9,6 +9,6 @@ describe('angular-slider App', () => {
 
   it('should display welcome message', () => {
     page.navigateTo();
-    expect(page.getParagraphText()).toEqual('Welcome to Angular 5 slider demo!');
+    expect(page.getParagraphText()).toEqual('ng5-slider');
   });
 });
