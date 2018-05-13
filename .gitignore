@@ -10,6 +10,9 @@
 # dependencies
 /node_modules
 
+# github pages temporary directory
+/gh-pages
+
 # IDEs and editors
 /.idea
 .project
