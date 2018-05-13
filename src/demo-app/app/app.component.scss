@@ -1,49 +1,44 @@
-h2 {
-  margin-top: 2em;
-}
-
 ::ng-deep {
-  .custom-slider .ng5-slider .ng5-slider-bar {
-    background: #ffe4d1;
-    height: 2px;
-  }
-  .custom-slider .ng5-slider .ng5-slider-selection {
-    background: orange;
-  }
+  .snippet-card {
+    margin-bottom: 3rem;
 
-  .custom-slider .ng5-slider .ng5-slider-pointer {
-    width: 8px;
-    height: 16px;
-    top: auto; /* to remove the default positioning */
-    bottom: 0;
-    background-color: #333;
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
-  }
+    .snippet-content {
+      margin-bottom: 1.25rem;
+    }
 
-  .custom-slider .ng5-slider .ng5-slider-pointer:after {
-    display: none;
-  }
+    .snippet-code-tabset {
+      .nav {
+        // Indent the tabs slightly
+        margin: 0;
+        padding: .5rem 1.25rem 0;
+        font-size: 80%;
+        // Remove the border to blend in with the code area
+        border-bottom: none;
 
-  .custom-slider .ng5-slider .ng5-slider-bubble {
-    bottom: 14px;
-  }
+        .nav-item {
+          .nav-link {
+            // Style all tabs with border and background color, even the inactive ones
+            border: 1px solid #dee2e6;
+            background-color: #fdfdfd;
+            color: #3e5bc5;
 
-  .custom-slider .ng5-slider .ng5-slider-limit {
-    font-weight: bold;
-    color: orange;
-  }
+            &.active {
+              // Make the active tab blend in with the code area
+              background-color: #f5f2f0;
+              border-bottom: 1px solid #f5f2f0;
+              color: inherit;
+            }
+          }
+        }
+      }
 
-  .custom-slider .ng5-slider .ng5-slider-tick {
-    width: 1px;
-    height: 10px;
-    margin-left: 4px;
-    border-radius: 0;
-    background: #ffe4d1;
-    top: -1px;
-  }
-
-  .custom-slider .ng5-slider .ng5-slider-tick.ng5-slider-selected {
-    background: orange;
+      pre[class*=language-] {
+        // Remove the gap between code area and the tab list
+        margin-top: 0;
+        // Surround with same border as the tab list
+        border: 1px solid #dee2e6;
+        border-radius: 4px;
+      }
+    }
   }
 }

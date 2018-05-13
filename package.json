@@ -28,6 +28,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "prebuild": "node scripts/generate-demo-app-templates.js",
     "build": "ng build",
     "build:demo-app": "ng build --app demo-app-dist",
     "build:lib": "node scripts/generate-lib-files.js && rimraf dist && ng-packagr -p src/ng5-slider/package.json",
@@ -60,6 +61,7 @@
     "@types/jasminewd2": "~2.0.2",
     "@types/node": "~6.0.60",
     "codelyzer": "^4.0.1",
+    "escape-html": "^1.0.3",
     "fs": "0.0.1-security",
     "jasmine-core": "~2.8.0",
     "jasmine-spec-reporter": "~4.2.1",
@@ -70,6 +72,7 @@
     "karma-jasmine-html-reporter": "^0.2.2",
     "ng-packagr": "^2.4.2",
     "path": "^0.12.7",
+    "prismjs": "^1.14.0",
     "protractor": "~5.1.2",
     "protractor-console-plugin": "^0.1.1",
     "ts-node": "~4.1.0",

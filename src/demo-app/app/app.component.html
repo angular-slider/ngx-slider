@@ -1,196 +1,48 @@
-<div style="text-align:center">
-  <h1>
-    Welcome to Angular 5 slider demo!
-  </h1>
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
-</div>
-
-
-<h2>Simple slider</h2>
-Value: <input type="text" [(ngModel)]="simpleSlider.value">
-<ng5-slider [(value)]="simpleSlider.value" [options]="simpleSlider.options"></ng5-slider>
-
-
-<h2>Range slider</h2>
-Min value: <input type="text" [(ngModel)]="rangeSlider.minValue">
-Min value: <input type="text" [(ngModel)]="rangeSlider.maxValue">
-<ng5-slider [(value)]="rangeSlider.minValue" [(highValue)]="rangeSlider.maxValue" [options]="rangeSlider.options"></ng5-slider>
-
-
-<h2>Slider with custom style</h2>
-<div class="custom-slider">
-  <ng5-slider [(value)]="styledSlider.minValue" [(highValue)]="styledSlider.maxValue" [options]="styledSlider.options"></ng5-slider>
-</div>
-
-
-<h2>Slider with min limit set to 10 and max limit set to 90</h2>
-<ng5-slider [(value)]="minMaxLimitSlider.value" [options]="minMaxLimitSlider.options"></ng5-slider>
-
-
-<h2>Range slider with a minimal range set to 10 and maximum of 50</h2>
-<ng5-slider [(value)]="minMaxRangeSlider.minValue" [(highValue)]="minMaxRangeSlider.maxValue" [options]="minMaxRangeSlider.options"></ng5-slider>
-
-
-<h2>Range slider with noSwitching=true</h2>
-<ng5-slider [(value)]="noSwitchingRangeSlider.minValue" [(highValue)]="noSwitchingRangeSlider.maxValue" [options]="noSwitchingRangeSlider.options"></ng5-slider>
-
-
-<h2>Range slider with minimum range of 10, maximum of 30 and pushRange option</h2>
-<ng5-slider [(value)]="minMaxAndPushRangeSlider.minValue" [(highValue)]="minMaxAndPushRangeSlider.maxValue" [options]="minMaxAndPushRangeSlider.options"></ng5-slider>
-
-
-<h2>Slider with visible selection bar</h2>
-<ng5-slider [(value)]="selectionBarSlider.value" [options]="selectionBarSlider.options"></ng5-slider>
-
-
-<h2>Slider with visible selection bar at the end</h2>
-<ng5-slider [(value)]="selectionBarAtEndSlider.value" [options]="selectionBarAtEndSlider.options"></ng5-slider>
-
-
-<h2>Slider with selection bar gradient</h2>
-<ng5-slider [(value)]="selectionBarWithGradientSlider.minValue" [(highValue)]="selectionBarWithGradientSlider.maxValue" [options]="selectionBarWithGradientSlider.options"></ng5-slider>
-
-
-<h2>Slider with dynamic selection bar color</h2>
-<ng5-slider [(value)]="selectionBarWithDynamicColorSlider.value" [options]="selectionBarWithDynamicColorSlider.options"></ng5-slider>
-
-
-<h2>Slider with dynamic pointer color</h2>
-<ng5-slider [(value)]="dynamicPointerColorSlider.value" [options]="dynamicPointerColorSlider.options"></ng5-slider>
-
-
-<h2>Slider with custom floor/ceil/step</h2>
-<ng5-slider [(value)]="floorCeilStepSlider.value" [options]="floorCeilStepSlider.options"></ng5-slider>
-
-
-<h2>Right to left slider</h2>
-<ng5-slider [(value)]="rtlSlider.value" [options]="rtlSlider.options"></ng5-slider>
-
-
-<h2>Slider with floating values</h2>
-<ng5-slider [(value)]="floatSlider.value" [options]="floatSlider.options"></ng5-slider>
-
-
-<h2>Slider with custom display function</h2>
-<ng5-slider [(value)]="customDisplayFunctionSlider.minValue" [(highValue)]="customDisplayFunctionSlider.maxValue" [options]="customDisplayFunctionSlider.options"></ng5-slider>
-
-
-<h2>Slider with custom display function using HTML formatting</h2>
-<ng5-slider [(value)]="customDisplayFunctionHtmlSlider.minValue" [(highValue)]="customDisplayFunctionHtmlSlider.maxValue" [options]="customDisplayFunctionHtmlSlider.options"></ng5-slider>
-
-
-<h2>Slider with custom combine labels function</h2>
-<ng5-slider [(value)]="customCombineLabelsFunctionSlider.minValue" [(highValue)]="customCombineLabelsFunctionSlider.maxValue" [options]="customCombineLabelsFunctionSlider.options"></ng5-slider>
-
-
-<h2>Slider with alphabet</h2>
-Current letter: {{this.indexToLetter(alphabetSlider.value)}}
-<ng5-slider [(value)]="alphabetSlider.value" [options]="alphabetSlider.options"></ng5-slider>
-
-
-<h2>Slider with dates</h2>
-<ng5-slider [(value)]="dateSlider.value" [options]="dateSlider.options"></ng5-slider>
-
-
-<h2>Slider with ticks</h2>
-<ng5-slider [(value)]="ticksSlider.value" [options]="ticksSlider.options"></ng5-slider>
-
-
-<h2>Slider with ticks at intermediate values</h2>
-<ng5-slider [(value)]="intermediateTicksSlider.value" [options]="intermediateTicksSlider.options"></ng5-slider>
-
-
-<h2>Slider with ticks at specific positions</h2>
-<ng5-slider [(value)]="ticksArraySlider.value" [options]="ticksArraySlider.options"></ng5-slider>
-
-
-<h2>Slider with ticks values and legend</h2>
-<!-- Margin because the last legend label otherwise sticks out to the right
-     TODO: should be fixed? -->
-<div style="margin-left: 2em; margin-right: 2em;">
-  <ng5-slider [(value)]="ticksLegendSlider.value" [options]="ticksLegendSlider.options"></ng5-slider>
-</div>
-
-
-<!-- Same as above -->
-<div style="margin-left: 2em; margin-right: 2em;">
-  <h2>Slider with ticks values and custom legend function</h2>
-  <ng5-slider [(value)]="ticksCustomLegendFunctionSlider.value" [options]="ticksCustomLegendFunctionSlider.options"></ng5-slider>
-</div>
-
-
-<h2>Slider with ticks and tooltips</h2>
-<ng5-slider [(value)]="ticksAndTooltipsSlider.value" [options]="ticksAndTooltipsSlider.options"></ng5-slider>
-
-
-<h2>Slider with ticks and values (and tooltips)</h2>
-<ng5-slider [(value)]="ticksValuesAndTooltipsSlider.value" [options]="ticksValuesAndTooltipsSlider.options"></ng5-slider>
-
-
-<h2>Range slider with ticks and values</h2>
-<ng5-slider [(value)]="rangeTicksValuesSlider.minValue" [(highValue)]="rangeTicksValuesSlider.maxValue" [options]="rangeTicksValuesSlider.options"></ng5-slider>
-
-
-<h2>Range slider with ticks and values at intermediate positions</h2>
-<ng5-slider [(value)]="rangeIntermediateTicksSlider.minValue" [(highValue)]="rangeIntermediateTicksSlider.maxValue" [options]="rangeIntermediateTicksSlider.options"></ng5-slider>
-
-
-<h2>Slider with dynamic tick color</h2>
-<ng5-slider [(value)]="dynamicTickColorSlider.value" [options]="dynamicTickColorSlider.options"></ng5-slider>
-
-
-<h2>Slider with logarithmic scale</h2>
-<ng5-slider [(value)]="logScaleSlider.value" [options]="logScaleSlider.options"></ng5-slider>
-
-
-<h2>Slider with custom scale</h2>
-<ng5-slider [(value)]="customScaleSlider.value" [options]="customScaleSlider.options"></ng5-slider>
-
-
-<h2>Slider with draggable range</h2>
-<ng5-slider [(value)]="draggableRangeSlider.minValue" [(highValue)]="draggableRangeSlider.maxValue" [options]="draggableRangeSlider.options"></ng5-slider>
-
-
-<h2>Slider with draggable range only</h2>
-<ng5-slider [(value)]="draggableRangeOnlySlider.minValue" [(highValue)]="draggableRangeOnlySlider.maxValue" [options]="draggableRangeOnlySlider.options"></ng5-slider>
-
-
-<h2>Disabled slider</h2>
-<!-- [(ngModel)]="disabledSliderDisabled" -->
-<label>Disabled <input type="checkbox"  [(ngModel)]="disabledSliderCheckbox" (change)="onChangeDisabledSliderCheckbox()"></label>
-<ng5-slider [(value)]="disabledSlider.minValue" [(highValue)]="disabledSlider.maxValue" [options]="disabledSlider.options"></ng5-slider>
-
-
-<h2>Read-only slider</h2>
-<label>Read-only <input type="checkbox" [(ngModel)]="readOnlySliderCheckbox" (change)="onChangeReadOnlySliderCheckbox()"></label>
-<ng5-slider [(value)]="readOnlySlider.value" [options]="readOnlySlider.options"></ng5-slider>
-
-
-<h2>Vertical sliders</h2>
-<div class="container">
-  <div class="row" style="height: 300px;">
-    <div class="col-2">
-      <ng5-slider [(value)]="verticalSlider1.value" [options]="verticalSlider1.options"></ng5-slider>
-    </div>
-
-    <div class="col-2">
-      <ng5-slider [(value)]="verticalSlider2.minValue" [(highValue)]="verticalSlider2.maxValue" [options]="verticalSlider2.options"></ng5-slider>
-    </div>
-
-    <div class="col-2">
-      <ng5-slider [(value)]="verticalSlider3.value" [options]="verticalSlider3.options"></ng5-slider>
-    </div>
-
-    <div class="col-2">
-      <ng5-slider [(value)]="verticalSlider4.minValue" [(highValue)]="verticalSlider4.maxValue" [options]="verticalSlider4.options"></ng5-slider>
-    </div>
-
-    <div class="col-2">
-      <ng5-slider [(value)]="verticalSlider5.value" [options]="verticalSlider5.options"></ng5-slider>
-    </div>
-
-    <div class="col-2">
-      <ng5-slider [(value)]="verticalSlider6.value" [options]="verticalSlider6.options"></ng5-slider>
-    </div>
+<div class="jumbotron jumbotron-fluid">
+  <div class="container">
+    <h1 class="display-4">ng5-slider</h1>
+    <p class="lead">Slider component for Angular 5+, a rewrite of <a href="https://github.com/angular-slider/angularjs-slider">angularjs-slider</a>, mobile-friendly, with no external dependencies</p>
+    <p>This is a collection of various examples of using the slider component when using different options.</p>
   </div>
+</div>
+
+<div class="container">
+  <app-simple-slider></app-simple-slider>
+  <app-range-slider></app-range-slider>
+  <app-styled-slider></app-styled-slider>
+  <app-limited-slider></app-limited-slider>
+  <app-limited-range-slider></app-limited-range-slider>
+  <app-no-switching-range-slider></app-no-switching-range-slider>
+  <app-push-range-slider></app-push-range-slider>
+  <app-selection-bar-slider></app-selection-bar-slider>
+  <app-selection-bar-at-end-slider></app-selection-bar-at-end-slider>
+  <app-selection-bar-from-value-slider></app-selection-bar-from-value-slider>
+  <app-selection-bar-gradient-slider></app-selection-bar-gradient-slider>
+  <app-dynamic-color-selection-bar-slider></app-dynamic-color-selection-bar-slider>
+  <app-dynamic-pointer-color-slider></app-dynamic-pointer-color-slider>
+  <app-stepped-slider></app-stepped-slider>
+  <app-right-to-left-slider></app-right-to-left-slider>
+  <app-floating-point-slider></app-floating-point-slider>
+  <app-custom-display-function-slider></app-custom-display-function-slider>
+  <app-custom-combine-labels-function-slider></app-custom-combine-labels-function-slider>
+  <app-custom-html-display-function-slider></app-custom-html-display-function-slider>
+  <app-alphabet-slider></app-alphabet-slider>
+  <app-date-slider></app-date-slider>
+  <app-ticks-slider></app-ticks-slider>
+  <app-intermediate-ticks-slider></app-intermediate-ticks-slider>
+  <app-custom-ticks-slider></app-custom-ticks-slider>
+  <app-custom-ticks-legend-slider></app-custom-ticks-legend-slider>
+  <app-custom-legend-function-slider></app-custom-legend-function-slider>
+  <app-ticks-tooltips-slider></app-ticks-tooltips-slider>
+  <app-ticks-values-tooltips-slider></app-ticks-values-tooltips-slider>
+  <app-ticks-values-range-slider></app-ticks-values-range-slider>
+  <app-intermediate-ticks-values-range-slider></app-intermediate-ticks-values-range-slider>
+  <app-dynamic-tick-color-slider></app-dynamic-tick-color-slider>
+  <app-log-scale-slider></app-log-scale-slider>
+  <app-custom-scale-slider></app-custom-scale-slider>
+  <app-draggable-range-slider></app-draggable-range-slider>
+  <app-draggable-range-only-slider></app-draggable-range-only-slider>
+  <app-disabled-slider></app-disabled-slider>
+  <app-read-only-slider></app-read-only-slider>
+  <app-vertical-sliders></app-vertical-sliders>
 </div>
