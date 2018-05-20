@@ -134,7 +134,7 @@ export class DemoPage {
   }
 
   navigateTo(demo: string): void {
-    browser.get('/' + demo);
+    browser.get(`/${demo}?testMode=true`);
   }
 
   getSliderElement(): ElementFinder {
