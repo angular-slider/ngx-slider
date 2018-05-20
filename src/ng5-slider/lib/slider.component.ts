@@ -1572,10 +1572,16 @@ export class SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     let moveEvent: string = '';
     let endEvent: string = '';
 
-    if (event instanceof TouchEvent) {
-      moveEvent = 'touchmove';
-      endEvent = 'touchend';
-    } else {
+    try {
+      if (event instanceof TouchEvent) {
+        moveEvent = 'touchmove';
+        endEvent = 'touchend';
+      }
+      else {
+        moveEvent = 'mousemove';
+        endEvent = 'mouseup';
+      }
+    } catch (error) {
       moveEvent = 'mousemove';
       endEvent = 'mouseup';
     }
@@ -1615,32 +1621,36 @@ export class SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     this.onEndUnsubscribe = this.renderer.listen('document', endEvent, ehEnd);
 
-    if (event instanceof TouchEvent && event.changedTouches) {
-      // Store the touch identifier
-      if (!this.touchId) {
-        this.isDragging = true;
-        this.touchId = event.changedTouches[0].identifier;
+    try {
+      if (event instanceof TouchEvent && event.changedTouches) {
+        // Store the touch identifier
+        if (!this.touchId) {
+          this.isDragging = true;
+          this.touchId = event.changedTouches[0].identifier;
+        }
       }
-    }
+    } catch (error) {}
   }
 
   // onMove event handler
   private onMove(pointer: SliderElement, event: MouseEvent|TouchEvent, fromTick?: boolean): void {
     let touchForThisSlider: Touch;
 
-    if (event instanceof TouchEvent) {
-      const changedTouches: TouchList = event.changedTouches;
-      for (let i: number = 0; i < changedTouches.length; i++) {
-        if (changedTouches[i].identifier === this.touchId) {
-          touchForThisSlider = changedTouches[i];
-          break;
+    try {
+      if (event instanceof TouchEvent) {
+        const changedTouches: TouchList = event.changedTouches;
+        for (let i: number = 0; i < changedTouches.length; i++) {
+          if (changedTouches[i].identifier === this.touchId) {
+            touchForThisSlider = changedTouches[i];
+            break;
+          }
+        }
+  
+        if (!touchForThisSlider) {
+          return;
         }
       }
-
-      if (!touchForThisSlider) {
-        return;
-      }
-    }
+    } catch (error) { }
 
     const newPos: number = this.getEventPosition(
         event,
@@ -1668,12 +1678,14 @@ export class SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private onEnd(event: MouseEvent|TouchEvent): void {
-    if (event instanceof TouchEvent) {
-      const changedTouches: TouchList = event.changedTouches;
-      if (changedTouches[0].identifier !== this.touchId) {
-        return;
+    try {
+      if (event instanceof TouchEvent) {
+        const changedTouches: TouchList = event.changedTouches;
+        if (changedTouches[0].identifier !== this.touchId) {
+          return;
+        }
       }
-    }
+    } catch (error) { }
 
     this.isDragging = false;
     this.touchId = null;
