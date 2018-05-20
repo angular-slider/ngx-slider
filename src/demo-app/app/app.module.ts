@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { Ng5SliderModule } from '@local/ng5-slider';
@@ -45,6 +46,8 @@ import {
   ReadOnlySliderComponent,
   VerticalSlidersComponent,
 } from './snippets';
+import { AllDemosComponent } from './all-demos.component';
+import { routerConfig } from './app-router.config';
 
 @NgModule({
   declarations: [
@@ -87,10 +90,12 @@ import {
     DisabledSliderComponent,
     ReadOnlySliderComponent,
     VerticalSlidersComponent,
+    AllDemosComponent,
   ],
   imports: [
     BrowserModule,
     FormsModule,
+    RouterModule.forRoot(routerConfig),
     NgbModule.forRoot(),
     Ng5SliderModule
   ],

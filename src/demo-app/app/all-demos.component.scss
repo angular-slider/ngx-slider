@@ -1,0 +1,44 @@
+::ng-deep {
+  .snippet-card {
+    margin-bottom: 3rem;
+
+    .snippet-content {
+      margin-bottom: 1.25rem;
+    }
+
+    .snippet-code-tabset {
+      .nav {
+        // Indent the tabs slightly
+        margin: 0;
+        padding: .5rem 1.25rem 0;
+        font-size: 80%;
+        // Remove the border to blend in with the code area
+        border-bottom: none;
+
+        .nav-item {
+          .nav-link {
+            // Style all tabs with border and background color, even the inactive ones
+            border: 1px solid #dee2e6;
+            background-color: #fdfdfd;
+            color: #3e5bc5;
+
+            &.active {
+              // Make the active tab blend in with the code area
+              background-color: #f5f2f0;
+              border-bottom: 1px solid #f5f2f0;
+              color: inherit;
+            }
+          }
+        }
+      }
+
+      pre[class*=language-] {
+        // Remove the gap between code area and the tab list
+        margin-top: 0;
+        // Surround with same border as the tab list
+        border: 1px solid #dee2e6;
+        border-radius: 4px;
+      }
+    }
+  }
+}
