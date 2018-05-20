@@ -1,4 +1,5 @@
 # ng5-slider
+[![npm version](https://badge.fury.io/js/ng5-slider.svg)](https://badge.fury.io/js/ng5-slider)
 [![Travis CI build](https://travis-ci.org/piotrdz/ng5-slider.svg)](https://travis-ci.org/piotrdz/ng5-slider)
 
 A rewrite of [angularjs-slider](https://github.com/angular-slider/angularjs-slider) for Angular 5+.
