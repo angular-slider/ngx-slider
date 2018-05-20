@@ -36,8 +36,10 @@
     "build:docs": "npm run prepare && rimraf docs && npx typedoc --excludeExternals --module umd --exclude '**/*.spec.ts' --exclude '**/public_api.ts' --out docs/ src/ng5-slider/",
     "publish": "scripts/publish-gh-pages.sh",
     "test": "npm run prepare && ng test",
+    "test:once": "npm run prepare && ng test --watch=false",
     "lint": "npm run prepare && ng lint",
-    "e2e": "npm run prepare && ng e2e"
+    "e2e": "npm run prepare && ng e2e",
+    "ci": "npm run test:once && npm run e2e && npm run lint && npm run build:lib && npm run build:demo-app"
   },
   "dependencies": {
     "@angular/animations": "^5.2.0",

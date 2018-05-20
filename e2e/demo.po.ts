@@ -1,14 +1,5 @@
 import { browser, by, element, promise, ElementFinder } from 'protractor';
-
-interface ElementLocation {
-  x: number;
-  y: number;
-}
-
-interface ElementSize {
-  width: number;
-  height: number;
-}
+import { ElementLocation, ElementSize } from './utils';
 
 /** A wrapper for ElementFinder referring to slider's sub-element
  * It exposes trimmed-down interface also extending it to return location
@@ -127,14 +118,8 @@ class SliderSubElement {
 }
 
 export class DemoPage {
-  setWindowSize(): void {
-    const width: number = 800;
-    const height: number = 600;
-    browser.driver.manage().window().setSize(width, height);
-  }
-
   navigateTo(demo: string): void {
-    browser.get('/' + demo);
+    browser.get(`/${demo}?testMode=true`);
   }
 
   getSliderElement(): ElementFinder {

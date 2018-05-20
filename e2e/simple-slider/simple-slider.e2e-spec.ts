@@ -1,13 +1,15 @@
 import { DemoPage } from '../demo.po';
+import { approximateGeometryMatchers } from '../utils';
 import { Key } from 'protractor';
 
 describe('simple slider', () => {
   let page: DemoPage;
 
   beforeEach(() => {
+    jasmine.addMatchers(approximateGeometryMatchers);
+
     page = new DemoPage();
     page.navigateTo('simple-slider');
-    page.setWindowSize();
   });
 
   describe('initial state', () => {
@@ -18,17 +20,17 @@ describe('simple slider', () => {
     });
 
     it('should position the slider elements correctly', () => {
-      expect(page.getSliderBar().getRelativeLocationWithoutMargins()).toEqual({x: 0, y: 3});
-      expect(page.getSliderBar().getSize()).toEqual({width: 758, height: 32});
+      expect(page.getSliderBar().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 0, y: 3});
+      expect(page.getSliderBar().getSize()).toBeApproximateSize({width: 758, height: 32});
 
-      expect(page.getSliderFloorLabel().getRelativeLocationWithoutMargins()).toEqual({x: 0, y: -3});
+      expect(page.getSliderFloorLabel().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 0, y: -3});
 
-      expect(page.getSliderCeilLabel().getRelativeLocationWithoutMargins()).toEqual({x: 725, y: -3});
+      expect(page.getSliderCeilLabel().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 725, y: -3});
 
-      expect(page.getSliderPointer().getRelativeLocationWithoutMargins()).toEqual({x: 290, y: 21});
-      expect(page.getSliderPointer().getSize()).toEqual({width: 32, height: 32});
+      expect(page.getSliderPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 290, y: 21});
+      expect(page.getSliderPointer().getSize()).toBeApproximateSize({width: 32, height: 32});
 
-      expect(page.getSliderPointerLabel().getRelativeLocationWithoutMargins()).toEqual({x: 290, y: -3});
+      expect(page.getSliderPointerLabel().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 290, y: -3});
     });
   });
 
@@ -42,9 +44,9 @@ describe('simple slider', () => {
     });
 
     it('should position the pointer and pointer label correctly', () => {
-      expect(page.getSliderPointer().getRelativeLocationWithoutMargins()).toEqual({x: 145, y: 21});
+      expect(page.getSliderPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 145, y: 21});
 
-      expect(page.getSliderPointerLabel().getRelativeLocationWithoutMargins()).toEqual({x: 145, y: -3});
+      expect(page.getSliderPointerLabel().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 145, y: -3});
     });
   });
 
@@ -58,9 +60,9 @@ describe('simple slider', () => {
     });
 
     it('should position the pointer and pointer label correctly', () => {
-      expect(page.getSliderPointer().getRelativeLocationWithoutMargins()).toEqual({x: 436, y: 21});
+      expect(page.getSliderPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 436, y: 21});
 
-      expect(page.getSliderPointerLabel().getRelativeLocationWithoutMargins()).toEqual({x: 435, y: -3});
+      expect(page.getSliderPointerLabel().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 435, y: -3});
     });
   });
 
@@ -75,9 +77,9 @@ describe('simple slider', () => {
       });
 
       it('should position the pointer and pointer label correctly', () => {
-        expect(page.getSliderPointer().getRelativeLocationWithoutMargins()).toEqual({x: 292, y: 21});
+        expect(page.getSliderPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 292, y: 21});
 
-        expect(page.getSliderPointerLabel().getRelativeLocationWithoutMargins()).toEqual({x: 291, y: -3});
+        expect(page.getSliderPointerLabel().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 291, y: -3});
       });
     });
 
@@ -91,9 +93,9 @@ describe('simple slider', () => {
       });
 
       it('should position the pointer and pointer label correctly', () => {
-        expect(page.getSliderPointer().getRelativeLocationWithoutMargins()).toEqual({x: 289, y: 21});
+        expect(page.getSliderPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 289, y: 21});
 
-        expect(page.getSliderPointerLabel().getRelativeLocationWithoutMargins()).toEqual({x: 288, y: -3});
+        expect(page.getSliderPointerLabel().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 288, y: -3});
       });
     });
 
@@ -107,9 +109,9 @@ describe('simple slider', () => {
       });
 
       it('should position the pointer and pointer label correctly', () => {
-        expect(page.getSliderPointer().getRelativeLocationWithoutMargins()).toEqual({x: 363, y: 21});
+        expect(page.getSliderPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 363, y: 21});
 
-        expect(page.getSliderPointerLabel().getRelativeLocationWithoutMargins()).toEqual({x: 363, y: -3});
+        expect(page.getSliderPointerLabel().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 363, y: -3});
       });
     });
 
@@ -123,9 +125,9 @@ describe('simple slider', () => {
       });
 
       it('should position the pointer and pointer label correctly', () => {
-        expect(page.getSliderPointer().getRelativeLocationWithoutMargins()).toEqual({x: 218, y: 21});
+        expect(page.getSliderPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 218, y: 21});
 
-        expect(page.getSliderPointerLabel().getRelativeLocationWithoutMargins()).toEqual({x: 217, y: -3});
+        expect(page.getSliderPointerLabel().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 217, y: -3});
       });
     });
 
@@ -139,9 +141,9 @@ describe('simple slider', () => {
       });
 
       it('should position the pointer and pointer label correctly', () => {
-        expect(page.getSliderPointer().getRelativeLocationWithoutMargins()).toEqual({x: 0, y: 21});
+        expect(page.getSliderPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 0, y: 21});
 
-        expect(page.getSliderPointerLabel().getRelativeLocationWithoutMargins()).toEqual({x: 9, y: -3});
+        expect(page.getSliderPointerLabel().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 9, y: -3});
       });
     });
 
@@ -155,9 +157,9 @@ describe('simple slider', () => {
       });
 
       it('should position the pointer and pointer label correctly', () => {
-        expect(page.getSliderPointer().getRelativeLocationWithoutMargins()).toEqual({x: 726, y: 21});
+        expect(page.getSliderPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 726, y: 21});
 
-        expect(page.getSliderPointerLabel().getRelativeLocationWithoutMargins()).toEqual({x: 725, y: -3});
+        expect(page.getSliderPointerLabel().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 725, y: -3});
       });
     });
   });
