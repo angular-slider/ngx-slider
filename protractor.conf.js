@@ -9,7 +9,11 @@ exports.config = {
     './e2e/**/*.e2e-spec.ts'
   ],
   capabilities: {
-    'browserName': 'chrome'
+    'browserName': 'chrome',
+    chromeOptions: {
+      // Force Chrome to run in 800x600 so we get consistent test results
+      args: ['--window-size=800,600']
+    }
   },
   directConnect: true,
   baseUrl: 'http://localhost:4200/',

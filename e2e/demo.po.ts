@@ -127,12 +127,6 @@ class SliderSubElement {
 }
 
 export class DemoPage {
-  setWindowSize(): void {
-    const width: number = 800;
-    const height: number = 600;
-    browser.driver.manage().window().setSize(width, height);
-  }
-
   navigateTo(demo: string): void {
     browser.get(`/${demo}?testMode=true`);
   }

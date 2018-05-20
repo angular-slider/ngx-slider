@@ -7,7 +7,6 @@ describe('simple slider', () => {
   beforeEach(() => {
     page = new DemoPage();
     page.navigateTo('simple-slider');
-    page.setWindowSize();
   });
 
   describe('initial state', () => {
