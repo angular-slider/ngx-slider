@@ -1,6 +1,6 @@
 import { AppPage } from './app.po';
 
-describe('angular-slider App', () => {
+describe('demo app', () => {
   let page: AppPage;
 
   beforeEach(() => {

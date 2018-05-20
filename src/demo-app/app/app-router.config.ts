@@ -7,5 +7,6 @@ import {
 
 export let routerConfig: Routes = [
   { path: '', pathMatch: 'full', component: AllDemosComponent },
+  { path: 'simple-slider', component: SimpleSliderComponent },
   { path: '**', pathMatch: 'full', redirectTo: ''}
 ];
