@@ -31,6 +31,7 @@ import { ValuePositionConverter } from './value-position-converter';
 import { JqLiteWrapper } from './jq-lite-wrapper';
 
 import { ThrottledFunc } from './throttled-func';
+import { CompatibilityHelper } from './compatibility-helper';
 
 export class Tick {
   selected: boolean;
@@ -1572,7 +1573,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     let moveEvent: string = '';
     let endEvent: string = '';
 
-    if (event instanceof TouchEvent) {
+    if (CompatibilityHelper.isTouchEvent(event)) {
       moveEvent = 'touchmove';
       endEvent = 'touchend';
     } else {
@@ -1615,11 +1616,11 @@ export class SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     this.onEndUnsubscribe = this.renderer.listen('document', endEvent, ehEnd);
 
-    if (event instanceof TouchEvent && event.changedTouches) {
+    if (CompatibilityHelper.isTouchEvent(event) && (event as TouchEvent).changedTouches) {
       // Store the touch identifier
       if (!this.touchId) {
         this.isDragging = true;
-        this.touchId = event.changedTouches[0].identifier;
+        this.touchId = (event as TouchEvent).changedTouches[0].identifier;
       }
     }
   }
@@ -1628,8 +1629,8 @@ export class SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   private onMove(pointer: SliderElement, event: MouseEvent|TouchEvent, fromTick?: boolean): void {
     let touchForThisSlider: Touch;
 
-    if (event instanceof TouchEvent) {
-      const changedTouches: TouchList = event.changedTouches;
+    if (CompatibilityHelper.isTouchEvent(event)) {
+      const changedTouches: TouchList = (event as TouchEvent).changedTouches;
       for (let i: number = 0; i < changedTouches.length; i++) {
         if (changedTouches[i].identifier === this.touchId) {
           touchForThisSlider = changedTouches[i];
@@ -1668,8 +1669,8 @@ export class SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private onEnd(event: MouseEvent|TouchEvent): void {
-    if (event instanceof TouchEvent) {
-      const changedTouches: TouchList = event.changedTouches;
+    if (CompatibilityHelper.isTouchEvent(event)) {
+      const changedTouches: TouchList = (event as TouchEvent).changedTouches;
       if (changedTouches[0].identifier !== this.touchId) {
         return;
       }
