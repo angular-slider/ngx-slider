@@ -75,7 +75,7 @@
 				<h2 id="dependencies">Dependencies</h2>
 				<ul>
 					<li>Angular 5+</li>
-					<li>ng-bootstrap (optional, used only for tooltips)</li>
+					<li>ng-bootstrap (optional, used only for tooltips; see notes below)</li>
 				</ul>
 				<h2 id="installation">Installation</h2>
 				<p>To add the slider to your Angular project:</p>
@@ -122,6 +122,10 @@
 </code></pre>
 				<p>For single value slider, <code>value</code> specifies the model value of the slider. For range sliders, <code>value</code> is the minimum model value and <code>highValue</code> is the maximum model value. <code>options</code> is an object of options that configure the slider (e.g. minimum, maximum values, legend values, etc.). Documentation of all available options is included <a href="http://piotrdz.github.io/ng5-slider/docs/classes/_options_.options.html">in the API docs</a>.</p>
 				<p>The full set of API docs including internal classes can be found <a href="http://piotrdz.github.io/ng5-slider/docs/index.html">here</a>.</p>
+				<h2 id="notes-on-ng-bootstrap">Notes on ng-bootstrap</h2>
+				<p>ng-bootstrap is an optional dependency, which means that you can use the slider without having ng-bootstrap in your <code>package.json</code>.</p>
+				<p><code>npm install</code> and <code>ng build</code> will still complain about missing ng-bootstrap, but these will be warnings rather than errors, and they can be safely ignored.</p>
+				<p>When ng-bootstrap is not available, using tooltip options will have no effect.</p>
 				<h2 id="developer-information">Developer information</h2>
 				<p>If you&#39;d like to contribute to the project, or check out the plans for future, see <a href="DEVELOPERS.md">DEVELOPERS.md</a>.</p>
 				<h2 id="license">License</h2>
@@ -139,6 +143,9 @@
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="modules/_jq_lite_wrapper_.html">"jq-<wbr>lite-<wbr>wrapper"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_ng_bootstrap_fakes_module_.html">"ng-<wbr>bootstrap-<wbr>fakes.module"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="modules/_options_.html">"options"</a>
