@@ -1,14 +1,14 @@
-import { DemoPage } from '../demo.po';
+import { SimpleSliderDemoPage } from '../simple-slider-demo.po';
 import { approximateGeometryMatchers } from '../utils';
 import { Key } from 'protractor';
 
 describe('simple slider', () => {
-  let page: DemoPage;
+  let page: SimpleSliderDemoPage;
 
   beforeEach(() => {
     jasmine.addMatchers(approximateGeometryMatchers);
 
-    page = new DemoPage();
+    page = new SimpleSliderDemoPage();
     page.navigateTo('simple-slider');
   });
 
@@ -39,7 +39,7 @@ describe('simple slider', () => {
       page.getSliderPointer().mouseDragSync(-145, -50);
     });
 
-    it('should update pointer label to new value', () => {
+    it('should update the pointer label to new value', () => {
       expect(page.getSliderPointerLabel().getText()).toEqual('100');
     });
 
@@ -55,7 +55,7 @@ describe('simple slider', () => {
       page.getSliderPointer().touchDragSync(161, 50);
     });
 
-    it('should update pointer label to new value', () => {
+    it('should update the pointer label to new value', () => {
       expect(page.getSliderPointerLabel().getText()).toEqual('300');
     });
 

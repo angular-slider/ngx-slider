@@ -12,6 +12,20 @@ export class SliderSubElement {
     private sliderSubElement: ElementFinder) {
   }
 
+  isVisible(): promise.Promise<boolean> {
+    return new promise.Promise<boolean>(
+      (resolve: promise.IFulfilledCallback<boolean>,
+       reject: promise.IRejectedCallback): void => {
+        this.sliderSubElement.getCssValue('visibility').then(
+          (value: string): void => {
+            resolve(value === 'visible');
+          },
+          (error: any): void => {
+            reject(error);
+          });
+      });
+  }
+
   getText(): promise.Promise<string> {
     return this.sliderSubElement.getText();
   }

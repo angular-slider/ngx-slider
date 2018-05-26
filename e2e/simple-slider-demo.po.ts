@@ -1,7 +1,7 @@
 import { browser, by, element, promise, ElementFinder } from 'protractor';
 import { ElementLocation, ElementSize, SliderSubElement } from './utils';
 
-export class DemoPage {
+export class SimpleSliderDemoPage {
   navigateTo(demo: string): void {
     browser.get(`/${demo}?testMode=true`);
   }
@@ -30,7 +30,7 @@ export class DemoPage {
     return this.getSliderSubElement('ng5sliderminlabelem');
   }
 
-  getSliderSubElement(subElementAttribute: string): SliderSubElement {
+  private getSliderSubElement(subElementAttribute: string): SliderSubElement {
     const sliderElement: ElementFinder = this.getSliderElement();
     const sliderSubElement: ElementFinder = sliderElement.element(by.css(`span[${subElementAttribute}]`));
     return new SliderSubElement(sliderElement, sliderSubElement);
