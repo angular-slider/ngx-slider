@@ -8,5 +8,6 @@ import {
 export let routerConfig: Routes = [
   { path: '', pathMatch: 'full', component: AllDemosComponent },
   { path: 'simple-slider', component: SimpleSliderComponent },
+  { path: 'range-slider', component: RangeSliderComponent },
   { path: '**', pathMatch: 'full', redirectTo: ''}
 ];
