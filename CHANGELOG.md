@@ -1,3 +1,10 @@
+# 1.0.0
+ * fixed error related to TouchEvent constructor on Firefox and Safari (issue #4)
+ * downgraded Angular and ng-bootstrap dependency versions to the minimum required (v5.0.2 and v1.0.0 respectively)
+ * fixed errors when using slider component without ng-bootstrap installed
+ * added e2e tests for slider component
+ * added Travis CI integration
+
 # 0.4.0
  * refactored demo app to show the examples with code snippets
  * reverted view encapsulation of slider component to Angular defaults

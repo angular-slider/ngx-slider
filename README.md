@@ -14,7 +14,7 @@ Self-contained, mobile friendly slider component.
 ## Dependencies
 
  * Angular 5+
- * ng-bootstrap (optional, used only for tooltips)
+ * ng-bootstrap (optional, used only for tooltips; see notes below)
 
 ## Installation
 
@@ -76,6 +76,14 @@ The slider component takes three inputs:
 For single value slider, `value` specifies the model value of the slider. For range sliders, `value` is the minimum model value and `highValue` is the maximum model value. `options` is an object of options that configure the slider (e.g. minimum, maximum values, legend values, etc.). Documentation of all available options is included [in the API docs](http://piotrdz.github.io/ng5-slider/docs/classes/_options_.options.html).
 
 The full set of API docs including internal classes can be found [here](http://piotrdz.github.io/ng5-slider/docs/index.html).
+
+## Notes on ng-bootstrap
+
+ng-bootstrap is an optional dependency, which means that you can use the slider without having ng-bootstrap in your `package.json`.
+
+`npm install` and `ng build` will still complain about missing ng-bootstrap, but these will be warnings rather than errors, and they can be safely ignored.
+
+When ng-bootstrap is not available, using tooltip options will have no effect.
 
 ## Developer information
 
