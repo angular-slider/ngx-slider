@@ -136,8 +136,9 @@ describe('simple slider', () => {
         page.getSliderPointer().sendKeys(Key.HOME);
       });
 
-      it('should set the value to minimum', () => {
+      it('should set the value to minimum and hide the floor label', () => {
         expect(page.getSliderPointerLabel().getText()).toEqual('0');
+        expect(page.getSliderFloorLabel().isVisible()).toBe(false);
       });
 
       it('should position the pointer and pointer label correctly', () => {
@@ -152,8 +153,9 @@ describe('simple slider', () => {
         page.getSliderPointer().sendKeys(Key.END);
       });
 
-      it('should set the value to maximum', () => {
+      it('should set the value to maximum and hide the ceil label', () => {
         expect(page.getSliderPointerLabel().getText()).toEqual('500');
+        expect(page.getSliderCeilLabel().isVisible()).toBe(false);
       });
 
       it('should position the pointer and pointer label correctly', () => {
