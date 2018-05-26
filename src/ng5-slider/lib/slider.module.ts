@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import {
   SliderComponent,
   RightOutSelDirective,
@@ -15,7 +14,20 @@ import {
   MaxLabDirective,
   CmbLabDirective,
   TicksDirective
- } from './slider.component';
+} from './slider.component';
+import { NgBootstrapFakesModule } from './ng-bootstrap-fakes.module';
+
+// import {} syntax cannot be used in try {} block, so we need to fall back to nodejs's require()
+declare var require: any;
+
+const extraImports: any[] = [];
+try {
+  const ngBootstrap: any = require('@ng-bootstrap/ng-bootstrap');
+  extraImports.push(ngBootstrap.NgbModule);
+} catch (e) {
+  // Use a fake replacement in case ng-bootstrap is missing
+  extraImports.push(NgBootstrapFakesModule);
+}
 
 /**
  * Ng5Slider module
@@ -25,7 +37,7 @@ import {
 @NgModule({
   imports: [
     CommonModule,
-    NgbModule
+    ...extraImports
   ],
   declarations: [
     SliderComponent,
