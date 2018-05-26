@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>&quot;throttled-func.spec&quot; | ng5-slider</title>
+	<title>CompatibilityHelper | ng5-slider</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -54,16 +54,78 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="_throttled_func_spec_.html">&quot;throttled-func.spec&quot;</a>
+					<a href="../modules/_compatibility_helper_.html">&quot;compatibility-helper&quot;</a>
+				</li>
+				<li>
+					<a href="_compatibility_helper_.compatibilityhelper.html">CompatibilityHelper</a>
 				</li>
 			</ul>
-			<h1>External module &quot;throttled-func.spec&quot;</h1>
+			<h1>Class CompatibilityHelper</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>Helper with compatibility functions to support different browsers</p>
+					</div>
+				</div>
+			</section>
+			<section class="tsd-panel tsd-hierarchy">
+				<h3>Hierarchy</h3>
+				<ul class="tsd-hierarchy">
+					<li>
+						<span class="target">CompatibilityHelper</span>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel-group tsd-index-group">
+				<h2>Index</h2>
+				<section class="tsd-panel tsd-index-panel">
+					<div class="tsd-index-content">
+						<section class="tsd-index-section ">
+							<h3>Methods</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="_compatibility_helper_.compatibilityhelper.html#istouchevent" class="tsd-kind-icon">is<wbr>Touch<wbr>Event</a></li>
+							</ul>
+						</section>
+					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
+					<a name="istouchevent" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> is<wbr>Touch<wbr>Event</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
+						<li class="tsd-signature tsd-kind-icon">is<wbr>Touch<wbr>Event<span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/piotrdz/ng5-slider/blob/f584ec7/src/ng5-slider/lib/compatibility-helper.ts#L4">compatibility-helper.ts:4</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Workaround for  TouchEvent constructor sadly not being available on all browsers (e.g. Firefox, Safari)</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>event: <span class="tsd-signature-type">any</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+						</li>
+					</ul>
+				</section>
+			</section>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
 			<nav class="tsd-navigation primary">
@@ -71,37 +133,49 @@
 					<li class="globals  ">
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_compatibility_helper_.html">"compatibility-<wbr>helper"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_jq_lite_wrapper_.html">"jq-<wbr>lite-<wbr>wrapper"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_options_.html">"options"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_slider_component_.html">"slider.component"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_slider_component_spec_.html">"slider.component.spec"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_slider_module_.html">"slider.module"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_throttled_func_.html">"throttled-<wbr>func"</a>
-					</li>
 					<li class="current tsd-kind-external-module">
-						<a href="_throttled_func_spec_.html">"throttled-<wbr>func.spec"</a>
+						<a href="../modules/_compatibility_helper_.html">"compatibility-<wbr>helper"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="_value_position_converter_.html">"value-<wbr>position-<wbr>converter"</a>
+						<a href="../modules/_jq_lite_wrapper_.html">"jq-<wbr>lite-<wbr>wrapper"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_options_.html">"options"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_slider_component_.html">"slider.component"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_slider_component_spec_.html">"slider.component.spec"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_slider_module_.html">"slider.module"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_throttled_func_.html">"throttled-<wbr>func"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_throttled_func_spec_.html">"throttled-<wbr>func.spec"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_value_position_converter_.html">"value-<wbr>position-<wbr>converter"</a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-class tsd-parent-kind-external-module">
+						<a href="_compatibility_helper_.compatibilityhelper.html" class="tsd-kind-icon">Compatibility<wbr>Helper</a>
+						<ul>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
+								<a href="_compatibility_helper_.compatibilityhelper.html#istouchevent" class="tsd-kind-icon">is<wbr>Touch<wbr>Event</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				<ul class="after-current">
 				</ul>
 			</nav>
 		</div>
