@@ -1,13 +1,29 @@
-import { browser, by, element, promise, ElementFinder } from 'protractor';
-import { ElementLocation, ElementSize } from './utils';
+import { ElementFinder, browser, promise } from 'protractor';
+import { ElementLocation } from './element-location';
+import { ElementSize } from './element-size';
 
 /** A wrapper for ElementFinder referring to slider's sub-element
- * It exposes trimmed-down interface also extending it to return location
- * relative to main slider element.
+ * It exposes a trimmed-down ElementFinder interface also extending
+ * it with some other useful functions in context of testing
+ * the slider component.
  */
-class SliderSubElement {
+export class SliderSubElement {
   constructor(private sliderElement: ElementFinder,
     private sliderSubElement: ElementFinder) {
+  }
+
+  isVisible(): promise.Promise<boolean> {
+    return new promise.Promise<boolean>(
+      (resolve: promise.IFulfilledCallback<boolean>,
+       reject: promise.IRejectedCallback): void => {
+        this.sliderSubElement.getCssValue('visibility').then(
+          (value: string): void => {
+            resolve(value === 'visible');
+          },
+          (error: any): void => {
+            reject(error);
+          });
+      });
   }
 
   getText(): promise.Promise<string> {
@@ -114,41 +130,5 @@ class SliderSubElement {
 
   sendKeys(...args: any[]): promise.Promise<void> {
     return this.sliderSubElement.sendKeys(...args);
-  }
-}
-
-export class DemoPage {
-  navigateTo(demo: string): void {
-    browser.get(`/${demo}?testMode=true`);
-  }
-
-  getSliderElement(): ElementFinder {
-    return element(by.css('ng5-slider'));
-  }
-
-  getSliderBar(): SliderSubElement {
-    return this.getSliderSubElement('ng5sliderfullbarelem');
-  }
-
-  getSliderFloorLabel(): SliderSubElement {
-    return this.getSliderSubElement('ng5sliderflrlabelem');
-  }
-
-  getSliderCeilLabel(): SliderSubElement {
-    return this.getSliderSubElement('ng5sliderceillabelem');
-  }
-
-  getSliderPointer(): SliderSubElement {
-    return this.getSliderSubElement('ng5sliderminhelem');
-  }
-
-  getSliderPointerLabel(): SliderSubElement {
-    return this.getSliderSubElement('ng5sliderminlabelem');
-  }
-
-  getSliderSubElement(subElementAttribute: string): SliderSubElement {
-    const sliderElement: ElementFinder = this.getSliderElement();
-    const sliderSubElement: ElementFinder = sliderElement.element(by.css(`span[${subElementAttribute}]`));
-    return new SliderSubElement(sliderElement, sliderSubElement);
   }
 }

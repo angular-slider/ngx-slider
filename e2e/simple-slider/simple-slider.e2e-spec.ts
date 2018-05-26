@@ -1,14 +1,14 @@
-import { DemoPage } from '../demo.po';
+import { SimpleSliderDemoPage } from '../simple-slider-demo.po';
 import { approximateGeometryMatchers } from '../utils';
 import { Key } from 'protractor';
 
 describe('simple slider', () => {
-  let page: DemoPage;
+  let page: SimpleSliderDemoPage;
 
   beforeEach(() => {
     jasmine.addMatchers(approximateGeometryMatchers);
 
-    page = new DemoPage();
+    page = new SimpleSliderDemoPage();
     page.navigateTo('simple-slider');
   });
 
@@ -39,7 +39,7 @@ describe('simple slider', () => {
       page.getSliderPointer().mouseDragSync(-145, -50);
     });
 
-    it('should update pointer label to new value', () => {
+    it('should update the pointer label to new value', () => {
       expect(page.getSliderPointerLabel().getText()).toEqual('100');
     });
 
@@ -55,7 +55,7 @@ describe('simple slider', () => {
       page.getSliderPointer().touchDragSync(161, 50);
     });
 
-    it('should update pointer label to new value', () => {
+    it('should update the pointer label to new value', () => {
       expect(page.getSliderPointerLabel().getText()).toEqual('300');
     });
 
@@ -136,8 +136,9 @@ describe('simple slider', () => {
         page.getSliderPointer().sendKeys(Key.HOME);
       });
 
-      it('should set the value to minimum', () => {
+      it('should set the value to minimum and hide the floor label', () => {
         expect(page.getSliderPointerLabel().getText()).toEqual('0');
+        expect(page.getSliderFloorLabel().isVisible()).toBe(false);
       });
 
       it('should position the pointer and pointer label correctly', () => {
@@ -152,8 +153,9 @@ describe('simple slider', () => {
         page.getSliderPointer().sendKeys(Key.END);
       });
 
-      it('should set the value to maximum', () => {
+      it('should set the value to maximum and hide the ceil label', () => {
         expect(page.getSliderPointerLabel().getText()).toEqual('500');
+        expect(page.getSliderCeilLabel().isVisible()).toBe(false);
       });
 
       it('should position the pointer and pointer label correctly', () => {

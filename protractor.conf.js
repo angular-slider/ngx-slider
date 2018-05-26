@@ -33,6 +33,10 @@ exports.config = {
     package: 'protractor-console-plugin',
     failOnWarning:false,
     failOnError: true,
-    logWarnings: true
+    logWarnings: true,
+    exclude: [
+      // Useless warnings coming from touch event simulation
+      'Ignored attempt to cancel a touchstart event with cancelable=false'
+    ]
   }]
 };

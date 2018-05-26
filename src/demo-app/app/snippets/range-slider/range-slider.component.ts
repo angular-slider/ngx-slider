@@ -6,11 +6,11 @@ import { Options } from '@local/ng5-slider';
   templateUrl: './range-slider.component.html'
 })
 export class RangeSliderComponent {
-  minValue: number = 10;
-  maxValue: number = 90;
+  minValue: number = 20;
+  maxValue: number = 80;
   options: Options = {
     floor: 0,
     ceil: 100,
-    step: 10
+    step: 5
   };
 }
