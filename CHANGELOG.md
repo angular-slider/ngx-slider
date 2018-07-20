@@ -1,3 +1,7 @@
+# 1.0.1
+ * moved repository to official angular-slider organisation
+ * updated demo app to run under older browsers
+
 # 1.0.0
  * fixed error related to TouchEvent constructor on Firefox and Safari (issue #4)
  * downgraded Angular and ng-bootstrap dependency versions to the minimum required (v5.0.2 and v1.0.0 respectively)
