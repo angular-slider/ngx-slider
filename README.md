@@ -1,6 +1,8 @@
 # ng5-slider
 [![npm version](https://badge.fury.io/js/ng5-slider.svg)](https://badge.fury.io/js/ng5-slider)
-[![Travis CI build](https://travis-ci.org/piotrdz/ng5-slider.svg)](https://travis-ci.org/piotrdz/ng5-slider)
+[![Travis CI Build](https://travis-ci.org/angular-slider/ng5-slider.svg?branch=master)](https://travis-ci.org/angular-slider/ng5-slider)
+
+Website: https://angular-slider.github.io/ng5-slider/
 
 A rewrite of [angularjs-slider](https://github.com/angular-slider/angularjs-slider) for Angular 5+.
 
@@ -9,7 +11,7 @@ Self-contained, mobile friendly slider component.
 ## Demos
 
  * [Simple plunker demo](https://plnkr.co/XhzcMg)
- * [More examples](https://piotrdz.github.io/ng5-slider/)
+ * [More examples](https://angular-slider.github.io/ng5-slider/)
 
 ## Dependencies
 
@@ -73,9 +75,9 @@ The slider component takes three inputs:
   options="<options object>">
 ```
 
-For single value slider, `value` specifies the model value of the slider. For range sliders, `value` is the minimum model value and `highValue` is the maximum model value. `options` is an object of options that configure the slider (e.g. minimum, maximum values, legend values, etc.). Documentation of all available options is included [in the API docs](http://piotrdz.github.io/ng5-slider/docs/classes/_options_.options.html).
+For single value slider, `value` specifies the model value of the slider. For range sliders, `value` is the minimum model value and `highValue` is the maximum model value. `options` is an object of options that configure the slider (e.g. minimum, maximum values, legend values, etc.). Documentation of all available options is included [in the API docs](https://angular-slider.github.io/ng5-slider/docs/classes/_options_.options.html).
 
-The full set of API docs including internal classes can be found [here](http://piotrdz.github.io/ng5-slider/docs/index.html).
+The full set of API docs including internal classes can be found [here](https://angular-slider.github.io/ng5-slider/docs/index.html).
 
 ## Notes on ng-bootstrap
 
