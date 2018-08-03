@@ -29,11 +29,11 @@
 <!-- // 10 Range label when the slider handles are close ex. 15 - 17 -->
 <span ng5SliderCmbLabElem class="ng5-slider-span ng5-slider-bubble"></span>
 <!-- // 11 The ticks -->
-<ul ng5SliderTicksElem [hidden]="!showTicks" class="ng5-slider-ticks">
-  <li *ngFor="let t of ticks" class="ng5-slider-tick" [ngClass]="{'ng5-slider-selected': t.selected}" [ngStyle]="t.style"
-      [ngbTooltip]="t.tooltip" [placement]="t.tooltipPlacement" container="body">
-    <span *ngIf="t.value != null" class="ng5-slider-span ng5-slider-tick-value"
-          [ngbTooltip]="t.valueTooltip" [placement]="t.valueTooltipPlacement">{{ t.value }}</span>
+<span ng5SliderTicksElem [hidden]="!showTicks" class="ng5-slider-ticks">
+  <span *ngFor="let t of ticks" class="ng5-slider-tick" [ngClass]="{'ng5-slider-selected': t.selected}" [ngStyle]="t.style">
+    <ng5-slider-tooltip-wrapper [template]="tooltipTemplate" [tooltip]="t.tooltip" [placement]="t.tooltipPlacement"></ng5-slider-tooltip-wrapper>
+    <ng5-slider-tooltip-wrapper *ngIf="t.value != null" class="ng5-slider-span ng5-slider-tick-value"
+        [template]="tooltipTemplate" [tooltip]="t.valueTooltip" [placement]="t.valueTooltipPlacement" [content]="t.value"></ng5-slider-tooltip-wrapper>
     <span *ngIf="t.legend != null" class="ng5-slider-span ng5-slider-tick-legend">{{ t.legend }}</span>
-  </li>
-</ul>
+  </span>
+</span>

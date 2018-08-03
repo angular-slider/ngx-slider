@@ -15,6 +15,7 @@ import {
   CmbLabDirective,
   TicksDirective
 } from './slider.component';
+import { TooltipWrapperComponent } from './tooltip-wrapper.component';
 import { NgBootstrapFakesModule } from './ng-bootstrap-fakes.module';
 
 // import {} syntax cannot be used in try {} block, so we need to fall back to nodejs's require()
@@ -52,7 +53,8 @@ try {
     MinLabDirective,
     MaxLabDirective,
     CmbLabDirective,
-    TicksDirective
+    TicksDirective,
+    TooltipWrapperComponent
   ],
   exports: [
     SliderComponent

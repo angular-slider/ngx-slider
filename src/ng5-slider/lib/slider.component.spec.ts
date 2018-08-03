@@ -16,7 +16,9 @@ import {
   MaxLabDirective,
   CmbLabDirective,
   TicksDirective
- } from './slider.component';
+} from './slider.component';
+
+import { TooltipWrapperComponent } from './tooltip-wrapper.component';
 
 describe('SliderComponent', () => {
   let component: SliderComponent;
@@ -40,7 +42,8 @@ describe('SliderComponent', () => {
         MinLabDirective,
         MaxLabDirective,
         CmbLabDirective,
-        TicksDirective
+        TicksDirective,
+        TooltipWrapperComponent
       ]
     })
     .compileComponents();
