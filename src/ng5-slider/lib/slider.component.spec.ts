@@ -1,7 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-
 import {
   SliderComponent,
   RightOutSelDirective,
@@ -26,9 +24,6 @@ describe('SliderComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
-        NgbModule
-      ],
       declarations: [
         SliderComponent,
         RightOutSelDirective,
