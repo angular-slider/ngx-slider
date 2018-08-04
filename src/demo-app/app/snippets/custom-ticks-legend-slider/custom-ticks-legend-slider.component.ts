@@ -6,24 +6,19 @@ import { Options } from '@local/ng5-slider';
   templateUrl: './custom-ticks-legend-slider.component.html'
 })
 export class CustomTicksLegendSliderComponent {
-  value: number = 50;
+  value: number = 5;
   options: Options = {
-    floor: 0,
-    ceil: 100,
-    step: 10,
     showTicksValues: true,
-    customValueToPosition: (val: number, minVal: number, maxVal: number): number => {
-      val = Math.sqrt(val);
-      minVal = Math.sqrt(minVal);
-      maxVal = Math.sqrt(maxVal);
-      const range: number = maxVal - minVal;
-      return (val - minVal) / range;
-    },
-    customPositionToValue: (percent: number, minVal: number, maxVal: number): number => {
-      minVal = Math.sqrt(minVal);
-      maxVal = Math.sqrt(maxVal);
-      const value: number = percent * (maxVal - minVal) + minVal;
-      return Math.pow(value, 2);
-    }
+    stepsArray: [
+      {value: 1, legend: 'Very poor'},
+      {value: 2},
+      {value: 3, legend: 'Fair'},
+      {value: 4},
+      {value: 5, legend: 'Average'},
+      {value: 6},
+      {value: 7, legend: 'Good'},
+      {value: 8},
+      {value: 9, legend: 'Excellent'}
+    ]
   };
 }

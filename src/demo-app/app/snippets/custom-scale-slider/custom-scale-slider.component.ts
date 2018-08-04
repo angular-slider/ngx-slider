@@ -6,9 +6,24 @@ import { Options } from '@local/ng5-slider';
   templateUrl: './custom-scale-slider.component.html'
 })
 export class CustomScaleSliderComponent {
-  value: number = 200;
+  value: number = 50;
   options: Options = {
     floor: 0,
-    ceil: 500
+    ceil: 100,
+    step: 10,
+    showTicksValues: true,
+    customValueToPosition: (val: number, minVal: number, maxVal: number): number => {
+      val = Math.sqrt(val);
+      minVal = Math.sqrt(minVal);
+      maxVal = Math.sqrt(maxVal);
+      const range: number = maxVal - minVal;
+      return (val - minVal) / range;
+    },
+    customPositionToValue: (percent: number, minVal: number, maxVal: number): number => {
+      minVal = Math.sqrt(minVal);
+      maxVal = Math.sqrt(maxVal);
+      const value: number = percent * (maxVal - minVal) + minVal;
+      return Math.pow(value, 2);
+    }
   };
 }
