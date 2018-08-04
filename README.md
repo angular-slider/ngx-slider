@@ -16,7 +16,6 @@ Self-contained, mobile friendly slider component.
 ## Dependencies
 
  * Angular 5+
- * ng-bootstrap (optional, used only for tooltips; see notes below)
 
 ## Installation
 
@@ -79,13 +78,27 @@ For single value slider, `value` specifies the model value of the slider. For ra
 
 The full set of API docs including internal classes can be found [here](https://angular-slider.github.io/ng5-slider/docs/index.html).
 
-## Notes on ng-bootstrap
+## Tooltips
 
-ng-bootstrap is an optional dependency, which means that you can use the slider without having ng-bootstrap in your `package.json`.
+Prior to version 1.1, the library used to have a dependency on ng-bootstrap to support tooltips.
 
-`npm install` and `ng build` will still complain about missing ng-bootstrap, but these will be warnings rather than errors, and they can be safely ignored.
+As of version 1.1, this dependency has been removed, and tooltips are rendered by default by using the standard HTML `title` attribute (e.g. `<div title="Some tooltip">Some content</div>`), but it's also possible to customise this behaviour by specifying a custom template.
 
-When ng-bootstrap is not available, using tooltip options will have no effect.
+When using a custom template, elements that would normally be rendered as `<div title=...>` tags, are instead rendered using the specified template. Inside the custom template, the user is free to choose any way of rendering the tooltips, including, but of course not limited to, using ng-bootstrap.
+
+The syntax for specifying the custom template is the following:
+```html
+<ng5-slider [(value)]="value" [options]="options">
+  <ng-template #tooltipTemplate let-tooltip="tooltip" let-placement="placement" let-content="content">
+    <!-- TODO: provide tooltip around the content.
+         {{tooltip}} will bind to the tooltip text
+         {{placement}} will bind to the tooltip placement ('top', 'bottom', 'right', 'left') -->
+    <div>{{content}}</div>
+  </ng-template>
+</ng5-slider>
+```
+
+For more concrete examples, please refer to tooltip samples on [Github pages](https://angular-slider.github.io/ng5-slider/).
 
 ## Developer information
 

@@ -1,3 +1,6 @@
+# 1.1.0
+ * removed dependency on ng-bootstrap, providing an HTML standard or user-customisable way of rendering tooltips (issue #7)
+
 # 1.0.1
  * moved repository to official angular-slider organisation
  * updated demo app to run under older browsers
