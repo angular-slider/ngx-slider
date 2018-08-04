@@ -1,7 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-
 import {
   SliderComponent,
   RightOutSelDirective,
@@ -16,7 +14,9 @@ import {
   MaxLabDirective,
   CmbLabDirective,
   TicksDirective
- } from './slider.component';
+} from './slider.component';
+
+import { TooltipWrapperComponent } from './tooltip-wrapper.component';
 
 describe('SliderComponent', () => {
   let component: SliderComponent;
@@ -24,9 +24,6 @@ describe('SliderComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
-        NgbModule
-      ],
       declarations: [
         SliderComponent,
         RightOutSelDirective,
@@ -40,7 +37,8 @@ describe('SliderComponent', () => {
         MinLabDirective,
         MaxLabDirective,
         CmbLabDirective,
-        TicksDirective
+        TicksDirective,
+        TooltipWrapperComponent
       ]
     })
     .compileComponents();

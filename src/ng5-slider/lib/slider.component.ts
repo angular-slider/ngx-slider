@@ -11,7 +11,9 @@ import {
   ElementRef,
   Renderer2,
   EventEmitter,
-  Output
+  Output,
+  ContentChild,
+  TemplateRef
 } from '@angular/core';
 
 import {
@@ -265,6 +267,10 @@ export class SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   // The ticks
   @ViewChild(TicksDirective)
   private ticksElem: SliderElement;
+
+  // Optional custom template for displaying tooltips
+  @ContentChild('tooltipTemplate')
+  public tooltipTemplate: TemplateRef<any>;
 
   @HostBinding('class.ng5-slider-vertical')
   private sliderElementVerticalClass: boolean = false;

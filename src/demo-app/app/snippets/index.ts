@@ -26,6 +26,7 @@ export * from './custom-ticks-legend-slider/custom-ticks-legend-slider.component
 export * from './custom-ticks-legend-slider/custom-ticks-legend-slider.component';
 export * from './custom-legend-function-slider/custom-legend-function-slider.component';
 export * from './ticks-tooltips-slider/ticks-tooltips-slider.component';
+export * from './ticks-custom-tooltips-slider/ticks-custom-tooltips-slider.component';
 export * from './ticks-values-tooltips-slider/ticks-values-tooltips-slider.component';
 export * from './ticks-values-range-slider/ticks-values-range-slider.component';
 export * from './intermediate-ticks-values-range-slider/intermediate-ticks-values-range-slider.component';

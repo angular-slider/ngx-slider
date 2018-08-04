@@ -12,16 +12,12 @@
   ],
   "peerDependencies": {
     "@angular/core": ">=5.2.0",
-    "@angular/common": ">=5.2.0",
-    "@ng-bootstrap/ng-bootstrap": "^1.1.2"
+    "@angular/common": ">=5.2.0"
   },
   "ngPackage": {
     "$schema": "./node_modules/ng-packagr/ng-package.schema.json",
     "lib": {
-      "entryFile": "lib/public_api.ts",
-      "umdModuleIds": {
-        "@ng-bootstrap/ng-bootstrap": "ngb"
-      }
+      "entryFile": "lib/public_api.ts"
     },
     "dest": "../../dist/ng5-slider"
   }
