@@ -1,0 +1,12 @@
+<ng5-slider [(value)]="minValue"
+            [(highValue)]="maxValue"
+            [options]="options"
+            (userChangeStart)="onUserChangeStart($event)"
+            (userChange)="onUserChange($event)"
+            (userChangeEnd)="onUserChangeEnd($event)">
+</ng5-slider>
+
+Events:
+<textarea type="text" class="form-control" style="min-width: 100%; min-height: 300px;">
+{{logText}}
+</textarea>

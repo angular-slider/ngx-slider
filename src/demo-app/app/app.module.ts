@@ -46,6 +46,7 @@ import {
   DisabledSliderComponent,
   ReadOnlySliderComponent,
   VerticalSlidersComponent,
+  UserEventsSliderComponent
 } from './snippets';
 import { AllDemosComponent } from './all-demos.component';
 import { routerConfig } from './app-router.config';
@@ -92,6 +93,7 @@ import { routerConfig } from './app-router.config';
     DisabledSliderComponent,
     ReadOnlySliderComponent,
     VerticalSlidersComponent,
+    UserEventsSliderComponent,
     AllDemosComponent,
   ],
   imports: [

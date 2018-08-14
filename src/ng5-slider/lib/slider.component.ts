@@ -23,10 +23,12 @@ import {
   TranslateFunction,
   ValueToPositionFunction,
   PositionToValueFunction,
-  PointerType,
   CustomStepDefinition,
   CombineLabelsFunction,
 } from './options';
+
+import { PointerType } from './pointer-type';
+import { ChangeContext } from './change-context';
 
 import { ValuePositionConverter } from './value-position-converter';
 
@@ -179,6 +181,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   get value(): number {
      return this._value;
   }
+  // Output for low value slider to support two-way bindings
   @Output() valueChange: EventEmitter<number> = new EventEmitter();
 
   // Model for high value slider. Providing both value and highValue will render range slider.
@@ -191,7 +194,17 @@ export class SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   get highValue(): number {
      return this._highValue;
   }
+  // Output for high value slider to support two-way bindings
   @Output() highValueChange: EventEmitter<number> = new EventEmitter();
+
+  // Event emitted when user starts interaction with the slider
+  @Output() userChangeStart: EventEmitter<ChangeContext> = new EventEmitter();
+
+  // Event emitted on each change coming from user interaction
+  @Output() userChange: EventEmitter<ChangeContext> = new EventEmitter();
+
+  // Event emitted when user finishes interaction with the slider
+  @Output() userChangeEnd: EventEmitter<ChangeContext> = new EventEmitter();
 
   // An object with all the other options of the slider.
   // Each option can be updated at runtime and the slider will automatically be re-rendered.
@@ -1622,6 +1635,8 @@ export class SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     this.onEndUnsubscribe = this.renderer.listen('document', endEvent, ehEnd);
 
+    this.userChangeStart.emit(this.getChangeContext());
+
     if (CompatibilityHelper.isTouchEvent(event) && (event as TouchEvent).changedTouches) {
       // Store the touch identifier
       if (!this.touchId) {
@@ -1698,6 +1713,8 @@ export class SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.onEndUnsubscribe !== null) {
       this.onEndUnsubscribe();
     }
+
+    this.userChangeEnd.emit(this.getChangeContext());
   }
 
   private onTickClick(pointer: SliderElement, event: MouseEvent|TouchEvent): void {
@@ -1720,6 +1737,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private onKeyUp(): void {
     this.firstKeyDown = true;
+    this.userChangeEnd.emit(this.getChangeContext());
   }
 
   private onPointerBlur(pointer: SliderElement): void {
@@ -1794,6 +1812,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnDestroy {
 
     if (this.firstKeyDown) {
       this.firstKeyDown = false;
+      this.userChangeStart.emit(this.getChangeContext());
     }
 
     const newValue: number = this.roundStep(this.sanitizeValue(action));
@@ -1954,7 +1973,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.range) {
       this.applyHighValue();
     }
-    this.applyModel();
+    this.applyModel(true);
     this.updateHandles(HandleType.Low, this.valueToPosition(newMinValue));
     this.updateHandles(HandleType.High, this.valueToPosition(newMaxValue));
   }
@@ -1981,7 +2000,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnDestroy {
         if (this.tracking === HandleType.Low && newValue > this.viewHighValue) {
           this.viewLowValue = this.viewHighValue;
           this.applyLowValue();
-          this.applyModel();
+          this.applyModel(false);
           this.updateHandles(HandleType.Low, this.maxHElem.position);
           this.updateAriaAttributes();
           this.tracking = HandleType.High;
@@ -1995,7 +2014,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnDestroy {
                    newValue < this.viewLowValue) {
           this.viewHighValue = this.viewLowValue;
           this.applyHighValue();
-          this.applyModel();
+          this.applyModel(false);
           this.updateHandles(HandleType.High, this.minHElem.position);
           this.updateAriaAttributes();
           this.tracking = HandleType.Low;
@@ -2017,14 +2036,14 @@ export class SliderComponent implements OnInit, AfterViewInit, OnDestroy {
         this.viewHighValue = newValue;
         this.applyHighValue();
       }
-      this.applyModel();
+      this.applyModel(false);
       this.updateHandles(this.tracking, this.valueToPosition(newValue));
       this.updateAriaAttributes();
       valueChanged = true;
     }
 
     if (valueChanged) {
-      this.applyModel();
+      this.applyModel(true);
     }
   }
 
@@ -2102,12 +2121,23 @@ export class SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     return newValue;
   }
 
-  private applyModel(): void {
+  private applyModel(callUserChange: boolean): void {
     this.internalChange = true;
 
     this.valueChange.emit(this.value);
     this.highValueChange.emit(this.highValue);
+    if (callUserChange) {
+      this.userChange.emit(this.getChangeContext());
+    }
 
     this.internalChange = false;
+  }
+
+  private getChangeContext(): ChangeContext {
+    const changeContext: ChangeContext = new ChangeContext();
+    changeContext.pointerType = this.tracking === HandleType.Low ? PointerType.Min : PointerType.Max;
+    changeContext.value = this.value;
+    changeContext.highValue = this.highValue;
+    return changeContext;
   }
 }
