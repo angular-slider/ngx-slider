@@ -1,3 +1,8 @@
+# 1.1.1
+ * fixed AOT compilation bug (issue #13)
+ * added support for user-initiated events (issue #9)
+ * minor demo app changes
+
 # 1.1.0
  * removed dependency on ng-bootstrap, providing an HTML standard or user-customisable way of rendering tooltips (issue #7)
 
