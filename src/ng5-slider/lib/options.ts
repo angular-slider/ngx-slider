@@ -1,3 +1,5 @@
+import { PointerType } from './pointer-type';
+
 /** Label type */
 export enum LabelType {
   /** Label above low pointer */
@@ -10,14 +12,6 @@ export enum LabelType {
   Ceil,
   /** Label below legend tick */
   TickValue
-}
-
-/** Pointer type */
-export enum PointerType {
-  /** Low pointer */
-  Min,
-  /** High pointer */
-  Max
 }
 
 /** Function to translate label value into text */
