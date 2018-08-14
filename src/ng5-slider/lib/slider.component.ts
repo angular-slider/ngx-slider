@@ -273,10 +273,10 @@ export class SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   public tooltipTemplate: TemplateRef<any>;
 
   @HostBinding('class.ng5-slider-vertical')
-  private sliderElementVerticalClass: boolean = false;
+  public sliderElementVerticalClass: boolean = false;
 
   @HostBinding('attr.disabled')
-  private sliderElementDisabledAttr: string = null;
+  public sliderElementDisabledAttr: string = null;
 
   /** Viewport position of the slider element (the host element) */
   private sliderElementPosition: number = 0;
