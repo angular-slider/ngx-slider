@@ -39,3 +39,4 @@ export * from './disabled-slider/disabled-slider.component';
 export * from './read-only-slider/read-only-slider.component';
 export * from './vertical-sliders/vertical-sliders.component';
 export * from './user-events-slider/user-events-slider.component';
+export * from './manual-refresh-slider/manual-refresh-slider.component';

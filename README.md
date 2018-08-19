@@ -72,6 +72,7 @@ The slider component takes the following inputs and outputs:
   [(value)]="<number>"
   [(highValue)]="<number>"
   [options]="<options object>"
+  [manualRefresh]="<event emitter>"
   (userChangeStart)="<event handler>"
   (userChange)="<event handler>"
   (userChangeEnd)="<event handler>"
@@ -81,6 +82,8 @@ The slider component takes the following inputs and outputs:
 ```
 
 For single value slider, `value` specifies the model value of the slider. For range sliders, `value` is the minimum model value and `highValue` is the maximum model value. `options` is an object of options that configure the slider (e.g. minimum, maximum values, legend values, etc.). Documentation of all available options is included [in the API docs](https://angular-slider.github.io/ng5-slider/docs/classes/_options_.options.html).
+
+`manualRefresh` input is provided to solve some cases where the slider is not being updated after CSS style changes. This is for example changing the `display` property to show/hide the slider (or any parent DOM element). Instead of observing the CSS changes, the slider provides this input to manually trigger a refresh. An example of how this can be used can be found [in the demo app on Github pages](https://angular-slider.github.io/ng5-slider/#manual-refresh-slider).
 
 `userChangeStart`, `userChange` and `userChangeEnd` provide output events that are triggered by user interaction (through keyboard, mouse or touchpad). The event handler also passes a `ChangeContext` object which contains details about the changes. A good example of using these events can be found [in the demo app on Github pages](https://angular-slider.github.io/ng5-slider/#user-events-slider).
 

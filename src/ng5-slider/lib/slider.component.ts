@@ -218,6 +218,16 @@ export class SliderComponent implements OnInit, AfterViewInit, OnDestroy {
      return this._options;
   }
 
+  private manualRefreshSubscription: any;
+  // Input event that triggers slider refresh (re-positioning of slider elements)
+  @Input() set manualRefresh(manualRefresh: EventEmitter<void>) {
+    this.unsubscribeManualRefresh();
+
+    this.manualRefreshSubscription = manualRefresh.subscribe(() => {
+      setTimeout(() =>  this.calcViewDimensions());
+    });
+  }
+
   // Options synced to model options, based on defaults
   private viewOptions: Options = new Options();
   // Low value synced to model low value
@@ -436,8 +446,16 @@ export class SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.unsubscribeManualRefresh();
     this.unbindEvents();
     this.currentFocusElement = null;
+  }
+
+  private unsubscribeManualRefresh(): void {
+    if (this.manualRefreshSubscription) {
+      this.manualRefreshSubscription.unsubscribe();
+      this.manualRefreshSubscription = null;
+    }
   }
 
   private getCurrentTrackingValue(): number {
