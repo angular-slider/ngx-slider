@@ -1,3 +1,6 @@
+# 1.1.2
+ * added manual refresh mechanism to the slider (issue #15)
+
 # 1.1.1
  * fixed AOT compilation bug (issue #13)
  * added support for user-initiated events (issue #9)
