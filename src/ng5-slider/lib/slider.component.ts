@@ -13,7 +13,8 @@ import {
   EventEmitter,
   Output,
   ContentChild,
-  TemplateRef
+  TemplateRef,
+  ChangeDetectorRef
 } from '@angular/core';
 
 import {
@@ -370,21 +371,25 @@ export class SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   private onMoveUnsubscribe: () => void = null;
   private onEndUnsubscribe: () => void = null;
 
-  constructor(private renderer: Renderer2, private elementRef: ElementRef) { }
+  constructor(private renderer: Renderer2,
+    private elementRef: ElementRef,
+    private changeDetectionRef: ChangeDetectorRef) { }
 
   ngOnInit(): void {
+    this.viewOptions = new Options();
+    Object.assign(this.viewOptions, this.options);
+
+    // We need to run these two things first, before the rest of the init in ngAfterViewInit(),
+    // because these two settings are set through @HostBinding and Angular change detection
+    // mechanism doesn't like them changing in ngAfterViewInit()
+    this.setDisabledState();
+    this.setVerticalClass();
   }
 
   ngAfterViewInit(): void {
     this.thrOnLowHandleChange = new ThrottledFunc((): void => { this.onLowHandleChange(); }, this.viewOptions.interval);
     this.thrOnHighHandleChange = new ThrottledFunc((): void => { this.onHighHandleChange(); }, this.viewOptions.interval);
 
-    /* We have to run the rest of the actual init function later, in separate Angular tick cycle,
-     because this one has been checked and it will lead to ExpressionChangedAfterItHasBeenCheckedError */
-    setTimeout((): void => this.init(), 0);
-  }
-
-  init(): void {
     this.applyOptions();
     this.syncLowValue();
 
@@ -403,6 +408,9 @@ export class SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.manageEventsBindings();
 
     this.initHasRun = true;
+
+    // Run change detection manually to resolve some issues when init procedure changes values used in the view
+    this.changeDetectionRef.detectChanges();
   }
 
   onChangeOptions(oldValue: Options, newValue: Options): void {
@@ -706,7 +714,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     if (this.sliderElementVerticalClass !== this.viewOptions.vertical) {
-      this.sliderElementVerticalClass = this.viewOptions.vertical;
+      this.setVerticalClass();
       // The above change in host component class will not be applied until the end of this cycle
       // However, functions calculating the slider position expect the slider to be already styled as vertical
       // So as a workaround, we need to reset the slider once again to compute the correct values
@@ -745,6 +753,11 @@ export class SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   // Set the disabled state based on disabled option
   private setDisabledState(): void {
     this.sliderElementDisabledAttr = this.viewOptions.disabled ? 'disabled' : null;
+  }
+
+  // Set vertical class based on vertical option
+  private setVerticalClass(): void {
+    this.sliderElementVerticalClass = this.viewOptions.vertical;
   }
 
   // Reset label values
