@@ -1,3 +1,6 @@
+# 1.1.3
+ * changed initialization code to fix issue with slider shown dynamically through CSS animations (issue #16)
+
 # 1.1.2
  * added manual refresh mechanism to the slider (issue #15)
 
