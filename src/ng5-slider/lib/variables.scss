@@ -1,8 +1,20 @@
+@mixin ng-deep($enableNgDeep: true) {
+  @if $enableNgDeep {
+    ::ng-deep {
+      @content;
+    }
+  } @else {
+    @content;
+  }
+}
+
 @mixin rounded($radius: 2px) {
   -webkit-border-radius: $radius;
      -moz-border-radius: $radius;
           border-radius: $radius;
 }
+
+$enableNgDeep: true !default;
 
 $handleActiveColor: #451aff !default;
 $handleHoverColor: #fff !default;

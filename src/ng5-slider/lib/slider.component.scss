@@ -1,6 +1,6 @@
 @import 'variables.scss';
 
-::ng-deep {
+@include ng-deep($enableNgDeep) {
   .ng5-slider {
     display: inline-block;
     position: relative;
