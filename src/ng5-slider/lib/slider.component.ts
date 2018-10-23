@@ -31,7 +31,7 @@ import {
 import { PointerType } from './pointer-type';
 import { ChangeContext } from './change-context';
 
-import { ValuePositionConverter } from './value-position-converter';
+import { ValueHelper } from './value-helper';
 
 import { JqLiteWrapper } from './jq-lite-wrapper';
 
@@ -475,22 +475,10 @@ export class SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     return this.tracking === HandleType.Low ? this.viewLowValue : this.viewHighValue;
   }
 
-  private findStepIndex(modelValue: number): number {
-    let index: number = 0;
-    for (let i: number = 0; i < this.viewOptions.stepsArray.length; i++) {
-      const step: CustomStepDefinition = this.viewOptions.stepsArray[i];
-      if (step.value === modelValue) {
-        index = i;
-        break;
-      }
-    }
-    return index;
-  }
-
   private syncLowValue(): void {
     if (this.viewOptions.stepsArray) {
       if (!this.viewOptions.bindIndexForStepsArray) {
-        this.viewLowValue = this.findStepIndex(this.value);
+        this.viewLowValue = ValueHelper.findStepIndex(this.value, this.viewOptions.stepsArray);
       } else {
         this.viewLowValue = this.value;
       }
@@ -502,7 +490,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   private syncHighValue(): void {
     if (this.viewOptions.stepsArray) {
       if (!this.viewOptions.bindIndexForStepsArray) {
-        this.viewHighValue = this.findStepIndex(this.highValue);
+        this.viewHighValue = ValueHelper.findStepIndex(this.highValue, this.viewOptions.stepsArray);
       } else {
         this.viewHighValue = this.highValue;
       }
@@ -1449,11 +1437,11 @@ export class SliderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // Translate value to pixel position
   private valueToPosition(val: number): number {
-    let fn: ValueToPositionFunction  = ValuePositionConverter.linearValueToPosition;
+    let fn: ValueToPositionFunction  = ValueHelper.linearValueToPosition;
     if (this.viewOptions.customValueToPosition) {
       fn = this.viewOptions.customValueToPosition;
     } else if (this.viewOptions.logScale) {
-      fn = ValuePositionConverter.logValueToPosition;
+      fn = ValueHelper.logValueToPosition;
     }
 
     val = this.sanitizeValue(val);
@@ -1470,11 +1458,11 @@ export class SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.viewOptions.rightToLeft) {
       percent = 1 - percent;
     }
-    let fn: PositionToValueFunction = ValuePositionConverter.linearPositionToValue;
+    let fn: PositionToValueFunction = ValueHelper.linearPositionToValue;
     if (this.viewOptions.customPositionToValue) {
       fn = this.viewOptions.customPositionToValue;
     } else if (this.viewOptions.logScale) {
-      fn = ValuePositionConverter.logPositionToValue;
+      fn = ValueHelper.logPositionToValue;
     }
     return fn(percent, this.minValue, this.maxValue) || 0;
   }
