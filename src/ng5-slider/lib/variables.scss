@@ -47,6 +47,6 @@ $barDimension: 4px !default;
 
 $withLegendMargin: 40px !default;
 
-$sliderMargin: $handleSize / 2 - $barDimension / 2 !default;
-$sliderMarginWithLabel: $sliderMargin + $labelFontSize * 1.5 + $bubblePaddingVertical * 2 !default;
-$sliderVerticalMargin: $sliderMargin !default;
+$sliderMargin: 15px !default;
+$sliderMarginWithLabel: 35px !default;
+$sliderVerticalMargin: 20px !default;
