@@ -50,9 +50,6 @@ export class Options {
   /** Step between each value. */
   step?: number = 1;
 
-  /** The precision to display values with. The toFixed() is used internally for this. */
-  precision?: number = 0;
-
   /** The minimum range authorized on the slider. Applies to range slider only. */
   minRange?: number = null;
 
@@ -252,6 +249,11 @@ export class Options {
   /** Function that returns the value for a given position on the slider.
     The position is a percentage between 0 and 1. */
   customPositionToValue?: PositionToValueFunction = null;
+
+  /** Precision limit for calculated values.
+    Values used in calculations will be rounded to this number of significant digits
+    to prevent accumulating small floating-point errors. */
+  precisionLimit?: number = 12;
 
   /** Use to display the selection bar as a gradient.
     The given object must contain from and to properties which are colors. */

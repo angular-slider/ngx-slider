@@ -37,6 +37,7 @@ import { JqLiteWrapper } from './jq-lite-wrapper';
 
 import { ThrottledFunc } from './throttled-func';
 import { CompatibilityHelper } from './compatibility-helper';
+import { MathHelper } from './math-helper';
 
 export class Tick {
   selected: boolean;
@@ -319,8 +320,8 @@ export class SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   // Maximum position the slider handle can have
   private maxPos: number = 0;
 
-  // Precision
-  private precision: number = 0;
+  // Precision limit
+  private precisionLimit: number = 12;
 
   // Step
   private step: number = 1;
@@ -580,6 +581,10 @@ export class SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.viewOptions = new Options();
     Object.assign(this.viewOptions, this.options);
 
+    if (this.viewOptions.precisionLimit) {
+      this.precisionLimit = this.viewOptions.precisionLimit;
+    }
+
     if (this.viewOptions.step <= 0) {
        this.viewOptions.step = 1;
     }
@@ -813,7 +818,6 @@ export class SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   // Set maximum and minimum values for the slider and ensure the model and high value match these limits
   private setMinAndMax(): void {
     this.step = +this.viewOptions.step;
-    this.precision = +this.viewOptions.precision;
 
     this.minValue = this.viewOptions.floor;
     if (this.viewOptions.logScale && this.minValue === 0) {
@@ -1388,10 +1392,9 @@ export class SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   // Round value to step and precision based on minValue
   private roundStep(value: number, customStep?: number): number {
     const step: number = customStep ? customStep : this.step;
-    let steppedDifference: number = +( (value - this.minValue) / step ).toPrecision(12);
+    let steppedDifference: number = MathHelper.roundToPrecisionLimit((value - this.minValue) / step, this.precisionLimit);
     steppedDifference = Math.round(steppedDifference) * step;
-    const newValue: string = (this.minValue + steppedDifference).toFixed(this.precision);
-    return +newValue;
+    return MathHelper.roundToPrecisionLimit(this.minValue + steppedDifference, this.precisionLimit);
   }
 
   // Hide element
@@ -1990,12 +1993,12 @@ export class SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.viewOptions.minLimit != null &&
         newMinValue < this.viewOptions.minLimit) {
       newMinValue = this.viewOptions.minLimit;
-      newMaxValue = newMinValue + this.dragging.difference;
+      newMaxValue = MathHelper.roundToPrecisionLimit(newMinValue + this.dragging.difference, this.precisionLimit);
     }
     if (this.viewOptions.maxLimit != null &&
         newMaxValue > this.viewOptions.maxLimit) {
       newMaxValue = this.viewOptions.maxLimit;
-      newMinValue = newMaxValue - this.dragging.difference;
+      newMinValue = MathHelper.roundToPrecisionLimit(newMaxValue - this.dragging.difference, this.precisionLimit);
     }
 
     this.viewLowValue = newMinValue;
@@ -2094,18 +2097,18 @@ export class SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.viewOptions.minRange != null) {
       if (difference < this.viewOptions.minRange) {
         if (this.tracking === HandleType.Low) {
-          return this.viewHighValue - this.viewOptions.minRange;
+          return MathHelper.roundToPrecisionLimit(this.viewHighValue - this.viewOptions.minRange, this.precisionLimit);
         } else {
-          return this.viewLowValue + this.viewOptions.minRange;
+          return MathHelper.roundToPrecisionLimit(this.viewLowValue + this.viewOptions.minRange, this.precisionLimit);
         }
       }
     }
     if (this.viewOptions.maxRange != null) {
       if (difference > this.viewOptions.maxRange) {
         if (this.tracking === HandleType.Low) {
-          return this.viewHighValue - this.viewOptions.maxRange;
+          return MathHelper.roundToPrecisionLimit(this.viewHighValue - this.viewOptions.maxRange, this.precisionLimit);
         } else {
-          return this.viewLowValue + this.viewOptions.maxRange;
+          return MathHelper.roundToPrecisionLimit(this.viewLowValue + this.viewOptions.maxRange, this.precisionLimit);
         }
       }
     }
@@ -2124,13 +2127,13 @@ export class SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     // if smaller than minRange
     if (difference < minRange) {
       if (this.tracking === HandleType.Low) {
-        this.viewHighValue = Math.min(newValue + minRange, this.maxValue);
-        newValue = this.viewHighValue - minRange;
+        this.viewHighValue = MathHelper.roundToPrecisionLimit(Math.min(newValue + minRange, this.maxValue), this.precisionLimit);
+        newValue = MathHelper.roundToPrecisionLimit(this.viewHighValue - minRange, this.precisionLimit);
         this.applyHighValue();
         this.updateHandles(HandleType.High, this.valueToPosition(this.viewHighValue));
       } else {
-        this.viewLowValue = Math.max(newValue - minRange, this.minValue);
-        newValue = this.viewLowValue + minRange;
+        this.viewLowValue = MathHelper.roundToPrecisionLimit(Math.max(newValue - minRange, this.minValue), this.precisionLimit);
+        newValue = MathHelper.roundToPrecisionLimit(this.viewLowValue + minRange, this.precisionLimit);
         this.applyLowValue();
         this.updateHandles(HandleType.Low, this.valueToPosition(this.viewLowValue));
       }
@@ -2138,12 +2141,12 @@ export class SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     } else if (maxRange !== null && difference > maxRange) {
       // if greater than maxRange
       if (this.tracking === HandleType.Low) {
-        this.viewHighValue = newValue + maxRange;
+        this.viewHighValue = MathHelper.roundToPrecisionLimit(newValue + maxRange, this.precisionLimit);
         this.applyHighValue();
         this.updateHandles(HandleType.High, this.valueToPosition(this.viewHighValue)
         );
       } else {
-        this.viewLowValue = newValue - maxRange;
+        this.viewLowValue = MathHelper.roundToPrecisionLimit(newValue - maxRange, this.precisionLimit);
         this.applyLowValue();
         this.updateHandles(HandleType.Low, this.valueToPosition(this.viewLowValue));
       }

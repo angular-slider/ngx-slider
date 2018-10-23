@@ -10,7 +10,6 @@ export class FloatingPointSliderComponent {
   options: Options = {
     floor: 0,
     ceil: 2,
-    step: 0.1,
-    precision: 1
+    step: 0.1
   };
 }
