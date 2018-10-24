@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>CompatibilityHelper | ng5-slider</title>
+	<title>ValueHelper | ng5-slider</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -54,13 +54,13 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="../modules/_compatibility_helper_.html">&quot;compatibility-helper&quot;</a>
+					<a href="../modules/_value_helper_.html">&quot;value-helper&quot;</a>
 				</li>
 				<li>
-					<a href="_compatibility_helper_.compatibilityhelper.html">CompatibilityHelper</a>
+					<a href="_value_helper_.valuehelper.html">ValueHelper</a>
 				</li>
 			</ul>
-			<h1>Class CompatibilityHelper</h1>
+			<h1>Class ValueHelper</h1>
 		</div>
 	</div>
 </header>
@@ -70,7 +70,7 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>Helper with compatibility functions to support different browsers</p>
+						<p> Collection of functions to handle conversions/lookups of values</p>
 					</div>
 				</div>
 			</section>
@@ -78,7 +78,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">CompatibilityHelper</span>
+						<span class="target">ValueHelper</span>
 					</li>
 				</ul>
 			</section>
@@ -89,7 +89,11 @@
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="_compatibility_helper_.compatibilityhelper.html#istouchevent" class="tsd-kind-icon">is<wbr>Touch<wbr>Event</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="_value_helper_.valuehelper.html#findstepindex" class="tsd-kind-icon">find<wbr>Step<wbr>Index</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="_value_helper_.valuehelper.html#linearpositiontovalue" class="tsd-kind-icon">linear<wbr>Position<wbr>ToValue</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="_value_helper_.valuehelper.html#linearvaluetoposition" class="tsd-kind-icon">linear<wbr>Value<wbr>ToPosition</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="_value_helper_.valuehelper.html#logpositiontovalue" class="tsd-kind-icon">log<wbr>Position<wbr>ToValue</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="_value_helper_.valuehelper.html#logvaluetoposition" class="tsd-kind-icon">log<wbr>Value<wbr>ToPosition</a></li>
 							</ul>
 						</section>
 					</div>
@@ -98,30 +102,144 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
-					<a name="istouchevent" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagStatic">Static</span> is<wbr>Touch<wbr>Event</h3>
+					<a name="findstepindex" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> find<wbr>Step<wbr>Index</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
-						<li class="tsd-signature tsd-kind-icon">is<wbr>Touch<wbr>Event<span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+						<li class="tsd-signature tsd-kind-icon">find<wbr>Step<wbr>Index<span class="tsd-signature-symbol">(</span>modelValue<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, stepsArray<span class="tsd-signature-symbol">: </span><a href="../interfaces/_options_.customstepdefinition.html" class="tsd-signature-type">CustomStepDefinition</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/angular-slider/ng5-slider/blob/98d333f/src/ng5-slider/lib/compatibility-helper.ts#L4">compatibility-helper.ts:4</a></li>
+									<li>Defined in <a href="https://github.com/angular-slider/ng5-slider/blob/98d333f/src/ng5-slider/lib/value-helper.ts#L31">value-helper.ts:31</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Workaround for  TouchEvent constructor sadly not being available on all browsers (e.g. Firefox, Safari)</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>event: <span class="tsd-signature-type">any</span></h5>
+									<h5>modelValue: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>stepsArray: <a href="../interfaces/_options_.customstepdefinition.html" class="tsd-signature-type">CustomStepDefinition</a><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
+					<a name="linearpositiontovalue" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> linear<wbr>Position<wbr>ToValue</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
+						<li class="tsd-signature tsd-kind-icon">linear<wbr>Position<wbr>ToValue<span class="tsd-signature-symbol">(</span>percent<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, minVal<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, maxVal<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/angular-slider/ng5-slider/blob/98d333f/src/ng5-slider/lib/value-helper.ts#L20">value-helper.ts:20</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>percent: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>minVal: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>maxVal: <span class="tsd-signature-type">number</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
+					<a name="linearvaluetoposition" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> linear<wbr>Value<wbr>ToPosition</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
+						<li class="tsd-signature tsd-kind-icon">linear<wbr>Value<wbr>ToPosition<span class="tsd-signature-symbol">(</span>val<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, minVal<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, maxVal<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/angular-slider/ng5-slider/blob/98d333f/src/ng5-slider/lib/value-helper.ts#L7">value-helper.ts:7</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>val: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>minVal: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>maxVal: <span class="tsd-signature-type">number</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
+					<a name="logpositiontovalue" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> log<wbr>Position<wbr>ToValue</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
+						<li class="tsd-signature tsd-kind-icon">log<wbr>Position<wbr>ToValue<span class="tsd-signature-symbol">(</span>percent<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, minVal<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, maxVal<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/angular-slider/ng5-slider/blob/98d333f/src/ng5-slider/lib/value-helper.ts#L24">value-helper.ts:24</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>percent: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>minVal: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>maxVal: <span class="tsd-signature-type">number</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
+					<a name="logvaluetoposition" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> log<wbr>Value<wbr>ToPosition</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
+						<li class="tsd-signature tsd-kind-icon">log<wbr>Value<wbr>ToPosition<span class="tsd-signature-symbol">(</span>val<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, minVal<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, maxVal<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/angular-slider/ng5-slider/blob/98d333f/src/ng5-slider/lib/value-helper.ts#L12">value-helper.ts:12</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>val: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>minVal: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>maxVal: <span class="tsd-signature-type">number</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -136,7 +254,7 @@
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/_change_context_.html">"change-<wbr>context"</a>
 					</li>
-					<li class="current tsd-kind-external-module">
+					<li class=" tsd-kind-external-module">
 						<a href="../modules/_compatibility_helper_.html">"compatibility-<wbr>helper"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
@@ -172,7 +290,7 @@
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/_tooltip_wrapper_component_.html">"tooltip-<wbr>wrapper.component"</a>
 					</li>
-					<li class=" tsd-kind-external-module">
+					<li class="current tsd-kind-external-module">
 						<a href="../modules/_value_helper_.html">"value-<wbr>helper"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
@@ -185,10 +303,22 @@
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class tsd-parent-kind-external-module">
-						<a href="_compatibility_helper_.compatibilityhelper.html" class="tsd-kind-icon">Compatibility<wbr>Helper</a>
+						<a href="_value_helper_.valuehelper.html" class="tsd-kind-icon">Value<wbr>Helper</a>
 						<ul>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
-								<a href="_compatibility_helper_.compatibilityhelper.html#istouchevent" class="tsd-kind-icon">is<wbr>Touch<wbr>Event</a>
+								<a href="_value_helper_.valuehelper.html#findstepindex" class="tsd-kind-icon">find<wbr>Step<wbr>Index</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
+								<a href="_value_helper_.valuehelper.html#linearpositiontovalue" class="tsd-kind-icon">linear<wbr>Position<wbr>ToValue</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
+								<a href="_value_helper_.valuehelper.html#linearvaluetoposition" class="tsd-kind-icon">linear<wbr>Value<wbr>ToPosition</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
+								<a href="_value_helper_.valuehelper.html#logpositiontovalue" class="tsd-kind-icon">log<wbr>Position<wbr>ToValue</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
+								<a href="_value_helper_.valuehelper.html#logvaluetoposition" class="tsd-kind-icon">log<wbr>Value<wbr>ToPosition</a>
 							</li>
 						</ul>
 					</li>

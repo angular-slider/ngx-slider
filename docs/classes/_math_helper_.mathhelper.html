@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>ValuePositionConverter | ng5-slider</title>
+	<title>MathHelper | ng5-slider</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -54,13 +54,13 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="../modules/_value_position_converter_.html">&quot;value-position-converter&quot;</a>
+					<a href="../modules/_math_helper_.html">&quot;math-helper&quot;</a>
 				</li>
 				<li>
-					<a href="_value_position_converter_.valuepositionconverter.html">ValuePositionConverter</a>
+					<a href="_math_helper_.mathhelper.html">MathHelper</a>
 				</li>
 			</ul>
-			<h1>Class ValuePositionConverter</h1>
+			<h1>Class MathHelper</h1>
 		</div>
 	</div>
 </header>
@@ -70,7 +70,7 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p> Collection of functions to convert between value and slider position</p>
+						<p>Helper with mathematical functions</p>
 					</div>
 				</div>
 			</section>
@@ -78,7 +78,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">ValuePositionConverter</span>
+						<span class="target">MathHelper</span>
 					</li>
 				</ul>
 			</section>
@@ -89,10 +89,7 @@
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="_value_position_converter_.valuepositionconverter.html#linearpositiontovalue" class="tsd-kind-icon">linear<wbr>Position<wbr>ToValue</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="_value_position_converter_.valuepositionconverter.html#linearvaluetoposition" class="tsd-kind-icon">linear<wbr>Value<wbr>ToPosition</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="_value_position_converter_.valuepositionconverter.html#logpositiontovalue" class="tsd-kind-icon">log<wbr>Position<wbr>ToValue</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="_value_position_converter_.valuepositionconverter.html#logvaluetoposition" class="tsd-kind-icon">log<wbr>Value<wbr>ToPosition</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><a href="_math_helper_.mathhelper.html#roundtoprecisionlimit" class="tsd-kind-icon">round<wbr>ToPrecision<wbr>Limit</a></li>
 							</ul>
 						</section>
 					</div>
@@ -101,115 +98,25 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
-					<a name="linearpositiontovalue" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagStatic">Static</span> linear<wbr>Position<wbr>ToValue</h3>
+					<a name="roundtoprecisionlimit" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> round<wbr>ToPrecision<wbr>Limit</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
-						<li class="tsd-signature tsd-kind-icon">linear<wbr>Position<wbr>ToValue<span class="tsd-signature-symbol">(</span>percent<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, minVal<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, maxVal<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+						<li class="tsd-signature tsd-kind-icon">round<wbr>ToPrecision<wbr>Limit<span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, precisionLimit<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/angular-slider/ng5-slider/blob/cc941ec/src/ng5-slider/lib/value-position-converter.ts#L18">value-position-converter.ts:18</a></li>
+									<li>Defined in <a href="https://github.com/angular-slider/ng5-slider/blob/98d333f/src/ng5-slider/lib/math-helper.ts#L4">math-helper.ts:4</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>percent: <span class="tsd-signature-type">number</span></h5>
+									<h5>value: <span class="tsd-signature-type">number</span></h5>
 								</li>
 								<li>
-									<h5>minVal: <span class="tsd-signature-type">number</span></h5>
-								</li>
-								<li>
-									<h5>maxVal: <span class="tsd-signature-type">number</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
-					<a name="linearvaluetoposition" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagStatic">Static</span> linear<wbr>Value<wbr>ToPosition</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
-						<li class="tsd-signature tsd-kind-icon">linear<wbr>Value<wbr>ToPosition<span class="tsd-signature-symbol">(</span>val<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, minVal<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, maxVal<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/angular-slider/ng5-slider/blob/cc941ec/src/ng5-slider/lib/value-position-converter.ts#L5">value-position-converter.ts:5</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>val: <span class="tsd-signature-type">number</span></h5>
-								</li>
-								<li>
-									<h5>minVal: <span class="tsd-signature-type">number</span></h5>
-								</li>
-								<li>
-									<h5>maxVal: <span class="tsd-signature-type">number</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
-					<a name="logpositiontovalue" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagStatic">Static</span> log<wbr>Position<wbr>ToValue</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
-						<li class="tsd-signature tsd-kind-icon">log<wbr>Position<wbr>ToValue<span class="tsd-signature-symbol">(</span>percent<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, minVal<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, maxVal<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/angular-slider/ng5-slider/blob/cc941ec/src/ng5-slider/lib/value-position-converter.ts#L22">value-position-converter.ts:22</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>percent: <span class="tsd-signature-type">number</span></h5>
-								</li>
-								<li>
-									<h5>minVal: <span class="tsd-signature-type">number</span></h5>
-								</li>
-								<li>
-									<h5>maxVal: <span class="tsd-signature-type">number</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static">
-					<a name="logvaluetoposition" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagStatic">Static</span> log<wbr>Value<wbr>ToPosition</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static">
-						<li class="tsd-signature tsd-kind-icon">log<wbr>Value<wbr>ToPosition<span class="tsd-signature-symbol">(</span>val<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, minVal<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, maxVal<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/angular-slider/ng5-slider/blob/cc941ec/src/ng5-slider/lib/value-position-converter.ts#L10">value-position-converter.ts:10</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>val: <span class="tsd-signature-type">number</span></h5>
-								</li>
-								<li>
-									<h5>minVal: <span class="tsd-signature-type">number</span></h5>
-								</li>
-								<li>
-									<h5>maxVal: <span class="tsd-signature-type">number</span></h5>
+									<h5>precisionLimit: <span class="tsd-signature-type">number</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
@@ -232,6 +139,12 @@
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/_jq_lite_wrapper_.html">"jq-<wbr>lite-<wbr>wrapper"</a>
+					</li>
+					<li class="current tsd-kind-external-module">
+						<a href="../modules/_math_helper_.html">"math-<wbr>helper"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_math_helper_spec_.html">"math-<wbr>helper.spec"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/_options_.html">"options"</a>
@@ -257,8 +170,11 @@
 					<li class=" tsd-kind-external-module">
 						<a href="../modules/_tooltip_wrapper_component_.html">"tooltip-<wbr>wrapper.component"</a>
 					</li>
-					<li class="current tsd-kind-external-module">
-						<a href="../modules/_value_position_converter_.html">"value-<wbr>position-<wbr>converter"</a>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_value_helper_.html">"value-<wbr>helper"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_value_helper_spec_.html">"value-<wbr>helper.spec"</a>
 					</li>
 				</ul>
 			</nav>
@@ -267,19 +183,10 @@
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class tsd-parent-kind-external-module">
-						<a href="_value_position_converter_.valuepositionconverter.html" class="tsd-kind-icon">Value<wbr>Position<wbr>Converter</a>
+						<a href="_math_helper_.mathhelper.html" class="tsd-kind-icon">Math<wbr>Helper</a>
 						<ul>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
-								<a href="_value_position_converter_.valuepositionconverter.html#linearpositiontovalue" class="tsd-kind-icon">linear<wbr>Position<wbr>ToValue</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
-								<a href="_value_position_converter_.valuepositionconverter.html#linearvaluetoposition" class="tsd-kind-icon">linear<wbr>Value<wbr>ToPosition</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
-								<a href="_value_position_converter_.valuepositionconverter.html#logpositiontovalue" class="tsd-kind-icon">log<wbr>Position<wbr>ToValue</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static">
-								<a href="_value_position_converter_.valuepositionconverter.html#logvaluetoposition" class="tsd-kind-icon">log<wbr>Value<wbr>ToPosition</a>
+								<a href="_math_helper_.mathhelper.html#roundtoprecisionlimit" class="tsd-kind-icon">round<wbr>ToPrecision<wbr>Limit</a>
 							</li>
 						</ul>
 					</li>
