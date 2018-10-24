@@ -1,13 +1,12 @@
 @import 'variables.scss';
 
-::ng-deep {
-
+@include ng-deep($enableNgDeep) {
   .ng5-slider {
     display: inline-block;
     position: relative;
     height: $barDimension;
     width: 100%;
-    margin: 35px 0 15px 0;
+    margin: $sliderMarginWithLabel 0 $sliderMargin 0;
     vertical-align: middle;
     user-select: none;
 
@@ -17,18 +16,23 @@
 
     &[disabled] {
       cursor: not-allowed;
+
       .ng5-slider-pointer {
         cursor: not-allowed;
         background-color: $handleDisabledColor;
       }
+
       .ng5-slider-draggable {
         cursor: not-allowed;
       }
+
       .ng5-slider-selection {
         background: $barDisabledFillColor;
       }
+
       .ng5-slider-tick {
         cursor: not-allowed;
+
         &.ng5-slider-selected {
           background: $barDisabledFillColor;
         }
@@ -67,15 +71,17 @@
       height: $barDimension;
       z-index: 1;
       background: $barNormalColor;
-      @include rounded($barDimension/2);
+      @include rounded($barDimension / 2);
     }
 
     .ng5-slider-bar-wrapper.ng5-slider-transparent .ng5-slider-bar {
       background: transparent;
     }
+
     .ng5-slider-bar-wrapper.ng5-slider-left-out-selection .ng5-slider-bar {
       background: $barLeftOutSelectionColor;
     }
+
     .ng5-slider-bar-wrapper.ng5-slider-right-out-selection .ng5-slider-bar {
       background: $barRightOutSelectionColor;
     }
@@ -83,17 +89,17 @@
     .ng5-slider-selection {
       z-index: 2;
       background: $barFillColor;
-      @include rounded($barDimension/2);
+      @include rounded($barDimension / 2);
     }
 
     .ng5-slider-pointer {
       cursor: pointer;
       width: $handleSize;
       height: $handleSize;
-      top: -$handleSize/2 + $barDimension/2;
+      top: -$handleSize / 2 + $barDimension / 2;
       background-color: $handleBgColor;
       z-index: 3;
-      @include rounded($handleSize/2);
+      @include rounded($handleSize / 2);
       //  -webkit-transition:all linear 0.15s;
       //  -moz-transition:all linear 0.15s;
       //  -o-transition:all linear 0.15s;
@@ -104,16 +110,19 @@
         width: $handlePointerSize;
         height: $handlePointerSize;
         position: absolute;
-        top: $handleSize/2 - $handlePointerSize/2;
-        left: $handleSize/2 - $handlePointerSize/2;
-        @include rounded($handlePointerSize/2);
+        top: $handleSize / 2 - $handlePointerSize / 2;
+        left: $handleSize / 2 - $handlePointerSize / 2;
+        @include rounded($handlePointerSize / 2);
         background: $handleInnerColor;
       }
+
       &:hover:after {
         background-color: $handleHoverColor;
       }
+
       &.ng5-slider-active {
         z-index: 4;
+
         &:after {
           background-color: $handleActiveColor;
         }
@@ -122,9 +131,11 @@
 
     .ng5-slider-bubble {
       cursor: default;
-      bottom: $handleSize/2;
-      padding: $bubblePadding;
+      bottom: $handleSize / 2;
+      padding: $bubblePaddingVertical $bubblePaddingHorizontal;
       color: $labelTextColor;
+      font-size: $labelFontSize;
+
       &.ng5-slider-limit {
         color: $limitLabelTextColor;
       }
@@ -160,6 +171,7 @@
       top: 0;
       left: 0;
       margin-left: $handleSize / 2 - $ticksWidth / 2; // for centering
+
       &.ng5-slider-selected {
         background: $selectedTicksColor;
       }
@@ -175,7 +187,7 @@
       position: absolute;
       top: $ticksLegendPosition;
       transform: translate(-50%, 0);
-      max-width: 50px;
+      max-width: $tickLegendMaxWidth;
       white-space: normal;
     }
 
@@ -183,7 +195,7 @@
       position: relative;
       width: $barDimension;
       height: 100%;
-      margin: 0 20px;
+      margin: 0 $sliderVerticalMargin;
       padding: 0;
       vertical-align: baseline;
 
@@ -210,14 +222,13 @@
       }
 
       .ng5-slider-pointer {
-        left: -$handleSize/2 + $barDimension/2 !important;
+        left: -$handleSize / 2 + $barDimension / 2 !important;
         top: auto;
         bottom: 0;
       }
 
       .ng5-slider-bubble {
-        left: $handleSize/2 !important;
-        margin-left: 3px;
+        left: $handleSize / 2 !important;
         bottom: 0;
       }
 
@@ -228,16 +239,19 @@
         top: 0;
         z-index: 1;
       }
+
       .ng5-slider-tick {
         vertical-align: middle;
         margin-left: auto;
         margin-top: $handleSize / 2 - $ticksWidth / 2; // for centering
       }
+
       .ng5-slider-tick-value {
         left: $ticksValuePositionOnVertical;
         top: auto;
         transform: translate(0, -28%);
       }
+
       .ng5-slider-tick-legend {
         top: auto;
         right: $ticksLegendPosition;
@@ -245,6 +259,7 @@
         max-width: none;
         white-space: nowrap;
       }
+
       .ng5-slider-ticks-values-under {
         .ng5-slider-tick-value {
           bottom: auto;

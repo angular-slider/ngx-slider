@@ -1,33 +1,52 @@
-@mixin rounded($radius: 2px){
-    -webkit-border-radius: $radius;
-    -moz-border-radius: $radius;
-    border-radius: $radius;
+@mixin ng-deep($enableNgDeep: true) {
+  @if $enableNgDeep {
+    ::ng-deep {
+      @content;
+    }
+  } @else {
+    @content;
   }
+}
 
-  $handleActiveColor: #451aff;
-  $handleHoverColor: #fff;
-  $labelTextColor: #55637d;
-  $handleBgColor: #0db9f0;
-  $handleInnerColor: #fff;
-  $handleDisabledColor: #d8e0f3;
-  $limitLabelTextColor: $labelTextColor;
-  $barFillColor: $handleBgColor;
-  $barDisabledFillColor: #8b91a2;
-  $barNormalColor: #d8e0f3;
-  $barLeftOutSelectionColor: #df002d;
-  $barRightOutSelectionColor: #03a688;
+@mixin rounded($radius: 2px) {
+  -webkit-border-radius: $radius;
+     -moz-border-radius: $radius;
+          border-radius: $radius;
+}
 
-  $ticksColor: $barNormalColor;
-  $selectedTicksColor: $barFillColor;
-  $ticksWidth: 10px;
-  $ticksHeight: 10px;
-  $ticksValuePosition: -34px;
-  $ticksLegendPosition: 24px;
-  $ticksValuePositionOnVertical: 24px;
+$enableNgDeep: true !default;
 
-  $handleSize: 32px;
-  $handlePointerSize: 8px;
-  $bubblePadding: 1px 3px;
-  $barDimension: 4px;
+$handleActiveColor: #451aff !default;
+$handleHoverColor: #fff !default;
+$labelTextColor: #55637d !default;
+$handleBgColor: #0db9f0 !default;
+$handleInnerColor: #fff !default;
+$handleDisabledColor: #d8e0f3 !default;
+$limitLabelTextColor: $labelTextColor !default;
+$barFillColor: $handleBgColor !default;
+$barDisabledFillColor: #8b91a2 !default;
+$barNormalColor: #d8e0f3 !default;
+$barLeftOutSelectionColor: #df002d !default;
+$barRightOutSelectionColor: #03a688 !default;
 
-  $withLegendMargin: 40px;
+$ticksColor: $barNormalColor !default;
+$selectedTicksColor: $barFillColor !default;
+$ticksWidth: 10px !default;
+$ticksHeight: 10px !default;
+$ticksValuePosition: -34px !default;
+$ticksLegendPosition: 24px !default;
+$ticksValuePositionOnVertical: 24px !default;
+$tickLegendMaxWidth: 50px !default;
+
+$handleSize: 32px !default;
+$handlePointerSize: 8px !default;
+$bubblePaddingVertical: 1px !default;
+$bubblePaddingHorizontal: 3px !default;
+$labelFontSize: 16px !default;
+$barDimension: 4px !default;
+
+$withLegendMargin: 40px !default;
+
+$sliderMargin: 15px !default;
+$sliderMarginWithLabel: 35px !default;
+$sliderVerticalMargin: 20px !default;
