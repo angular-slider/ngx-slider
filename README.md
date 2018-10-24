@@ -10,7 +10,8 @@ Self-contained, mobile friendly slider component.
 
 ## Demos
 
- * [Simple plunker demo](https://plnkr.co/XhzcMg)
+ * [Simple slider StackBlitz](https://stackblitz.com/edit/ng5-slider-simple-slider-example?file=src/app/app.component.ts)
+ * [Range slider StackBlitz](https://stackblitz.com/edit/ng5-slider-range-slider-example?file=src/app/app.component.ts)
  * [More examples](https://angular-slider.github.io/ng5-slider/)
 
 ## Dependencies
@@ -112,6 +113,12 @@ The syntax for specifying the custom template is the following:
 ```
 
 For more concrete examples, please refer to tooltip samples on [Github pages](https://angular-slider.github.io/ng5-slider/#ticks-custom-tooltips-slider).
+
+## Bugs
+
+You can report any bugs as [Github issues](https://github.com/angular-slider/ng5-slider/issues).
+
+Please describe the issue in detail pasting any relevant code, or preferrably a StackBlitz with reproduction of the problem by [forking and editing this sample StackBlitz](https://stackblitz.com/edit/ng5-slider-simple-slider-example?file=src/app/app.component.ts).
 
 ## Developer information
 
