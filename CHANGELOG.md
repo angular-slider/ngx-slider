@@ -1,3 +1,8 @@
+# 1.1.4
+ * fixed slider jumping to first value if value is not in steps array (issue #29)
+ * fixed floating-point rounding in slider value calculations (issue #25)
+ * exposed SCSS files in distribution package (PR #28)
+
 # 1.1.3
  * changed initialization code to fix issue with slider shown dynamically through CSS animations (issue #16)
 
