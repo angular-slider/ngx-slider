@@ -1704,7 +1704,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnDestroy {
       newValue = this.positionToValue(newPos);
       if (fromTick && this.viewOptions.tickStep !== null) {
         newValue = this.roundStep(newValue, this.viewOptions.tickStep);
-      } else { // TODO: what if tickArray option is specified?
+      } else {
         newValue = this.roundStep(newValue);
       }
     }
