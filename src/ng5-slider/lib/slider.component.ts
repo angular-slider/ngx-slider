@@ -410,6 +410,11 @@ export class SliderComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.initHasRun = true;
 
+    // In some cases, the starting model values are actually outside valid range, so we need to fix this
+    if (this.value !== this.viewLowValue || (this.range && this.highValue !== this.viewHighValue)) {
+      this.applyModel(false);
+    }
+
     // Run change detection manually to resolve some issues when init procedure changes values used in the view
     this.changeDetectionRef.detectChanges();
   }
