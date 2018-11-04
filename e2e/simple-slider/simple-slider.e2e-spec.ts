@@ -36,7 +36,7 @@ describe('simple slider', () => {
 
   describe('after dragging the slider pointer with mouse', () => {
     beforeEach(() => {
-      page.getSliderPointer().mouseDragSync(-145, -50);
+      page.getSliderPointer().mouseDragSync(-143, -50);
     });
 
     it('should update the pointer label to new value', () => {

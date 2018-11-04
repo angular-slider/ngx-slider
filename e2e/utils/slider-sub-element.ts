@@ -102,9 +102,9 @@ export class SliderSubElement {
           (location: any): void => {
 
             browser.driver.touchActions()
-            .tapAndHold({ x: location.x, y: location.y })
-            .move({ x: location.x + offsetX, y: location.y + offsetY })
-            .release({ x: location.x + offsetX, y: location.y + offsetY })
+            .tapAndHold({ x: Math.round(location.x), y: Math.round(location.y) })
+            .move({ x: Math.round(location.x) + offsetX, y: Math.round(location.y) + offsetY })
+            .release({ x: Math.round(location.x) + offsetX, y: Math.round(location.y) + offsetY })
             .perform()
             .then(() => {
                 resolve(null);

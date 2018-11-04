@@ -1,5 +1,5 @@
-import { browser, by, element, promise, ElementFinder } from 'protractor';
-import { ElementLocation, ElementSize, SliderSubElement } from './utils';
+import { browser, by, element, ElementFinder } from 'protractor';
+import { SliderSubElement } from './utils';
 
 export class RangeSliderDemoPage {
   navigateTo(demo: string): void {

@@ -10,12 +10,7 @@ class BaseMatcher {
   constructor(private util: MatchersUtil, private customEqualityTesters: CustomEqualityTester[]) {}
 
   isWithinTolerance(actual: number, expected: number, tolerance: number): boolean {
-    for (let goodValue: number = expected - tolerance; goodValue <= expected + tolerance; ++goodValue) {
-      if (this.util.equals(actual, goodValue, this.customEqualityTesters)) {
-        return true;
-      }
-    }
-    return false;
+    return Math.abs(actual - expected) <= tolerance;
   }
 }
 

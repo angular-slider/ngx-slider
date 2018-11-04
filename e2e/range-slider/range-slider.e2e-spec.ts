@@ -136,7 +136,7 @@ describe('range slider', () => {
         expect(page.getSliderLowPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 508, y: 21});
         expect(page.getSliderHighPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 508, y: 21});
 
-        expect(page.getSliderCombinedLabel().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 497, y: -3});
+        expect(page.getSliderCombinedLabel().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 496, y: -3});
 
         expect(page.getSliderSelectionBar().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 524, y: 3});
         expect(page.getSliderSelectionBar().getSize()).toBeApproximateSize({width: 0, height: 32});
