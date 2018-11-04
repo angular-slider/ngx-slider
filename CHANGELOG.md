@@ -1,3 +1,8 @@
+# 1.1.5
+ * fix event handling when touching exactly the tick element (issue #32)
+ * update model value if value is not initially in steps array (issue #35)
+ * added more e2e tests
+
 # 1.1.4
  * fixed slider jumping to first value if value is not in steps array (issue #29)
  * fixed floating-point rounding in slider value calculations (issue #25)
