@@ -15,8 +15,8 @@ describe('simple slider', () => {
   describe('initial state', () => {
     it('should display starting values in labels', () => {
       expect(page.getSliderFloorLabel().getText()).toEqual('0');
-      expect(page.getSliderCeilLabel().getText()).toEqual('500');
-      expect(page.getSliderPointerLabel().getText()).toEqual('200');
+      expect(page.getSliderCeilLabel().getText()).toEqual('250');
+      expect(page.getSliderPointerLabel().getText()).toEqual('100');
     });
 
     it('should position the slider elements correctly', () => {
@@ -36,17 +36,17 @@ describe('simple slider', () => {
 
   describe('after dragging the slider pointer with mouse', () => {
     beforeEach(() => {
-      page.getSliderPointer().mouseDragSync(-143, -50);
+      page.getSliderPointer().mouseDragSync(-144, 0);
     });
 
     it('should update the pointer label to new value', () => {
-      expect(page.getSliderPointerLabel().getText()).toEqual('100');
+      expect(page.getSliderPointerLabel().getText()).toEqual('50');
     });
 
     it('should position the pointer and pointer label correctly', () => {
       expect(page.getSliderPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 145, y: 21});
 
-      expect(page.getSliderPointerLabel().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 145, y: -3});
+      expect(page.getSliderPointerLabel().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 149, y: -3});
     });
   });
 
@@ -56,7 +56,7 @@ describe('simple slider', () => {
     });
 
     it('should update the pointer label to new value', () => {
-      expect(page.getSliderPointerLabel().getText()).toEqual('300');
+      expect(page.getSliderPointerLabel().getText()).toEqual('150');
     });
 
     it('should position the pointer and pointer label correctly', () => {
@@ -73,13 +73,13 @@ describe('simple slider', () => {
       });
 
       it('should increase the value by step', () => {
-        expect(page.getSliderPointerLabel().getText()).toEqual('201');
+        expect(page.getSliderPointerLabel().getText()).toEqual('101');
       });
 
       it('should position the pointer and pointer label correctly', () => {
         expect(page.getSliderPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 292, y: 21});
 
-        expect(page.getSliderPointerLabel().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 291, y: -3});
+        expect(page.getSliderPointerLabel().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 293, y: -3});
       });
     });
 
@@ -89,13 +89,13 @@ describe('simple slider', () => {
       });
 
       it('should decrease the value by step', () => {
-        expect(page.getSliderPointerLabel().getText()).toEqual('199');
+        expect(page.getSliderPointerLabel().getText()).toEqual('99');
       });
 
       it('should position the pointer and pointer label correctly', () => {
-        expect(page.getSliderPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 289, y: 21});
+        expect(page.getSliderPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 288, y: 21});
 
-        expect(page.getSliderPointerLabel().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 288, y: -3});
+        expect(page.getSliderPointerLabel().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 292, y: -3});
       });
     });
 
@@ -105,7 +105,7 @@ describe('simple slider', () => {
       });
 
       it('should increase value by larger offset', () => {
-        expect(page.getSliderPointerLabel().getText()).toEqual('250');
+        expect(page.getSliderPointerLabel().getText()).toEqual('125');
       });
 
       it('should position the pointer and pointer label correctly', () => {
@@ -121,13 +121,13 @@ describe('simple slider', () => {
       });
 
       it('should decrease value by larger offset', () => {
-        expect(page.getSliderPointerLabel().getText()).toEqual('150');
+        expect(page.getSliderPointerLabel().getText()).toEqual('75');
       });
 
       it('should position the pointer and pointer label correctly', () => {
         expect(page.getSliderPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 218, y: 21});
 
-        expect(page.getSliderPointerLabel().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 217, y: -3});
+        expect(page.getSliderPointerLabel().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 222, y: -3});
       });
     });
 
@@ -154,7 +154,7 @@ describe('simple slider', () => {
       });
 
       it('should set the value to maximum and hide the ceil label', () => {
-        expect(page.getSliderPointerLabel().getText()).toEqual('500');
+        expect(page.getSliderPointerLabel().getText()).toEqual('250');
         expect(page.getSliderCeilLabel().isVisible()).toBe(false);
       });
 

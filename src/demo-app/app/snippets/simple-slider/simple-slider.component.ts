@@ -6,9 +6,9 @@ import { Options } from '@local/ng5-slider';
   templateUrl: './simple-slider.component.html'
 })
 export class SimpleSliderComponent {
-  value: number = 200;
+  value: number = 100;
   options: Options = {
     floor: 0,
-    ceil: 500
+    ceil: 250
   };
 }
