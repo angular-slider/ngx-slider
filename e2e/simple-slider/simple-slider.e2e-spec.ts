@@ -52,7 +52,7 @@ describe('simple slider', () => {
 
   describe('after dragging the slider pointer with touch gesture', () => {
     beforeEach(() => {
-      page.getSliderPointer().touchDragSync(161, 50);
+      page.getSliderPointer().touchDragSync(146, 50);
     });
 
     it('should update the pointer label to new value', () => {

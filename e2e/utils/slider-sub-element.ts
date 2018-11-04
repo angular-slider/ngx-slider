@@ -98,24 +98,37 @@ export class SliderSubElement {
       (resolve: promise.IFulfilledCallback<void>,
         reject: promise.IRejectedCallback): void => {
 
-        this.sliderSubElement.getLocation().then(
-          (location: any): void => {
+        promise.all([
+          this.sliderSubElement.getLocation() as promise.Promise<any>,
+          this.sliderSubElement.getSize() as promise.Promise<any>
+        ])
+        .then(
+          (values: any[]) => {
+            const location: ElementLocation = values[0];
+            const size: ElementSize = values[1];
+
+            const centerLocation: ElementLocation = {
+              x: location.x + size.width / 2,
+              y: location.y + size.height / 2
+            };
 
             browser.driver.touchActions()
-            .tapAndHold({ x: Math.round(location.x), y: Math.round(location.y) })
-            .move({ x: Math.round(location.x) + offsetX, y: Math.round(location.y) + offsetY })
-            .release({ x: Math.round(location.x) + offsetX, y: Math.round(location.y) + offsetY })
+            .tapAndHold({ x: Math.round(centerLocation.x), y: Math.round(centerLocation.y) })
+            .move({ x: Math.round(centerLocation.x) + offsetX, y: Math.round(centerLocation.y) + offsetY })
+            .release({ x: Math.round(centerLocation.x) + offsetX, y: Math.round(centerLocation.y) + offsetY })
             .perform()
             .then(() => {
                 resolve(null);
               },
               (error: any): void => {
                 reject(error);
-              });
+              }
+            );
           },
           (error: any): void => {
             reject(error);
-          });
+          }
+        );
       }
     );
   }
