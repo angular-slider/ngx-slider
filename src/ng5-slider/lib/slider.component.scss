@@ -9,6 +9,7 @@
     margin: $sliderMarginWithLabel 0 $sliderMargin 0;
     vertical-align: middle;
     user-select: none;
+    touch-action: pan-y;
 
     &.with-legend {
       margin-bottom: $withLegendMargin;
@@ -198,6 +199,7 @@
       margin: 0 $sliderVerticalMargin;
       padding: 0;
       vertical-align: baseline;
+      touch-action: pan-x;
 
       .ng5-slider-base {
         width: 100%;
