@@ -11,8 +11,8 @@
     "homepage"
   ],
   "peerDependencies": {
-    "@angular/core": ">=5.2.0",
-    "@angular/common": ">=5.2.0"
+    "@angular/core": ">=5.0.2",
+    "@angular/common": ">=5.0.2"
   },
   "ngPackage": {
     "$schema": "./node_modules/ng-packagr/ng-package.schema.json",
