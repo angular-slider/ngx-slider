@@ -7,7 +7,7 @@ import { ElementRef, Renderer2 } from '@angular/core';
  * any manual DOM manipulations with Angular bindings
  */
 export class JqLiteWrapper {
-  private eventListeners: { [eventName: string]: [() => void] } = {};
+  private eventListeners: { [eventName: string]: (() => void)[] } = {};
 
   constructor(private elemRef: ElementRef, private renderer: Renderer2) {
   }
@@ -54,7 +54,7 @@ export class JqLiteWrapper {
 
   on(eventName: string, callback: (event: any) => boolean|void): void {
     if (!this.eventListeners.hasOwnProperty(eventName)) {
-      this.eventListeners[eventName] = <[() => void]>[];
+      this.eventListeners[eventName] = [];
     }
 
     const unsubscribe: () => void = this.renderer.listen(this.elemRef.nativeElement, eventName, callback);
