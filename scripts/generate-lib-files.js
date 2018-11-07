@@ -29,6 +29,10 @@ delete libConfig.keysToCopyFromMainPackageJson;
 delete libConfig.dependenciesToCopyFromMainPackageJson;
 delete libConfig.dependenciesToCopyAsPeerDependenciesFromMainPackageJson;
 
+for (let dependency of libTemplateConfig.dependenciesToCopyFromMainPackageJson) {
+  libConfig.ngPackage.whitelistedNonPeerDependencies.push(dependency);
+}
+
 const prettyPrintedLibConfig = JSON.stringify(libConfig, null, 2);
 
 fs.writeFileSync(libFile, prettyPrintedLibConfig, { encoding: 'utf8' });
