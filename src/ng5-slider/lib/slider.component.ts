@@ -17,6 +17,8 @@ import {
   ChangeDetectorRef
 } from '@angular/core';
 
+import detectPassiveEvents from 'detect-passive-events';
+
 import {
   Options,
   GetLegendFunction,
@@ -1558,19 +1560,19 @@ export class SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     if (!this.viewOptions.onlyBindHandles) {
-      this.selBarElem.on('touchstart', (event: TouchEvent): void => this.onBarStart(draggableRange, null, event, true, true));
+      this.selBarElem.onPassive('touchstart', (event: TouchEvent): void => this.onBarStart(draggableRange, null, event, true, true));
     }
     if (this.viewOptions.draggableRangeOnly) {
-      this.minHElem.on('touchstart', (event: TouchEvent): void => this.onBarStart(draggableRange, null, event, true, true));
-      this.maxHElem.on('touchstart', (event: TouchEvent): void => this.onBarStart(draggableRange, null, event, true, true));
+      this.minHElem.onPassive('touchstart', (event: TouchEvent): void => this.onBarStart(draggableRange, null, event, true, true));
+      this.maxHElem.onPassive('touchstart', (event: TouchEvent): void => this.onBarStart(draggableRange, null, event, true, true));
     } else {
-      this.minHElem.on('touchstart', (event: TouchEvent): void => this.onStart(this.minHElem, HandleType.Low, event, true, true));
+      this.minHElem.onPassive('touchstart', (event: TouchEvent): void => this.onStart(this.minHElem, HandleType.Low, event, true, true));
       if (this.range) {
-        this.maxHElem.on('touchstart', (event: TouchEvent): void => this.onStart(this.maxHElem, HandleType.High, event, true, true));
+        this.maxHElem.onPassive('touchstart', (event: TouchEvent): void => this.onStart(this.maxHElem, HandleType.High, event, true, true));
       }
       if (!this.viewOptions.onlyBindHandles) {
-        this.fullBarElem.on('touchstart', (event: TouchEvent): void => this.onStart(null, null, event, true, true, true));
-        this.ticksElem.on('touchstart', (event: TouchEvent): void => this.onStart(null, null, event, false, false, true, true));
+        this.fullBarElem.onPassive('touchstart', (event: TouchEvent): void => this.onStart(null, null, event, true, true, true));
+        this.ticksElem.onPassive('touchstart', (event: TouchEvent): void => this.onStart(null, null, event, false, false, true, true));
       }
     }
 
@@ -1615,7 +1617,10 @@ export class SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     event.stopPropagation();
-    event.preventDefault();
+    // Only call preventDefault() when handling non-passive events (passive events don't need it)
+    if (!CompatibilityHelper.isTouchEvent(event) || !detectPassiveEvents.hasSupport) {
+      event.preventDefault();
+    }
 
     // We have to do this in case the HTML where the sliders are on
     // have been animated into view.

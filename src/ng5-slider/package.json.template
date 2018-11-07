@@ -11,6 +11,7 @@
     "homepage"
   ],
   "dependenciesToCopyFromMainPackageJson": [
+    "detect-passive-events"
   ],
   "dependenciesToCopyAsPeerDependenciesFromMainPackageJson": [
     "@angular/core",

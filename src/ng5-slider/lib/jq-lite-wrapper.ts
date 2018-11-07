@@ -1,4 +1,5 @@
 import { ElementRef, Renderer2 } from '@angular/core';
+import detectPassiveEvents from 'detect-passive-events';
 
 /**
  * Wrapper to support legacy jqLite interface
@@ -58,6 +59,28 @@ export class JqLiteWrapper {
     }
 
     const unsubscribe: () => void = this.renderer.listen(this.elemRef.nativeElement, eventName, callback);
+    this.eventListeners[eventName].push(unsubscribe);
+  }
+
+  onPassive(eventName: string, callback: (event: any) => void): void {
+    // Only use passive event listeners if the browser supports it
+    if (! detectPassiveEvents.hasSupport) {
+      this.on(eventName, callback);
+      return;
+    }
+
+    // Angular doesn't support passive event handlers (yet), so we need to roll our own code using native functions
+
+    if (!this.eventListeners.hasOwnProperty(eventName)) {
+      this.eventListeners[eventName] = [];
+    }
+
+    this.elemRef.nativeElement.addEventListener(eventName, callback, {passive: true, capture: false});
+
+    const unsubscribe: () => void = (): void => {
+      this.elemRef.nativeElement.removeEventListener(eventName, callback, {passive: true, capture: false});
+    };
+
     this.eventListeners[eventName].push(unsubscribe);
   }
 
