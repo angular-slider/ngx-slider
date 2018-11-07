@@ -15,9 +15,19 @@ let libConfig = {};
 for (let key of libTemplateConfig.keysToCopyFromMainPackageJson) {
     libConfig[key] = mainConfig[key];
 }
+libConfig.dependencies = {};
+for (let dependency of libTemplateConfig.dependenciesToCopyFromMainPackageJson) {
+  libConfig.dependencies[dependency] = mainConfig.dependencies[dependency];
+}
+libConfig.peerDependencies = {};
+for (let dependency of libTemplateConfig.dependenciesToCopyAsPeerDependenciesFromMainPackageJson) {
+  libConfig.peerDependencies[dependency] = mainConfig.dependencies[dependency];
+}
 
 libConfig = Object.assign({}, libConfig, libTemplateConfig, libConfig);
 delete libConfig.keysToCopyFromMainPackageJson;
+delete libConfig.dependenciesToCopyFromMainPackageJson;
+delete libConfig.dependenciesToCopyAsPeerDependenciesFromMainPackageJson;
 
 const prettyPrintedLibConfig = JSON.stringify(libConfig, null, 2);
 

@@ -10,10 +10,12 @@
     "bugs",
     "homepage"
   ],
-  "peerDependencies": {
-    "@angular/core": ">=5.0.2",
-    "@angular/common": ">=5.0.2"
-  },
+  "dependenciesToCopyFromMainPackageJson": [
+  ],
+  "dependenciesToCopyAsPeerDependenciesFromMainPackageJson": [
+    "@angular/core",
+    "@angular/common"
+  ],
   "ngPackage": {
     "$schema": "./node_modules/ng-packagr/ng-package.schema.json",
     "lib": {
