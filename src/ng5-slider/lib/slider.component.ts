@@ -1554,8 +1554,8 @@ export class SliderComponent implements OnInit, AfterViewInit, OnDestroy {
         this.maxHElem.on('mousedown', (event: MouseEvent): void => this.onStart(this.maxHElem, HandleType.High, event, true, true));
       }
       if (!this.viewOptions.onlyBindHandles) {
-        this.fullBarElem.on('mousedown', (event: MouseEvent): void => this.onStart(null, null, event, true, true, true));
-        this.ticksElem.on('mousedown', (event: MouseEvent): void => this.onStart(null, null, event, true, true));
+        this.fullBarElem.on('mousedown', (event: MouseEvent): void => { this.onStart(null, null, event, true, true, true); });
+        this.ticksElem.on('mousedown', (event: MouseEvent): void => { this.onStart(null, null, event, true, true, true, true); });
       }
     }
 
@@ -1668,15 +1668,14 @@ export class SliderComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     }
 
-    // Touch start events are not necessarily followed by touch move events,
-    // so for click actions, we can simulate the first touch move event from the touch start event
-    if (simulateImmediateMove && CompatibilityHelper.isTouchEvent(event)) {
+    // Click events, either with mouse or touch gesture are weird. Sometimes they result in full
+    // start, move, end sequence, and sometimes, they don't - they only invoke mousedown
+    // As a workaround, we simulate the first move event and the end event if it's necessary
+    if (simulateImmediateMove) {
       this.onMove(pointer, event, true);
     }
 
-    // In some corner cases for touch click events, we will not get touch end event either,
-    // so we need to simulate it, too
-    if (simulateImmediateEnd && CompatibilityHelper.isTouchEvent(event)) {
+    if (simulateImmediateEnd) {
       this.onEnd(event);
     }
   }
