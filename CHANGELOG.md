@@ -1,3 +1,8 @@
+# 1.1.6
+ * fix event handling when clicking on tick value (issue #36)
+ * fix warnings about event listener violation (issue #22)
+ * new layout of demo app
+
 # 1.1.5
  * fix event handling when touching exactly the tick element (issue #32)
  * update model value if value is not initially in steps array (issue #35)
