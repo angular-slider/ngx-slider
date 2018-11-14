@@ -47,7 +47,8 @@ import {
   ReadOnlySliderComponent,
   VerticalSlidersComponent,
   UserEventsSliderComponent,
-  ManualRefreshSliderComponent
+  ManualRefreshSliderComponent,
+  TicksValuesSliderComponent
 } from './snippets';
 import { AllDemosComponent } from './all-demos.component';
 import { routerConfig } from './app-router.config';
@@ -97,6 +98,7 @@ import { routerConfig } from './app-router.config';
     UserEventsSliderComponent,
     ManualRefreshSliderComponent,
     AllDemosComponent,
+    TicksValuesSliderComponent,
   ],
   imports: [
     BrowserModule,
