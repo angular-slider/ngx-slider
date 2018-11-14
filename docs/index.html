@@ -66,13 +66,23 @@
 				<p><a href="https://badge.fury.io/js/ng5-slider"><img src="https://badge.fury.io/js/ng5-slider.svg" alt="npm version"></a>
 				<a href="https://travis-ci.org/angular-slider/ng5-slider"><img src="https://travis-ci.org/angular-slider/ng5-slider.svg?branch=master" alt="Travis CI Build"></a></p>
 				<p>Website: <a href="https://angular-slider.github.io/ng5-slider/">https://angular-slider.github.io/ng5-slider/</a></p>
-				<p>A rewrite of <a href="https://github.com/angular-slider/angularjs-slider">angularjs-slider</a> for Angular 5+.</p>
-				<p>Self-contained, mobile friendly slider component.</p>
+				<p>Self-contained, mobile friendly slider component for Angular 5+ based on <a href="https://github.com/angular-slider/angularjs-slider">angularjs-slider</a>.</p>
 				<h2 id="demos">Demos</h2>
 				<ul>
-					<li><a href="https://stackblitz.com/edit/ng5-slider-simple-slider-example?file=src/app/app.component.ts">Simple slider StackBlitz</a></li>
-					<li><a href="https://stackblitz.com/edit/ng5-slider-range-slider-example?file=src/app/app.component.ts">Range slider StackBlitz</a></li>
-					<li><a href="https://angular-slider.github.io/ng5-slider/">More examples</a></li>
+					<li><p>Single slider - <a href="https://stackblitz.com/edit/ng5-slider-simple-slider-example?file=src%2Fapp%2Fapp.component.ts">StackBlitz</a></p>
+						<p><img src="https://raw.githubusercontent.com/angular-slider/ng5-slider/master/assets/simple-slider.png" alt="simple slider image"></p>
+					</li>
+					<li><p>Range slider - <a href="https://stackblitz.com/edit/ng5-slider-range-slider-example?file=src%2Fapp%2Fapp.component.ts">StackBlitz</a></p>
+						<p><img src="https://raw.githubusercontent.com/angular-slider/ng5-slider/master/assets/range-slider.png" alt="range slider image"></p>
+					</li>
+					<li><p>Slider with ticks - <a href="https://stackblitz.com/edit/ng5-slider-ticks-example?file=src%2Fapp%2Fapp.component.ts">StackBlitz</a></p>
+						<p><img src="https://raw.githubusercontent.com/angular-slider/ng5-slider/master/assets/ticks-slider.png" alt="ticks slider image"></p>
+					</li>
+					<li><p>Customised slider - <a href="https://stackblitz.com/edit/ng5-slider-customised-range-slider-example?file=src%2Fapp%2Fapp.component.ts">StackBlitz</a></p>
+						<p><img src="https://raw.githubusercontent.com/angular-slider/ng5-slider/master/assets/customised-slider.png" alt="customised slider image"></p>
+					</li>
+					<li><p><a href="https://angular-slider.github.io/ng5-slider/demos">More examples on official website</a></p>
+					</li>
 				</ul>
 				<h2 id="dependencies">Dependencies</h2>
 				<ul>
@@ -129,32 +139,19 @@
 &gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">ng5-slider</span>&gt;</span>
 </code></pre>
 				<p>For single value slider, <code>value</code> specifies the model value of the slider. For range sliders, <code>value</code> is the minimum model value and <code>highValue</code> is the maximum model value. <code>options</code> is an object of options that configure the slider (e.g. minimum, maximum values, legend values, etc.). Documentation of all available options is included <a href="https://angular-slider.github.io/ng5-slider/docs/classes/_options_.options.html">in the API docs</a>.</p>
-				<p><code>manualRefresh</code> input is provided to solve some cases where the slider is not being updated after CSS style changes. This is for example changing the <code>display</code> property to show/hide the slider (or any parent DOM element). Instead of observing the CSS changes, the slider provides this input to manually trigger a refresh. An example of how this can be used can be found <a href="https://angular-slider.github.io/ng5-slider/#manual-refresh-slider">in the demo app on Github pages</a>.</p>
-				<p><code>userChangeStart</code>, <code>userChange</code> and <code>userChangeEnd</code> provide output events that are triggered by user interaction (through keyboard, mouse or touchpad). The event handler also passes a <code>ChangeContext</code> object which contains details about the changes. A good example of using these events can be found <a href="https://angular-slider.github.io/ng5-slider/#user-events-slider">in the demo app on Github pages</a>.</p>
+				<p><code>manualRefresh</code> input is provided to solve some cases where the slider is not being updated after CSS style changes. This is for example changing the <code>display</code> property to show/hide the slider (or any parent DOM element). Instead of observing the CSS changes, the slider provides this input to manually trigger a refresh. An example of how this can be used can be found <a href="https://angular-slider.github.io/ng5-slider/demos#manual-refresh-slider">in the demo app on Github pages</a>.</p>
+				<p><code>userChangeStart</code>, <code>userChange</code> and <code>userChangeEnd</code> provide output events that are triggered by user interaction (through keyboard, mouse or touchpad). The event handler also passes a <code>ChangeContext</code> object which contains details about the changes. A good example of using these events can be found <a href="https://angular-slider.github.io/ng5-slider/demos#user-events-slider">in the demo app on Github pages</a>.</p>
 				<p><code>valueChange</code> and <code>highValueChange</code> outputs are emitted whenever the model values change (including programmatically). They are provided to support two-way binding of the model values but they can also be used to attach custom event handlers.</p>
 				<p>The full set of API docs including internal classes can be found <a href="https://angular-slider.github.io/ng5-slider/docs/index.html">here</a>.</p>
 				<h2 id="tooltips">Tooltips</h2>
-				<p>Prior to version 1.1, the library used to have a dependency on ng-bootstrap to support tooltips.</p>
-				<p>As of version 1.1, this dependency has been removed, and tooltips are rendered by default by using the standard HTML <code>title</code> attribute (e.g. <code>&lt;div title=&quot;Some tooltip&quot;&gt;Some content&lt;/div&gt;</code>), but it&#39;s also possible to customise this behaviour by specifying a custom template.</p>
-				<p>When using a custom template, elements that would normally be rendered as <code>&lt;div title=...&gt;</code> tags, are instead rendered using the specified template. Inside the custom template, the user is free to choose any way of rendering the tooltips, including, but of course not limited to, using ng-bootstrap.</p>
-				<p>The syntax for specifying the custom template is the following:</p>
-				<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">ng5-slider</span> [(<span class="hljs-attr">value</span>)]=<span class="hljs-string">"value"</span> [<span class="hljs-attr">options</span>]=<span class="hljs-string">"options"</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">ng-template</span> #<span class="hljs-attr">tooltipTemplate</span> <span class="hljs-attr">let-tooltip</span>=<span class="hljs-string">"tooltip"</span> <span class="hljs-attr">let-placement</span>=<span class="hljs-string">"placement"</span> <span class="hljs-attr">let-content</span>=<span class="hljs-string">"content"</span>&gt;</span>
-    <span class="hljs-comment">&lt;!-- <span class="hljs-doctag">TODO:</span> provide tooltip around the content.
-         {{tooltip}} will bind to the tooltip text
-         {{placement}} will bind to the tooltip placement ('top', 'bottom', 'right', 'left') --&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>{{content}}<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
-  <span class="hljs-tag">&lt;/<span class="hljs-name">ng-template</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">ng5-slider</span>&gt;</span>
-</code></pre>
-				<p>For more concrete examples, please refer to tooltip samples on <a href="https://angular-slider.github.io/ng5-slider/#ticks-custom-tooltips-slider">Github pages</a>.</p>
+				<p>The slider allows for customising how to implement tooltips. See <a href="TOOLTIPS.md">TOOLTIPS.md</a> for more information.</p>
 				<h2 id="bugs">Bugs</h2>
 				<p>You can report any bugs as <a href="https://github.com/angular-slider/ng5-slider/issues">Github issues</a>.</p>
-				<p>Please describe the issue in detail pasting any relevant code, or preferrably a StackBlitz with reproduction of the problem by <a href="https://stackblitz.com/edit/ng5-slider-simple-slider-example?file=src/app/app.component.ts">forking and editing this sample StackBlitz</a>.</p>
+				<p>Please describe the issue in detail pasting any relevant code, or preferrably a StackBlitz with reproduction of the problem by <a href="https://stackblitz.com/edit/ng5-slider-simple-slider-example?file=src/app/app.component.ts">forking and editing this sample StackBlitz</a>. Please also provide the version of NPM package you are using.</p>
 				<h2 id="developer-information">Developer information</h2>
 				<p>If you&#39;d like to contribute to the project, or check out the plans for future, see <a href="DEVELOPERS.md">DEVELOPERS.md</a>.</p>
 				<h2 id="license">License</h2>
-				<p>Licensed under the MIT license</p>
+				<p>The project is licensed under the MIT license.</p>
 			</div>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
