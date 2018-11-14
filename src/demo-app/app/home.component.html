@@ -1,0 +1,147 @@
+<app-header></app-header>
+
+<div class="container pb-5">
+  <div class="row">
+    <div class="col-12 mb-5 mb-lg-3 col-lg-6 px-1 px-md-2 px-lg-4 text-center">
+      <div class="card">
+        <div class="card-header">
+          <h2 class="display-5">Single slider</h2>
+        </div>
+
+        <div class="card-body">
+          <p class="lead">Need a slider for a single value?</p>
+
+          <div class="mx-auto horizontal-slider-container">
+            <ng5-slider [(value)]="simpleSliderValue" [options]="simpleSliderOptions"></ng5-slider>
+          </div>
+
+          <div class="mt-4">
+            <a [routerLink]="['/demos']" fragment="simple-slider" class="btn btn-primary">Go to demo</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 mb-5 mb-lg-3 col-lg-6 px-1 px-md-2 px-lg-4 text-center">
+      <div class="card">
+        <div class="card-header">
+          <h2 class="display-5">Range slider</h2>
+        </div>
+
+        <div class="card-body">
+          <p class="lead">Or a range of values?</p>
+
+          <div class="mx-auto horizontal-slider-container">
+            <ng5-slider [(value)]="rangeSliderLowValue" [(highValue)]="rangeSliderHighValue" [options]="rangeSliderOptions"></ng5-slider>
+
+            <div class="mt-4">
+              <a [routerLink]="['/demos']" fragment="range-slider" class="btn btn-primary">Go to demo</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12 mb-5 mb-lg-3 col-lg-6 px-1 px-md-2 px-lg-4 text-center">
+      <div class="card">
+        <div class="card-header">
+          <h2 class="display-5">Ticks</h2>
+        </div>
+
+        <div class="card-body">
+          <p class="lead">Add ticks as necessary</p>
+
+          <div class="mx-auto horizontal-slider-container">
+            <ng5-slider [(value)]="ticksSliderValue" [options]="ticksSliderOptions"></ng5-slider>
+
+            <div class="mt-4">
+              <a [routerLink]="['/demos']" fragment="ticks-values-slider" class="btn btn-primary">Go to demo</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 mb-5 mb-lg-3 col-lg-6 px-1 px-md-2 px-lg-4 text-center">
+      <div class="card">
+        <div class="card-header">
+          <h2 class="display-5">Customisable</h2>
+        </div>
+
+        <div class="card-body">
+          <p class="lead">Customise for your use case</p>
+
+          <div class="mx-auto horizontal-slider-container">
+            <ng5-slider [(value)]="customisedSliderLowValue" [(highValue)]="customisedSliderHighValue" [options]="customisedSliderOptions"></ng5-slider>
+
+            <div class="mt-4">
+              <a [routerLink]="['/demos']" fragment="custom-html-display-function-slider" class="btn btn-primary">Go to demo</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12 mb-5 mb-lg-3 col-lg-6 px-1 px-md-2 px-lg-4 text-center">
+      <div class="card h-100">
+        <div class="card-header">
+          <h2 class="display-5">Stylable</h2>
+        </div>
+
+        <div class="card-body">
+          <p class="lead">Style it just as you like it</p>
+
+          <div class="mx-auto horizontal-slider-container">
+            <ng5-slider class="styled-slider" [(value)]="styledSliderLowValue" [(highValue)]="styledSliderHighValue" [options]="styledSliderOptions"></ng5-slider>
+
+            <div class="mt-4">
+              <a [routerLink]="['/demos']" fragment="styled-slider" class="btn btn-primary">Go to demo</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 mb-5 mb-lg-3 col-lg-6 px-1 px-md-2 px-lg-4 text-center">
+      <div class="card h-100">
+        <div class="card-header">
+          <h2 class="display-5">Vertical</h2>
+        </div>
+
+        <div class="card-body">
+          <p class="lead">It can be vertical, too!</p>
+
+          <div class="text-left vertical-slider-container">
+            <ng5-slider [(value)]="verticalSliderValue" [options]="verticalSliderOptions"></ng5-slider>
+          </div>
+
+          <div class="mt-4">
+            <a [routerLink]="['/demos']" fragment="vertical-sliders" class="btn btn-primary">Go to demo</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12 mb-5 mb-lg-3 px-1 px-md-2 px-lg-4 text-center">
+      <div class="card">
+        <div class="card-header">
+          <h2 class="display-5">And more!</h2>
+        </div>
+
+        <div class="card-body">
+          <p class="lead">Many more options and customisations are available</p>
+
+          <p>
+            See <a routerLink="/demos">other examples</a> or jump straight to <a routerLink="/api">API documentation</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

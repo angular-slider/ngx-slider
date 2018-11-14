@@ -5,7 +5,12 @@ import { RouterModule } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { Ng5SliderModule } from '@local/ng5-slider';
+
 import { AppComponent } from './app.component';
+import { HeaderComponent } from './header.component';
+import { HomeComponent } from './home.component';
+import { ApiComponent } from './api.component';
+import { DemosComponent } from './demos.component';
 import {
   SimpleSliderComponent,
   RangeSliderComponent,
@@ -50,12 +55,15 @@ import {
   ManualRefreshSliderComponent,
   TicksValuesSliderComponent
 } from './snippets';
-import { AllDemosComponent } from './all-demos.component';
 import { routerConfig } from './app-router.config';
 
 @NgModule({
   declarations: [
     AppComponent,
+    HeaderComponent,
+    HomeComponent,
+    DemosComponent,
+    ApiComponent,
     SimpleSliderComponent,
     RangeSliderComponent,
     StyledSliderComponent,
@@ -97,7 +105,6 @@ import { routerConfig } from './app-router.config';
     VerticalSlidersComponent,
     UserEventsSliderComponent,
     ManualRefreshSliderComponent,
-    AllDemosComponent,
     TicksValuesSliderComponent,
   ],
   imports: [
