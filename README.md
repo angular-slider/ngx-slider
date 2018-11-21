@@ -104,6 +104,10 @@ For single value slider, `value` specifies the model value of the slider. For ra
 
 The full set of API docs including internal classes can be found [here](https://angular-slider.github.io/ng5-slider/docs/index.html).
 
+## Styling
+
+An overview of how to apply your own style to the slider is described in [STYLING.md](STYLING.md).
+
 ## Tooltips
 
 The slider allows for customising how to implement tooltips. See [TOOLTIPS.md](TOOLTIPS.md) for more information.
