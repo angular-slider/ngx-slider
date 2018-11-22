@@ -102,6 +102,17 @@ Or, if you prefer plain CSS:
 }
 ```
 
-Note that this is an example of a global stylesheet, applied across your app (`styles.css` or `styes.scss`). If you want to apply this stylesheet in a specific component of your app (`*.component.scss` or `*.component.css`), you will need to surround it with `::ng-deep { }` selector to overcome shadow DOM encapsulation.
+Note that the above code is an example of a global stylesheet, applied across your app (`styles.css` or `styes.scss`). If you want to apply this stylesheet in a specific component of your app (`*.component.scss` or `*.component.css`), you will need to surround it with `::ng-deep {}` selector to overcome shadow DOM encapsulation:
+```scss
+::ng-deep {
+  .custom-slider {
+    .ng5-slider {
+      .ng5-slider-selection {
+        background: rgb(255, 255, 0) !important;
+      }
+    }
+  }
+}
+```
 
 For a complete example, see the slider with custom style demo on [github pages](https://angular-slider.github.io/ng5-slider/demos#styled-slider).
