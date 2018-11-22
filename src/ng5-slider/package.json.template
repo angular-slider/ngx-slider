@@ -15,7 +15,8 @@
   ],
   "dependenciesToCopyAsPeerDependenciesFromMainPackageJson": [
     "@angular/core",
-    "@angular/common"
+    "@angular/common",
+    "@angular/forms"
   ],
   "ngPackage": {
     "$schema": "./node_modules/ng-packagr/ng-package.schema.json",

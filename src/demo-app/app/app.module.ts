@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
@@ -53,7 +53,9 @@ import {
   VerticalSlidersComponent,
   UserEventsSliderComponent,
   ManualRefreshSliderComponent,
-  TicksValuesSliderComponent
+  TicksValuesSliderComponent,
+  ReactiveFormSimpleSliderComponent,
+  ReactiveFormRangeSliderComponent,
 } from './snippets';
 import { routerConfig } from './app-router.config';
 
@@ -106,10 +108,13 @@ import { routerConfig } from './app-router.config';
     UserEventsSliderComponent,
     ManualRefreshSliderComponent,
     TicksValuesSliderComponent,
+    ReactiveFormSimpleSliderComponent,
+    ReactiveFormRangeSliderComponent,
   ],
   imports: [
     BrowserModule,
     FormsModule,
+    ReactiveFormsModule,
     RouterModule.forRoot(routerConfig),
     NgbModule.forRoot(),
     Ng5SliderModule

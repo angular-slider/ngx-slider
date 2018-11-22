@@ -14,8 +14,13 @@ import {
   Output,
   ContentChild,
   TemplateRef,
-  ChangeDetectorRef
+  ChangeDetectorRef,
+  forwardRef
 } from '@angular/core';
+
+import {
+  ControlValueAccessor, NG_VALUE_ACCESSOR
+} from '@angular/forms';
 
 import detectPassiveEvents from 'detect-passive-events';
 
@@ -167,14 +172,22 @@ export class TicksDirective extends SliderElement {
   }
 }
 
+const NG5_SLIDER_CONTROL_VALUE_ACCESSOR: any = {
+  provide: NG_VALUE_ACCESSOR,
+  /* tslint:disable-next-line: no-use-before-declare */
+  useExisting: forwardRef(() => SliderComponent),
+  multi: true,
+};
+
 
 @Component({
   selector: 'ng5-slider',
   templateUrl: './slider.component.html',
   styleUrls: ['./slider.component.scss'],
-  host: { class: 'ng5-slider' }
+  host: { class: 'ng5-slider' },
+  providers: [NG5_SLIDER_CONTROL_VALUE_ACCESSOR]
 })
-export class SliderComponent implements OnInit, AfterViewInit, OnDestroy {
+export class SliderComponent implements OnInit, AfterViewInit, OnDestroy, ControlValueAccessor {
   // Model for low value slider. If only value is provided single slider will be rendered.
   private _value: number;
   @Input() set value(newValue: number) {
@@ -374,6 +387,9 @@ export class SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   private onMoveUnsubscribe: () => void = null;
   private onEndUnsubscribe: () => void = null;
 
+  private onTouchedCallback: (value: any) => void = null;
+  private onChangeCallback: (value: any) => void = null;
+
   constructor(private renderer: Renderer2,
     private elementRef: ElementRef,
     private changeDetectionRef: ChangeDetectorRef) { }
@@ -385,7 +401,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     // We need to run these two things first, before the rest of the init in ngAfterViewInit(),
     // because these two settings are set through @HostBinding and Angular change detection
     // mechanism doesn't like them changing in ngAfterViewInit()
-    this.setDisabledState();
+    this.setDisabledStateAttr();
     this.setVerticalClass();
   }
 
@@ -401,7 +417,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     this.manageElementsStyle();
-    this.setDisabledState();
+    this.setDisabledStateAttr();
     this.calcViewDimensions();
     this.setMinAndMax();
     this.addAccessibility();
@@ -466,6 +482,33 @@ export class SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.unbindEvents();
     this.currentFocusElement = null;
   }
+
+
+  // ControlValueAccessor interface
+  writeValue(obj: any): void {
+    if (obj instanceof Array) {
+      this.value = obj[0];
+      this.highValue = obj[1];
+    } else {
+      this.value = obj;
+    }
+  }
+
+  registerOnChange(onChangeCallback: any): void {
+    this.onChangeCallback = onChangeCallback;
+  }
+
+  registerOnTouched(onTouchedCallback: any): void {
+    this.onTouchedCallback = onTouchedCallback;
+  }
+
+  setDisabledState(isDisabled: boolean): void {
+    if (this.viewOptions) {
+      this.viewOptions.disabled = isDisabled;
+      this.setDisabledStateAttr();
+    }
+  }
+
 
   private unsubscribeManualRefresh(): void {
     if (this.manualRefreshSubscription) {
@@ -654,7 +697,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.updateFloorLab();
     this.unbindEvents();
     this.manageEventsBindings();
-    this.setDisabledState();
+    this.setDisabledStateAttr();
     this.calcViewDimensions();
     this.refocusPointerIfNeeded();
   }
@@ -751,7 +794,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   // Set the disabled state based on disabled option
-  private setDisabledState(): void {
+  private setDisabledStateAttr(): void {
     this.sliderElementDisabledAttr = this.viewOptions.disabled ? 'disabled' : null;
   }
 
@@ -2159,6 +2202,21 @@ export class SliderComponent implements OnInit, AfterViewInit, OnDestroy {
     this.highValueChange.emit(this.highValue);
     if (callUserChange) {
       this.userChange.emit(this.getChangeContext());
+    }
+
+    if (this.onChangeCallback) {
+      if (this.range) {
+        this.onChangeCallback([this.value, this.highValue]);
+      } else {
+        this.onChangeCallback(this.value);
+      }
+    }
+    if (this.onTouchedCallback) {
+      if (this.range) {
+        this.onTouchedCallback([this.value, this.highValue]);
+      } else {
+        this.onTouchedCallback(this.value);
+      }
     }
 
     this.internalChange = false;

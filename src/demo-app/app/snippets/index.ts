@@ -41,3 +41,5 @@ export * from './vertical-sliders/vertical-sliders.component';
 export * from './user-events-slider/user-events-slider.component';
 export * from './manual-refresh-slider/manual-refresh-slider.component';
 export * from './ticks-values-slider/ticks-values-slider.component';
+export * from './reactive-form-simple-slider/reactive-form-simple-slider.component';
+export * from './reactive-form-range-slider/reactive-form-range-slider.component';
