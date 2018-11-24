@@ -11,6 +11,8 @@ const prism = require('prismjs');
 require('prismjs/components/prism-scss');
 require('prismjs/components/prism-typescript');
 
+const utils = require('./utils.js');
+
 /** Generate template for a single file */
 function generateTemplate(templateFile, snippetsDir) {
   const titleTemplateFile = templateFile.replace('.template.html', '.title-template.html');
@@ -74,26 +76,10 @@ function tabHtml(tabTitle, codeContent, codeLang) {
     </ngb-tab>`;
 }
 
-/** Get all files in directory recursively, synchronously */
-function readdirRecursivelySync(dir) {
-  let results = [];
-  const list = fs.readdirSync(dir);
-  for (let file of list) {
-    file = path.resolve(dir, file);
-    const stat = fs.statSync(file);
-    if (stat && stat.isDirectory()) {
-      results = results.concat(readdirRecursivelySync(file));
-    } else {
-      results.push(file);
-    }
-  }
-  return results;
-}
-
 
 const snippetsDir = path.resolve(__dirname, '../src/demo-app/app/snippets');
 
-const templateFiles = readdirRecursivelySync(snippetsDir)
+const templateFiles = utils.readdirRecursivelySync(snippetsDir)
   .filter((file) => file.endsWith('component.template.html'));
 
 for (let templateFile of templateFiles) {

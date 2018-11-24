@@ -27,8 +27,6 @@ rm -rf *
 # Add demo app files
 cp -R ../dist/demo-app/* ./
 cp index.html 404.html
-# Add API docs
-cp -R ../docs/ ./
 # Workaround for files starting with underscore not showing up
 touch .nojekyll
 

@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute, UrlSegment } from '@angular/router';
+import { Router, UrlSegment, RouterEvent, NavigationEnd } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -9,18 +9,24 @@ import { ActivatedRoute, UrlSegment } from '@angular/router';
 export class HeaderComponent implements OnInit, OnDestroy {
   navbarCollapsed: boolean = true;
   atRootUrl: boolean = false;
-  fragmentSub: any;
+  atDocsUrl: boolean = false;
+  urlSub: any;
 
-  constructor(private route: ActivatedRoute) {
+  constructor(private router: Router) {
   }
 
   ngOnInit(): void {
-    this.fragmentSub = this.route.url.subscribe((url: UrlSegment[]) => {
-      this.atRootUrl = (url.length === 0) || (url.length === 1 && url[0].path === 'home');
-    });
+    this.urlSub = this.router.events.subscribe(
+      (event: RouterEvent) => {
+        if (event instanceof NavigationEnd) {
+          this.atRootUrl = event.url === '/' || event.url === '/home';
+          this.atDocsUrl = event.url.indexOf('/docs') === 0;
+        }
+      }
+    );
   }
 
   ngOnDestroy(): void {
-    this.fragmentSub.unsubscribe();
+    this.urlSub.unsubscribe();
   }
 }
