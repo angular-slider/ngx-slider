@@ -1,7 +1,7 @@
 {{#if this}}
     {{#if reflection}}
         {{#compact}}
-            <a href="{{relativeURL reflection.url}}" class="tsd-signature-type">
+            <a routerLink="/docs/{{reflection.url}}" class="tsd-signature-type">
                 {{reflection.name}}
             </a>
             {{#if typeArguments}}

@@ -8,7 +8,7 @@
                     <h3>{{title}}</h3>
                     <ul class="tsd-index-list">
                         {{#each children}}
-                        <li class="{{cssClasses}}"><a href="{{relativeURL url}}" class="tsd-kind-icon">{{#if name}}{{{wbr name}}}{{else}}<em>{{{wbr kindString}}}</em>{{/if}}</a></li>
+                        <li class="{{cssClasses}}"><a routerLink="/docs/{{url}}" class="tsd-kind-icon">{{#if name}}{{{wbr name}}}{{else}}<em>{{{wbr kindString}}}</em>{{/if}}</a></li>
                         {{/each}}
                     </ul>
                 </section>

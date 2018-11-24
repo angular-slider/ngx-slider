@@ -2,7 +2,7 @@
     {{#with parent}}{{> breadcrumb}}{{/with}}
     <li>
         {{#if url}}
-            <a href="{{relativeURL url}}">{{name}}</a>
+            <a routerLink="/docs/{{url}}">{{name}}</a>
         {{else}}
             <span>{{name}}</span>
         {{/if}}
@@ -10,7 +10,7 @@
 {{else}}
     {{#if url}}
         <li>
-            <a href="{{relativeURL url}}">Globals</a>
+            <a routerLink="/docs/{{url}}">Globals</a>
         </li>
     {{/if}}
 {{/if}}

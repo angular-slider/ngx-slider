@@ -6,11 +6,11 @@
     {{else}}
         {{#if isGlobals}}
             <li class="globals {{#if isInPath}}current{{/if}} {{cssClasses}}">
-                <a href="{{relativeURL url}}"><em>{{{wbr title}}}</em></a>
+                <a routerLink="/docs/{{url}}"><em>{{{wbr title}}}</em></a>
             </li>
         {{else}}
             <li class="{{#if isInPath}}current{{/if}} {{cssClasses}}">
-                <a href="{{relativeURL url}}">{{{wbr title}}}</a>
+                <a routerLink="/docs/{{url}}">{{{wbr title}}}</a>
                 {{#if isInPath}}
                     {{#if children}}
                         <ul>
