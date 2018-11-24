@@ -28,7 +28,7 @@
   "scripts": {
     "prepare": "npm run prepare:lib && npm run prepare:demo-app",
     "prepare:lib": "node scripts/generate-lib-files.js",
-    "prepare:demo-app": "node scripts/generate-demo-app-templates.js",
+    "prepare:demo-app": "node scripts/generate-demo-app-snippets.js",
     "start": "npm run prepare && ng serve",
     "build": "npm run build:lib && npm run build:demo-app && npm run build:docs",
     "build:lib": "npm run prepare && rimraf dist/ng5-slider dist/ng5-slider.tgz && ng-packagr -p src/ng5-slider/package.json && scss-bundle -e src/ng5-slider/lib/main.scss -d dist/ng5-slider/scss/ng5-slider.scss",
