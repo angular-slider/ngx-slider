@@ -78,33 +78,7 @@ And in template file `app.component.html`:
 ```
 
 ## Documentation
-
-The slider component takes the following inputs and outputs:
-```html
-<ng5-slider
-  [(value)]="<number>"
-  [(highValue)]="<number>"
-  [options]="<options object>"
-  [manualRefresh]="<event emitter>"
-  (userChangeStart)="<event handler>"
-  (userChange)="<event handler>"
-  (userChangeEnd)="<event handler>"
-  (valueChange)="<event handler>"
-  (highValueChange)="<event handler>"
-></ng5-slider>
-```
-
-For single value slider, `value` specifies the model value of the slider. For range sliders, `value` is the minimum model value and `highValue` is the maximum model value. `options` is an object of options that configure the slider (e.g. minimum, maximum values, legend values, etc.). Documentation of all available options is included [in the API docs](https://angular-slider.github.io/ng5-slider/docs/classes/_options_.options.html).
-
-*Note:* Instead of binding to `value` and `highValue`, it is also possible to bind the values using Angular [reactive forms](https://angular.io/guide/reactive-forms) (`formControl` and `formControlName` directives). For an example of this, refer to relevant examples on Github pages: [simple slider in reactive form](https://angular-slider.github.io/ng5-slider/demos#reactive-form-simple-slider) and [range slider in reactive form](https://angular-slider.github.io/ng5-slider/demos#reactive-form-range-slider).
-
-`manualRefresh` input is provided to solve some cases where the slider is not being updated after CSS style changes. This is for example changing the `display` property to show/hide the slider (or any parent DOM element). Instead of observing the CSS changes, the slider provides this input to manually trigger a refresh. An example of how this can be used can be found [in the demo app on Github pages](https://angular-slider.github.io/ng5-slider/demos#manual-refresh-slider).
-
-`userChangeStart`, `userChange` and `userChangeEnd` provide output events that are triggered by user interaction (through keyboard, mouse or touchpad). The event handler also passes a `ChangeContext` object which contains details about the changes. A good example of using these events can be found [in the demo app on Github pages](https://angular-slider.github.io/ng5-slider/demos#user-events-slider).
-
-`valueChange` and `highValueChange` outputs are emitted whenever the model values change (including programmatically). They are provided to support two-way binding of the model values but they can also be used to attach custom event handlers.
-
-The full set of API docs including internal classes can be found [here](https://angular-slider.github.io/ng5-slider/docs/index.html).
+Full API documentation is available on [official website](https://github.com/angular-slider/ng5-slider/docs).
 
 ## Styling
 

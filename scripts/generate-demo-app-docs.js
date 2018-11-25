@@ -29,6 +29,12 @@ function generateTypedocDocs(typedocDocsDir) {
 
   const themeDir = path.resolve(__dirname, '../typedoc-theme');
 
+  // HACK: When Typedoc finda a README.md file, it uses it to generate content for the index page of documentation
+  // This is not very helpful, as it repeats the same stuff that's already shown on Github and NPM
+  // So instead, replace the README.md with our own file
+  const apiDocsReadmeFile = path.resolve(__dirname, '../typedoc-theme/README.md');
+  utils.copyReadmeMd(apiDocsReadmeFile);
+
   const app = new typedoc.Application({
     module: 'commonjs',
     target: 'es6',
@@ -39,6 +45,10 @@ function generateTypedocDocs(typedocDocsDir) {
   });
 
   app.generateDocs(files, typedocDocsDir);
+
+  // HACK: restore the README.md to original
+  const mainReadmeFile = path.resolve(__dirname, '../README.md');
+  utils.copyReadmeMd(mainReadmeFile);
 }
 
 /** Convert typedoc HTML file into Angular component for use in demo app */
@@ -51,7 +61,7 @@ function generateComponent(typedocHtmlFile, relativeTypedocHtmlFile, demoAppDocs
 
   const componentHtmlFile = path.join(demoAppDocsModuleDir, directory, componentHtmlFileName);
   const typedocHtmlFileContent = fs.readFileSync(typedocHtmlFile, { encoding: 'utf8' });
-  const escapedHtmlFileContent = fixRouterFragments(escapeHtmlForAngular(typedocHtmlFileContent));
+  const escapedHtmlFileContent = fixRouterFragments(fixReadmeMdLinks(escapeHtmlForAngular(typedocHtmlFileContent)));
 
   fs.writeFileSync(componentHtmlFile, escapedHtmlFileContent, { encoding: 'utf8' });
 
@@ -80,6 +90,11 @@ export class ${componentName} { }
 /** We need to escape `{` characters in HTML or otherwise Angular throws a fit */
 function escapeHtmlForAngular(rawHtml) {
   return rawHtml.replace(/\{/g, "{{ '{' }}");
+}
+
+/** Links in README.md need special treatment */
+function fixReadmeMdLinks(html) {
+  return html.replace(/href=\"routerLink:\/\/([^"]+)"/g, 'routerLink="$1"');
 }
 
 /** We want all <a href="..."> links to work as Angular router links

@@ -1,6 +1,8 @@
 const fs = require('fs');
 const path = require('path');
 
+const utils = require('./utils.js');
+
 /** Generate package.json file based on package.json.template and main package.json */
 function generatePackageJson() {
   const mainFile = path.resolve(__dirname, '../package.json');
@@ -38,15 +40,6 @@ function generatePackageJson() {
   fs.writeFileSync(libFile, prettyPrintedLibConfig, { encoding: 'utf8' });
 }
 
-/** Copy main README.md file */
-function copyReadmeMd() {
-  const mainReadmeFile = path.resolve(__dirname, '../README.md');
-  const libReadmeFile = path.resolve(__dirname, '../src/ng5-slider/README.md');
-
-  const mainReadme = fs.readFileSync(mainReadmeFile, { encoding: 'utf8'});
-  fs.writeFileSync(libReadmeFile, mainReadme, {encoding: 'utf8'});
-}
-
 /** Convert public_api.json to public_api.ts */
 function generatePublicApiTs() {
   const configFile = path.resolve(__dirname, '../src/ng5-slider/lib/public_api.json');
@@ -71,4 +64,6 @@ function generatePublicApiTs() {
 
 generatePackageJson();
 generatePublicApiTs();
-copyReadmeMd();
+
+const mainReadmeFile = path.resolve(__dirname, '../README.md');
+utils.copyReadmeMd(mainReadmeFile);
