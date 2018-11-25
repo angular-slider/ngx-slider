@@ -18,4 +18,4 @@ The syntax for specifying the custom template is the following:
 </ng5-slider>
 ```
 
-For more concrete examples, please refer to tooltip samples on [Github pages](https://angular-slider.github.io/ng5-slider/demos#ticks-custom-tooltips-slider).
+For more concrete examples, please refer to tooltip samples on [official site](https://angular-slider.github.io/ng5-slider/demos#ticks-custom-tooltips-slider).

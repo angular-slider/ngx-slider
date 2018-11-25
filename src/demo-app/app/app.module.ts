@@ -6,10 +6,11 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { Ng5SliderModule } from '@local/ng5-slider';
 
+import { DocsModule } from './docs/docs.module';
+
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header.component';
 import { HomeComponent } from './home.component';
-import { ApiComponent } from './api.component';
 import { DemosComponent } from './demos.component';
 import {
   SimpleSliderComponent,
@@ -65,7 +66,6 @@ import { routerConfig } from './app-router.config';
     HeaderComponent,
     HomeComponent,
     DemosComponent,
-    ApiComponent,
     SimpleSliderComponent,
     RangeSliderComponent,
     StyledSliderComponent,
@@ -115,6 +115,7 @@ import { routerConfig } from './app-router.config';
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
+    DocsModule,
     RouterModule.forRoot(routerConfig),
     NgbModule.forRoot(),
     Ng5SliderModule

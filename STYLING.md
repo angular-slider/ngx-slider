@@ -115,4 +115,4 @@ Note that the above code is an example of a global stylesheet, applied across yo
 }
 ```
 
-For a complete example, see the slider with custom style demo on [github pages](https://angular-slider.github.io/ng5-slider/demos#styled-slider).
+For a complete example, see the slider with custom style demo on [official site](https://angular-slider.github.io/ng5-slider/demos#styled-slider).
