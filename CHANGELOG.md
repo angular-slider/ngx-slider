@@ -1,3 +1,9 @@
+# 1.1.7
+ * add support for Angular reactive forms (issue #24)
+ * fix Angular peer dependency (issue #39)
+ * add CSS styling guide
+ * embed API documentation in demo app
+
 # 1.1.6
  * fix event handling when clicking on tick value (issue #36)
  * fix warnings about event listener violation (issue #22)
