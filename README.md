@@ -78,7 +78,7 @@ And in template file `app.component.html`:
 ```
 
 ## Documentation
-Full API documentation is available on [official website](https://github.com/angular-slider/ng5-slider/docs).
+Full API documentation is available on [official website](https://angular-slider.github.io/ng5-slider/docs).
 
 ## Styling
 
