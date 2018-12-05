@@ -57,6 +57,7 @@ import {
   TicksValuesSliderComponent,
   ReactiveFormSimpleSliderComponent,
   ReactiveFormRangeSliderComponent,
+  DynamicOptionsSliderComponent,
 } from './snippets';
 import { routerConfig } from './app-router.config';
 
@@ -110,6 +111,7 @@ import { routerConfig } from './app-router.config';
     TicksValuesSliderComponent,
     ReactiveFormSimpleSliderComponent,
     ReactiveFormRangeSliderComponent,
+    DynamicOptionsSliderComponent,
   ],
   imports: [
     BrowserModule,

@@ -43,3 +43,4 @@ export * from './manual-refresh-slider/manual-refresh-slider.component';
 export * from './ticks-values-slider/ticks-values-slider.component';
 export * from './reactive-form-simple-slider/reactive-form-simple-slider.component';
 export * from './reactive-form-range-slider/reactive-form-range-slider.component';
+export * from './dynamic-options-slider/dynamic-options-slider.component';

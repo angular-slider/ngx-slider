@@ -40,6 +40,16 @@ Instead of binding to `value` and `highValue`, it is also possible to bind the v
 
 `options` is an object of options that configure the slider (e.g. minimum, maximum values, legend values, etc.). Available options are documented in [Options class](routerLink:///docs/classes/_options_.options.html).
 
+**Note**: Due to the way change detection works in Angular, runtime changes in nested values of options object will not be picked up automatically. To work around this, you need to re-create the options object every time you make a change:
+```ts
+changeOptions() {
+  const newOptions: Options = Object.assign({}, currentOptions);
+  newOptions.ceil = 100;
+  currentOptions = newOptions;
+}
+```
+For a complete example, see the [dynamic options slider demo](routerLink:///demos#dynamic-options-slider).
+
 ### Manual refresh
 
 `manualRefresh` input is provided to solve some cases where the slider is not being updated after CSS style changes. This is for example changing the `display` property to show/hide the slider (or any parent DOM element). Instead of observing the CSS changes, the slider provides this input to manually trigger a refresh. Refer to the [example demo](routerLink:///demos#manual-refresh-slider) to see how it can be used.
