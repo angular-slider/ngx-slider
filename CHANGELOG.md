@@ -1,3 +1,8 @@
+# 1.1.8
+ * fix broken link in README (PR #44)
+ * add documentation for changing options object dynamically
+ * adjust layout of API documentation page on mobile
+
 # 1.1.7
  * add support for Angular reactive forms (issue #24)
  * fix Angular peer dependency (issue #39)
