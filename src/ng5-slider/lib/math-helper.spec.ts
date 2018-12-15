@@ -17,4 +17,18 @@ describe('MathHelper', () => {
       expect(MathHelper.roundToPrecisionLimit(0.3 - 0.2, 12)).toEqual(0.1); // that's better
     });
   });
+
+  describe('clampToRange', () => {
+    it('returns original value if in range', () => {
+      expect(MathHelper.clampToRange(40, 0, 100)).toEqual(40);
+    });
+
+    it('returns floor if value is below floor', () => {
+      expect(MathHelper.clampToRange(-10, 0, 100)).toEqual(0);
+    });
+
+    it('returns ceil if value is above ceil', () => {
+      expect(MathHelper.clampToRange(110, 0, 100)).toEqual(100);
+    });
+  });
 });

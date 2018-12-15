@@ -588,6 +588,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnDestroy, Contro
 
   // Reflow the slider when the low handle changes (called with throttle)
   private onLowHandleChange(): void {
+    this.normaliseLowValue();
     this.syncLowValue();
     if (this.range) {
       this.syncHighValue();
@@ -604,6 +605,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnDestroy, Contro
 
   // Reflow the slider when the high handle changes (called with throttle)
   private onHighHandleChange(): void {
+    this.normaliseHighValue();
     this.syncLowValue();
     this.syncHighValue();
     this.setMinAndMax();
@@ -612,6 +614,34 @@ export class SliderComponent implements OnInit, AfterViewInit, OnDestroy, Contro
     this.updateTicksScale();
     this.updateCmbLabel();
     this.updateAriaAttributes();
+  }
+
+  // Make sure the low value is in allowed range
+  private normaliseLowValue(): void {
+    const normalisedValue: number = MathHelper.clampToRange(this.value, this.viewOptions.floor, this.viewOptions.ceil);
+    if (this.value !== normalisedValue) {
+      // Apply new value as internal change
+      this.internalChange = true;
+      this.value = normalisedValue;
+      this.internalChange = false;
+
+      // Push the value out, too
+      setTimeout(() => this.applyModel(false));
+    }
+  }
+
+  // Make sure high value is in allowed range
+  private normaliseHighValue(): void {
+    const normalisedHighValue: number = MathHelper.clampToRange(this.highValue, this.viewOptions.floor, this.viewOptions.ceil);
+    if (this.highValue !== normalisedHighValue) {
+      // Apply new value as internal change
+      this.internalChange = true;
+      this.highValue = normalisedHighValue;
+      this.internalChange = false;
+
+      // Push the value out, too
+      setTimeout(() => this.applyModel(false));
+    }
   }
 
   // Read the user options and apply them to the slider model
