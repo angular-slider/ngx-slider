@@ -1,3 +1,6 @@
+# 1.1.9
+ * make sure model values are always in allowed range (issue #48)
+
 # 1.1.8
  * fix broken link in README (PR #44)
  * add documentation for changing options object dynamically
