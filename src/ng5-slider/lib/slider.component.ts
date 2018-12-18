@@ -192,7 +192,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnDestroy, Contro
   private _value: number;
   @Input() set value(newValue: number) {
     const oldValue: number = this._value;
-    this._value = newValue;
+    this._value = +newValue;
     this.onChangeValue(oldValue, newValue);
   }
   get value(): number {
@@ -205,7 +205,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnDestroy, Contro
   private _highValue: number;
   @Input() set highValue(newHighValue: number) {
     const oldHighValue: number = this._highValue;
-    this._highValue = newHighValue;
+    this._highValue = +newHighValue;
     this.onChangeHighValue(oldHighValue, newHighValue);
   }
   get highValue(): number {
