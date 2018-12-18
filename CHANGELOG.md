@@ -1,3 +1,7 @@
+* 1.1.10
+ * always convert input values to numbers
+ * make sure range invariant is always satisfied (issue #48 follow-up)
+
 # 1.1.9
  * make sure model values are always in allowed range (issue #48)
 
