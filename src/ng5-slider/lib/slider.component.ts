@@ -589,6 +589,9 @@ export class SliderComponent implements OnInit, AfterViewInit, OnDestroy, Contro
   // Reflow the slider when the low handle changes (called with throttle)
   private onLowHandleChange(): void {
     this.normaliseLowValue();
+    if (this.range) {
+      this.normaliseRange(PointerType.Min);
+    }
     this.syncLowValue();
     if (this.range) {
       this.syncHighValue();
@@ -606,6 +609,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnDestroy, Contro
   // Reflow the slider when the high handle changes (called with throttle)
   private onHighHandleChange(): void {
     this.normaliseHighValue();
+    this.normaliseRange(PointerType.Max);
     this.syncLowValue();
     this.syncHighValue();
     this.setMinAndMax();
@@ -641,6 +645,44 @@ export class SliderComponent implements OnInit, AfterViewInit, OnDestroy, Contro
 
       // Push the value out, too
       setTimeout(() => this.applyModel(false));
+    }
+  }
+
+  // Make sure that range slider invariant (value <= highValue) is always satisfied
+  private normaliseRange(changedPointer: PointerType): void {
+    if (this.range && this.value > this.highValue) {
+      // Depending on noSwitching, either swap values, or make them the same
+      if (this.viewOptions.noSwitching) {
+        // Apply new value as internal change
+        this.internalChange = true;
+        if (changedPointer === PointerType.Max) {
+          this.highValue = this.value;
+        } else if (changedPointer === PointerType.Min) {
+          this.value = this.highValue;
+        }
+        this.internalChange = false;
+
+        // Push the values out, too
+        setTimeout(() => this.applyModel(false));
+      } else {
+        // Apply new value as internal change
+        this.internalChange = true;
+        const tempValue: number = this.value;
+        this.value = this.highValue;
+        this.highValue = tempValue;
+        this.internalChange = false;
+
+        // Since we are changing both pointers at the same time, we need to invoke
+        // the change callback for the other pointer, too.
+        if (changedPointer === PointerType.Max) {
+          setTimeout(() => this.thrOnLowHandleChange.call());
+        } else if (changedPointer === PointerType.Min) {
+          setTimeout(() => this.thrOnHighHandleChange.call());
+        }
+
+        // Push the values out, too
+        setTimeout(() => this.applyModel(false));
+      }
     }
   }
 
