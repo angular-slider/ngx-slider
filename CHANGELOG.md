@@ -1,3 +1,6 @@
+* 1.1.11
+ * don't normalise values when stepsArray option is used (issue #52)
+
 * 1.1.10
  * always convert input values to numbers
  * make sure range invariant is always satisfied (issue #48 follow-up)
