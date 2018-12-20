@@ -622,6 +622,10 @@ export class SliderComponent implements OnInit, AfterViewInit, OnDestroy, Contro
 
   // Make sure the low value is in allowed range
   private normaliseLowValue(): void {
+    if (this.viewOptions.stepsArray) {
+      return;
+    }
+
     const normalisedValue: number = MathHelper.clampToRange(this.value, this.viewOptions.floor, this.viewOptions.ceil);
     if (this.value !== normalisedValue) {
       // Apply new value as internal change
@@ -636,6 +640,10 @@ export class SliderComponent implements OnInit, AfterViewInit, OnDestroy, Contro
 
   // Make sure high value is in allowed range
   private normaliseHighValue(): void {
+    if (this.viewOptions.stepsArray) {
+      return;
+    }
+
     const normalisedHighValue: number = MathHelper.clampToRange(this.highValue, this.viewOptions.floor, this.viewOptions.ceil);
     if (this.highValue !== normalisedHighValue) {
       // Apply new value as internal change
@@ -650,6 +658,10 @@ export class SliderComponent implements OnInit, AfterViewInit, OnDestroy, Contro
 
   // Make sure that range slider invariant (value <= highValue) is always satisfied
   private normaliseRange(changedPointer: PointerType): void {
+    if (this.viewOptions.stepsArray) {
+      return;
+    }
+
     if (this.range && this.value > this.highValue) {
       // Depending on noSwitching, either swap values, or make them the same
       if (this.viewOptions.noSwitching) {
