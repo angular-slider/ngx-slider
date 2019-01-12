@@ -318,9 +318,6 @@ export class SliderComponent implements OnInit, AfterViewInit, OnDestroy, Contro
   @HostBinding('attr.disabled')
   public sliderElementDisabledAttr: string = null;
 
-  /** Viewport position of the slider element (the host element) */
-  private sliderElementPosition: number = 0;
-
   // Slider type, true means range slider
   get range(): boolean {
     return this.value !== undefined && this.highValue !== undefined;
@@ -920,9 +917,10 @@ export class SliderComponent implements OnInit, AfterViewInit, OnDestroy, Contro
     let recalculateDimension: boolean = false;
     const noLabelInjection: boolean = label.hasClass('no-label-injection');
 
-    if (label.value === undefined ||
-        label.value.length !== value.length ||
-       (label.value.length > 0 && label.dimension === 0)) {
+    if (!label.alwaysHide &&
+        (label.value === undefined ||
+         label.value.length !== value.length ||
+         (label.value.length > 0 && label.dimension === 0))) {
       recalculateDimension = true;
       label.value = value;
     }
@@ -1037,19 +1035,25 @@ export class SliderComponent implements OnInit, AfterViewInit, OnDestroy, Contro
   // Calculate dimensions that are dependent on view port size
   // Run once during initialization and every time view port changes size.
   private calcViewDimensions(): void {
-    this.calculateElementDimension(this.minHElem);
+    if (this.viewOptions.handleDimension) {
+      this.minHElem.dimension = this.viewOptions.handleDimension;
+    } else {
+      this.calculateElementDimension(this.minHElem);
+    }
 
     const handleWidth: number = this.minHElem.dimension;
 
     this.handleHalfDim = handleWidth / 2;
-    this.calculateElementDimension(this.fullBarElem);
+
+    if (this.viewOptions.barDimension) {
+      this.fullBarElem.dimension = this.viewOptions.barDimension;
+    } else {
+      this.calculateElementDimension(this.fullBarElem);
+    }
+
     this.barDimension = this.fullBarElem.dimension;
 
     this.maxPos = this.barDimension - handleWidth;
-
-    const sliderElementBoundingRect: ClientRect = this.elementRef.nativeElement.getBoundingClientRect();
-    this.sliderElementPosition = this.viewOptions.vertical ?
-      sliderElementBoundingRect.bottom : sliderElementBoundingRect.left;
 
     if (this.initHasRun) {
       this.updateFloorLab();
@@ -1157,22 +1161,28 @@ export class SliderComponent implements OnInit, AfterViewInit, OnDestroy, Contro
 
   // Update position of the floor label
   private updateFloorLab(): void {
-    this.setLabelValue(this.getDisplayValue(this.minValue, LabelType.Floor), this.flrLabElem);
-    this.calculateElementDimension(this.flrLabElem);
-    const position: number = this.viewOptions.rightToLeft
-      ? this.barDimension - this.flrLabElem.dimension
-      : 0;
-    this.setPosition(this.flrLabElem, position);
+    if (!this.flrLabElem.alwaysHide) {
+      this.setLabelValue(this.getDisplayValue(this.minValue, LabelType.Floor), this.flrLabElem);
+      let position: number = 0;
+      if (this.viewOptions.rightToLeft) {
+        this.calculateElementDimension(this.flrLabElem);
+        position = this.barDimension - this.flrLabElem.dimension;
+      }
+      this.setPosition(this.flrLabElem, position);
+    }
   }
 
   // Update position of the ceiling label
   private updateCeilLab(): void {
-    this.setLabelValue(this.getDisplayValue(this.maxValue, LabelType.Ceil), this.ceilLabElem);
-    this.calculateElementDimension(this.ceilLabElem);
-    const position: number = this.viewOptions.rightToLeft
-      ? 0
-      : this.barDimension - this.ceilLabElem.dimension;
-    this.setPosition(this.ceilLabElem, position);
+    if (!this.ceilLabElem.alwaysHide) {
+      this.setLabelValue(this.getDisplayValue(this.maxValue, LabelType.Ceil), this.ceilLabElem);
+      let position: number = 0;
+      if (!this.viewOptions.rightToLeft) {
+        this.calculateElementDimension(this.ceilLabElem);
+        position = this.barDimension - this.ceilLabElem.dimension;
+      }
+      this.setPosition(this.ceilLabElem, position);
+    }
   }
 
   // Update slider handles and label positions
@@ -1625,7 +1635,10 @@ export class SliderComponent implements OnInit, AfterViewInit, OnDestroy, Contro
 
   // Compute the event position depending on whether the slider is horizontal or vertical
   private getEventPosition(event: MouseEvent|TouchEvent, targetTouchId?: number): number {
-    const sliderPos: number = this.sliderElementPosition;
+    const sliderElementBoundingRect: ClientRect = this.elementRef.nativeElement.getBoundingClientRect();
+
+    const sliderPos: number = this.viewOptions.vertical ?
+      sliderElementBoundingRect.bottom : sliderElementBoundingRect.left;
     let eventPos: number = 0;
     if (this.viewOptions.vertical) {
       eventPos = -this.getEventXY(event, targetTouchId) + sliderPos;
