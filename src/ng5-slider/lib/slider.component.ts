@@ -4,6 +4,7 @@ import {
   Directive,
   ViewChild,
   AfterViewInit,
+  OnChanges,
   OnDestroy,
   HostBinding,
   HostListener,
@@ -15,6 +16,7 @@ import {
   ContentChild,
   TemplateRef,
   ChangeDetectorRef,
+  SimpleChanges,
   forwardRef
 } from '@angular/core';
 
@@ -187,13 +189,11 @@ const NG5_SLIDER_CONTROL_VALUE_ACCESSOR: any = {
   host: { class: 'ng5-slider' },
   providers: [NG5_SLIDER_CONTROL_VALUE_ACCESSOR]
 })
-export class SliderComponent implements OnInit, AfterViewInit, OnDestroy, ControlValueAccessor {
+export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDestroy, ControlValueAccessor {
   // Model for low value slider. If only value is provided single slider will be rendered.
   private _value: number;
   @Input() set value(newValue: number) {
-    const oldValue: number = this._value;
     this._value = +newValue;
-    this.onChangeValue(oldValue, newValue);
   }
   get value(): number {
      return this._value;
@@ -204,9 +204,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnDestroy, Contro
   // Model for high value slider. Providing both value and highValue will render range slider.
   private _highValue: number;
   @Input() set highValue(newHighValue: number) {
-    const oldHighValue: number = this._highValue;
     this._highValue = +newHighValue;
-    this.onChangeHighValue(oldHighValue, newHighValue);
   }
   get highValue(): number {
      return this._highValue;
@@ -227,9 +225,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnDestroy, Contro
   // Each option can be updated at runtime and the slider will automatically be re-rendered.
   private _options: Options = new Options();
   @Input() set options(newOptions: Options) {
-    const oldOptions: Options = this._options;
     this._options = newOptions;
-    this.onChangeOptions(oldOptions, newOptions);
   }
   get options(): Options {
      return this._options;
@@ -435,6 +431,22 @@ export class SliderComponent implements OnInit, AfterViewInit, OnDestroy, Contro
 
     // Run change detection manually to resolve some issues when init procedure changes values used in the view
     this.changeDetectionRef.detectChanges();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    // Always apply options first
+    if (changes.options) {
+      this.onChangeOptions(changes.options.previousValue, changes.options.currentValue);
+    }
+
+    // Then value changes
+    if (changes.value) {
+      this.onChangeValue(changes.value.previousValue, changes.value.currentValue);
+    }
+
+    if (changes.highValue) {
+      this.onChangeHighValue(changes.highValue.previousValue, changes.highValue.currentValue);
+    }
   }
 
   onChangeOptions(oldValue: Options, newValue: Options): void {
