@@ -1163,11 +1163,10 @@ export class SliderComponent implements OnInit, AfterViewInit, OnDestroy, Contro
   private updateFloorLab(): void {
     if (!this.flrLabElem.alwaysHide) {
       this.setLabelValue(this.getDisplayValue(this.minValue, LabelType.Floor), this.flrLabElem);
-      let position: number = 0;
-      if (this.viewOptions.rightToLeft) {
-        this.calculateElementDimension(this.flrLabElem);
-        position = this.barDimension - this.flrLabElem.dimension;
-      }
+      this.calculateElementDimension(this.flrLabElem);
+      const position: number = this.viewOptions.rightToLeft
+        ? this.barDimension - this.flrLabElem.dimension
+        : 0;
       this.setPosition(this.flrLabElem, position);
     }
   }
@@ -1176,11 +1175,10 @@ export class SliderComponent implements OnInit, AfterViewInit, OnDestroy, Contro
   private updateCeilLab(): void {
     if (!this.ceilLabElem.alwaysHide) {
       this.setLabelValue(this.getDisplayValue(this.maxValue, LabelType.Ceil), this.ceilLabElem);
-      let position: number = 0;
-      if (!this.viewOptions.rightToLeft) {
-        this.calculateElementDimension(this.ceilLabElem);
-        position = this.barDimension - this.ceilLabElem.dimension;
-      }
+      this.calculateElementDimension(this.ceilLabElem);
+      const position: number = this.viewOptions.rightToLeft
+        ? 0
+        : this.barDimension - this.ceilLabElem.dimension;
       this.setPosition(this.ceilLabElem, position);
     }
   }
