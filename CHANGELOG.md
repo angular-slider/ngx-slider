@@ -1,3 +1,8 @@
+* 1.1.12
+ * fix regression caused by applying model value and options changes in the wrong order when both change at the same time (issue #56)
+ * allow dynamic HTML in ticks legend (issue #49)
+ * improve rendering performance of simple sliders (PR #59)
+
 * 1.1.11
  * don't normalise values when stepsArray option is used (issue #52)
 
