@@ -12,7 +12,7 @@ export class CustomLegendFunctionSliderComponent {
     ceil: 10,
     showTicks: true,
     getLegend: (value: number): string => {
-      return 'T' + value;
+      return '<b>T</b>' + value;
     }
   };
 }
