@@ -496,10 +496,25 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   // ControlValueAccessor interface
   writeValue(obj: any): void {
     if (obj instanceof Array) {
+
+      const oldLowValue: number = this.value;
+      const oldHighValue: number = this.highValue;
+
       this.value = obj[0];
       this.highValue = obj[1];
+
+      this.onChangeValue(oldLowValue, obj[0]);
+      this.onChangeHighValue(oldHighValue, obj[1]);
+
     } else {
-      this.value = obj;
+      const oldVal: number = this.value;
+      const newVal: any = obj;
+      if (oldVal) {
+        this.value = obj;
+        this.onChangeValue(oldVal, newVal);
+      } else {
+        this.value = obj;
+      }
     }
   }
 
