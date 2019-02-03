@@ -1,11 +1,14 @@
 import { Routes } from '@angular/router';
-import { HomeComponent } from './home.component';
+
 import { DemosComponent } from './demos.component';
+import { HomeComponent } from './home.component';
 import {
-  SimpleSliderComponent,
-  RangeSliderComponent,
+  DraggableRangeSliderComponent,
   PushRangeSliderComponent,
-  DraggableRangeSliderComponent
+  RangeSliderComponent,
+  ReactiveFormRangeSliderComponent,
+  ReactiveFormSimpleSliderComponent,
+  SimpleSliderComponent,
 } from './snippets';
 
 export let routerConfig: Routes = [
@@ -13,9 +16,14 @@ export let routerConfig: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'demos', component: DemosComponent },
   { path: 'api', redirectTo: 'docs' },
-  { path: 'simple-slider', component: SimpleSliderComponent },
-  { path: 'range-slider', component: RangeSliderComponent },
+
+  // pages for e2e testing
   { path: 'draggable-range-slider', component: DraggableRangeSliderComponent },
   { path: 'push-range-slider', component: PushRangeSliderComponent },
+  { path: 'range-slider', component: RangeSliderComponent },
+  { path: 'reactive-form-range-slider', component: ReactiveFormRangeSliderComponent },
+  { path: 'reactive-form-simple-slider', component: ReactiveFormSimpleSliderComponent },
+  { path: 'simple-slider', component: SimpleSliderComponent },
+
   { path: '**', pathMatch: 'full', redirectTo: ''}
 ];

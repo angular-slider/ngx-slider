@@ -15,4 +15,8 @@ export class ReactiveFormRangeSliderComponent {
     ceil: 100,
     step: 5
   };
+
+  resetForm(): void {
+    this.sliderForm.reset({sliderControl: [20, 80]});
+  }
 }

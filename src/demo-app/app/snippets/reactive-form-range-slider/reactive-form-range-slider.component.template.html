@@ -1,5 +1,6 @@
 <form [formGroup]="sliderForm">
   <p>Low value: {{ sliderForm.value.sliderControl[0] }}</p>
   <p>High value: {{ sliderForm.value.sliderControl[1] }}</p>
+  <p><button (click)="resetForm()">Reset</button></p>
   <ng5-slider [options]="options" formControlName="sliderControl"></ng5-slider>
 </form>

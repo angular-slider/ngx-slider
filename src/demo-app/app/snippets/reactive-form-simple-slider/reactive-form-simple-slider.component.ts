@@ -13,4 +13,8 @@ export class ReactiveFormSimpleSliderComponent {
     floor: 0,
     ceil: 250
   };
+
+  resetForm(): void {
+    this.sliderControl.reset(100);
+  }
 }
