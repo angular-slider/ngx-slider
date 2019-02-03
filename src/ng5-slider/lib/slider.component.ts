@@ -356,9 +356,6 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   // Used to call onStart on the first keydown event
   private firstKeyDown: boolean = false;
 
-  // Internal flag to prevent watchers to be called when the sliders value are modified internally.
-  private internalChange: boolean = false;
-
   // Internal flag to keep track of the visibility of combo label
   private cmbLabelShown: boolean = false;
 
@@ -460,7 +457,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
 
   onChangeValue(oldValue: number, newValue: number): void {
-    if (!this.initHasRun || this.internalChange || newValue === oldValue) {
+    if (!this.initHasRun || newValue === oldValue) {
       return;
     }
 
@@ -468,7 +465,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
 
   onChangeHighValue(oldValue: number, newValue: number): void {
-    if (!this.initHasRun || this.internalChange || newValue === oldValue) {
+    if (!this.initHasRun || newValue === oldValue) {
       return;
     }
     if (newValue != null) {
@@ -577,8 +574,6 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
 
   private applyLowValue(): void {
-    this.internalChange = true;
-
     if (this.viewOptions.stepsArray) {
       if (!this.viewOptions.bindIndexForStepsArray) {
         this.value = this.getStepValue(this.viewLowValue);
@@ -588,13 +583,9 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     } else {
       this.value = this.viewLowValue;
     }
-
-    this.internalChange = false;
   }
 
   private applyHighValue(): void {
-    this.internalChange = true;
-
     if (this.viewOptions.stepsArray) {
       if (!this.viewOptions.bindIndexForStepsArray) {
         this.highValue = this.getStepValue(this.viewHighValue);
@@ -604,8 +595,6 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     } else {
       this.highValue = this.viewHighValue;
     }
-
-    this.internalChange = false;
   }
 
   // Reflow the slider when the low handle changes (called with throttle)
@@ -650,10 +639,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
     const normalisedValue: number = MathHelper.clampToRange(this.value, this.viewOptions.floor, this.viewOptions.ceil);
     if (this.value !== normalisedValue) {
-      // Apply new value as internal change
-      this.internalChange = true;
       this.value = normalisedValue;
-      this.internalChange = false;
 
       // Push the value out, too
       setTimeout(() => this.applyModel(false));
@@ -668,10 +654,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
     const normalisedHighValue: number = MathHelper.clampToRange(this.highValue, this.viewOptions.floor, this.viewOptions.ceil);
     if (this.highValue !== normalisedHighValue) {
-      // Apply new value as internal change
-      this.internalChange = true;
       this.highValue = normalisedHighValue;
-      this.internalChange = false;
 
       // Push the value out, too
       setTimeout(() => this.applyModel(false));
@@ -687,24 +670,18 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     if (this.range && this.value > this.highValue) {
       // Depending on noSwitching, either swap values, or make them the same
       if (this.viewOptions.noSwitching) {
-        // Apply new value as internal change
-        this.internalChange = true;
         if (changedPointer === PointerType.Max) {
           this.highValue = this.value;
         } else if (changedPointer === PointerType.Min) {
           this.value = this.highValue;
         }
-        this.internalChange = false;
 
         // Push the values out, too
         setTimeout(() => this.applyModel(false));
       } else {
-        // Apply new value as internal change
-        this.internalChange = true;
         const tempValue: number = this.value;
         this.value = this.highValue;
         this.highValue = tempValue;
-        this.internalChange = false;
 
         // Since we are changing both pointers at the same time, we need to invoke
         // the change callback for the other pointer, too.
@@ -2316,8 +2293,6 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
 
   private applyModel(callUserChange: boolean): void {
-    this.internalChange = true;
-
     this.valueChange.emit(this.value);
     this.highValueChange.emit(this.highValue);
     if (callUserChange) {
@@ -2338,8 +2313,6 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
         this.onTouchedCallback(this.value);
       }
     }
-
-    this.internalChange = false;
   }
 
   private getChangeContext(): ChangeContext {
