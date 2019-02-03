@@ -1,8 +1,8 @@
 import { by, element, ElementFinder } from 'protractor';
 
-import { SimpleSliderDemoPage } from '../simple-slider-demo.po';
+import { BaseSimpleSliderDemoPage } from '../base-simple-slider-demo.po';
 
-export class ReactiveFormSimpleSliderDemoPage extends SimpleSliderDemoPage {
+export class ReactiveFormSimpleSliderDemoPage extends BaseSimpleSliderDemoPage {
   getValueTextElement(): ElementFinder {
     return element(by.css('p:nth-child(1)'));
   }

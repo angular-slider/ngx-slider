@@ -1,6 +1,6 @@
-import { RangeSliderDemoPage } from '../range-slider-demo.po';
+import { RangeSliderDemoPage } from './range-slider-demo.po';
 import { approximateGeometryMatchers } from '../utils';
-import { Key } from 'protractor';
+import { Key, browser } from 'protractor';
 
 describe('range slider', () => {
   let page: RangeSliderDemoPage;
@@ -14,10 +14,15 @@ describe('range slider', () => {
 
   describe('initial state', () => {
     it('should display starting values in labels', () => {
-      expect(page.getSliderFloorLabel().getText()).toEqual('0');
-      expect(page.getSliderCeilLabel().getText()).toEqual('100');
-      expect(page.getSliderLowPointerLabel().getText()).toEqual('20');
-      expect(page.getSliderHighPointerLabel().getText()).toEqual('80');
+      expect(page.getSliderFloorLabel().getText()).toBe('0');
+      expect(page.getSliderCeilLabel().getText()).toBe('100');
+      expect(page.getSliderLowPointerLabel().getText()).toBe('20');
+      expect(page.getSliderHighPointerLabel().getText()).toBe('80');
+    });
+
+    it('should display starting values in the form inputs', () => {
+      expect(page.getLowValueInput().getAttribute('value')).toBe('20');
+      expect(page.getHighValueInput().getAttribute('value')).toBe('80');
     });
 
     it('should position the slider elements correctly', () => {
@@ -48,7 +53,11 @@ describe('range slider', () => {
       });
 
       it('should update the low pointer label to new value', () => {
-        expect(page.getSliderLowPointerLabel().getText()).toEqual('50');
+        expect(page.getSliderLowPointerLabel().getText()).toBe('50');
+      });
+
+      it('should update low value in the form to new value', () => {
+        expect(page.getLowValueInput().getAttribute('value')).toBe('50');
       });
 
       it('should position the low pointer, the low pointer label and the selection bar correctly', () => {
@@ -67,7 +76,11 @@ describe('range slider', () => {
       });
 
       it('should update the low pointer label to new value', () => {
-        expect(page.getSliderLowPointerLabel().getText()).toEqual('50');
+        expect(page.getSliderLowPointerLabel().getText()).toBe('50');
+      });
+
+      it('should update low value in the form to new value', () => {
+        expect(page.getLowValueInput().getAttribute('value')).toBe('50');
       });
 
       it('should position the low pointer, the low pointer label and the selection bar correctly', () => {
@@ -86,7 +99,11 @@ describe('range slider', () => {
       });
 
       it('should update the high pointer label to new value', () => {
-        expect(page.getSliderHighPointerLabel().getText()).toEqual('50');
+        expect(page.getSliderHighPointerLabel().getText()).toBe('50');
+      });
+
+      it('should update high value in the form to new value', () => {
+        expect(page.getHighValueInput().getAttribute('value')).toBe('50');
       });
 
       it('should position the high pointer, the high pointer label and the selection bar correctly', () => {
@@ -108,6 +125,10 @@ describe('range slider', () => {
         expect(page.getSliderHighPointerLabel().getText()).toEqual('50');
       });
 
+      it('should update high value in the form to new value', () => {
+        expect(page.getHighValueInput().getAttribute('value')).toEqual('50');
+      });
+
       it('should position the high pointer, the high pointer label and the selection bar correctly', () => {
         expect(page.getSliderHighPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 363, y: 21});
 
@@ -122,6 +143,11 @@ describe('range slider', () => {
       beforeEach(() => {
         page.getSliderLowPointer().mouseDragSync(380, 0);
         page.getSliderHighPointer().mouseDragSync(-65, 0);
+      });
+
+      it('should update the high and low value in the form', () => {
+        expect(page.getLowValueInput().getAttribute('value')).toEqual('70');
+        expect(page.getHighValueInput().getAttribute('value')).toEqual('70');
       });
 
       it('should show the combined pointer and label instead of low and high pointers and labels', () => {
@@ -153,6 +179,11 @@ describe('range slider', () => {
         expect(page.getSliderHighPointerLabel().getText()).toBe('90');
       });
 
+      it('should update the high and low value in the form', () => {
+        expect(page.getLowValueInput().getAttribute('value')).toEqual('80');
+        expect(page.getHighValueInput().getAttribute('value')).toEqual('90');
+      });
+
       it('should position the elements correctly', () => {
         expect(page.getSliderLowPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 581, y: 21});
         expect(page.getSliderHighPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 653, y: 21});
@@ -170,6 +201,11 @@ describe('range slider', () => {
       it('should switch the low and high pointers', () => {
         expect(page.getSliderLowPointerLabel().getText()).toBe('10');
         expect(page.getSliderHighPointerLabel().getText()).toBe('20');
+      });
+
+      it('should update the high and low value in the form', () => {
+        expect(page.getLowValueInput().getAttribute('value')).toEqual('10');
+        expect(page.getHighValueInput().getAttribute('value')).toEqual('20');
       });
 
       it('should position the elements correctly', () => {
@@ -192,6 +228,10 @@ describe('range slider', () => {
             expect(page.getSliderLowPointerLabel().getText()).toEqual('25');
           });
 
+          it('should update the low value in the form', () => {
+            expect(page.getLowValueInput().getAttribute('value')).toEqual('25');
+          });
+
           it('should position the elements correctly', () => {
             expect(page.getSliderLowPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 182, y: 21});
             expect(page.getSliderHighPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 581, y: 21});
@@ -208,6 +248,10 @@ describe('range slider', () => {
 
           it('should decrease the value by step', () => {
             expect(page.getSliderLowPointerLabel().getText()).toEqual('15');
+          });
+
+          it('should update the low value in the form', () => {
+            expect(page.getLowValueInput().getAttribute('value')).toEqual('15');
           });
 
           it('should position the elements correctly', () => {
@@ -228,6 +272,10 @@ describe('range slider', () => {
             expect(page.getSliderLowPointerLabel().getText()).toEqual('30');
           });
 
+          it('should update the low value in the form', () => {
+            expect(page.getLowValueInput().getAttribute('value')).toEqual('30');
+          });
+
           it('should position the elements correctly', () => {
             expect(page.getSliderLowPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 218, y: 21});
             expect(page.getSliderHighPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 581, y: 21});
@@ -244,6 +292,10 @@ describe('range slider', () => {
 
           it('should decrease value by larger offset', () => {
             expect(page.getSliderLowPointerLabel().getText()).toEqual('10');
+          });
+
+          it('should update the low value in the form', () => {
+            expect(page.getLowValueInput().getAttribute('value')).toEqual('10');
           });
 
           it('should position the elements correctly', () => {
@@ -263,6 +315,10 @@ describe('range slider', () => {
           it('should set the value to minimum and hide the floor label', () => {
             expect(page.getSliderLowPointerLabel().getText()).toEqual('0');
             expect(page.getSliderFloorLabel().isVisible()).toBe(false);
+          });
+
+          it('should update the low value in the form', () => {
+            expect(page.getLowValueInput().getAttribute('value')).toEqual('0');
           });
 
           it('should position the elements correctly', () => {
@@ -285,6 +341,11 @@ describe('range slider', () => {
             expect(page.getSliderCeilLabel().isVisible()).toBe(false);
           });
 
+          it('should update the low and high value in the form', () => {
+            expect(page.getLowValueInput().getAttribute('value')).toEqual('80');
+            expect(page.getHighValueInput().getAttribute('value')).toEqual('100');
+          });
+
           it('should position the elements correctly', () => {
             expect(page.getSliderLowPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 581, y: 21});
             expect(page.getSliderHighPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 726, y: 21});
@@ -305,6 +366,10 @@ describe('range slider', () => {
             expect(page.getSliderHighPointerLabel().getText()).toEqual('85');
           });
 
+          it('should update the high value in the form', () => {
+            expect(page.getHighValueInput().getAttribute('value')).toEqual('85');
+          });
+
           it('should position the elements correctly', () => {
             expect(page.getSliderLowPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 145, y: 21});
             expect(page.getSliderHighPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 617, y: 21});
@@ -321,6 +386,10 @@ describe('range slider', () => {
 
           it('should decrease the value by step', () => {
             expect(page.getSliderHighPointerLabel().getText()).toEqual('75');
+          });
+
+          it('should update the high value in the form', () => {
+            expect(page.getHighValueInput().getAttribute('value')).toEqual('75');
           });
 
           it('should position the elements correctly', () => {
@@ -341,6 +410,10 @@ describe('range slider', () => {
             expect(page.getSliderHighPointerLabel().getText()).toEqual('90');
           });
 
+          it('should update the high value in the form', () => {
+            expect(page.getHighValueInput().getAttribute('value')).toEqual('90');
+          });
+
           it('should position the elements correctly', () => {
             expect(page.getSliderLowPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 145, y: 21});
             expect(page.getSliderHighPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 653, y: 21});
@@ -357,6 +430,10 @@ describe('range slider', () => {
 
           it('should decrease value by larger offset', () => {
             expect(page.getSliderHighPointerLabel().getText()).toEqual('70');
+          });
+
+          it('should update the high value in the form', () => {
+            expect(page.getHighValueInput().getAttribute('value')).toEqual('70');
           });
 
           it('should position the elements correctly', () => {
@@ -378,6 +455,11 @@ describe('range slider', () => {
             expect(page.getSliderFloorLabel().isVisible()).toBe(false);
           });
 
+          it('should update the low and high value in the form', () => {
+            expect(page.getLowValueInput().getAttribute('value')).toEqual('0');
+            expect(page.getHighValueInput().getAttribute('value')).toEqual('20');
+          });
+
           it('should position the elements correctly', () => {
             expect(page.getSliderLowPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 0, y: 21});
             expect(page.getSliderHighPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 145, y: 21});
@@ -397,6 +479,10 @@ describe('range slider', () => {
             expect(page.getSliderCeilLabel().isVisible()).toBe(false);
           });
 
+          it('should update the high value in the form', () => {
+            expect(page.getHighValueInput().getAttribute('value')).toEqual('100');
+          });
+
           it('should position the elements correctly', () => {
             expect(page.getSliderLowPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 145, y: 21});
             expect(page.getSliderHighPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 726, y: 21});
@@ -405,6 +491,55 @@ describe('range slider', () => {
             expect(page.getSliderSelectionBar().getSize()).toBeApproximateSize({width: 581, height: 32});
           });
         });
+      });
+    });
+
+    describe('after changing low input value in the form', () => {
+      beforeEach(() => {
+        page.getLowValueInput().sendKeys(Key.END, Key.BACK_SPACE, Key.BACK_SPACE, '50');
+      });
+
+      it('should update low value in the form to new value', () => {
+        expect(page.getLowValueInput().getAttribute('value')).toBe('50');
+      });
+
+      it('should update the low pointer label to new value', () => {
+        expect(page.getSliderLowPointerLabel().getText()).toBe('50');
+      });
+
+      it('should position the low pointer, the low pointer label and the selection bar correctly', () => {
+        expect(page.getSliderLowPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 363, y: 21});
+
+        expect(page.getSliderLowPointerLabel().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 367, y: -3});
+
+        expect(page.getSliderSelectionBar().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 379, y: 3});
+        expect(page.getSliderSelectionBar().getSize()).toBeApproximateSize({width: 218, height: 32});
+      });
+    });
+
+    describe('after changing high input value in the form', () => {
+      beforeEach(() => {
+        // Due to normalisation checks, we need to change both inputs
+        page.getLowValueInput().sendKeys(Key.END, Key.BACK_SPACE, Key.BACK_SPACE, '0');
+        page.getHighValueInput().sendKeys(Key.END, Key.BACK_SPACE, Key.BACK_SPACE, Key.BACK_SPACE, '50');
+      });
+
+      it('should update values in the form to new value', () => {
+        expect(page.getLowValueInput().getAttribute('value')).toBe('0');
+        expect(page.getHighValueInput().getAttribute('value')).toBe('50');
+      });
+
+      it('should update the high pointer label to new value', () => {
+        expect(page.getSliderHighPointerLabel().getText()).toEqual('50');
+      });
+
+      it('should position the high pointer, the high pointer label and the selection bar correctly', () => {
+        expect(page.getSliderHighPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 363, y: 21});
+
+        expect(page.getSliderHighPointerLabel().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 367, y: -3});
+
+        expect(page.getSliderSelectionBar().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 16, y: 3});
+        expect(page.getSliderSelectionBar().getSize()).toBeApproximateSize({width: 363, height: 32});
       });
     });
   });

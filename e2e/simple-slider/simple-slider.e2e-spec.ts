@@ -1,4 +1,4 @@
-import { SimpleSliderDemoPage } from '../simple-slider-demo.po';
+import { SimpleSliderDemoPage } from './simple-slider-demo.po';
 import { approximateGeometryMatchers } from '../utils';
 import { Key } from 'protractor';
 
@@ -14,9 +14,9 @@ describe('simple slider', () => {
 
   describe('initial state', () => {
     it('should display starting values in labels', () => {
-      expect(page.getSliderFloorLabel().getText()).toEqual('0');
-      expect(page.getSliderCeilLabel().getText()).toEqual('250');
-      expect(page.getSliderPointerLabel().getText()).toEqual('100');
+      expect(page.getSliderFloorLabel().getText()).toBe('0');
+      expect(page.getSliderCeilLabel().getText()).toBe('250');
+      expect(page.getSliderPointerLabel().getText()).toBe('100');
     });
 
     it('should position the slider elements correctly', () => {
@@ -40,7 +40,11 @@ describe('simple slider', () => {
     });
 
     it('should update the pointer label to new value', () => {
-      expect(page.getSliderPointerLabel().getText()).toEqual('50');
+      expect(page.getSliderPointerLabel().getText()).toBe('50');
+    });
+
+    it('should update input in the form to new value', () => {
+      expect(page.getValueInput().getAttribute('value')).toBe('50');
     });
 
     it('should position the pointer and pointer label correctly', () => {
@@ -56,7 +60,11 @@ describe('simple slider', () => {
     });
 
     it('should update the pointer label to new value', () => {
-      expect(page.getSliderPointerLabel().getText()).toEqual('150');
+      expect(page.getSliderPointerLabel().getText()).toBe('150');
+    });
+
+    it('should update input in the form to new value', () => {
+      expect(page.getValueInput().getAttribute('value')).toBe('150');
     });
 
     it('should position the pointer and pointer label correctly', () => {
@@ -73,7 +81,11 @@ describe('simple slider', () => {
       });
 
       it('should increase the value by step', () => {
-        expect(page.getSliderPointerLabel().getText()).toEqual('101');
+        expect(page.getSliderPointerLabel().getText()).toBe('101');
+      });
+
+      it('should update input in the form to new value', () => {
+        expect(page.getValueInput().getAttribute('value')).toBe('101');
       });
 
       it('should position the pointer and pointer label correctly', () => {
@@ -89,7 +101,11 @@ describe('simple slider', () => {
       });
 
       it('should decrease the value by step', () => {
-        expect(page.getSliderPointerLabel().getText()).toEqual('99');
+        expect(page.getSliderPointerLabel().getText()).toBe('99');
+      });
+
+      it('should update input in the form to new value', () => {
+        expect(page.getValueInput().getAttribute('value')).toBe('99');
       });
 
       it('should position the pointer and pointer label correctly', () => {
@@ -105,7 +121,11 @@ describe('simple slider', () => {
       });
 
       it('should increase value by larger offset', () => {
-        expect(page.getSliderPointerLabel().getText()).toEqual('125');
+        expect(page.getSliderPointerLabel().getText()).toBe('125');
+      });
+
+      it('should update input in the form to new value', () => {
+        expect(page.getValueInput().getAttribute('value')).toBe('125');
       });
 
       it('should position the pointer and pointer label correctly', () => {
@@ -121,7 +141,11 @@ describe('simple slider', () => {
       });
 
       it('should decrease value by larger offset', () => {
-        expect(page.getSliderPointerLabel().getText()).toEqual('75');
+        expect(page.getSliderPointerLabel().getText()).toBe('75');
+      });
+
+      it('should update input in the form to new value', () => {
+        expect(page.getValueInput().getAttribute('value')).toBe('75');
       });
 
       it('should position the pointer and pointer label correctly', () => {
@@ -137,8 +161,12 @@ describe('simple slider', () => {
       });
 
       it('should set the value to minimum and hide the floor label', () => {
-        expect(page.getSliderPointerLabel().getText()).toEqual('0');
+        expect(page.getSliderPointerLabel().getText()).toBe('0');
         expect(page.getSliderFloorLabel().isVisible()).toBe(false);
+      });
+
+      it('should update input in the form to new value', () => {
+        expect(page.getValueInput().getAttribute('value')).toBe('0');
       });
 
       it('should position the pointer and pointer label correctly', () => {
@@ -154,8 +182,12 @@ describe('simple slider', () => {
       });
 
       it('should set the value to maximum and hide the ceil label', () => {
-        expect(page.getSliderPointerLabel().getText()).toEqual('250');
+        expect(page.getSliderPointerLabel().getText()).toBe('250');
         expect(page.getSliderCeilLabel().isVisible()).toBe(false);
+      });
+
+      it('should update input in the form to new value', () => {
+        expect(page.getValueInput().getAttribute('value')).toBe('250');
       });
 
       it('should position the pointer and pointer label correctly', () => {
@@ -163,6 +195,26 @@ describe('simple slider', () => {
 
         expect(page.getSliderPointerLabel().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 725, y: -3});
       });
+    });
+  });
+
+  describe('after changing input value in the form', () => {
+    beforeEach(() => {
+      page.getValueInput().sendKeys(Key.END, Key.BACK_SPACE, Key.BACK_SPACE, Key.BACK_SPACE, '50');
+    });
+
+    it('should update low value in the form to new value', () => {
+      expect(page.getValueInput().getAttribute('value')).toBe('50');
+    });
+
+    it('should update the low pointer label to new value', () => {
+      expect(page.getSliderPointerLabel().getText()).toBe('50');
+    });
+
+    it('should position the low pointer, the low pointer label and the selection bar correctly', () => {
+      expect(page.getSliderPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 145, y: 21});
+
+      expect(page.getSliderPointerLabel().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 149, y: -3});
     });
   });
 });

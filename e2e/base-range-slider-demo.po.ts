@@ -1,7 +1,7 @@
 import { browser, by, element, ElementFinder } from 'protractor';
 import { SliderSubElement } from './utils';
 
-export class RangeSliderDemoPage {
+export class BaseRangeSliderDemoPage {
   navigateTo(demo: string): void {
     browser.get(`/${demo}?testMode=true`);
   }

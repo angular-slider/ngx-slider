@@ -1,13 +1,13 @@
-import { RangeSliderDemoPage } from '../range-slider-demo.po';
+import { BaseRangeSliderDemoPage } from '../base-range-slider-demo.po';
 import { approximateGeometryMatchers } from '../utils';
 
 describe('push range slider', () => {
-  let page: RangeSliderDemoPage;
+  let page: BaseRangeSliderDemoPage;
 
   beforeEach(() => {
     jasmine.addMatchers(approximateGeometryMatchers);
 
-    page = new RangeSliderDemoPage();
+    page = new BaseRangeSliderDemoPage();
     page.navigateTo('push-range-slider');
   });
 

@@ -1,8 +1,8 @@
 import { by, element, ElementFinder } from 'protractor';
 
-import { RangeSliderDemoPage } from '../range-slider-demo.po';
+import { BaseRangeSliderDemoPage } from '../base-range-slider-demo.po';
 
-export class ReactiveFormRangeSliderDemoPage extends RangeSliderDemoPage {
+export class ReactiveFormRangeSliderDemoPage extends BaseRangeSliderDemoPage {
   getLowValueTextElement(): ElementFinder {
     return element(by.css('p:nth-child(1)'));
   }
