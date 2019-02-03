@@ -497,24 +497,22 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   writeValue(obj: any): void {
     if (obj instanceof Array) {
 
-      const oldLowValue: number = this.value;
+      const oldValue: number = this.value;
       const oldHighValue: number = this.highValue;
 
       this.value = obj[0];
       this.highValue = obj[1];
 
-      this.onChangeValue(oldLowValue, obj[0]);
-      this.onChangeHighValue(oldHighValue, obj[1]);
-
+      // We have to manually invoke change handlers since ngOnChanges() will not be called
+      this.onChangeValue(oldValue, this.value);
+      this.onChangeHighValue(oldHighValue, this.highValue);
     } else {
-      const oldVal: number = this.value;
-      const newVal: any = obj;
-      if (oldVal) {
-        this.value = obj;
-        this.onChangeValue(oldVal, newVal);
-      } else {
-        this.value = obj;
-      }
+      const oldValue: number = this.value;
+
+      this.value = obj;
+
+      // We have to manually invoke change handler since ngOnChanges() will not be called
+      this.onChangeValue(oldValue, this.value);
     }
   }
 
