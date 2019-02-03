@@ -1,3 +1,6 @@
+* 1.1.13
+ * fix regression when updating model values through reactive forms (issues #61, #62)
+
 * 1.1.12
  * fix regression caused by applying model value and options changes in the wrong order when both change at the same time (issue #56)
  * allow dynamic HTML in ticks legend (issue #49)
