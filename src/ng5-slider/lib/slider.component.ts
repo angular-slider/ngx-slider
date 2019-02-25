@@ -17,8 +17,12 @@ import {
   TemplateRef,
   ChangeDetectorRef,
   SimpleChanges,
-  forwardRef
+  forwardRef,
+  PLATFORM_ID,
+  Inject
 } from '@angular/core';
+
+import {isPlatformBrowser} from '@angular/common';
 
 import {
   ControlValueAccessor, NG_VALUE_ACCESSOR
@@ -80,13 +84,15 @@ enum HandleLabelType {
 
 // TODO: slowly rewrite to angular
 export class SliderElement extends JqLiteWrapper {
+  isBrowser: boolean;
   position: number = 0;
   value: string; // TODO: this only applies to label elements; it should be moved to the specific directives where it's used
   dimension: number;
   alwaysHide: boolean = false;
 
-  constructor(elemRef: ElementRef, renderer: Renderer2) {
+  constructor(elemRef: ElementRef, renderer: Renderer2, @Inject(PLATFORM_ID) private platformId) {
     super(elemRef, renderer);
+    this.isBrowser = platformId;
   }
 }
 
@@ -1555,6 +1561,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
   // Calculate element's width/height depending on whether slider is horizontal or vertical
   private calculateElementDimension(elem: SliderElement): void {
+//     TODO: if (this.isBrowser){ DO ANY ELEMENT getBoundingClientRect}
     const val: ClientRect = elem.getBoundingClientRect();
     if (this.viewOptions.vertical) {
       elem.dimension = (val.bottom - val.top) * this.viewOptions.scale;
