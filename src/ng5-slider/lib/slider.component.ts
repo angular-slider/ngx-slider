@@ -92,7 +92,7 @@ export class SliderElement extends JqLiteWrapper {
 
   constructor(elemRef: ElementRef, renderer: Renderer2, @Inject(PLATFORM_ID) private platformId) {
     super(elemRef, renderer);
-    this.isBrowser = platformId;
+    this.isBrowser = isPlatformBrowser(platformId);
   }
 }
 
@@ -1561,7 +1561,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
   // Calculate element's width/height depending on whether slider is horizontal or vertical
   private calculateElementDimension(elem: SliderElement): void {
-//     TODO: if (this.isBrowser){ DO ANY ELEMENT getBoundingClientRect}
+//     TODO: if (this.isBrowser){ DO ANY ELEMENT getBoundingClientRect or dom manipulation which are not important for ssr }
     const val: ClientRect = elem.getBoundingClientRect();
     if (this.viewOptions.vertical) {
       elem.dimension = (val.bottom - val.top) * this.viewOptions.scale;
