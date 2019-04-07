@@ -88,6 +88,10 @@ An overview of how to apply your own style to the slider is described in [STYLIN
 
 The slider allows for customising how to implement tooltips. See [TOOLTIPS.md](TOOLTIPS.md) for more information.
 
+## Known Issues
+
+Before reporting a new bug, please look at [KNOWN_ISSUES.md](KNOWN_ISSUES.md) for a list of known problems and their workarounds. New bugs reports for these problems will not be accepted.
+
 ## Bugs
 
 You can report any bugs as [Github issues](https://github.com/angular-slider/ng5-slider/issues).
