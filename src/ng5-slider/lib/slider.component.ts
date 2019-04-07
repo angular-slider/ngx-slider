@@ -655,7 +655,6 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     if (this.range) {
       this.updateCmbLabel();
     }
-    this.publishModelChange(false);
   }
 
   // Reflow the slider when the high handle changes (called with throttle)
@@ -670,7 +669,6 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     this.updateTicksScale();
     this.updateCmbLabel();
     this.updateAriaAttributes();
-    this.publishModelChange(false);
   }
 
   // Make sure the low value is in allowed range
