@@ -380,6 +380,13 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   private onTouchedCallback: (value: any) => void = null;
   private onChangeCallback: (value: any) => void = null;
 
+  // These two arrays act like FIFO queues tracking changes applied to value/highValue as a result of
+  // internal changes so that they can be detected and ignored inside ngOnChanges.
+  // Internal change = change initiated within the slider component (through event handlers)
+  // External change = change initiated by parent component through Angular bindings
+  private internalValueChanges: number[] = [];
+  private internalHighValueChanges: number[] = [];
+
   constructor(private renderer: Renderer2,
     private elementRef: ElementRef,
     private changeDetectionRef: ChangeDetectorRef) { }
@@ -435,11 +442,19 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
     // Then value changes
     if (changes.value) {
-      this.onChangeValue(changes.value.previousValue, changes.value.currentValue);
+      // But ignore changes coming from internal updates
+      const internalValueChange: number = this.internalValueChanges.shift();
+      if (internalValueChange !== undefined && changes.value.currentValue !== internalValueChange) {
+        this.onChangeValue(changes.value.previousValue, changes.value.currentValue);
+      }
     }
 
     if (changes.highValue) {
-      this.onChangeHighValue(changes.highValue.previousValue, changes.highValue.currentValue);
+      // But ignore changes coming from internal updates
+      const internalHighValueChange: number = this.internalHighValueChanges.shift();
+      if (internalHighValueChange !== undefined && changes.highValue.currentValue !== internalHighValueChange) {
+        this.onChangeHighValue(changes.highValue.previousValue, changes.highValue.currentValue);
+      }
     }
   }
 
@@ -574,27 +589,35 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
 
   private applyLowValue(): void {
+    let newValue: number;
     if (this.viewOptions.stepsArray) {
       if (!this.viewOptions.bindIndexForStepsArray) {
-        this.value = this.getStepValue(this.viewLowValue);
+        newValue = this.getStepValue(this.viewLowValue);
       } else {
-        this.value = this.viewLowValue;
+        newValue = this.viewLowValue;
       }
     } else {
-      this.value = this.viewLowValue;
+      newValue = this.viewLowValue;
     }
+
+    this.internalValueChanges.push(newValue);
+    this.value = newValue;
   }
 
   private applyHighValue(): void {
+    let newHighValue: number;
     if (this.viewOptions.stepsArray) {
       if (!this.viewOptions.bindIndexForStepsArray) {
-        this.highValue = this.getStepValue(this.viewHighValue);
+        newHighValue = this.getStepValue(this.viewHighValue);
       } else {
-        this.highValue = this.viewHighValue;
+        newHighValue = this.viewHighValue;
       }
     } else {
-      this.highValue = this.viewHighValue;
+      newHighValue = this.viewHighValue;
     }
+
+    this.internalHighValueChanges.push(newHighValue);
+    this.highValue = newHighValue;
   }
 
   // Reflow the slider when the low handle changes (called with throttle)
