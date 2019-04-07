@@ -41,31 +41,40 @@ export interface CustomStepDefinition {
 
 /** Slider options */
 export class Options {
-  /** Minimum value for a slider. */
+  /** Minimum value for a slider.
+    Not applicable when using stepsArray. */
   floor?: number = 0;
 
-  /** Maximum value for a slider (defaults to value model). */
+  /** Maximum value for a slider (defaults to value model).
+    Not applicable when using stepsArray. */
   ceil?: number = null;
 
-  /** Step between each value. */
+  /** Step between each value.
+    Not applicable when using stepsArray. */
   step?: number = 1;
 
-  /** The minimum range authorized on the slider. Applies to range slider only. */
+  /** The minimum range authorized on the slider.
+    Applies to range slider only.
+    When using stepsArray, expressed as index into stepsArray. */
   minRange?: number = null;
 
-  /** The maximum range authorized on the slider. Applies to range slider only. */
+  /** The maximum range authorized on the slider.
+    Applies to range slider only.
+    When using stepsArray, expressed as index into stepsArray. */
   maxRange?: number = null;
 
   /** Set to true to have a push behavior. When the min handle goes above the max,
     the max is moved as well (and vice-versa). The range between min and max is
-    defined by the step option (defaults to 1) and can also be override by
+    defined by the step option (defaults to 1) and can also be overriden by
     the minRange option. Applies to range slider only. */
   pushRange?: boolean = false;
 
-  /** The minimum value authorized on the slider. */
+  /** The minimum value authorized on the slider.
+    When using stepsArray, expressed as index into stepsArray. */
   minLimit?: number = null;
 
-  /** The maximum value authorized on the slider. */
+  /** The maximum value authorized on the slider.
+    When using stepsArray, expressed as index into stepsArray. */
   maxLimit?: number = null;
 
   /** Custom translate function. Use this if you want to translate values displayed
@@ -113,7 +122,8 @@ export class Options {
   /** Set to true to always show the selection bar after the slider handle. */
   showSelectionBarEnd?: boolean = false;
 
-  /**  Set a number to draw the selection bar between this value and the slider handle. */
+  /**  Set a number to draw the selection bar between this value and the slider handle.
+    When using stepsArray, expressed as index into stepsArray. */
   showSelectionBarFromValue?: number = null;
 
   /**  Only for range slider. Set to true to visualize in different colour the areas
@@ -149,7 +159,7 @@ export class Options {
   showTicksValues?: boolean = false;
 
   /* The step between each tick to display. If not set, the step value is used.
-    Only applies when Not used when ticksArray is specified. */
+    Not used when ticksArray is specified. */
   tickStep?: number = null;
 
   /* The step between displaying each tick step value. */
@@ -243,11 +253,13 @@ export class Options {
   logScale?: boolean = false;
 
   /** Function that returns the position on the slider for a given value.
-    The position must be a percentage between 0 and 1. */
+    The position must be a percentage between 0 and 1.
+    The function should be monotonically increasing or decreasing; otherwise the slider may behave incorrectly. */
   customValueToPosition?: ValueToPositionFunction = null;
 
   /** Function that returns the value for a given position on the slider.
-    The position is a percentage between 0 and 1. */
+    The position is a percentage between 0 and 1.
+    The function should be monotonically increasing or decreasing; otherwise the slider may behave incorrectly. */
   customPositionToValue?: PositionToValueFunction = null;
 
   /** Precision limit for calculated values.
