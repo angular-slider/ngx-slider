@@ -221,11 +221,6 @@ export class Options {
     and can be between two steps. */
   enforceStep?: boolean = true;
 
-  /** Set to true to round the value model and valueHigh model to the slider range even when modified
-    from outside the slider. When set to false, if the model values are modified from outside the slider,
-    they are not rounded but they are still rendered properly on the slider. */
-  enforceRange?: boolean = false;
-
   /** Set to true to prevent to user from switching the min and max handles. Applies to range slider only. */
   noSwitching?: boolean = false;
 

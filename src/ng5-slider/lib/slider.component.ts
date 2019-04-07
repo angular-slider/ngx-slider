@@ -982,13 +982,6 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       this.maxValue = this.viewOptions.ceil = this.range ? this.viewHighValue : this.viewLowValue;
     }
 
-    if (this.viewOptions.enforceRange) {
-      this.viewLowValue = this.sanitizeValue(this.viewLowValue);
-      if (this.range) {
-        this.viewHighValue = this.sanitizeValue(this.viewHighValue);
-      }
-    }
-
     this.applyLowValue();
     if (this.range) {
       this.applyHighValue();
