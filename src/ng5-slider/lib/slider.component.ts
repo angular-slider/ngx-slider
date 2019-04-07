@@ -2230,32 +2230,22 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
   private applyMinMaxRange(newValue: number): number {
     const oppositeValue: number = this.tracking === HandleType.Low ? this.viewHighValue : this.viewLowValue;
-    const difference: number = this.viewOptions.stepsArray
-      ? Math.abs(this.getStepValue(newValue) - this.getStepValue(oppositeValue))
-      : Math.abs(newValue - oppositeValue);
+    const difference: number = Math.abs(newValue - oppositeValue);
     if (this.viewOptions.minRange != null) {
       if (difference < this.viewOptions.minRange) {
         if (this.tracking === HandleType.Low) {
-          return this.viewOptions.stepsArray
-            ? ValueHelper.findStepIndex(this.getStepValue(this.viewHighValue) - this.viewOptions.minRange, this.viewOptions.stepsArray)
-            : MathHelper.roundToPrecisionLimit(this.viewHighValue - this.viewOptions.minRange, this.precisionLimit);
+          return MathHelper.roundToPrecisionLimit(this.viewHighValue - this.viewOptions.minRange, this.precisionLimit);
         } else {
-          return this.viewOptions.stepsArray
-            ? ValueHelper.findStepIndex(this.getStepValue(this.viewLowValue) + this.viewOptions.minRange, this.viewOptions.stepsArray)
-            : MathHelper.roundToPrecisionLimit(this.viewLowValue + this.viewOptions.minRange, this.precisionLimit);
+          return MathHelper.roundToPrecisionLimit(this.viewLowValue + this.viewOptions.minRange, this.precisionLimit);
         }
       }
     }
     if (this.viewOptions.maxRange != null) {
       if (difference > this.viewOptions.maxRange) {
         if (this.tracking === HandleType.Low) {
-          return this.viewOptions.stepsArray
-            ? ValueHelper.findStepIndex(this.getStepValue(this.viewHighValue) - this.viewOptions.maxRange, this.viewOptions.stepsArray)
-            : MathHelper.roundToPrecisionLimit(this.viewHighValue - this.viewOptions.maxRange, this.precisionLimit);
+          return MathHelper.roundToPrecisionLimit(this.viewHighValue - this.viewOptions.maxRange, this.precisionLimit);
         } else {
-          return this.viewOptions.stepsArray
-            ? ValueHelper.findStepIndex(this.getStepValue(this.viewLowValue) + this.viewOptions.maxRange, this.viewOptions.stepsArray)
-            : MathHelper.roundToPrecisionLimit(this.viewLowValue + this.viewOptions.maxRange, this.precisionLimit);
+          return MathHelper.roundToPrecisionLimit(this.viewLowValue + this.viewOptions.maxRange, this.precisionLimit);
         }
       }
     }
