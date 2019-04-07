@@ -237,7 +237,16 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     this.unsubscribeManualRefresh();
 
     this.manualRefreshSubscription = manualRefresh.subscribe(() => {
-      setTimeout(() =>  this.calcViewDimensions());
+      setTimeout(() => this.calcViewDimensions());
+    });
+  }
+
+  private triggerFocusSubscription: any;
+  @Input() set triggerFocus(triggerFocus: EventEmitter<void>) {
+    this.unsubscribeTriggerFocus();
+
+    this.triggerFocusSubscription = triggerFocus.subscribe((pointerType: PointerType) => {
+      this.focusPointer(pointerType);
     });
   }
 
@@ -500,6 +509,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
   ngOnDestroy(): void {
     this.unsubscribeManualRefresh();
+    this.unsubscribeTriggerFocus();
     this.unbindEvents();
     this.currentFocusElement = null;
   }
@@ -548,6 +558,13 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     if (this.manualRefreshSubscription) {
       this.manualRefreshSubscription.unsubscribe();
       this.manualRefreshSubscription = null;
+    }
+  }
+
+  private unsubscribeTriggerFocus(): void {
+    if (this.triggerFocusSubscription) {
+      this.triggerFocusSubscription.unsubscribe();
+      this.triggerFocusSubscription = null;
     }
   }
 
@@ -806,6 +823,20 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     this.setDisabledStateAttr();
     this.calcViewDimensions();
     this.refocusPointerIfNeeded();
+  }
+
+  // Sets focus on the specified pointer
+  private focusPointer(pointerType: PointerType): void {
+    // If not supplied, use min pointer as default
+    if (pointerType !== PointerType.Min && pointerType !== PointerType.Max) {
+      pointerType = PointerType.Min;
+    }
+
+    if (pointerType === PointerType.Min) {
+      this.focusElement(this.minHElem);
+    } else if (this.range && pointerType === PointerType.Max) {
+      this.focusElement(this.maxHElem);
+    }
   }
 
   private refocusPointerIfNeeded(): void {

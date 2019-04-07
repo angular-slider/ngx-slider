@@ -1,0 +1,7 @@
+<p>
+  <button type="button" class="btn btn-outline-primary" (click)="focusSlider(PointerType.Min)">Focus min pointer</button>
+  <button type="button" class="btn btn-outline-primary" (click)="focusSlider(PointerType.Max)">Focus max pointer</button>
+</p>
+
+<ng5-slider [(value)]="minValue" [(highValue)]="maxValue" [options]="options" [triggerFocus]="triggerFocus"></ng5-slider>
+

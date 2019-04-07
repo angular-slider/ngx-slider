@@ -20,6 +20,7 @@ The slider component takes the following inputs and outputs:
   [(highValue)]="<number>"
   [options]="<options object>"
   [manualRefresh]="<event emitter>"
+  [triggerFocus]="<event emitter>"
   (userChangeStart)="<event handler>"
   (userChange)="<event handler>"
   (userChangeEnd)="<event handler>"
@@ -53,6 +54,10 @@ For a complete example, see the [dynamic options slider demo](routerLink:///demo
 ### Manual refresh
 
 `manualRefresh` input is provided to solve some cases where the slider is not being updated after CSS style changes. This is for example changing the `display` property to show/hide the slider (or any parent DOM element). Instead of observing the CSS changes, the slider provides this input to manually trigger a refresh. Refer to the [example demo](routerLink:///demos#manual-refresh-slider) to see how it can be used.
+
+### Trigger focus
+
+`triggerFocus` input is provided to set the focus programmatically on a slider handle. The emitter takes a `PointerType` as argument, or if left `undefined`, will default to `PointerType.Min`. Refer to the [example demo](routerLink:///demos#trigger-focus-slider) to see how it works.
 
 ### User change events
 
