@@ -2220,7 +2220,6 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
         if (this.tracking === HandleType.Low && newValue > this.viewHighValue) {
           this.viewLowValue = this.viewHighValue;
           this.applyLowValue();
-          this.publishModelChange(false);
           this.updateHandles(HandleType.Low, this.maxHElem.position);
           this.updateAriaAttributes();
           this.tracking = HandleType.High;
@@ -2234,7 +2233,6 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
                    newValue < this.viewLowValue) {
           this.viewHighValue = this.viewLowValue;
           this.applyHighValue();
-          this.publishModelChange(false);
           this.updateHandles(HandleType.High, this.minHElem.position);
           this.updateAriaAttributes();
           this.tracking = HandleType.Low;
@@ -2256,7 +2254,6 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
         this.viewHighValue = newValue;
         this.applyHighValue();
       }
-      this.publishModelChange(false);
       this.updateHandles(this.tracking, this.valueToPosition(newValue));
       this.updateAriaAttributes();
       valueChanged = true;
