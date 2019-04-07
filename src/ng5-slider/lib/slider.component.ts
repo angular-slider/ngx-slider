@@ -436,7 +436,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
     // In some cases, the starting model values are actually outside valid range, so we need to fix this
     if (this.value !== this.viewLowValue || (this.range && this.highValue !== this.viewHighValue)) {
-      setTimeout(() => this.applyModel(false));
+      setTimeout(() => this.publishModelChange(false));
     }
 
     // Run change detection manually to resolve some issues when init procedure changes values used in the view
@@ -655,6 +655,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     if (this.range) {
       this.updateCmbLabel();
     }
+    this.publishModelChange(false);
   }
 
   // Reflow the slider when the high handle changes (called with throttle)
@@ -669,6 +670,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     this.updateTicksScale();
     this.updateCmbLabel();
     this.updateAriaAttributes();
+    this.publishModelChange(false);
   }
 
   // Make sure the low value is in allowed range
@@ -682,7 +684,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       this.value = normalisedValue;
 
       // Push the value out, too
-      setTimeout(() => this.applyModel(false));
+      setTimeout(() => this.publishModelChange(false));
     }
   }
 
@@ -697,7 +699,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       this.highValue = normalisedHighValue;
 
       // Push the value out, too
-      setTimeout(() => this.applyModel(false));
+      setTimeout(() => this.publishModelChange(false));
     }
   }
 
@@ -717,7 +719,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
         }
 
         // Push the values out, too
-        setTimeout(() => this.applyModel(false));
+        setTimeout(() => this.publishModelChange(false));
       } else {
         const tempValue: number = this.value;
         this.value = this.highValue;
@@ -732,7 +734,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
         }
 
         // Push the values out, too
-        setTimeout(() => this.applyModel(false));
+        setTimeout(() => this.publishModelChange(false));
       }
     }
   }
@@ -2191,7 +2193,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     if (this.range) {
       this.applyHighValue();
     }
-    this.applyModel(true);
+    this.publishModelChange(true);
     this.updateHandles(HandleType.Low, this.valueToPosition(newMinValue));
     this.updateHandles(HandleType.High, this.valueToPosition(newMaxValue));
   }
@@ -2218,7 +2220,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
         if (this.tracking === HandleType.Low && newValue > this.viewHighValue) {
           this.viewLowValue = this.viewHighValue;
           this.applyLowValue();
-          this.applyModel(false);
+          this.publishModelChange(false);
           this.updateHandles(HandleType.Low, this.maxHElem.position);
           this.updateAriaAttributes();
           this.tracking = HandleType.High;
@@ -2232,7 +2234,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
                    newValue < this.viewLowValue) {
           this.viewHighValue = this.viewLowValue;
           this.applyHighValue();
-          this.applyModel(false);
+          this.publishModelChange(false);
           this.updateHandles(HandleType.High, this.minHElem.position);
           this.updateAriaAttributes();
           this.tracking = HandleType.Low;
@@ -2254,14 +2256,14 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
         this.viewHighValue = newValue;
         this.applyHighValue();
       }
-      this.applyModel(false);
+      this.publishModelChange(false);
       this.updateHandles(this.tracking, this.valueToPosition(newValue));
       this.updateAriaAttributes();
       valueChanged = true;
     }
 
     if (valueChanged) {
-      this.applyModel(true);
+      this.publishModelChange(true);
     }
   }
 
@@ -2339,7 +2341,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     return newValue;
   }
 
-  private applyModel(callUserChange: boolean): void {
+  private publishModelChange(callUserChange: boolean): void {
     this.valueChange.emit(this.value);
     this.highValueChange.emit(this.highValue);
     if (callUserChange) {
