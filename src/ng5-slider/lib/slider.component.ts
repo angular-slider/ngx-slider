@@ -570,7 +570,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
   private getStepValue(sliderValue: number): number {
     const step: CustomStepDefinition = this.viewOptions.stepsArray[sliderValue];
-    return step.value;
+    return step ? step.value : NaN;
   }
 
   private applyLowValue(): void {
