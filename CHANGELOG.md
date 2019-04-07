@@ -1,3 +1,10 @@
+* 1.1.14
+ * add ability to set focus programmatically (issue #64)
+ * clarify interaction of stepsArray with other options (issue #60)
+ * document known issues in README
+ * remove obsolete enforceRange option
+ * remove some redudant refresh and change callbacks
+
 * 1.1.13
  * fix regression when updating model values through reactive forms (issues #61, #62)
 
