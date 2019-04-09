@@ -5,4 +5,11 @@ body {
 /* Override font in test mode to always ensure deterministic results no matter what fonts are installed */
 .test-mode {
   font-family: "Helvetica" !important;
+
+  /* Disable animations, too */
+  .ng5-slider {
+    * {
+      transition: none !important;
+    }
+  }
 }

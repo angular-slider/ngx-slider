@@ -285,4 +285,7 @@ export class Options {
 
   /** Use to increase rendering performance. If the value is not provided, the slider calculates the with/height of the bar */
   barDimension?: number = null;
+
+  /** Enable/disable CSS animations */
+  animate?: boolean = true;
 }

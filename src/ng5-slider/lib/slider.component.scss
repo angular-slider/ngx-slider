@@ -101,10 +101,6 @@
       background-color: $handleBgColor;
       z-index: 3;
       @include rounded($handleSize / 2);
-      //  -webkit-transition:all linear 0.15s;
-      //  -moz-transition:all linear 0.15s;
-      //  -o-transition:all linear 0.15s;
-      //  transition:all linear 0.15s;
 
       &:after {
         content: '';
@@ -192,7 +188,7 @@
       white-space: normal;
     }
 
-    &.ng5-slider-vertical {
+    &.vertical {
       position: relative;
       width: $barDimension;
       height: 100%;
@@ -268,6 +264,36 @@
           left: auto;
           right: $ticksValuePositionOnVertical;
         }
+      }
+    }
+
+    * {
+      transition: none;
+    }
+
+    &.animate {
+      .ng5-slider-bar-wrapper {
+        transition: all linear $animationDuration;
+      }
+
+      .ng5-slider-selection {
+        transition: background-color linear $animationDuration;
+      }
+
+      .ng5-slider-pointer {
+        transition: all linear $animationDuration;
+      }
+
+      .ng5-slider-bubble {
+        transition: all linear $animationDuration;
+
+        &.ng5-slider-limit {
+          transition: none;
+        }
+      }
+
+      .ng5-slider-tick {
+        transition: background-color linear $animationDuration;
       }
     }
   }

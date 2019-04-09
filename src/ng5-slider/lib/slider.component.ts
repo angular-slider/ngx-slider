@@ -317,8 +317,11 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   @ContentChild('tooltipTemplate')
   public tooltipTemplate: TemplateRef<any>;
 
-  @HostBinding('class.ng5-slider-vertical')
+  @HostBinding('class.vertical')
   public sliderElementVerticalClass: boolean = false;
+
+  @HostBinding('class.animate')
+  public sliderElementAnimateClass: boolean = false;
 
   @HostBinding('attr.disabled')
   public sliderElementDisabledAttr: string = null;
@@ -901,6 +904,12 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       setTimeout((): void => { this.resetSlider(); });
     }
 
+    // Changing animate class may interfere with slider reset/initialisation, so we should set it separately,
+    // after all is properly set up
+    if (this.sliderElementAnimateClass !== this.viewOptions.animate) {
+      setTimeout((): void => { this.sliderElementAnimateClass = this.viewOptions.animate; });
+    }
+
     if (this.viewOptions.draggableRange) {
       this.selBarElem.addClass('ng5-slider-draggable');
     } else {
@@ -1124,7 +1133,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       ticksArray.reverse();
     }
 
-    this.ticks = ticksArray.map((value: number): Tick => {
+    const newTicks: Tick[] = ticksArray.map((value: number): Tick => {
       let position: number = this.valueToPosition(value);
 
       if (this.viewOptions.vertical) {
@@ -1168,6 +1177,16 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       }
       return tick;
     });
+
+    // We should avoid re-creating the ticks array if possible
+    // This both improves performance and makes CSS animations work correctly
+    if (this.ticks && this.ticks.length === newTicks.length) {
+      for (let i: number = 0; i  < newTicks.length; ++i) {
+        Object.assign(this.ticks[i], newTicks[i]);
+      }
+    } else {
+      this.ticks = newTicks;
+    }
   }
 
   private getTicksArray(): number[] {
