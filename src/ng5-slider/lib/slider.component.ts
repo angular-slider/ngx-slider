@@ -1801,7 +1801,6 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
   private onBarStart(draggableRange: boolean, pointer: SliderElement, event: MouseEvent|TouchEvent,
     bindMove: boolean, bindEnd: boolean, simulateImmediateMove?: boolean, simulateImmediateEnd?: boolean): void {
-    console.log ( bindMove, bindEnd, simulateImmediateMove, simulateImmediateEnd);
     if (draggableRange) {
       // Prevent moving slider handles when draggableRange is clicked.
       simulateImmediateMove = this.viewOptions.disableRangeClick ? false : simulateImmediateMove;
