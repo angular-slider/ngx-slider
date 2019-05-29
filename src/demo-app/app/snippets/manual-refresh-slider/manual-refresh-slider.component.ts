@@ -14,7 +14,8 @@ export class ManualRefreshSliderComponent {
   options: Options = {
     floor: 0,
     ceil: 100,
-    step: 5
+    step: 5,
+    animate: false // animations don't play nicely with collapse
   };
 
   toggleCollapsed(): void {
