@@ -1702,11 +1702,6 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     return dim;
   }
 
-  // Returns a value that is within slider range
-  private sanitizeValue(val: number): number {
-    return Math.min(Math.max(val, this.viewOptions.floor), this.viewOptions.ceil);
-  }
-
   // Translate value to pixel position
   private valueToPosition(val: number): number {
     let fn: ValueToPositionFunction  = ValueHelper.linearValueToPosition;
@@ -1716,7 +1711,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       fn = ValueHelper.logValueToPosition;
     }
 
-    val = this.sanitizeValue(val);
+    val = MathHelper.clampToRange(val, this.viewOptions.floor, this.viewOptions.ceil);
     let percent: number = fn(val, this.viewOptions.floor, this.viewOptions.ceil) || 0;
     if (this.viewOptions.rightToLeft) {
       percent = 1 - percent;
@@ -2136,7 +2131,8 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       this.userChangeStart.emit(this.getChangeContext());
     }
 
-    const newValue: number = this.roundStep(this.sanitizeValue(action));
+    const actionValue: number = MathHelper.clampToRange(action, this.viewOptions.floor, this.viewOptions.ceil);
+    const newValue: number = this.roundStep(actionValue);
     if (!this.viewOptions.draggableRangeOnly) {
       this.positionTrackingHandle(newValue);
     } else {
