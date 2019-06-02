@@ -924,9 +924,9 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   private alwaysHide(el: SliderElement, hide: boolean): void {
     el.alwaysHide = hide;
     if (hide) {
-      this.hideEl(el);
+      el.css('visibility', 'hidden');
     } else {
-      this.showEl(el);
+      el.css('visibility', 'visible');
     }
   }
 
@@ -1597,7 +1597,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
   // Hide element
   private hideEl(element: SliderElement): void {
-    element.css('visibility', 'hidden');
+    element.css('opacity', '0');
   }
 
   // Show element
@@ -1606,7 +1606,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       return;
     }
 
-    element.css('visibility', 'visible');
+    element.css('opacity', '1');
   }
 
   // Set element left/top position depending on whether slider is horizontal or vertical

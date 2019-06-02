@@ -288,7 +288,11 @@
         transition: all linear $animationDuration;
 
         &.ng5-slider-limit {
-          transition: none;
+          transition: opacity linear $animationDuration;
+        }
+
+        &.ng5-slider-combined {
+          transition: opacity linear $animationDuration;
         }
       }
 
