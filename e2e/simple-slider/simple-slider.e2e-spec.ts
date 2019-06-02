@@ -200,7 +200,9 @@ describe('simple slider', () => {
 
   describe('after changing input value in the form', () => {
     beforeEach(() => {
-      page.getValueInput().sendKeys(Key.END, Key.BACK_SPACE, Key.BACK_SPACE, Key.BACK_SPACE, '50');
+      // Due to normalisation code, we need to ensure that the number in input is always valid when entering it
+      // This should end up with: 100 -> 10 -> 150 -> 50
+      page.getValueInput().sendKeys(Key.END, Key.BACK_SPACE, Key.LEFT, '5', Key.LEFT, Key.BACK_SPACE);
     });
 
     it('should update low value in the form to new value', () => {

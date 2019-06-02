@@ -47,6 +47,11 @@ describe('SliderComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SliderComponent);
     component = fixture.componentInstance;
+    component.options = {
+      floor: 0,
+      ceil: 10
+    };
+    component.value = 5;
     fixture.detectChanges();
   });
 

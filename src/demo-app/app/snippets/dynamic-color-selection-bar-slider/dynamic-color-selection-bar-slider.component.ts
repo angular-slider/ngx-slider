@@ -8,6 +8,8 @@ import { Options } from '@local/ng5-slider';
 export class DynamicColorSelectionBarSliderComponent {
   value: number = 12;
   options: Options = {
+    floor: 0,
+    ceil: 12,
     showSelectionBar: true,
     getSelectionBarColor: (value: number): string => {
       if (value <= 3) {

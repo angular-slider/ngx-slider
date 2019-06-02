@@ -11,7 +11,9 @@
     "homepage"
   ],
   "dependenciesToCopyFromMainPackageJson": [
-    "detect-passive-events"
+    "detect-passive-events",
+    "rxjs",
+    "rxjs-compat"
   ],
   "dependenciesToCopyAsPeerDependenciesFromMainPackageJson": [
     "@angular/core",

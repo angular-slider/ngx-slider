@@ -8,6 +8,7 @@ export * from './custom-ticks-legend-slider/custom-ticks-legend-slider.component
 export * from './custom-ticks-legend-slider/custom-ticks-legend-slider.component';
 export * from './custom-ticks-slider/custom-ticks-slider.component';
 export * from './date-slider/date-slider.component';
+export * from './disabled-normalisation-slider/disabled-normalisation-slider.component';
 export * from './disabled-slider/disabled-slider.component';
 export * from './draggable-range-only-slider/draggable-range-only-slider.component';
 export * from './draggable-range-slider/draggable-range-slider.component';

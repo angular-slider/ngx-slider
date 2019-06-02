@@ -1,5 +1,7 @@
 import { ElementRef, Renderer2 } from '@angular/core';
-import detectPassiveEvents from 'detect-passive-events';
+
+import { EventListener } from './event-listener';
+import { EventListenerHelper } from './event-listener-helper';
 
 /**
  * Wrapper to support legacy jqLite interface
@@ -8,9 +10,11 @@ import detectPassiveEvents from 'detect-passive-events';
  * any manual DOM manipulations with Angular bindings
  */
 export class JqLiteWrapper {
-  private eventListeners: { [eventName: string]: (() => void)[] } = {};
+  private eventListenerHelper: EventListenerHelper;
+  private eventListeners: EventListener[] = [];
 
   constructor(private elemRef: ElementRef, private renderer: Renderer2) {
+    this.eventListenerHelper = new EventListenerHelper(this.renderer);
   }
 
   addClass(clazz: string): void {
@@ -53,49 +57,33 @@ export class JqLiteWrapper {
     this.elemRef.nativeElement.focus();
   }
 
-  on(eventName: string, callback: (event: any) => boolean|void): void {
-    if (!this.eventListeners.hasOwnProperty(eventName)) {
-      this.eventListeners[eventName] = [];
-    }
-
-    const unsubscribe: () => void = this.renderer.listen(this.elemRef.nativeElement, eventName, callback);
-    this.eventListeners[eventName].push(unsubscribe);
+  on(eventName: string, callback: (event: any) => void, debounceInterval?: number): void {
+    const listener: EventListener = this.eventListenerHelper.attachEventListener(
+      this.elemRef.nativeElement, eventName, callback, debounceInterval);
+    this.eventListeners.push(listener);
   }
 
-  onPassive(eventName: string, callback: (event: any) => void): void {
-    // Only use passive event listeners if the browser supports it
-    if (! detectPassiveEvents.hasSupport) {
-      this.on(eventName, callback);
-      return;
-    }
-
-    // Angular doesn't support passive event handlers (yet), so we need to roll our own code using native functions
-
-    if (!this.eventListeners.hasOwnProperty(eventName)) {
-      this.eventListeners[eventName] = [];
-    }
-
-    this.elemRef.nativeElement.addEventListener(eventName, callback, {passive: true, capture: false});
-
-    const unsubscribe: () => void = (): void => {
-      this.elemRef.nativeElement.removeEventListener(eventName, callback, {passive: true, capture: false});
-    };
-
-    this.eventListeners[eventName].push(unsubscribe);
+  onPassive(eventName: string, callback: (event: any) => void, debounceInterval?: number): void {
+    const listener: EventListener = this.eventListenerHelper.attachPassiveEventListener(
+      this.elemRef.nativeElement, eventName, callback, debounceInterval);
+    this.eventListeners.push(listener);
   }
 
   off(eventName?: string): void {
+    let listenersToKeep: EventListener[];
+    let listenersToRemove: EventListener[];
     if (eventName) {
-      if (this.eventListeners.hasOwnProperty(eventName)) {
-        for (const unsubscribe of this.eventListeners[eventName]) {
-          unsubscribe();
-        }
-        delete this.eventListeners[eventName];
-      }
+      listenersToKeep = this.eventListeners.filter((event: EventListener) => event.eventName !== eventName);
+      listenersToRemove = this.eventListeners.filter((event: EventListener) => event.eventName === eventName);
     } else {
-      for (const eName of Object.keys(this.eventListeners)) {
-        this.off(eName);
-      }
+      listenersToKeep = [];
+      listenersToRemove = this.eventListeners;
     }
+
+    for (const listener of listenersToRemove) {
+      this.eventListenerHelper.detachEventListener(listener);
+    }
+
+    this.eventListeners = listenersToKeep;
   }
 }

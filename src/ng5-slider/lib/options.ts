@@ -45,7 +45,7 @@ export class Options {
     Not applicable when using stepsArray. */
   floor?: number = 0;
 
-  /** Maximum value for a slider (defaults to value model).
+  /** Maximum value for a slider.
     Not applicable when using stepsArray. */
   ceil?: number = null;
 
@@ -145,12 +145,21 @@ export class Options {
   /** Set to true to disable the slider. */
   disabled?: boolean = false;
 
-  /** Number of milliseconds to wait between two updates of the slider.
-    Internally, a throttle function (See http://underscorejs.org/#throttle) is used when the model
-    or high values of the slider are changed from outside the slider. This is to prevent from
-    re-rendering the slider too many times in a row. interval is the timeout value used on the
-    throttle function. */
-  interval?: number = 350;
+  /** Throttle interval for mouse events in milliseconds.
+   * This is provided to avoid a flood of events when moving the slider with mouse. */
+  mouseEventsInterval?: number = 50;
+
+  /** Throttle interval for touch events in milliseconds.
+   * This is provided to avoid a flood of events when moving the slider with touch gesture. */
+  touchEventsInterval?: number = 50;
+
+  /** Throttle interval for input changes (changes to bindings or reactive form inputs)
+   * This is provided to avoid a flood of events on frequent input binding changes affecting performance. */
+  inputEventsInterval?: number = 100;
+
+  /** Throttle interval for output changes (signalling changes to output bindings and user callbacks)
+   * This is provided to avoid a flood of outgoing events affecting Angular app performance. */
+  outputEventsInterval?: number = 100;
 
   /** Set to true to display a tick for each step of the slider. */
   showTicks?: boolean = false;
@@ -220,6 +229,11 @@ export class Options {
     When set to false, if the model values are modified from outside the slider, they are not rounded
     and can be between two steps. */
   enforceStep?: boolean = true;
+
+  /** Set to true to force the value to be normalised to allowed range (floor to ceil), even when modified from the outside.
+    When set to false, if the model values are modified from outside the slider, and they are outside allowed range,
+    the slider may be rendered incorrectly. However, setting this to false may be useful if you want to perform custom normalisation. */
+  enforceRange?: boolean = true;
 
   /** Set to true to prevent to user from switching the min and max handles. Applies to range slider only. */
   noSwitching?: boolean = false;

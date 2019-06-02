@@ -8,6 +8,8 @@ import { Options } from '@local/ng5-slider';
 export class DynamicPointerColorSliderComponent {
   value: number = 12;
   options: Options = {
+    floor: 0,
+    ceil: 12,
     showSelectionBar: true,
     getPointerColor: (value: number): string => {
         if (value <= 3) {

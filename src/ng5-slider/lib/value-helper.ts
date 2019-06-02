@@ -4,6 +4,10 @@ import { CustomStepDefinition } from './options';
  *  Collection of functions to handle conversions/lookups of values
  */
 export class ValueHelper {
+  static isNullOrUndefined(value: any): boolean {
+    return value === undefined || value === null;
+  }
+
   static linearValueToPosition(val: number, minVal: number, maxVal: number): number {
     const range: number = maxVal - minVal;
     return (val - minVal) / range;
