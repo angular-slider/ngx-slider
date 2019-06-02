@@ -95,9 +95,49 @@ describe('simple slider', () => {
       });
     });
 
+    describe('after pressing up arrow', () => {
+      beforeEach(() => {
+        page.getSliderPointer().sendKeys(Key.ARROW_UP);
+      });
+
+      it('should increase the value by step', () => {
+        expect(page.getSliderPointerLabel().getText()).toBe('101');
+      });
+
+      it('should update input in the form to new value', () => {
+        expect(page.getValueInput().getAttribute('value')).toBe('101');
+      });
+
+      it('should position the pointer and pointer label correctly', () => {
+        expect(page.getSliderPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 292, y: 21});
+
+        expect(page.getSliderPointerLabel().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 293, y: -3});
+      });
+    });
+
     describe('after pressing left arrow', () => {
       beforeEach(() => {
         page.getSliderPointer().sendKeys(Key.ARROW_LEFT);
+      });
+
+      it('should decrease the value by step', () => {
+        expect(page.getSliderPointerLabel().getText()).toBe('99');
+      });
+
+      it('should update input in the form to new value', () => {
+        expect(page.getValueInput().getAttribute('value')).toBe('99');
+      });
+
+      it('should position the pointer and pointer label correctly', () => {
+        expect(page.getSliderPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 288, y: 21});
+
+        expect(page.getSliderPointerLabel().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 292, y: -3});
+      });
+    });
+
+    describe('after pressing down arrow', () => {
+      beforeEach(() => {
+        page.getSliderPointer().sendKeys(Key.ARROW_DOWN);
       });
 
       it('should decrease the value by step', () => {

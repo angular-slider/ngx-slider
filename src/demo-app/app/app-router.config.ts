@@ -9,6 +9,7 @@ import {
   ReactiveFormRangeSliderComponent,
   ReactiveFormSimpleSliderComponent,
   SimpleSliderComponent,
+  VerticalSlidersComponent,
 } from './snippets';
 
 export let routerConfig: Routes = [
@@ -24,6 +25,7 @@ export let routerConfig: Routes = [
   { path: 'reactive-form-range-slider', component: ReactiveFormRangeSliderComponent },
   { path: 'reactive-form-simple-slider', component: ReactiveFormSimpleSliderComponent },
   { path: 'simple-slider', component: SimpleSliderComponent },
+  { path: 'vertical-sliders', component: VerticalSlidersComponent },
 
   { path: '**', pathMatch: 'full', redirectTo: ''}
 ];

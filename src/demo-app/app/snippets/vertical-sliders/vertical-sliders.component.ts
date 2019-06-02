@@ -18,7 +18,7 @@ interface RangeSliderModel {
 })
 export class VerticalSlidersComponent {
   verticalSlider1: SimpleSliderModel = {
-    value: 0,
+    value: 5,
     options: {
       floor: 0,
       ceil: 10,

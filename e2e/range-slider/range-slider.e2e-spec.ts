@@ -242,9 +242,53 @@ describe('range slider', () => {
         });
       });
 
+      describe('after pressing up arrow', () => {
+        beforeEach(() => {
+          page.getSliderLowPointer().sendKeys(Key.ARROW_UP);
+        });
+
+        it('should increase the value by step', () => {
+          expect(page.getSliderLowPointerLabel().getText()).toEqual('51');
+        });
+
+        it('should update the low value in the form', () => {
+          expect(page.getLowValueInput().getAttribute('value')).toEqual('51');
+        });
+
+        it('should position the elements correctly', () => {
+          expect(page.getSliderLowPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 148, y: 21});
+          expect(page.getSliderHighPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 581, y: 21});
+
+          expect(page.getSliderSelectionBar().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 164, y: 3});
+          expect(page.getSliderSelectionBar().getSize()).toBeApproximateSize({width: 433, height: 32});
+        });
+      });
+
       describe('after pressing left arrow', () => {
         beforeEach(() => {
           page.getSliderLowPointer().sendKeys(Key.ARROW_LEFT);
+        });
+
+        it('should decrease the value by step', () => {
+          expect(page.getSliderLowPointerLabel().getText()).toEqual('49');
+        });
+
+        it('should update the low value in the form', () => {
+          expect(page.getLowValueInput().getAttribute('value')).toEqual('49');
+        });
+
+        it('should position the elements correctly', () => {
+          expect(page.getSliderLowPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 142, y: 21});
+          expect(page.getSliderHighPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 581, y: 21});
+
+          expect(page.getSliderSelectionBar().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 158, y: 3});
+          expect(page.getSliderSelectionBar().getSize()).toBeApproximateSize({width: 439, height: 32});
+        });
+      });
+
+      describe('after pressing down arrow', () => {
+        beforeEach(() => {
+          page.getSliderLowPointer().sendKeys(Key.ARROW_DOWN);
         });
 
         it('should decrease the value by step', () => {
@@ -380,9 +424,53 @@ describe('range slider', () => {
         });
       });
 
+      describe('after pressing up arrow', () => {
+        beforeEach(() => {
+          page.getSliderHighPointer().sendKeys(Key.ARROW_UP);
+        });
+
+        it('should increase the value by step', () => {
+          expect(page.getSliderHighPointerLabel().getText()).toEqual('201');
+        });
+
+        it('should update the high value in the form', () => {
+          expect(page.getHighValueInput().getAttribute('value')).toEqual('201');
+        });
+
+        it('should position the elements correctly', () => {
+          expect(page.getSliderLowPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 145, y: 21});
+          expect(page.getSliderHighPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 584, y: 21});
+
+          expect(page.getSliderSelectionBar().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 161, y: 3});
+          expect(page.getSliderSelectionBar().getSize()).toBeApproximateSize({width: 439, height: 32});
+        });
+      });
+
       describe('after pressing left arrow', () => {
         beforeEach(() => {
           page.getSliderHighPointer().sendKeys(Key.ARROW_LEFT);
+        });
+
+        it('should decrease the value by step', () => {
+          expect(page.getSliderHighPointerLabel().getText()).toEqual('199');
+        });
+
+        it('should update the high value in the form', () => {
+          expect(page.getHighValueInput().getAttribute('value')).toEqual('199');
+        });
+
+        it('should position the elements correctly', () => {
+          expect(page.getSliderLowPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 145, y: 21});
+          expect(page.getSliderHighPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 578, y: 21});
+
+          expect(page.getSliderSelectionBar().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 161, y: 3});
+          expect(page.getSliderSelectionBar().getSize()).toBeApproximateSize({width: 433, height: 32});
+        });
+      });
+
+      describe('after pressing down arrow', () => {
+        beforeEach(() => {
+          page.getSliderHighPointer().sendKeys(Key.ARROW_DOWN);
         });
 
         it('should decrease the value by step', () => {
