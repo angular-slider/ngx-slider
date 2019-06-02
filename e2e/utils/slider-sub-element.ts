@@ -17,13 +17,22 @@ export class SliderSubElement {
       (resolve: promise.IFulfilledCallback<boolean>,
        reject: promise.IRejectedCallback): void => {
         this.sliderSubElement.getCssValue('visibility').then(
-          (value: string): void => {
-            resolve(value === 'visible');
+          (visibilityValue: string): void => {
+            this.sliderSubElement.getCssValue('opacity').then(
+              (opacityValue: string): void => {
+                resolve(visibilityValue === 'visible' && opacityValue !== '0');
+              },
+              (error: any): void => {
+                reject(error);
+              }
+            );
           },
           (error: any): void => {
             reject(error);
-          });
-      });
+          }
+        );
+      }
+    );
   }
 
   getText(): promise.Promise<string> {
