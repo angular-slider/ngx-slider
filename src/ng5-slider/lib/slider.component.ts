@@ -1007,7 +1007,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       setTimeout((): void => { this.sliderElementAnimateClass = this.viewOptions.animate; });
     }
 
-    if (this.viewOptions.draggableRange) {
+    if (this.viewOptions.draggableRange && !this.viewOptions.onlyBindHandles) {
       this.selBarElem.addClass('ng5-slider-draggable');
     } else {
       this.selBarElem.removeClass('ng5-slider-draggable');
@@ -1887,7 +1887,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   private onBarStart(draggableRange: boolean, pointer: SliderElement, event: MouseEvent|TouchEvent,
     bindMove: boolean, bindEnd: boolean, simulateImmediateMove?: boolean, simulateImmediateEnd?: boolean): void {
     if (draggableRange) {
-      this.onDragStart(pointer, HandleType.High, event, bindMove, bindEnd, simulateImmediateMove, simulateImmediateEnd);
+      this.onDragStart(pointer, HandleType.High, event, bindMove, bindEnd);
     } else {
       this.onStart(pointer, HandleType.Low, event, bindMove, bindEnd, simulateImmediateMove, simulateImmediateEnd);
     }
@@ -2161,7 +2161,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
   // onDragStart event handler, handles dragging of the middle bar
   private onDragStart(pointer: SliderElement, ref: HandleType, event: MouseEvent|TouchEvent,
-    bindMove: boolean, bindEnd: boolean, simulateImmediateMove?: boolean, simulateImmediateEnd?: boolean): void {
+    bindMove: boolean, bindEnd: boolean): void {
     const position: number = this.getEventPosition(event);
 
     this.dragging = new Dragging();
@@ -2175,7 +2175,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
         ? position - this.maxHElem.position
         : this.maxHElem.position - position;
 
-    this.onStart(pointer, ref, event, bindMove, bindEnd, simulateImmediateMove, simulateImmediateEnd);
+    this.onStart(pointer, ref, event, bindMove, bindEnd);
   }
 
   /** Get min value depending on whether the newPos is outOfBounds above or below the bar and rightToLeft */
