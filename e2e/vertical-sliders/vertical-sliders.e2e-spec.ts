@@ -2,7 +2,7 @@ import { VerticalSlidersDemoPage } from './vertical-sliders-demo.po';
 import { approximateGeometryMatchers } from '../utils';
 import { Key } from 'protractor';
 
-describe('simple slider', () => {
+describe('vertical sliders', () => {
   let page: VerticalSlidersDemoPage;
 
   beforeEach(() => {
