@@ -82,7 +82,7 @@ export class ${componentName} { }
   // Return metadata for generating module file
   return {
     name: componentName,
-    file: path.join(directory, componentFileName),
+    importPath: `${directory}/${componentFileName}`, // unlike system paths, this is a typescript import path, so always use /
     route: relativeTypedocHtmlFile // route is based on original file name
   };
 }
@@ -116,7 +116,7 @@ function generateComponentName(fileName) {
 /** Generate module file based on metadata from generated components */
 function generateModuleFile(componentsMetadata, demoAppDocsModuleDir) {
   const imports = componentsMetadata
-    .map(componentMetadata => `import { ${componentMetadata.name} } from './${componentMetadata.file}';`)
+    .map(componentMetadata => `import { ${componentMetadata.name} } from './${componentMetadata.importPath}';`)
     .join('\n');
 
   const components = componentsMetadata
