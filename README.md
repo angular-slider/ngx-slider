@@ -99,6 +99,10 @@ You can report any bugs as [Github issues](https://github.com/angular-slider/ng5
 
 Please describe the issue in detail pasting any relevant code, or preferrably a StackBlitz with reproduction of the problem by [forking and editing this sample StackBlitz](https://stackblitz.com/edit/ng5-slider-simple-slider-example?file=src/app/app.component.ts). Please also provide the version of NPM package you are using.
 
+## Changelog
+
+For list of changes and bugfixes, see [CHANGELOG.md](CHANGELOG.md).
+
 ## Developer information
 
 If you'd like to contribute to the project, or check out the plans for future, see [DEVELOPERS.md](DEVELOPERS.md).
