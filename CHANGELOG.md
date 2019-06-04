@@ -1,28 +1,28 @@
-* 1.2.0
+# 1.2.0
  * add CSS animations ported from angularjs-slider (issue #72)
  * re-write model update code with rxjs, fixing a number of bugs in this area (issue #69, #86, #91, #93, #95)
  * fix behaviour of draggable range when moving it with mouse (issue #80)
  * fix prepare script on non-Unix platforms (issue #103)
 
-* 1.1.14
+# 1.1.14
  * add ability to set focus programmatically (issue #64)
  * clarify interaction of stepsArray with other options (issue #60)
  * document known issues in README
  * remove obsolete enforceRange option
  * remove some redudant refresh and change callbacks
 
-* 1.1.13
+# 1.1.13
  * fix regression when updating model values through reactive forms (issues #61, #62)
 
-* 1.1.12
+# 1.1.12
  * fix regression caused by applying model value and options changes in the wrong order when both change at the same time (issue #56)
  * allow dynamic HTML in ticks legend (issue #49)
  * improve rendering performance of simple sliders (PR #59)
 
-* 1.1.11
+# 1.1.11
  * don't normalise values when stepsArray option is used (issue #52)
 
-* 1.1.10
+# 1.1.10
  * always convert input values to numbers
  * make sure range invariant is always satisfied (issue #48 follow-up)
 
