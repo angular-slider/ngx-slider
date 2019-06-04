@@ -1,3 +1,9 @@
+* 1.2.0
+ * add CSS animations ported from angularjs-slider (issue #72)
+ * re-write model update code with rxjs, fixing a number of bugs in this area (issue #69, #86, #91, #93, #95)
+ * fix behaviour of draggable range when moving it with mouse (issue #80)
+ * fix prepare script on non-Unix platforms (issue #103)
+
 * 1.1.14
  * add ability to set focus programmatically (issue #64)
  * clarify interaction of stepsArray with other options (issue #60)
