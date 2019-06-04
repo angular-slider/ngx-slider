@@ -29,6 +29,7 @@ Self-contained, mobile friendly slider component for Angular 5+ based on [angula
 ## Dependencies
 
  * Angular 5+
+ * rxjs 5+
 
 ## Installation
 
