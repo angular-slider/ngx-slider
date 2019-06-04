@@ -37,7 +37,7 @@
     "test": "npm run prepare && ng test",
     "test:once": "npm run prepare && ng test --watch=false",
     "lint": "npm run prepare && ng lint",
-    "e2e": "npm run prepare && ng e2e",
+    "e2e": "npm run prepare && ng e2e --environment=e2e",
     "ci": "npm run test:once && npm run e2e && npm run lint && npm run build:lib && npm run build:demo-app"
   },
   "dependencies": {

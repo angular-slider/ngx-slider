@@ -1,5 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router, UrlSegment, RouterEvent, NavigationEnd } from '@angular/router';
+import { Router, RouterEvent, NavigationEnd } from '@angular/router';
+
+import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-header',
@@ -11,6 +13,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   atRootUrl: boolean = false;
   atDocsUrl: boolean = false;
   urlSub: any;
+  enableExternalImages: boolean = environment.enableExternalImages;
 
   constructor(private router: Router) {
   }
