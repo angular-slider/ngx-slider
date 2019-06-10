@@ -1248,6 +1248,8 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     } else {
       this.ticks = newTicks;
     }
+
+    this.changeDetectionRef.detectChanges();
   }
 
   private getTicksArray(): number[] {
