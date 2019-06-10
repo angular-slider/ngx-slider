@@ -690,7 +690,9 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
   private applyViewChange(): void {
     this.value = this.viewValueToModelValue(this.viewLowValue);
-    this.highValue = this.viewValueToModelValue(this.viewHighValue);
+    if (this.range) {
+      this.highValue = this.viewValueToModelValue(this.viewHighValue);
+    }
 
     this.outputModelChangeSubject.next({
       value: this.value,
@@ -806,8 +808,6 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
     if (this.range) {
       normalisedInput.highValue = MathHelper.clampToRange(normalisedInput.highValue, this.viewOptions.floor, this.viewOptions.ceil);
-    } else {
-      normalisedInput.highValue = input.highValue;
     }
 
     // Make sure that range slider invariant (value <= highValue) is always satisfied
