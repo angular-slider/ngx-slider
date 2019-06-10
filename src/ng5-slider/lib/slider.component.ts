@@ -50,14 +50,14 @@ import { EventListener } from './event-listener';
 import { EventListenerHelper } from './event-listener-helper';
 
 export class Tick {
-  selected: boolean;
-  style: any;
-  tooltip: string;
-  tooltipPlacement: string;
-  value: string;
-  valueTooltip: string;
-  valueTooltipPlacement: string;
-  legend: string;
+  selected: boolean = false;
+  style: any = {};
+  tooltip: string = null;
+  tooltipPlacement: string = null;
+  value: string = null;
+  valueTooltip: string = null;
+  valueTooltipPlacement: string = null;
+  legend: string = null;
 }
 
 class Dragging {
