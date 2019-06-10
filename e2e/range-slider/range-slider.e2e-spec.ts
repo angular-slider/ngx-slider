@@ -613,9 +613,13 @@ describe('range slider', () => {
     beforeEach(() => {
       // Due to normalisation checks, we need to change both inputs and ensure that they contain valid data at all times while editing
       // Low value: 50 -> 0
-      page.getLowValueInput().sendKeys(Key.END, Key.LEFT, Key.BACK_SPACE);
-      // High value: 200 -> 20 -> 25 -> 125
-      page.getHighValueInput().sendKeys(Key.END, Key.BACK_SPACE, Key.BACK_SPACE, '5', Key.LEFT, Key.LEFT, '1');
+      page.getLowValueInput().sendKeys(Key.END, Key.LEFT, Key.BACK_SPACE)
+        .then(
+          () => {
+            // High value: 200 -> 20 -> 25 -> 125
+            page.getHighValueInput().sendKeys(Key.END, Key.BACK_SPACE, Key.BACK_SPACE, '5', Key.LEFT, Key.LEFT, '1');
+          }
+        );
     });
 
     it('should update values in the form to new value', () => {
