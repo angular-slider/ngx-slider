@@ -2429,7 +2429,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     changeContext.pointerType = this.tracking === HandleType.Low ? PointerType.Min : PointerType.Max;
     changeContext.value = +this.value;
     if (this.range) {
-      changeContext.value = +this.highValue;
+      changeContext.highValue = +this.highValue;
     }
     return changeContext;
   }
