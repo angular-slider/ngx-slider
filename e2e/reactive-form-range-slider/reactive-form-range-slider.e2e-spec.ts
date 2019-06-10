@@ -40,114 +40,114 @@ describe('reactive form range slider', () => {
       expect(page.getSliderSelectionBar().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 161, y: 3});
       expect(page.getSliderSelectionBar().getSize()).toBeApproximateSize({width: 436, height: 32});
     });
+  });
 
-    describe('after dragging the low slider pointer', () => {
-      beforeEach(() => {
-        page.getSliderLowPointer().mouseDragSync(220, -50);
-      });
-
-      it('should update the low pointer label to new value', () => {
-        expect(page.getSliderLowPointerLabel().getText()).toEqual('50');
-      });
-
-      it('should update the low value on the form to new value', () => {
-        expect(page.getLowValueTextElement().getText()).toEqual('Low value: 50');
-      });
-
-      it('should position the low pointer, the low pointer label and the selection bar correctly', () => {
-        expect(page.getSliderLowPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 363, y: 21});
-
-        expect(page.getSliderLowPointerLabel().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 367, y: -3});
-
-        expect(page.getSliderSelectionBar().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 379, y: 3});
-        expect(page.getSliderSelectionBar().getSize()).toBeApproximateSize({width: 218, height: 32});
-      });
-
-      describe('after resetting the form', () => {
-        beforeEach(() => {
-          page.getSliderHighPointer().mouseDragSync(-220, -50);
-          page.getFormResetButton().click();
-        });
-
-        it('should update the slider pointer labels to original values', () => {
-          expect(page.getSliderLowPointerLabel().getText()).toEqual('20');
-          expect(page.getSliderHighPointerLabel().getText()).toEqual('80');
-        });
-
-        it('should update the form to original values', () => {
-          expect(page.getLowValueTextElement().getText()).toEqual('Low value: 20');
-          expect(page.getHighValueTextElement().getText()).toEqual('High value: 80');
-        });
-
-        it('should set slider elements back in original positions', () => {
-          expect(page.getSliderLowPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 145, y: 21});
-          expect(page.getSliderLowPointer().getSize()).toBeApproximateSize({width: 32, height: 32});
-
-          expect(page.getSliderLowPointerLabel().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 149, y: -3});
-
-          expect(page.getSliderHighPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 581, y: 21});
-          expect(page.getSliderHighPointer().getSize()).toBeApproximateSize({width: 32, height: 32});
-
-          expect(page.getSliderHighPointerLabel().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 585, y: -3});
-
-          expect(page.getSliderSelectionBar().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 161, y: 3});
-          expect(page.getSliderSelectionBar().getSize()).toBeApproximateSize({width: 436, height: 32});
-        });
-      });
+  describe('after dragging the low slider pointer', () => {
+    beforeEach(() => {
+      page.getSliderLowPointer().mouseDragSync(220, -50);
     });
 
-    describe('after dragging the high slider pointer', () => {
+    it('should update the low pointer label to new value', () => {
+      expect(page.getSliderLowPointerLabel().getText()).toEqual('50');
+    });
+
+    it('should update the low value on the form to new value', () => {
+      expect(page.getLowValueTextElement().getText()).toEqual('Low value: 50');
+    });
+
+    it('should position the low pointer, the low pointer label and the selection bar correctly', () => {
+      expect(page.getSliderLowPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 363, y: 21});
+
+      expect(page.getSliderLowPointerLabel().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 367, y: -3});
+
+      expect(page.getSliderSelectionBar().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 379, y: 3});
+      expect(page.getSliderSelectionBar().getSize()).toBeApproximateSize({width: 218, height: 32});
+    });
+
+    describe('after resetting the form', () => {
       beforeEach(() => {
         page.getSliderHighPointer().mouseDragSync(-220, -50);
+        page.getFormResetButton().click();
       });
 
-      it('should update the low pointer label to new value', () => {
-        expect(page.getSliderHighPointerLabel().getText()).toEqual('50');
+      it('should update the slider pointer labels to original values', () => {
+        expect(page.getSliderLowPointerLabel().getText()).toEqual('20');
+        expect(page.getSliderHighPointerLabel().getText()).toEqual('80');
       });
 
-      it('should update the high value on the form to new value', () => {
-        expect(page.getHighValueTextElement().getText()).toEqual('High value: 50');
+      it('should update the form to original values', () => {
+        expect(page.getLowValueTextElement().getText()).toEqual('Low value: 20');
+        expect(page.getHighValueTextElement().getText()).toEqual('High value: 80');
       });
 
-      it('should position the high pointer, the high pointer label and the selection bar correctly', () => {
-        expect(page.getSliderHighPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 363, y: 21});
+      it('should set slider elements back in original positions', () => {
+        expect(page.getSliderLowPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 145, y: 21});
+        expect(page.getSliderLowPointer().getSize()).toBeApproximateSize({width: 32, height: 32});
 
-        expect(page.getSliderHighPointerLabel().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 367, y: -3});
+        expect(page.getSliderLowPointerLabel().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 149, y: -3});
+
+        expect(page.getSliderHighPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 581, y: 21});
+        expect(page.getSliderHighPointer().getSize()).toBeApproximateSize({width: 32, height: 32});
+
+        expect(page.getSliderHighPointerLabel().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 585, y: -3});
 
         expect(page.getSliderSelectionBar().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 161, y: 3});
-        expect(page.getSliderSelectionBar().getSize()).toBeApproximateSize({width: 218, height: 32});
+        expect(page.getSliderSelectionBar().getSize()).toBeApproximateSize({width: 436, height: 32});
+      });
+    });
+  });
+
+  describe('after dragging the high slider pointer', () => {
+    beforeEach(() => {
+      page.getSliderHighPointer().mouseDragSync(-220, -50);
+    });
+
+    it('should update the low pointer label to new value', () => {
+      expect(page.getSliderHighPointerLabel().getText()).toEqual('50');
+    });
+
+    it('should update the high value on the form to new value', () => {
+      expect(page.getHighValueTextElement().getText()).toEqual('High value: 50');
+    });
+
+    it('should position the high pointer, the high pointer label and the selection bar correctly', () => {
+      expect(page.getSliderHighPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 363, y: 21});
+
+      expect(page.getSliderHighPointerLabel().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 367, y: -3});
+
+      expect(page.getSliderSelectionBar().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 161, y: 3});
+      expect(page.getSliderSelectionBar().getSize()).toBeApproximateSize({width: 218, height: 32});
+    });
+
+    describe('after resetting the form', () => {
+      beforeEach(() => {
+        page.getSliderHighPointer().mouseDragSync(-220, -50);
+        page.getFormResetButton().click();
       });
 
-      describe('after resetting the form', () => {
-        beforeEach(() => {
-          page.getSliderHighPointer().mouseDragSync(-220, -50);
-          page.getFormResetButton().click();
-        });
+      it('should update the slider pointer labels to original values', () => {
+        expect(page.getSliderLowPointerLabel().getText()).toEqual('20');
+        expect(page.getSliderHighPointerLabel().getText()).toEqual('80');
+      });
 
-        it('should update the slider pointer labels to original values', () => {
-          expect(page.getSliderLowPointerLabel().getText()).toEqual('20');
-          expect(page.getSliderHighPointerLabel().getText()).toEqual('80');
-        });
+      it('should update the form to original values', () => {
+        expect(page.getLowValueTextElement().getText()).toEqual('Low value: 20');
+        expect(page.getHighValueTextElement().getText()).toEqual('High value: 80');
+      });
 
-        it('should update the form to original values', () => {
-          expect(page.getLowValueTextElement().getText()).toEqual('Low value: 20');
-          expect(page.getHighValueTextElement().getText()).toEqual('High value: 80');
-        });
+      it('should set slider elements back in original positions', () => {
+        expect(page.getSliderLowPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 145, y: 21});
+        expect(page.getSliderLowPointer().getSize()).toBeApproximateSize({width: 32, height: 32});
 
-        it('should set slider elements back in original positions', () => {
-          expect(page.getSliderLowPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 145, y: 21});
-          expect(page.getSliderLowPointer().getSize()).toBeApproximateSize({width: 32, height: 32});
+        expect(page.getSliderLowPointerLabel().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 149, y: -3});
 
-          expect(page.getSliderLowPointerLabel().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 149, y: -3});
+        expect(page.getSliderHighPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 581, y: 21});
+        expect(page.getSliderHighPointer().getSize()).toBeApproximateSize({width: 32, height: 32});
 
-          expect(page.getSliderHighPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 581, y: 21});
-          expect(page.getSliderHighPointer().getSize()).toBeApproximateSize({width: 32, height: 32});
+        expect(page.getSliderHighPointerLabel().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 585, y: -3});
 
-          expect(page.getSliderHighPointerLabel().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 585, y: -3});
-
-          expect(page.getSliderSelectionBar().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 161, y: 3});
-          expect(page.getSliderSelectionBar().getSize()).toBeApproximateSize({width: 436, height: 32});
-        });
+        expect(page.getSliderSelectionBar().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 161, y: 3});
+        expect(page.getSliderSelectionBar().getSize()).toBeApproximateSize({width: 436, height: 32});
       });
     });
   });
