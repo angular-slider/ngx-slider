@@ -1243,7 +1243,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     // This both improves performance and makes CSS animations work correctly
     if (this.ticks && this.ticks.length === newTicks.length) {
       for (let i: number = 0; i  < newTicks.length; ++i) {
-        Object.assign(this.ticks[i], newTicks[i]);
+        this.ticks[i] = newTicks[i];
       }
     } else {
       this.ticks = newTicks;
