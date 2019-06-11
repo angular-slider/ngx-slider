@@ -49,6 +49,15 @@ import { EventListenerHelper } from './event-listener-helper';
 import { SliderElementDirective } from './slider-element.directive';
 import { SliderLabelDirective } from './slider-label.directive';
 
+// Declaration for ResizeObserver a new API available in some of newest browsers:
+// https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver
+declare class ResizeObserver {
+  constructor(callback: () => void);
+  observe(target: any): void;
+  unobserve(target: any): void;
+  disconnect(): void;
+}
+
 export class Tick {
   selected: boolean = false;
   style: any = {};
@@ -295,6 +304,8 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   private onMoveEventListener: EventListener = null;
   private onEndEventListener: EventListener = null;
 
+  private resizeObserver: ResizeObserver = null;
+
   private onTouchedCallback: (value: any) => void = null;
   private onChangeCallback: (value: any) => void = null;
 
@@ -339,6 +350,8 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     this.updateFloorLab();
     this.initHandles();
     this.manageEventsBindings();
+
+    this.subscribeResizeObserver();
 
     this.initHasRun = true;
 
@@ -434,6 +447,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     this.combinedLabelElement.off();
     this.ticksElement.off();
 
+    this.unsubscribeResizeObserver();
     this.unsubscribeOnMove();
     this.unsubscribeOnEnd();
     this.unsubscribeInputModelChangeSubject();
@@ -500,6 +514,20 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
           : tap(() => {}) // no-op
       )
       .subscribe((modelChange: OutputModelChange) => this.publishOutputModelChange(modelChange));
+  }
+
+  private subscribeResizeObserver(): void {
+    if (CompatibilityHelper.isResizeObserverAvailable()) {
+      this.resizeObserver = new ResizeObserver((): void => this.calcViewDimensions());
+      this.resizeObserver.observe(this.elementRef.nativeElement);
+    }
+  }
+
+  private unsubscribeResizeObserver(): void {
+    if (CompatibilityHelper.isResizeObserverAvailable() && this.resizeObserver !== null) {
+      this.resizeObserver.disconnect();
+      this.resizeObserver = null;
+    }
   }
 
   private unsubscribeOnMove(): void {

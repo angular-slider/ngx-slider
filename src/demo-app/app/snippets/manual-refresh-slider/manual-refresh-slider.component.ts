@@ -6,6 +6,9 @@ import { Options } from '@local/ng5-slider';
   templateUrl: './manual-refresh-slider.component.html'
 })
 export class ManualRefreshSliderComponent {
+  // 2019-06-11 UPDATE: The use-case in this example is now resolved on newest browser version which support ResizeObserver API
+  // (https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver) - at this time it is Chrome >= 64 and Opera >= 51.
+  // For other browsers, or older browser versions, the workaround with manualRefresh still applies.
   manualRefreshEnabled: boolean = true;
   manualRefresh: EventEmitter<void> = new EventEmitter<void>();
   isCollapsed: boolean = true;

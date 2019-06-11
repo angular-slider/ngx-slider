@@ -2,6 +2,8 @@
 
 ## Slider is not refreshing when used in a dynamic component
 
+2019-06-11 UPDATE: This issue is now resolved on newest browser versions which support [ResizeObserver API](https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver). At this time it is Chrome >= 64 and Opera >= 51. For other browsers, or older browser versions, the workaround below still applies.
+
 If you use slider in a dynamic component (e.g. pop-up dialog shown on user action), then the slider may not be shown properly on first render. You may see the slider elements being stacked together like so:
 ![slider not refreshed](https://raw.githubusercontent.com/angular-slider/ng5-slider/master/assets/slider-not-refreshed.png)
 
