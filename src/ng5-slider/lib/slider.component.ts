@@ -69,16 +69,6 @@ class Dragging {
   highLimit: number = 0;
 }
 
-enum HandleType {
-  Low,
-  High
-}
-
-enum HandleLabelType {
-  Min,
-  Max
-}
-
 class ModelValues {
   value: number;
   highValue: number;
@@ -273,8 +263,8 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   // Maximum position the slider handle can have
   private maxPos: number = 0;
 
-  // The name of the handle we are currently tracking
-  private tracking: HandleType = null;
+  // Which handle is currently tracked for move events
+  private currentTrackingPointer: PointerType = null;
 
   /* If tickStep is set or ticksArray is specified.
     In this case, ticks values should be displayed below the slider. */
@@ -290,7 +280,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   private cmbLabelShown: boolean = false;
 
   // Internal variable to keep track of the focus element
-  private currentFocusElement: {pointer: SliderElementDirective, ref: HandleType} = null;
+  private currentFocusPointer: PointerType = null;
 
   private barDimension: number;
 
@@ -451,7 +441,6 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     this.unsubscribeManualRefresh();
     this.unsubscribeTriggerFocus();
     this.unbindEvents();
-    this.currentFocusElement = null;
   }
 
 
@@ -555,12 +544,22 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     }
   }
 
-  private getCurrentTrackingValue(): number {
-    if (ValueHelper.isNullOrUndefined(this.tracking)) {
-      return null;
+  private getPointerElement(pointerType: PointerType): SliderElementDirective {
+    if (pointerType === PointerType.Min) {
+      return this.minHandleElement;
+    } else if (pointerType === PointerType.Max) {
+      return this.maxHandleElement;
     }
+    return null;
+  }
 
-    return this.tracking === HandleType.Low ? this.viewLowValue : this.viewHighValue;
+  private getCurrentTrackingValue(): number {
+    if (this.currentTrackingPointer === PointerType.Min) {
+      return this.viewLowValue;
+    } else if (this.currentTrackingPointer === PointerType.Max) {
+      return this.viewHighValue;
+    }
+    return null;
   }
 
   private modelValueToViewValue(modelValue: number): number {
@@ -838,9 +837,10 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
 
   private refocusPointerIfNeeded(): void {
-    if (this.currentFocusElement) {
-      this.onPointerFocus(this.currentFocusElement.pointer, this.currentFocusElement.ref);
-      this.focusElement(this.currentFocusElement.pointer);
+    if (!ValueHelper.isNullOrUndefined(this.currentFocusPointer)) {
+      this.onPointerFocus(this.currentFocusPointer);
+      const element: SliderElementDirective = this.getPointerElement(this.currentFocusPointer);
+      this.focusElement(element);
     }
   }
 
@@ -1213,10 +1213,10 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
 
   // Update slider handles and label positions
-  private updateHandles(which: HandleType, newPos: number): void {
-    if (which === HandleType.Low) {
+  private updateHandles(which: PointerType, newPos: number): void {
+    if (which === PointerType.Min) {
       this.updateLowHandle(newPos);
-    } else {
+    } else if (which === PointerType.Max) {
       this.updateHighHandle(newPos);
     }
 
@@ -1228,8 +1228,8 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
 
   // Helper function to work out the position for handle labels depending on RTL or not
-  private getHandleLabelPos(labelType: HandleLabelType, newPos: number): number {
-    const labelDimension: number = (labelType === HandleLabelType.Min)
+  private getHandleLabelPos(labelType: PointerType, newPos: number): number {
+    const labelDimension: number = (labelType === PointerType.Min)
       ? this.minHandleLabelElement.dimension
       : this.maxHandleLabelElement.dimension;
     const nearHandlePos: number = newPos - labelDimension / 2 + this.handleHalfDim;
@@ -1239,8 +1239,8 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       return nearHandlePos;
     }
 
-    if ((this.viewOptions.rightToLeft && labelType === HandleLabelType.Min) ||
-       (!this.viewOptions.rightToLeft && labelType === HandleLabelType.Max)) {
+    if ((this.viewOptions.rightToLeft && labelType === PointerType.Min) ||
+       (!this.viewOptions.rightToLeft && labelType === PointerType.Max)) {
       return Math.min(nearHandlePos, endOfBarPos);
     } else {
       return Math.min(Math.max(nearHandlePos, 0), endOfBarPos);
@@ -1253,7 +1253,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     this.setLabelValue(this.getDisplayValue(this.viewLowValue, LabelType.Low), this.minHandleLabelElement);
     this.setPosition(
       this.minHandleLabelElement,
-      this.getHandleLabelPos(HandleLabelType.Min, newPos)
+      this.getHandleLabelPos(PointerType.Min, newPos)
     );
 
     if (this.viewOptions.getPointerColor) {
@@ -1274,7 +1274,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     this.setLabelValue(this.getDisplayValue(this.viewHighValue, LabelType.High), this.maxHandleLabelElement);
     this.setPosition(
       this.maxHandleLabelElement,
-      this.getHandleLabelPos(HandleLabelType.Max, newPos)
+      this.getHandleLabelPos(PointerType.Max, newPos)
     );
 
     if (this.viewOptions.getPointerColor) {
@@ -1674,9 +1674,9 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
 
   // Get the handle closest to an event
-  private getNearestHandle(event: MouseEvent|TouchEvent): SliderElementDirective {
+  private getNearestHandle(event: MouseEvent|TouchEvent): PointerType {
     if (!this.range) {
-      return this.minHandleElement;
+      return PointerType.Min;
     }
 
     const position: number = this.getEventPosition(event);
@@ -1684,16 +1684,15 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     const distanceMax: number = Math.abs(position - this.maxHandleElement.position);
 
     if (distanceMin < distanceMax) {
-      return this.minHandleElement;
+      return PointerType.Min;
     } else if (distanceMin > distanceMax) {
-      return this.maxHandleElement;
+      return PointerType.Max;
     } else if (!this.viewOptions.rightToLeft) {
       // if event is at the same distance from min/max then if it's at left of minH, we return minH else maxH
-      return position < this.minHandleElement.position ? this.minHandleElement : this.maxHandleElement;
-    } else {
-      // reverse in rtl
-      return position > this.minHandleElement.position ? this.minHandleElement : this.maxHandleElement;
+      return position < this.minHandleElement.position ? PointerType.Min : PointerType.Max;
     }
+    // reverse in rtl
+    return position > this.minHandleElement.position ? PointerType.Min : PointerType.Max;
   }
 
   // Wrapper function to focus an angular element
@@ -1707,72 +1706,72 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
     if (!this.viewOptions.onlyBindHandles) {
       this.selectionBarElement.on('mousedown',
-        (event: MouseEvent): void => this.onBarStart(draggableRange, null, event, true, true, true)
+        (event: MouseEvent): void => this.onBarStart(draggableRange, event, true, true, true)
       );
     }
 
     if (this.viewOptions.draggableRangeOnly) {
       this.minHandleElement.on('mousedown',
-        (event: MouseEvent): void => this.onBarStart(draggableRange, null, event, true, true)
+        (event: MouseEvent): void => this.onBarStart(draggableRange, event, true, true)
       );
       this.maxHandleElement.on('mousedown',
-        (event: MouseEvent): void => this.onBarStart(draggableRange, null, event, true, true)
+        (event: MouseEvent): void => this.onBarStart(draggableRange, event, true, true)
       );
     } else {
       this.minHandleElement.on('mousedown',
-        (event: MouseEvent): void => this.onStart(this.minHandleElement, HandleType.Low, event, true, true)
+        (event: MouseEvent): void => this.onStart(PointerType.Min, event, true, true)
       );
 
       if (this.range) {
         this.maxHandleElement.on('mousedown',
-          (event: MouseEvent): void => this.onStart(this.maxHandleElement, HandleType.High, event, true, true)
+          (event: MouseEvent): void => this.onStart(PointerType.Max, event, true, true)
         );
       }
       if (!this.viewOptions.onlyBindHandles) {
         this.fullBarElement.on('mousedown',
-          (event: MouseEvent): void => this.onStart(null, null, event, true, true, true)
+          (event: MouseEvent): void => this.onStart(null, event, true, true, true)
         );
         this.ticksElement.on('mousedown',
-          (event: MouseEvent): void => this.onStart(null, null, event, true, true, true, true)
+          (event: MouseEvent): void => this.onStart(null, event, true, true, true, true)
         );
       }
     }
 
     if (!this.viewOptions.onlyBindHandles) {
       this.selectionBarElement.onPassive('touchstart',
-        (event: TouchEvent): void => this.onBarStart(draggableRange, null, event, true, true)
+        (event: TouchEvent): void => this.onBarStart(draggableRange, event, true, true)
       );
     }
     if (this.viewOptions.draggableRangeOnly) {
       this.minHandleElement.onPassive('touchstart',
-        (event: TouchEvent): void => this.onBarStart(draggableRange, null, event, true, true)
+        (event: TouchEvent): void => this.onBarStart(draggableRange, event, true, true)
       );
       this.maxHandleElement.onPassive('touchstart',
-        (event: TouchEvent): void => this.onBarStart(draggableRange, null, event, true, true)
+        (event: TouchEvent): void => this.onBarStart(draggableRange, event, true, true)
       );
     } else {
       this.minHandleElement.onPassive('touchstart',
-        (event: TouchEvent): void => this.onStart(this.minHandleElement, HandleType.Low, event, true, true)
+        (event: TouchEvent): void => this.onStart(PointerType.Min, event, true, true)
       );
       if (this.range) {
         this.maxHandleElement.onPassive('touchstart',
-          (event: TouchEvent): void => this.onStart(this.maxHandleElement, HandleType.High, event, true, true)
+          (event: TouchEvent): void => this.onStart(PointerType.Max, event, true, true)
         );
       }
       if (!this.viewOptions.onlyBindHandles) {
         this.fullBarElement.onPassive('touchstart',
-          (event: TouchEvent): void => this.onStart(null, null, event, true, true, true)
+          (event: TouchEvent): void => this.onStart(null, event, true, true, true)
         );
         this.ticksElement.onPassive('touchstart',
-          (event: TouchEvent): void => this.onStart(null, null, event, false, false, true, true)
+          (event: TouchEvent): void => this.onStart(null, event, false, false, true, true)
         );
       }
     }
 
     if (this.viewOptions.keyboardSupport) {
-      this.minHandleElement.on('focus', (): void => this.onPointerFocus(this.minHandleElement, HandleType.Low));
+      this.minHandleElement.on('focus', (): void => this.onPointerFocus(PointerType.Min));
       if (this.range) {
-        this.maxHandleElement.on('focus', (): void => this.onPointerFocus(this.maxHandleElement, HandleType.High));
+        this.maxHandleElement.on('focus', (): void => this.onPointerFocus(PointerType.Max));
       }
     }
   }
@@ -1786,17 +1785,17 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     this.ticksElement.off();
   }
 
-  private onBarStart(draggableRange: boolean, pointer: SliderElementDirective, event: MouseEvent|TouchEvent,
+  private onBarStart(draggableRange: boolean, event: MouseEvent|TouchEvent,
     bindMove: boolean, bindEnd: boolean, simulateImmediateMove?: boolean, simulateImmediateEnd?: boolean): void {
     if (draggableRange) {
-      this.onDragStart(pointer, HandleType.High, event, bindMove, bindEnd);
+      this.onDragStart(PointerType.Max, event, bindMove, bindEnd);
     } else {
-      this.onStart(pointer, HandleType.Low, event, bindMove, bindEnd, simulateImmediateMove, simulateImmediateEnd);
+      this.onStart(PointerType.Min, event, bindMove, bindEnd, simulateImmediateMove, simulateImmediateEnd);
     }
   }
 
   // onStart event handler
-  private onStart(pointer: SliderElementDirective, ref: HandleType, event: MouseEvent|TouchEvent,
+  private onStart(pointerType: PointerType, event: MouseEvent|TouchEvent,
       bindMove: boolean, bindEnd: boolean, simulateImmediateMove?: boolean, simulateImmediateEnd?: boolean): void {
     event.stopPropagation();
     // Only call preventDefault() when handling non-passive events (passive events don't need it)
@@ -1808,24 +1807,24 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     // have been animated into view.
     this.calcViewDimensions();
 
-    if (pointer) {
-      this.tracking = ref;
-    } else {
-      pointer = this.getNearestHandle(event);
-      this.tracking = pointer === this.minHandleElement ? HandleType.Low : HandleType.High;
+    if (ValueHelper.isNullOrUndefined(pointerType)) {
+      pointerType = this.getNearestHandle(event);
     }
 
-    pointer.addClass('ng5-slider-active');
+    this.currentTrackingPointer = pointerType;
+
+    const pointerElement: SliderElementDirective = this.getPointerElement(pointerType);
+    pointerElement.addClass('ng5-slider-active');
 
     if (this.viewOptions.keyboardSupport) {
-      this.focusElement(pointer);
+      this.focusElement(pointerElement);
     }
 
     if (bindMove) {
       this.unsubscribeOnMove();
 
       const onMoveCallback: ((e: MouseEvent|TouchEvent) => void) =
-        (e: MouseEvent|TouchEvent): void => this.dragging.active ? this.onDragMove(pointer, e) : this.onMove(pointer, e);
+        (e: MouseEvent|TouchEvent): void => this.dragging.active ? this.onDragMove(e) : this.onMove(e);
 
       if (CompatibilityHelper.isTouchEvent(event)) {
         this.onMoveEventListener = this.eventListenerHelper.attachPassiveEventListener(
@@ -1863,7 +1862,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     // start, move, end sequence, and sometimes, they don't - they only invoke mousedown
     // As a workaround, we simulate the first move event and the end event if it's necessary
     if (simulateImmediateMove) {
-      this.onMove(pointer, event, true);
+      this.onMove(event, true);
     }
 
     if (simulateImmediateEnd) {
@@ -1872,7 +1871,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
 
   // onMove event handler
-  private onMove(pointer: SliderElementDirective, event: MouseEvent|TouchEvent, fromTick?: boolean): void {
+  private onMove(event: MouseEvent|TouchEvent, fromTick?: boolean): void {
     let touchForThisSlider: Touch;
 
     if (CompatibilityHelper.isTouchEvent(event)) {
@@ -1927,7 +1926,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     if (!this.viewOptions.keyboardSupport) {
       this.minHandleElement.removeClass('ng5-slider-active');
       this.maxHandleElement.removeClass('ng5-slider-active');
-      this.tracking = null;
+      this.currentTrackingPointer = null;
     }
     this.dragging.active = false;
 
@@ -1937,18 +1936,16 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     this.userChangeEnd.emit(this.getChangeContext());
   }
 
-  private onPointerFocus(pointer: SliderElementDirective, ref: HandleType): void {
-    this.tracking = ref;
-    pointer.on('blur', (): void => this.onPointerBlur(pointer));
-    pointer.on('keydown', (event: KeyboardEvent): void => this.onKeyboardEvent(event));
-    pointer.on('keyup', (): void => this.onKeyUp());
-    this.firstKeyDown = true;
-    pointer.addClass('ng5-slider-active');
+  private onPointerFocus(pointerType: PointerType): void {
+    const pointerElement: SliderElementDirective = this.getPointerElement(pointerType);
+    pointerElement.on('blur', (): void => this.onPointerBlur(pointerElement));
+    pointerElement.on('keydown', (event: KeyboardEvent): void => this.onKeyboardEvent(event));
+    pointerElement.on('keyup', (): void => this.onKeyUp());
+    pointerElement.addClass('ng5-slider-active');
 
-    this.currentFocusElement = {
-      pointer: pointer,
-      ref: ref,
-    };
+    this.currentTrackingPointer = pointerType;
+    this.currentFocusPointer = pointerType;
+    this.firstKeyDown = true;
   }
 
   private onKeyUp(): void {
@@ -1962,8 +1959,8 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     pointer.off('keyup');
     pointer.removeClass('ng5-slider-active');
     if (!this.isDragging) {
-      this.tracking = null;
-      this.currentFocusElement = null;
+      this.currentTrackingPointer = null;
+      this.currentFocusPointer = null;
     }
   }
 
@@ -2023,7 +2020,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     const key: string = keys[keyCode];
     const action: number = actions[key];
 
-    if (ValueHelper.isNullOrUndefined(action) || ValueHelper.isNullOrUndefined(this.tracking)) {
+    if (ValueHelper.isNullOrUndefined(action) || ValueHelper.isNullOrUndefined(this.currentTrackingPointer)) {
       return;
     }
     event.preventDefault();
@@ -2042,14 +2039,14 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       let newMinValue: number;
       let newMaxValue: number;
 
-      if (this.tracking === HandleType.Low) {
+      if (this.currentTrackingPointer === PointerType.Min) {
         newMinValue = newValue;
         newMaxValue = newValue + difference;
         if (newMaxValue > this.viewOptions.ceil) {
           newMaxValue = this.viewOptions.ceil;
           newMinValue = newMaxValue - difference;
         }
-      } else {
+      } else if (this.currentTrackingPointer === PointerType.Max) {
         newMaxValue = newValue;
         newMinValue = newValue - difference;
         if (newMinValue < this.viewOptions.floor) {
@@ -2062,7 +2059,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
 
   // onDragStart event handler, handles dragging of the middle bar
-  private onDragStart(pointer: SliderElementDirective, ref: HandleType, event: MouseEvent|TouchEvent,
+  private onDragStart(pointerType: PointerType, event: MouseEvent|TouchEvent,
     bindMove: boolean, bindEnd: boolean): void {
     const position: number = this.getEventPosition(event);
 
@@ -2077,7 +2074,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
         ? position - this.maxHandleElement.position
         : this.maxHandleElement.position - position;
 
-    this.onStart(pointer, ref, event, bindMove, bindEnd);
+    this.onStart(pointerType, event, bindMove, bindEnd);
   }
 
   /** Get min value depending on whether the newPos is outOfBounds above or below the bar and rightToLeft */
@@ -2133,7 +2130,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     return this.roundStep(value);
   }
 
-  private onDragMove(pointer: SliderElementDirective, event?: MouseEvent|TouchEvent): void {
+  private onDragMove(event?: MouseEvent|TouchEvent): void {
     const newPos: number = this.getEventPosition(event);
 
     let ceilLimit: number,
@@ -2193,8 +2190,8 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     this.viewLowValue = newMinValue;
     this.viewHighValue = newMaxValue;
     this.applyViewChange();
-    this.updateHandles(HandleType.Low, this.valueToPosition(newMinValue));
-    this.updateHandles(HandleType.High, this.valueToPosition(newMaxValue));
+    this.updateHandles(PointerType.Min, this.valueToPosition(newMinValue));
+    this.updateHandles(PointerType.Max, this.valueToPosition(newMaxValue));
   }
 
   // Set the new value and position to the current tracking handle
@@ -2205,33 +2202,34 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
         newValue = this.applyPushRange(newValue);
       } else {
         if (this.viewOptions.noSwitching) {
-          if (this.tracking === HandleType.Low && newValue > this.viewHighValue) {
+          if (this.currentTrackingPointer === PointerType.Min &&
+              newValue > this.viewHighValue) {
             newValue = this.applyMinMaxRange(this.viewHighValue);
-          } else if (this.tracking === HandleType.High &&
+          } else if (this.currentTrackingPointer === PointerType.Max &&
                      newValue < this.viewLowValue) {
             newValue = this.applyMinMaxRange(this.viewLowValue);
           }
         }
         newValue = this.applyMinMaxRange(newValue);
         /* This is to check if we need to switch the min and max handles */
-        if (this.tracking === HandleType.Low && newValue > this.viewHighValue) {
+        if (this.currentTrackingPointer === PointerType.Min && newValue > this.viewHighValue) {
           this.viewLowValue = this.viewHighValue;
           this.applyViewChange();
-          this.updateHandles(HandleType.Low, this.maxHandleElement.position);
+          this.updateHandles(PointerType.Min, this.maxHandleElement.position);
           this.updateAriaAttributes();
-          this.tracking = HandleType.High;
+          this.currentTrackingPointer = PointerType.Max;
           this.minHandleElement.removeClass('ng5-slider-active');
           this.maxHandleElement.addClass('ng5-slider-active');
           if (this.viewOptions.keyboardSupport) {
             this.focusElement(this.maxHandleElement);
           }
-        } else if (this.tracking === HandleType.High &&
+        } else if (this.currentTrackingPointer === PointerType.Max &&
                    newValue < this.viewLowValue) {
           this.viewHighValue = this.viewLowValue;
           this.applyViewChange();
-          this.updateHandles(HandleType.High, this.minHandleElement.position);
+          this.updateHandles(PointerType.Max, this.minHandleElement.position);
           this.updateAriaAttributes();
-          this.tracking = HandleType.Low;
+          this.currentTrackingPointer = PointerType.Min;
           this.maxHandleElement.removeClass('ng5-slider-active');
           this.minHandleElement.addClass('ng5-slider-active');
           if (this.viewOptions.keyboardSupport) {
@@ -2242,14 +2240,14 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     }
 
     if (this.getCurrentTrackingValue() !== newValue) {
-      if (this.tracking === HandleType.Low) {
+      if (this.currentTrackingPointer === PointerType.Min) {
         this.viewLowValue = newValue;
         this.applyViewChange();
-      } else {
+      } else if (this.currentTrackingPointer === PointerType.Max) {
         this.viewHighValue = newValue;
         this.applyViewChange();
       }
-      this.updateHandles(this.tracking, this.valueToPosition(newValue));
+      this.updateHandles(this.currentTrackingPointer, this.valueToPosition(newValue));
       this.updateAriaAttributes();
     }
   }
@@ -2265,22 +2263,24 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
 
   private applyMinMaxRange(newValue: number): number {
-    const oppositeValue: number = this.tracking === HandleType.Low ? this.viewHighValue : this.viewLowValue;
+    const oppositeValue: number = (this.currentTrackingPointer === PointerType.Min)
+      ? this.viewHighValue
+      : this.viewLowValue;
     const difference: number = Math.abs(newValue - oppositeValue);
     if (!ValueHelper.isNullOrUndefined(this.viewOptions.minRange)) {
       if (difference < this.viewOptions.minRange) {
-        if (this.tracking === HandleType.Low) {
+        if (this.currentTrackingPointer === PointerType.Min) {
           return MathHelper.roundToPrecisionLimit(this.viewHighValue - this.viewOptions.minRange, this.viewOptions.precisionLimit);
-        } else {
+        } else if (this.currentTrackingPointer === PointerType.Max) {
           return MathHelper.roundToPrecisionLimit(this.viewLowValue + this.viewOptions.minRange, this.viewOptions.precisionLimit);
         }
       }
     }
     if (!ValueHelper.isNullOrUndefined(this.viewOptions.maxRange)) {
       if (difference > this.viewOptions.maxRange) {
-        if (this.tracking === HandleType.Low) {
+        if (this.currentTrackingPointer === PointerType.Min) {
           return MathHelper.roundToPrecisionLimit(this.viewHighValue - this.viewOptions.maxRange, this.viewOptions.precisionLimit);
-        } else {
+        } else if (this.currentTrackingPointer === PointerType.Max) {
           return MathHelper.roundToPrecisionLimit(this.viewLowValue + this.viewOptions.maxRange, this.viewOptions.precisionLimit);
         }
       }
@@ -2289,7 +2289,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
 
   private applyPushRange(newValue: number): number {
-    const difference: number = this.tracking === HandleType.Low
+    const difference: number = (this.currentTrackingPointer === PointerType.Min)
           ? this.viewHighValue - newValue
           : newValue - this.viewLowValue;
     const minRange: number = (!ValueHelper.isNullOrUndefined(this.viewOptions.minRange))
@@ -2298,31 +2298,31 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     const maxRange: number = this.viewOptions.maxRange;
     // if smaller than minRange
     if (difference < minRange) {
-      if (this.tracking === HandleType.Low) {
+      if (this.currentTrackingPointer === PointerType.Min) {
         this.viewHighValue = MathHelper.roundToPrecisionLimit(
           Math.min(newValue + minRange, this.viewOptions.ceil), this.viewOptions.precisionLimit);
         newValue = MathHelper.roundToPrecisionLimit(this.viewHighValue - minRange, this.viewOptions.precisionLimit);
         this.applyViewChange();
-        this.updateHandles(HandleType.High, this.valueToPosition(this.viewHighValue));
-      } else {
+        this.updateHandles(PointerType.Max, this.valueToPosition(this.viewHighValue));
+      } else if (this.currentTrackingPointer === PointerType.Max) {
         this.viewLowValue = MathHelper.roundToPrecisionLimit(
           Math.max(newValue - minRange, this.viewOptions.floor), this.viewOptions.precisionLimit);
         newValue = MathHelper.roundToPrecisionLimit(this.viewLowValue + minRange, this.viewOptions.precisionLimit);
         this.applyViewChange();
-        this.updateHandles(HandleType.Low, this.valueToPosition(this.viewLowValue));
+        this.updateHandles(PointerType.Min, this.valueToPosition(this.viewLowValue));
       }
       this.updateAriaAttributes();
     } else if (!ValueHelper.isNullOrUndefined(maxRange) && difference > maxRange) {
       // if greater than maxRange
-      if (this.tracking === HandleType.Low) {
+      if (this.currentTrackingPointer === PointerType.Min) {
         this.viewHighValue = MathHelper.roundToPrecisionLimit(newValue + maxRange, this.viewOptions.precisionLimit);
         this.applyViewChange();
-        this.updateHandles(HandleType.High, this.valueToPosition(this.viewHighValue)
+        this.updateHandles(PointerType.Max, this.valueToPosition(this.viewHighValue)
         );
-      } else {
+      } else if (this.currentTrackingPointer === PointerType.Max) {
         this.viewLowValue = MathHelper.roundToPrecisionLimit(newValue - maxRange, this.viewOptions.precisionLimit);
         this.applyViewChange();
-        this.updateHandles(HandleType.Low, this.valueToPosition(this.viewLowValue));
+        this.updateHandles(PointerType.Min, this.valueToPosition(this.viewLowValue));
       }
       this.updateAriaAttributes();
     }
@@ -2331,7 +2331,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
   private getChangeContext(): ChangeContext {
     const changeContext: ChangeContext = new ChangeContext();
-    changeContext.pointerType = this.tracking === HandleType.Low ? PointerType.Min : PointerType.Max;
+    changeContext.pointerType = this.currentTrackingPointer;
     changeContext.value = +this.value;
     if (this.range) {
       changeContext.highValue = +this.highValue;
