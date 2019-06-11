@@ -1,3 +1,9 @@
+# 1.2.1
+ * fix erratic slider behaviour when using simple slider with ticksArray
+ * fix tick parameters not getting updated correctly (issue #105 and #89)
+ * fix not getting highValue in userChange events (issue #108)
+ * fix slider not getting refreshed after visibility change - see notes in KNOWN_ISSUES.md (issue #106)
+
 # 1.2.0
  * add CSS animations ported from angularjs-slider (issue #72)
  * re-write model update code with rxjs, fixing a number of bugs in this area (issue #69, #86, #91, #93, #95)
