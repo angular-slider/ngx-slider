@@ -1,21 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {
-  SliderComponent,
-  RightOutSelDirective,
-  LeftOutSelDirective,
-  FullBarDirective,
-  SelBarDirective,
-  MinHDirective,
-  MaxHDirective,
-  FlrLabDirective,
-  CeilLabDirective,
-  MinLabDirective,
-  MaxLabDirective,
-  CmbLabDirective,
-  TicksDirective
-} from './slider.component';
-
+import { SliderComponent } from './slider.component';
+import { SliderElementDirective } from './slider-element.directive';
+import { SliderLabelDirective } from './slider-label.directive';
 import { TooltipWrapperComponent } from './tooltip-wrapper.component';
 
 describe('SliderComponent', () => {
@@ -26,18 +13,8 @@ describe('SliderComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         SliderComponent,
-        RightOutSelDirective,
-        LeftOutSelDirective,
-        FullBarDirective,
-        SelBarDirective,
-        MinHDirective,
-        MaxHDirective,
-        FlrLabDirective,
-        CeilLabDirective,
-        MinLabDirective,
-        MaxLabDirective,
-        CmbLabDirective,
-        TicksDirective,
+        SliderElementDirective,
+        SliderLabelDirective,
         TooltipWrapperComponent
       ]
     })

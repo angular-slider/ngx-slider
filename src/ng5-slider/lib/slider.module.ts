@@ -1,20 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {
-  SliderComponent,
-  RightOutSelDirective,
-  LeftOutSelDirective,
-  FullBarDirective,
-  SelBarDirective,
-  MinHDirective,
-  MaxHDirective,
-  FlrLabDirective,
-  CeilLabDirective,
-  MinLabDirective,
-  MaxLabDirective,
-  CmbLabDirective,
-  TicksDirective
-} from './slider.component';
+import { SliderComponent } from './slider.component';
+import { SliderElementDirective } from './slider-element.directive';
+import { SliderLabelDirective } from './slider-label.directive';
 import { TooltipWrapperComponent } from './tooltip-wrapper.component';
 
 /**
@@ -28,18 +16,8 @@ import { TooltipWrapperComponent } from './tooltip-wrapper.component';
   ],
   declarations: [
     SliderComponent,
-    RightOutSelDirective,
-    LeftOutSelDirective,
-    FullBarDirective,
-    SelBarDirective,
-    MinHDirective,
-    MaxHDirective,
-    FlrLabDirective,
-    CeilLabDirective,
-    MinLabDirective,
-    MaxLabDirective,
-    CmbLabDirective,
-    TicksDirective,
+    SliderElementDirective,
+    SliderLabelDirective,
     TooltipWrapperComponent
   ],
   exports: [

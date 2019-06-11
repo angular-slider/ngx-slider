@@ -20,8 +20,8 @@ describe('simple slider', () => {
     });
 
     it('should position the slider elements correctly', () => {
-      expect(page.getSliderBar().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 0, y: 3});
-      expect(page.getSliderBar().getSize()).toBeApproximateSize({width: 758, height: 32});
+      expect(page.getSliderFullBar().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 0, y: 3});
+      expect(page.getSliderFullBar().getSize()).toBeApproximateSize({width: 758, height: 32});
 
       expect(page.getSliderFloorLabel().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 0, y: -3});
 

@@ -11,44 +11,44 @@ export class VerticalSlidersDemoPage {
   }
 
   getSliderFullBar(sliderNumber: number): SliderSubElement {
-    return this.getSliderSubElement(sliderNumber, 'ng5sliderfullbarelem');
+    return this.getSliderSubElement(sliderNumber, 'ng5-slider-full-bar');
   }
 
   getSliderSelectionBar(sliderNumber: number): SliderSubElement {
-    return this.getSliderSubElement(sliderNumber, 'ng5sliderselbarelem');
+    return this.getSliderSubElement(sliderNumber, 'ng5-slider-selection-bar');
   }
 
   getSliderFloorLabel(sliderNumber: number): SliderSubElement {
-    return this.getSliderSubElement(sliderNumber, 'ng5sliderflrlabelem');
+    return this.getSliderSubElement(sliderNumber, 'ng5-slider-floor');
   }
 
   getSliderCeilLabel(sliderNumber: number): SliderSubElement {
-    return this.getSliderSubElement(sliderNumber, 'ng5sliderceillabelem');
+    return this.getSliderSubElement(sliderNumber, 'ng5-slider-ceil');
   }
 
   getSliderLowPointer(sliderNumber: number): SliderSubElement {
-    return this.getSliderSubElement(sliderNumber, 'ng5sliderminhelem');
+    return this.getSliderSubElement(sliderNumber, 'ng5-slider-pointer-min');
   }
 
   getSliderLowPointerLabel(sliderNumber: number): SliderSubElement {
-    return this.getSliderSubElement(sliderNumber, 'ng5sliderminlabelem');
+    return this.getSliderSubElement(sliderNumber, 'ng5-slider-model-value');
   }
 
   getSliderHighPointer(sliderNumber: number): SliderSubElement {
-    return this.getSliderSubElement(sliderNumber, 'ng5slidermaxhelem');
+    return this.getSliderSubElement(sliderNumber, 'ng5-slider-pointer-max');
   }
 
   getSliderHighPointerLabel(sliderNumber: number): SliderSubElement {
-    return this.getSliderSubElement(sliderNumber, 'ng5slidermaxlabelem');
+    return this.getSliderSubElement(sliderNumber, 'ng5-slider-model-high');
   }
 
   getSliderCombinedLabel(sliderNumber: number): SliderSubElement {
-    return this.getSliderSubElement(sliderNumber, 'ng5slidercmblabelem');
+    return this.getSliderSubElement(sliderNumber, 'ng5-slider-combined');
   }
 
-  private getSliderSubElement(sliderNumber: number, subElementAttribute: string): SliderSubElement {
+  private getSliderSubElement(sliderNumber: number, subElementClass: string): SliderSubElement {
     const sliderElement: ElementFinder = this.getSliderElement(sliderNumber);
-    const sliderSubElement: ElementFinder = sliderElement.element(by.css(`span[${subElementAttribute}]`));
+    const sliderSubElement: ElementFinder = sliderElement.element(by.css(`span.${subElementClass}`));
     return new SliderSubElement(sliderElement, sliderSubElement);
   }
 }

@@ -11,44 +11,44 @@ export class BaseRangeSliderDemoPage {
   }
 
   getSliderFullBar(): SliderSubElement {
-    return this.getSliderSubElement('ng5sliderfullbarelem');
+    return this.getSliderSubElement('ng5-slider-full-bar');
   }
 
   getSliderSelectionBar(): SliderSubElement {
-    return this.getSliderSubElement('ng5sliderselbarelem');
+    return this.getSliderSubElement('ng5-slider-selection-bar');
   }
 
   getSliderFloorLabel(): SliderSubElement {
-    return this.getSliderSubElement('ng5sliderflrlabelem');
+    return this.getSliderSubElement('ng5-slider-floor');
   }
 
   getSliderCeilLabel(): SliderSubElement {
-    return this.getSliderSubElement('ng5sliderceillabelem');
+    return this.getSliderSubElement('ng5-slider-ceil');
   }
 
   getSliderLowPointer(): SliderSubElement {
-    return this.getSliderSubElement('ng5sliderminhelem');
+    return this.getSliderSubElement('ng5-slider-pointer-min');
   }
 
   getSliderLowPointerLabel(): SliderSubElement {
-    return this.getSliderSubElement('ng5sliderminlabelem');
+    return this.getSliderSubElement('ng5-slider-model-value');
   }
 
   getSliderHighPointer(): SliderSubElement {
-    return this.getSliderSubElement('ng5slidermaxhelem');
+    return this.getSliderSubElement('ng5-slider-pointer-max');
   }
 
   getSliderHighPointerLabel(): SliderSubElement {
-    return this.getSliderSubElement('ng5slidermaxlabelem');
+    return this.getSliderSubElement('ng5-slider-model-high');
   }
 
   getSliderCombinedLabel(): SliderSubElement {
-    return this.getSliderSubElement('ng5slidercmblabelem');
+    return this.getSliderSubElement('ng5-slider-combined');
   }
 
-  private getSliderSubElement(subElementAttribute: string): SliderSubElement {
+  private getSliderSubElement(subElementClass: string): SliderSubElement {
     const sliderElement: ElementFinder = this.getSliderElement();
-    const sliderSubElement: ElementFinder = sliderElement.element(by.css(`span[${subElementAttribute}]`));
+    const sliderSubElement: ElementFinder = sliderElement.element(by.css(`span.${subElementClass}`));
     return new SliderSubElement(sliderElement, sliderSubElement);
   }
 }
