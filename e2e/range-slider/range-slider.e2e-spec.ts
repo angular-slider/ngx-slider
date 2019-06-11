@@ -612,32 +612,46 @@ describe('range slider', () => {
   describe('after changing high input value in the form', () => {
     beforeEach(() => {
       // Due to normalisation checks, we need to change both inputs and ensure that they contain valid data at all times while editing
+      // We also need to wait between edits, so that changes are propagated correctly due to throttling
       // Low value: 50 -> 0
-      page.getLowValueInput().sendKeys(Key.END, Key.LEFT, Key.BACK_SPACE)
-        .then(() => {
-          browser.sleep(50)
-            .then(() => {
-              // High value: 200 -> 20 -> 25 -> 125
-              page.getHighValueInput().sendKeys(Key.END, Key.BACK_SPACE, Key.BACK_SPACE, '5', Key.LEFT, Key.LEFT, '1');
+      page.getLowValueInput().sendKeys(Key.END, Key.LEFT, Key.BACK_SPACE).then(() => {
+        browser.sleep(200).then(() => {
+          // High value: 200 -> 20
+          page.getHighValueInput().sendKeys(Key.END, Key.BACK_SPACE).then(() => {
+            browser.sleep(200).then(() => {
+              // 20 -> 2
+              page.getHighValueInput().sendKeys(Key.END, Key.BACK_SPACE).then(() => {
+                browser.sleep(200).then(() => {
+                  // 2 -> 25
+                  page.getHighValueInput().sendKeys(Key.END, '5').then(() => {
+                    browser.sleep(200).then(() => {
+                      // 2 -> 25
+                      page.getHighValueInput().sendKeys(Key.HOME, '1');
+                    });
+                  });
+                });
+              });
             });
+          });
         });
+      });
     });
 
     it('should update values in the form to new value', () => {
-      browser.sleep(50).then(() => {
+      browser.sleep(1200).then(() => {
         expect(page.getLowValueInput().getAttribute('value')).toBe('0');
         expect(page.getHighValueInput().getAttribute('value')).toBe('125');
       });
     });
 
     it('should update the high pointer label to new value', () => {
-      browser.sleep(50).then(() => {
+      browser.sleep(1200).then(() => {
         expect(page.getSliderHighPointerLabel().getText()).toEqual('125');
       });
     });
 
     it('should position the high pointer, the high pointer label and the selection bar correctly', () => {
-      browser.sleep(50).then(() => {
+      browser.sleep(1200).then(() => {
         expect(page.getSliderHighPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 363, y: 21});
 
         expect(page.getSliderHighPointerLabel().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 363, y: -3});
