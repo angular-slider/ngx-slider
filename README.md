@@ -24,6 +24,14 @@ Self-contained, mobile friendly slider component for Angular 5+ based on [angula
 
    ![customised slider image](https://raw.githubusercontent.com/angular-slider/ng5-slider/master/assets/customised-slider.png)
 
+ * Slider with custom style - [StackBlitz](https://stackblitz.com/edit/ng5-slider-styled-slider-example?file=src%2Fapp%2Fapp.component.ts)
+
+   ![styled slider image](https://raw.githubusercontent.com/angular-slider/ng5-slider/master/assets/styled-slider.png)
+
+ * Vertical slider - [StackBlitz](https://stackblitz.com/edit/ng5-slider-vertical-slider-example?file=src%2Fapp%2Fapp.component.ts)
+
+   ![vertical slider image](https://raw.githubusercontent.com/angular-slider/ng5-slider/master/assets/vertical-slider.png)
+
  * [More examples on official website](https://angular-slider.github.io/ng5-slider/demos)
 
 ## Dependencies
