@@ -2,9 +2,10 @@
   "name": "ng5-slider",
   "version": "1.2.1",
   "private": true,
-  "description": "Slider component for Angular 5+",
+  "description": "Self-contained, mobile friendly slider component for Angular 5+ based on angularjs-slider",
   "keywords": [
     "slider",
+    "ui",
     "component",
     "angular",
     "ng",
