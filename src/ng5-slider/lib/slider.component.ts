@@ -125,24 +125,18 @@ const NG5_SLIDER_CONTROL_VALUE_ACCESSOR: any = {
 })
 export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDestroy, ControlValueAccessor {
   // Model for low value of slider. For simple slider, this is the only input. For range slider, this is the low value.
-  @Input() value: number;
+  @Input() value: number = null;
   // Output for low value slider to support two-way bindings
   @Output() valueChange: EventEmitter<number> = new EventEmitter();
 
   // Model for high value of slider. Not used in simple slider. For range slider, this is the high value.
-  @Input() highValue: number;
+  @Input() highValue: number = null;
   // Output for high value slider to support two-way bindings
   @Output() highValueChange: EventEmitter<number> = new EventEmitter();
 
-  // Changes in model inputs are passed through this subject
-  // These are all changes coming in from outside the component through input bindings or reactive form inputs
-  private inputModelChangeSubject: Subject<InputModelChange> = new Subject<InputModelChange>();
-  // Changes to model outputs are passed through this subject
-  // These are all changes that need to be communicated to output emitters and registered callbacks
-  private outputModelChangeSubject: Subject<OutputModelChange> = new Subject<OutputModelChange>();
-
-  private inputModelChangeSubscription: Subscription = null;
-  private outputModelChangeSubscription: Subscription = null;
+  // An object with all the other options of the slider.
+  // Each option can be updated at runtime and the slider will automatically be re-rendered.
+  @Input() options: Options = new Options();
 
   // Event emitted when user starts interaction with the slider
   @Output() userChangeStart: EventEmitter<ChangeContext> = new EventEmitter();
@@ -152,16 +146,6 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
   // Event emitted when user finishes interaction with the slider
   @Output() userChangeEnd: EventEmitter<ChangeContext> = new EventEmitter();
-
-  // An object with all the other options of the slider.
-  // Each option can be updated at runtime and the slider will automatically be re-rendered.
-  private _options: Options = new Options();
-  @Input() set options(newOptions: Options) {
-    this._options = newOptions;
-  }
-  get options(): Options {
-     return this._options;
-  }
 
   private manualRefreshSubscription: any;
   // Input event that triggers slider refresh (re-positioning of slider elements)
@@ -174,6 +158,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
 
   private triggerFocusSubscription: any;
+  // Input event that triggers setting focus on given slider handle
   @Input() set triggerFocus(triggerFocus: EventEmitter<void>) {
     this.unsubscribeTriggerFocus();
 
@@ -182,18 +167,45 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     });
   }
 
+  // Slider type, true means range slider
+  get range(): boolean {
+    return !ValueHelper.isNullOrUndefined(this.value) && !ValueHelper.isNullOrUndefined(this.highValue);
+  }
+
+  // Set to true if init method already executed
+  private initHasRun: boolean = false;
+
+    // Changes in model inputs are passed through this subject
+  // These are all changes coming in from outside the component through input bindings or reactive form inputs
+  private inputModelChangeSubject: Subject<InputModelChange> = new Subject<InputModelChange>();
+  private inputModelChangeSubscription: Subscription = null;
+  // Changes to model outputs are passed through this subject
+  // These are all changes that need to be communicated to output emitters and registered callbacks
+  private outputModelChangeSubject: Subject<OutputModelChange> = new Subject<OutputModelChange>();
+  private outputModelChangeSubscription: Subscription = null;
+
+  // Low value synced to model low value
+  private viewLowValue: number = null;
+  // High value synced to model high value
+  private viewHighValue: number = null;
   // Options synced to model options, based on defaults
   private viewOptions: Options = new Options();
-  // Low value synced to model low value
-  private viewLowValue: number;
-  // High value synced to model high value
-  private viewHighValue: number;
 
-  public barStyle: any = {};
-  public minPointerStyle: any = {};
-  public maxPointerStyle: any = {};
-  public showTicks: boolean = false;
-  public ticks: Tick[] = [];
+  // Half of the width or height of the slider handles
+  private handleHalfDimension: number = 0;
+  // Maximum position the slider handle can have
+  private maxHandlePosition: number = 0;
+
+  // Which handle is currently tracked for move events
+  private currentTrackingPointer: PointerType = null;
+  // Internal variable to keep track of the focus element
+  private currentFocusPointer: PointerType = null;
+  // Used to call onStart on the first keydown event
+  private firstKeyDown: boolean = false;
+  // Current touch id of touch event being handled
+  private touchId: number = null;
+  // Values recorded when first dragging the bar
+  private dragging: Dragging = new Dragging();
 
   /* Slider DOM elements */
 
@@ -249,47 +261,29 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   @ContentChild('tooltipTemplate')
   public tooltipTemplate: TemplateRef<any>;
 
+  // Host element class bindings
   @HostBinding('class.vertical')
   public sliderElementVerticalClass: boolean = false;
-
   @HostBinding('class.animate')
   public sliderElementAnimateClass: boolean = false;
-
   @HostBinding('attr.disabled')
   public sliderElementDisabledAttr: string = null;
 
-  // Slider type, true means range slider
-  get range(): boolean {
-    return !ValueHelper.isNullOrUndefined(this.value) && !ValueHelper.isNullOrUndefined(this.highValue);
-  }
+  // CSS styles
+  public barStyle: any = {};
+  public minPointerStyle: any = {};
+  public maxPointerStyle: any = {};
 
-  // Values recorded when first dragging the bar
-  private dragging: Dragging = new Dragging();
-
-  // Half of the width or height of the slider handles
-  private handleHalfDimension: number = 0;
-
-  // Maximum position the slider handle can have
-  private maxHandlePosition: number = 0;
-
-  // Which handle is currently tracked for move events
-  private currentTrackingPointer: PointerType = null;
-
+  // Whether to show/hide ticks
+  public showTicks: boolean = false;
   /* If tickStep is set or ticksArray is specified.
-    In this case, ticks values should be displayed below the slider. */
+     In this case, ticks values should be displayed below the slider. */
   private intermediateTicks: boolean = false;
-
-  // Set to true if init method already executed
-  private initHasRun: boolean = false;
-
-  // Used to call onStart on the first keydown event
-  private firstKeyDown: boolean = false;
+  // Ticks array as displayed in view
+  public ticks: Tick[] = [];
 
   // Internal flag to keep track of the visibility of combo label
   private cmbLabelShown: boolean = false;
-
-  // Internal variable to keep track of the focus element
-  private currentFocusPointer: PointerType = null;
 
   private barDimension: number;
 
@@ -298,14 +292,16 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   private getLegend: GetLegendFunction;
 
   private isDragging: boolean;
-  private touchId: number;
 
-  private eventListenerHelper: EventListenerHelper;
+  // Event listeners
+  private eventListenerHelper: EventListenerHelper = null;
   private onMoveEventListener: EventListener = null;
   private onEndEventListener: EventListener = null;
 
+  // Observer for slider element resize events
   private resizeObserver: ResizeObserver = null;
 
+  // Callbacks for reactive forms support
   private onTouchedCallback: (value: any) => void = null;
   private onChangeCallback: (value: any) => void = null;
 
