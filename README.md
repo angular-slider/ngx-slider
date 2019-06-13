@@ -113,7 +113,7 @@ For list of changes and bugfixes, see [CHANGELOG.md](CHANGELOG.md).
 
 ## Developer information
 
-If you'd like to contribute to the project, or check out the plans for future, see [DEVELOPERS.md](DEVELOPERS.md).
+If you would like to contribute to the project, see [DEVELOPERS.md](DEVELOPERS.md).
 
 ## License
 

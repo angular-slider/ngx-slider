@@ -2,61 +2,71 @@
 
 # Structure
 
-The repository is set up as an Angular project generated using ng-cli with the slider component contained in one of the app's modules. The slider is then exported to an NPM package using [ng-packagr](https://github.com/dherges/ng-packagr).
+The repository is set up as an Angular project generated using ng-cli, which contains both the slider component, and a demo app.
 
-# Running the demo app
+The slider library is exported to an NPM package using [ng-packagr](https://github.com/dherges/ng-packagr), while the demo app is built and published to Github Pages.
 
-The demo app is built dynamically based on the current content of code snippets which are pasted as code into the HTML templates. This is done by script in `scripts/generate-demo-ap-templates.js`, or by using this useful shortcut:
-```
-npm run prepare:demo-app
-```
+The project relies on some auto-generated code using a number of scripts in `scripts/` directory. To ensure that everything works as expected, you should always use `npm run` commands as described below. Using `ng` commands directly might not always work.
 
-Now you should be able to run the main demo app as any old Angular project:
-```
-ng serve
-```
+# Building the library
 
-Alternatively, you can run both of the above commands using:
-```
-npm run start
-```
-
-# Running unit and e2e tests
-
-Unit and e2e tests are run just as any standard Angular project:
-```
-ng test
-ng e2e
-```
-
-# Building the NPM package
-
-As with the demo app, some files for NPM package are generated dynamically using `scripts/generate-lib-files.js`, before ng-packagr can be run. There is a shortcut to run this script:
-```
-npm run prepare:lib
-```
-
-For simplicity, running the above script and packagr together is simplified to this shortcut:
+To build the ng5-slider library (NPM package), use:
 ```
 npm run build:lib
 ```
 
-The NPM package files will be generated in `dist/`, and the package should be ready to publish.
+The ng5-slider NPM package files will be generated in `dist/` folder.
 
-# Testing the NPM package
+# Running the demo app
 
-Before publishing the package, it is possible to test it locally with the demo app. To do this, a secondary app configuration is defined in `.angular-cli.json`, so you can do:
+To build and run the demo app, use:
 ```
-ng serve --app=demo-app-dist
-```
-
-This should hopefully help to find any problems before publishing the package itself to NPM.
-
-# Generating API docs
-
-[typedoc](https://github.com/TypeStrong/typedoc) is used to generate API documentation for the code:
-```
-npm run build:docs
+npm run start
 ```
 
-The command will save the output in `docs/`.
+The demo app should build and start on default URL `http://localhost:4200`.
+
+# Running tests
+
+To run unit tests, use:
+```
+npm run test
+```
+
+To run e2e tests, use:
+```
+npm run e2e
+```
+
+To run tslint, use:
+```
+npm run lint
+```
+
+Note: Currently (v1.2.1) most functionality is tested with e2e tests. This is not ideal for development, as running through the whole suite takes quite a long time. The plan for the future is to add more unit tests, so that development is easier.
+
+# Travis CI
+
+The project is also set up to use Travis CI, which runs the script:
+```
+npm run ci
+```
+
+This is a shorthand for running unit tests, e2e tests, building the project with production config and running tslint.
+
+# How generated code works
+
+As of v1.2.1, there are three main code generation scripts.
+
+## `scripts/generate-lib-files.js`
+This script prepares some files like `package.json` and `README.md` for the slider library, based on files in top-level directory.
+
+Note that the generated `package.json` for the library will be different from top-level `package.json`. This is because the top-level `package.json` is used to build and run the demo app, while the library `package.json` is specifically crafted for use with `ng-packagr` to build the library and later being included in the resulting NPM package.
+
+## `scripts/generate-demo-app-snippets.js`
+
+This script prepares the demo snippets shown in demo app by pasting code from the samples and generating the HTML templates used in final app. Code highlighting is achieved using [prismjs](https://prismjs.com/).
+
+## `scripts/generate-demo-app-docs.js`
+
+This script generates the API documentation pages in demo app. This is done by running [typedoc](https://typedoc.org/) and doing a bit of work to get the resulting HTML files in shape to be included as Angular components in the demo app. This is a bit hacky at the moment, as this is not a usual use-case for typedoc, but it works for now.
