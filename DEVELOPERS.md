@@ -60,11 +60,3 @@ npm run build:docs
 ```
 
 The command will save the output in `docs/`.
-
-# Development plans
-
-The rewrite from original AngularJS code still leaves a few bits and pieces that are not quite what would fit the new Angular 2+ development model.
-
-The main concept of the old code is reacting to every change of options or input and then basically re-running the same update code every time, managing the slider DOM elements directly like setting their position and injecting label text as inner HTML.
-
-The intention is to gradually rewrite the code to a more Angular-ised version where the slider elements are sub-components which are updated using Angular bindings rather than manual DOM manipulation. Hopefully, Angular's `HostBinding` will also help simplify the event handling code, which is quite spaghetti-like at the moment.

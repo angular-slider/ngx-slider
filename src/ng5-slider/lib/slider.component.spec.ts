@@ -2,6 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SliderComponent } from './slider.component';
 import { SliderElementDirective } from './slider-element.directive';
+import { SliderHandleDirective } from './slider-handle.directive';
 import { SliderLabelDirective } from './slider-label.directive';
 import { TooltipWrapperComponent } from './tooltip-wrapper.component';
 
@@ -14,6 +15,7 @@ describe('SliderComponent', () => {
       declarations: [
         SliderComponent,
         SliderElementDirective,
+        SliderHandleDirective,
         SliderLabelDirective,
         TooltipWrapperComponent
       ]

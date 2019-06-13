@@ -16,12 +16,11 @@ import {
   TemplateRef,
   ChangeDetectorRef,
   SimpleChanges,
-  forwardRef
+  forwardRef,
+  NgZone
 } from '@angular/core';
 
-import {
-  ControlValueAccessor, NG_VALUE_ACCESSOR
-} from '@angular/forms';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
@@ -31,13 +30,10 @@ import detectPassiveEvents from 'detect-passive-events';
 
 import {
   Options,
-  GetLegendFunction,
   LabelType,
-  TranslateFunction,
   ValueToPositionFunction,
   PositionToValueFunction,
-  CustomStepDefinition,
-  CombineLabelsFunction,
+  CustomStepDefinition
 } from './options';
 import { PointerType } from './pointer-type';
 import { ChangeContext } from './change-context';
@@ -47,6 +43,7 @@ import { MathHelper } from './math-helper';
 import { EventListener } from './event-listener';
 import { EventListenerHelper } from './event-listener-helper';
 import { SliderElementDirective } from './slider-element.directive';
+import { SliderHandleDirective } from './slider-handle.directive';
 import { SliderLabelDirective } from './slider-label.directive';
 
 // Declaration for ResizeObserver a new API available in some of newest browsers:
@@ -153,7 +150,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     this.unsubscribeManualRefresh();
 
     this.manualRefreshSubscription = manualRefresh.subscribe(() => {
-      setTimeout(() => this.calcViewDimensions());
+      setTimeout(() => this.calculateViewDimensionsAndDetectChanges());
     });
   }
 
@@ -226,12 +223,12 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   private selectionBarElement: SliderElementDirective;
 
   // Left slider handle
-  @ViewChild('minHandle', {read: SliderElementDirective})
-  private minHandleElement: SliderElementDirective;
+  @ViewChild('minHandle', {read: SliderHandleDirective})
+  private minHandleElement: SliderHandleDirective;
 
   // Right slider handle
-  @ViewChild('maxHandle', {read: SliderElementDirective})
-  private maxHandleElement: SliderElementDirective;
+  @ViewChild('maxHandle', {read: SliderHandleDirective})
+  private maxHandleElement: SliderHandleDirective;
 
   // Floor label
   @ViewChild('floorLabel', {read: SliderLabelDirective})
@@ -269,10 +266,13 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   @HostBinding('attr.disabled')
   public sliderElementDisabledAttr: string = null;
 
-  // CSS styles
+  // CSS styles and class flags
   public barStyle: any = {};
   public minPointerStyle: any = {};
   public maxPointerStyle: any = {};
+  public fullBarTransparentClass: boolean = false;
+  public selectionBarDraggableClass: boolean = false;
+  public ticksUnderValuesClass: boolean = false;
 
   // Whether to show/hide ticks
   public showTicks: boolean = false;
@@ -281,17 +281,6 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   private intermediateTicks: boolean = false;
   // Ticks array as displayed in view
   public ticks: Tick[] = [];
-
-  // Internal flag to keep track of the visibility of combo label
-  private cmbLabelShown: boolean = false;
-
-  private barDimension: number;
-
-  private translate: TranslateFunction;
-  private combineLabels: CombineLabelsFunction;
-  private getLegend: GetLegendFunction;
-
-  private isDragging: boolean;
 
   // Event listeners
   private eventListenerHelper: EventListenerHelper = null;
@@ -307,7 +296,8 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
   constructor(private renderer: Renderer2,
               private elementRef: ElementRef,
-              private changeDetectionRef: ChangeDetectorRef) {
+              private changeDetectionRef: ChangeDetectorRef,
+              private zone: NgZone) {
     this.eventListenerHelper = new EventListenerHelper(this.renderer);
   }
 
@@ -340,7 +330,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
     this.manageElementsStyle();
     this.updateDisabledState();
-    this.calcViewDimensions();
+    this.calculateViewDimensions();
     this.addAccessibility();
     this.updateCeilLabel();
     this.updateFloorLabel();
@@ -426,31 +416,22 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any): void {
-    this.calcViewDimensions();
+    this.calculateViewDimensionsAndDetectChanges();
   }
 
   ngOnDestroy(): void {
-    this.leftOuterSelectionBarElement.off();
-    this.rightOuterSelectionBarElement.off();
-    this.fullBarElement.off();
-    this.selectionBarElement.off();
-    this.minHandleElement.off();
-    this.maxHandleElement.off();
-    this.floorLabelElement.off();
-    this.ceilLabelElement.off();
-    this.minHandleLabelElement.off();
-    this.maxHandleLabelElement.off();
-    this.combinedLabelElement.off();
-    this.ticksElement.off();
-
-    this.unsubscribeResizeObserver();
     this.unsubscribeOnMove();
     this.unsubscribeOnEnd();
+
+    for (const element of this.getAllSliderElements()) {
+      element.off();
+    }
+
+    this.unsubscribeResizeObserver();
     this.unsubscribeInputModelChangeSubject();
     this.unsubscribeOutputModelChangeSubject();
     this.unsubscribeManualRefresh();
     this.unsubscribeTriggerFocus();
-    this.unbindEvents();
   }
 
 
@@ -514,7 +495,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
   private subscribeResizeObserver(): void {
     if (CompatibilityHelper.isResizeObserverAvailable()) {
-      this.resizeObserver = new ResizeObserver((): void => this.calcViewDimensions());
+      this.resizeObserver = new ResizeObserver((): void => this.calculateViewDimensionsAndDetectChanges());
       this.resizeObserver.observe(this.elementRef.nativeElement);
     }
   }
@@ -568,7 +549,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     }
   }
 
-  private getPointerElement(pointerType: PointerType): SliderElementDirective {
+  private getPointerElement(pointerType: PointerType): SliderHandleDirective {
     if (pointerType === PointerType.Min) {
       return this.minHandleElement;
     } else if (pointerType === PointerType.Max) {
@@ -776,10 +757,8 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       this.applyFloorCeilOptions();
     }
 
-    if (this.viewOptions.combineLabels) {
-      this.combineLabels = this.viewOptions.combineLabels;
-    } else {
-      this.combineLabels = (minValue: string, maxValue: string): string => {
+    if (ValueHelper.isNullOrUndefined(this.viewOptions.combineLabels)) {
+      this.viewOptions.combineLabels = (minValue: string, maxValue: string): string => {
         return minValue + ' - ' + maxValue;
       };
     }
@@ -794,10 +773,8 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     this.viewOptions.ceil = this.viewOptions.stepsArray.length - 1;
     this.viewOptions.step = 1;
 
-    if (this.viewOptions.translate) {
-      this.translate = this.viewOptions.translate;
-    } else {
-      this.translate = (modelValue: number): string => {
+    if (ValueHelper.isNullOrUndefined(this.viewOptions.translate)) {
+      this.viewOptions.translate = (modelValue: number): string => {
         if (this.viewOptions.bindIndexForStepsArray) {
           return String(this.getStepValue(modelValue));
         }
@@ -805,7 +782,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       };
     }
 
-    this.getLegend = (index: number): string => {
+    this.viewOptions.getLegend = (index: number): string => {
       const step: CustomStepDefinition = this.viewOptions.stepsArray[index];
       return step.legend;
     };
@@ -828,13 +805,9 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     this.viewOptions.ceil = +this.viewOptions.ceil;
     this.viewOptions.floor = +this.viewOptions.floor;
 
-    if (this.viewOptions.translate) {
-      this.translate = this.viewOptions.translate;
-    } else {
-      this.translate = (value: number): string => String(value);
+    if (ValueHelper.isNullOrUndefined(this.viewOptions.translate)) {
+      this.viewOptions.translate = (value: number): string => String(value);
     }
-
-    this.getLegend = this.viewOptions.getLegend;
   }
 
   // Resets slider
@@ -846,7 +819,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     this.unbindEvents();
     this.manageEventsBindings();
     this.updateDisabledState();
-    this.calcViewDimensions();
+    this.calculateViewDimensions();
     this.refocusPointerIfNeeded();
   }
 
@@ -858,66 +831,38 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     }
 
     if (pointerType === PointerType.Min) {
-      this.focusElement(this.minHandleElement);
+      this.minHandleElement.focus();
     } else if (this.range && pointerType === PointerType.Max) {
-      this.focusElement(this.maxHandleElement);
+      this.maxHandleElement.focus();
     }
   }
 
   private refocusPointerIfNeeded(): void {
     if (!ValueHelper.isNullOrUndefined(this.currentFocusPointer)) {
       this.onPointerFocus(this.currentFocusPointer);
-      const element: SliderElementDirective = this.getPointerElement(this.currentFocusPointer);
-      this.focusElement(element);
+      const element: SliderHandleDirective = this.getPointerElement(this.currentFocusPointer);
+      element.focus();
     }
   }
 
   // Update each elements style based on options
   private manageElementsStyle(): void {
-    if (!this.range) {
-      this.maxHandleElement.css('display', 'none');
-    } else {
-      this.maxHandleElement.css('display', '');
-    }
+    this.updateScale();
 
-    this.alwaysHide(
-      this.floorLabelElement,
-      this.viewOptions.showTicksValues || this.viewOptions.hideLimitLabels
-    );
-    this.alwaysHide(
-      this.ceilLabelElement,
-      this.viewOptions.showTicksValues || this.viewOptions.hideLimitLabels
-    );
+    this.floorLabelElement.setAlwaysHide(this.viewOptions.showTicksValues || this.viewOptions.hideLimitLabels);
+    this.ceilLabelElement.setAlwaysHide(this.viewOptions.showTicksValues || this.viewOptions.hideLimitLabels);
 
     const hideLabelsForTicks: boolean = this.viewOptions.showTicksValues && !this.intermediateTicks;
-    this.alwaysHide(
-      this.minHandleLabelElement,
-      hideLabelsForTicks || this.viewOptions.hidePointerLabels
-    );
-    this.alwaysHide(
-      this.maxHandleLabelElement,
-      hideLabelsForTicks || !this.range || this.viewOptions.hidePointerLabels
-    );
-    this.alwaysHide(
-      this.combinedLabelElement,
-      hideLabelsForTicks || !this.range || this.viewOptions.hidePointerLabels
-    );
-    this.alwaysHide(
-      this.selectionBarElement,
-      !this.range && !this.viewOptions.showSelectionBar
-    );
-    this.alwaysHide(
-      this.leftOuterSelectionBarElement,
-      !this.range || !this.viewOptions.showOuterSelectionBars
-    );
-    this.alwaysHide(
-      this.rightOuterSelectionBarElement,
-      !this.range || !this.viewOptions.showOuterSelectionBars
-    );
+    this.minHandleLabelElement.setAlwaysHide(hideLabelsForTicks || this.viewOptions.hidePointerLabels);
+    this.maxHandleLabelElement.setAlwaysHide(hideLabelsForTicks || !this.range || this.viewOptions.hidePointerLabels);
+    this.combinedLabelElement.setAlwaysHide(hideLabelsForTicks || !this.range || this.viewOptions.hidePointerLabels);
+    this.selectionBarElement.setAlwaysHide(!this.range && !this.viewOptions.showSelectionBar);
+    this.leftOuterSelectionBarElement.setAlwaysHide(!this.range || !this.viewOptions.showOuterSelectionBars);
+    this.rightOuterSelectionBarElement.setAlwaysHide(!this.range || !this.viewOptions.showOuterSelectionBars);
 
-    if (this.range && this.viewOptions.showOuterSelectionBars) {
-      this.fullBarElement.addClass('ng5-slider-transparent');
-    }
+    this.fullBarTransparentClass = this.range && this.viewOptions.showOuterSelectionBars;
+    this.selectionBarDraggableClass = this.viewOptions.draggableRange && !this.viewOptions.onlyBindHandles;
+    this.ticksUnderValuesClass = this.intermediateTicks && this.options.showTicksValues;
 
     if (this.sliderElementVerticalClass !== this.viewOptions.vertical) {
       this.updateVerticalState();
@@ -931,25 +876,6 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     // after all is properly set up
     if (this.sliderElementAnimateClass !== this.viewOptions.animate) {
       setTimeout((): void => { this.sliderElementAnimateClass = this.viewOptions.animate; });
-    }
-
-    if (this.viewOptions.draggableRange && !this.viewOptions.onlyBindHandles) {
-      this.selectionBarElement.addClass('ng5-slider-draggable');
-    } else {
-      this.selectionBarElement.removeClass('ng5-slider-draggable');
-    }
-
-    if (this.intermediateTicks && this.options.showTicksValues) {
-      this.ticksElement.addClass('ng5-slider-ticks-values-under');
-    }
-  }
-
-  private alwaysHide(el: SliderElementDirective, hide: boolean): void {
-    el.alwaysHide = hide;
-    if (hide) {
-      el.css('visibility', 'hidden');
-    } else {
-      el.css('visibility', 'visible');
     }
   }
 
@@ -967,9 +893,34 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     this.sliderElementDisabledAttr = this.viewOptions.disabled ? 'disabled' : null;
   }
 
-  // Set vertical class based on vertical option
+  // Set vertical state based on vertical option
   private updateVerticalState(): void {
     this.sliderElementVerticalClass = this.viewOptions.vertical;
+    for (const element of this.getAllSliderElements()) {
+      element.setVertical(this.viewOptions.vertical);
+    }
+  }
+
+  private updateScale(): void {
+    for (const element of this.getAllSliderElements()) {
+      element.setScale(this.viewOptions.scale);
+    }
+  }
+
+  private getAllSliderElements(): SliderElementDirective[] {
+    return [this.leftOuterSelectionBarElement,
+      this.rightOuterSelectionBarElement,
+      this.fullBarElement,
+      this.selectionBarElement,
+      this.minHandleElement,
+      this.maxHandleElement,
+      this.floorLabelElement,
+      this.ceilLabelElement,
+      this.minHandleLabelElement,
+      this.maxHandleLabelElement,
+      this.combinedLabelElement,
+      this.ticksElement
+    ];
   }
 
   // Initialize slider handles positions and labels
@@ -994,96 +945,71 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     this.updateTicksScale();
   }
 
-  // Set label value and recalculate label dimensions
-  private setLabelValue(value: string, label: SliderLabelDirective): void {
-    let recalculateDimension: boolean = false;
-    const noLabelInjection: boolean = label.hasClass('no-label-injection');
-
-    if (!label.alwaysHide &&
-        (ValueHelper.isNullOrUndefined(label.value) ||
-         label.value.length !== value.length ||
-         (label.value.length > 0 && label.dimension === 0))) {
-      recalculateDimension = true;
-      label.value = value;
-    }
-
-    if (!noLabelInjection) {
-      label.html(value);
-    }
-
-    // Update width only when length of the label have changed
-    if (recalculateDimension) {
-      this.calculateElementDimension(label);
-    }
-  }
-
   // Adds accessibility attributes, run only once during initialization
   private addAccessibility(): void {
     this.updateAriaAttributes();
 
-    this.minHandleElement.attr('role', 'slider');
+    this.minHandleElement.role = 'slider';
 
     if ( this.viewOptions.keyboardSupport &&
       !(this.viewOptions.readOnly || this.viewOptions.disabled) ) {
-      this.minHandleElement.attr('tabindex', '0');
+      this.minHandleElement.tabindex = '0';
     } else {
-      this.minHandleElement.attr('tabindex', '');
+      this.minHandleElement.tabindex = '';
     }
 
     if (this.viewOptions.vertical) {
-      this.minHandleElement.attr('aria-orientation', 'vertical');
+      this.minHandleElement.ariaOrientation = 'vertical';
     }
 
     if (this.viewOptions.ariaLabel) {
-      this.minHandleElement.attr('aria-label', this.viewOptions.ariaLabel);
+      this.minHandleElement.ariaLabel = this.viewOptions.ariaLabel;
     } else if (this.viewOptions.ariaLabelledBy) {
-      this.minHandleElement.attr('aria-labelledby', this.viewOptions.ariaLabelledBy);
+      this.minHandleElement.ariaLabelledBy = this.viewOptions.ariaLabelledBy;
     }
 
     if (this.range) {
-      this.maxHandleElement.attr('role', 'slider');
+      this.maxHandleElement.role = 'slider';
 
       if (this.viewOptions.keyboardSupport &&
         !(this.viewOptions.readOnly || this.viewOptions.disabled)) {
-        this.maxHandleElement.attr('tabindex', '0');
+        this.maxHandleElement.tabindex = '0';
       } else {
-        this.maxHandleElement.attr('tabindex', '');
+        this.maxHandleElement.tabindex = '';
       }
 
-      if (this.viewOptions.vertical) {
-        this.maxHandleElement.attr('aria-orientation', 'vertical');
-      }
+      this.maxHandleElement.ariaOrientation = this.viewOptions.vertical ? 'vertical' : 'horizontal';
 
       if (this.viewOptions.ariaLabelHigh) {
-        this.maxHandleElement.attr('aria-label', this.viewOptions.ariaLabelHigh);
+        this.maxHandleElement.ariaLabel = this.viewOptions.ariaLabelHigh;
       } else if (this.viewOptions.ariaLabelledByHigh) {
-        this.maxHandleElement.attr('aria-labelledby', this.viewOptions.ariaLabelledByHigh);
+        this.maxHandleElement.ariaLabelledBy = this.viewOptions.ariaLabelledByHigh;
       }
     }
   }
 
   // Updates aria attributes according to current values
   private updateAriaAttributes(): void {
-    this.minHandleElement.attr('aria-valuenow', (+this.value).toString());
-    this.minHandleElement.attr('aria-valuetext', this.translate(+this.value, LabelType.Low));
-    this.minHandleElement.attr('aria-valuemin', this.viewOptions.floor.toString());
-    this.minHandleElement.attr('aria-valuemax', this.viewOptions.ceil.toString());
+    this.minHandleElement.ariaValueNow = (+this.value).toString();
+    this.minHandleElement.ariaValueText = this.viewOptions.translate(+this.value, LabelType.Low);
+    this.minHandleElement.ariaValueMin = this.viewOptions.floor.toString();
+    this.minHandleElement.ariaValueMax = this.viewOptions.ceil.toString();
 
     if (this.range) {
-      this.maxHandleElement.attr('aria-valuenow', (+this.highValue).toString());
-      this.maxHandleElement.attr('aria-valuetext', this.translate(+this.highValue, LabelType.High));
-      this.maxHandleElement.attr('aria-valuemin', this.viewOptions.floor.toString());
-      this.maxHandleElement.attr('aria-valuemax', this.viewOptions.ceil.toString());
+      this.maxHandleElement.ariaValueNow = (+this.highValue).toString();
+      this.maxHandleElement.ariaValueText = this.viewOptions.translate(+this.highValue, LabelType.High);
+      this.maxHandleElement.ariaValueMin = this.viewOptions.floor.toString();
+      this.maxHandleElement.ariaValueMax = this.viewOptions.ceil.toString();
     }
   }
 
   // Calculate dimensions that are dependent on view port size
   // Run once during initialization and every time view port changes size.
-  private calcViewDimensions(): void {
+  private calculateViewDimensions(): void {
     if (this.viewOptions.handleDimension) {
-      this.minHandleElement.dimension = this.viewOptions.handleDimension;
+      this.minHandleElement.setDimension(this.viewOptions.handleDimension);
     } else {
-      this.calculateElementDimension(this.minHandleElement);
+      this.minHandleElement.calculateDimension();
     }
 
     const handleWidth: number = this.minHandleElement.dimension;
@@ -1091,20 +1017,23 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     this.handleHalfDimension = handleWidth / 2;
 
     if (this.viewOptions.barDimension) {
-      this.fullBarElement.dimension = this.viewOptions.barDimension;
+      this.fullBarElement.setDimension(this.viewOptions.barDimension);
     } else {
-      this.calculateElementDimension(this.fullBarElement);
+      this.fullBarElement.calculateDimension();
     }
 
-    this.barDimension = this.fullBarElement.dimension;
-
-    this.maxHandlePosition = this.barDimension - handleWidth;
+    this.maxHandlePosition = this.fullBarElement.dimension - handleWidth;
 
     if (this.initHasRun) {
       this.updateFloorLabel();
       this.updateCeilLabel();
       this.initHandles();
     }
+  }
+
+  private calculateViewDimensionsAndDetectChanges(): void {
+    this.calculateViewDimensions();
+    this.changeDetectionRef.detectChanges();
   }
 
   // Update the ticks position
@@ -1156,8 +1085,8 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
             : 'top';
         }
       }
-      if (this.getLegend) {
-        const legend: string = this.getLegend(value);
+      if (this.viewOptions.getLegend) {
+        const legend: string = this.viewOptions.getLegend(value);
         if (legend) {
           tick.legend = legend;
         }
@@ -1219,24 +1148,24 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   // Update position of the floor label
   private updateFloorLabel(): void {
     if (!this.floorLabelElement.alwaysHide) {
-      this.setLabelValue(this.getDisplayValue(this.viewOptions.floor, LabelType.Floor), this.floorLabelElement);
-      this.calculateElementDimension(this.floorLabelElement);
+      this.floorLabelElement.setValue(this.getDisplayValue(this.viewOptions.floor, LabelType.Floor));
+      this.floorLabelElement.calculateDimension();
       const position: number = this.viewOptions.rightToLeft
-        ? this.barDimension - this.floorLabelElement.dimension
+        ? this.fullBarElement.dimension - this.floorLabelElement.dimension
         : 0;
-      this.setPosition(this.floorLabelElement, position);
+      this.floorLabelElement.setPosition(position);
     }
   }
 
   // Update position of the ceiling label
   private updateCeilLabel(): void {
     if (!this.ceilLabelElement.alwaysHide) {
-      this.setLabelValue(this.getDisplayValue(this.viewOptions.ceil, LabelType.Ceil), this.ceilLabelElement);
-      this.calculateElementDimension(this.ceilLabelElement);
+      this.ceilLabelElement.setValue(this.getDisplayValue(this.viewOptions.ceil, LabelType.Ceil));
+      this.ceilLabelElement.calculateDimension();
       const position: number = this.viewOptions.rightToLeft
         ? 0
-        : this.barDimension - this.ceilLabelElement.dimension;
-      this.setPosition(this.ceilLabelElement, position);
+        : this.fullBarElement.dimension - this.ceilLabelElement.dimension;
+      this.ceilLabelElement.setPosition(position);
     }
   }
 
@@ -1261,7 +1190,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       ? this.minHandleLabelElement.dimension
       : this.maxHandleLabelElement.dimension;
     const nearHandlePos: number = newPos - labelDimension / 2 + this.handleHalfDimension;
-    const endOfBarPos: number = this.barDimension - labelDimension;
+    const endOfBarPos: number = this.fullBarElement.dimension - labelDimension;
 
     if (!this.viewOptions.boundPointerLabels) {
       return nearHandlePos;
@@ -1277,12 +1206,9 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
   // Update low slider handle position and label
   private updateLowHandle(newPos: number): void {
-    this.setPosition(this.minHandleElement, newPos);
-    this.setLabelValue(this.getDisplayValue(this.viewLowValue, LabelType.Low), this.minHandleLabelElement);
-    this.setPosition(
-      this.minHandleLabelElement,
-      this.getHandleLabelPos(PointerType.Min, newPos)
-    );
+    this.minHandleElement.setPosition(newPos);
+    this.minHandleLabelElement.setValue(this.getDisplayValue(this.viewLowValue, LabelType.Low));
+    this.minHandleLabelElement.setPosition(this.getHandleLabelPos(PointerType.Min, newPos));
 
     if (this.viewOptions.getPointerColor) {
       const pointercolor: string = this.getPointerColor(PointerType.Min);
@@ -1298,12 +1224,9 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
   // Update high slider handle position and label
   private updateHighHandle(newPos: number): void {
-    this.setPosition(this.maxHandleElement, newPos);
-    this.setLabelValue(this.getDisplayValue(this.viewHighValue, LabelType.High), this.maxHandleLabelElement);
-    this.setPosition(
-      this.maxHandleLabelElement,
-      this.getHandleLabelPos(PointerType.Max, newPos)
-    );
+    this.maxHandleElement.setPosition(newPos);
+    this.maxHandleLabelElement.setValue(this.getDisplayValue(this.viewHighValue, LabelType.High));
+    this.maxHandleLabelElement.setPosition(this.getHandleLabelPos(PointerType.Max, newPos));
 
     if (this.viewOptions.getPointerColor) {
       const pointercolor: string = this.getPointerColor(PointerType.Max);
@@ -1324,50 +1247,48 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     }
     let floorLabelHidden: boolean = false;
     let ceilLabelHidden: boolean = false;
-    const isMinLabelAtFloor: boolean = this.isLabelBelowFloorLab(this.minHandleLabelElement);
-    const isMinLabelAtCeil: boolean = this.isLabelAboveCeilLab(this.minHandleLabelElement);
-    const isMaxLabelAtCeil: boolean = this.isLabelAboveCeilLab(this.maxHandleLabelElement);
-    const isCombinedLabelAtFloor: boolean = this.isLabelBelowFloorLab(this.combinedLabelElement);
-    const isCombinedLabelAtCeil: boolean = this.isLabelAboveCeilLab(this.combinedLabelElement);
+    const isMinLabelAtFloor: boolean = this.isLabelBelowFloorLabel(this.minHandleLabelElement);
+    const isMinLabelAtCeil: boolean = this.isLabelAboveCeilLabel(this.minHandleLabelElement);
+    const isMaxLabelAtCeil: boolean = this.isLabelAboveCeilLabel(this.maxHandleLabelElement);
+    const isCombinedLabelAtFloor: boolean = this.isLabelBelowFloorLabel(this.combinedLabelElement);
+    const isCombinedLabelAtCeil: boolean = this.isLabelAboveCeilLabel(this.combinedLabelElement);
 
     if (isMinLabelAtFloor) {
       floorLabelHidden = true;
-      this.hideEl(this.floorLabelElement);
+      this.floorLabelElement.hide();
     } else {
       floorLabelHidden = false;
-      this.showEl(this.floorLabelElement);
+      this.floorLabelElement.show();
     }
 
     if (isMinLabelAtCeil) {
       ceilLabelHidden = true;
-      this.hideEl(this.ceilLabelElement);
+      this.ceilLabelElement.hide();
     } else {
       ceilLabelHidden = false;
-      this.showEl(this.ceilLabelElement);
+      this.ceilLabelElement.show();
     }
 
     if (this.range) {
-      const hideCeil: boolean = this.cmbLabelShown ? isCombinedLabelAtCeil : isMaxLabelAtCeil;
-      const hideFloor: boolean = this.cmbLabelShown
-        ? isCombinedLabelAtFloor
-        : isMinLabelAtFloor;
+      const hideCeil: boolean = this.combinedLabelElement.isVisible() ? isCombinedLabelAtCeil : isMaxLabelAtCeil;
+      const hideFloor: boolean = this.combinedLabelElement.isVisible() ? isCombinedLabelAtFloor : isMinLabelAtFloor;
 
       if (hideCeil) {
-        this.hideEl(this.ceilLabelElement);
+        this.ceilLabelElement.hide();
       } else if (!ceilLabelHidden) {
-        this.showEl(this.ceilLabelElement);
+        this.ceilLabelElement.show();
       }
 
       // Hide or show floor label
       if (hideFloor) {
-        this.hideEl(this.floorLabelElement);
+        this.floorLabelElement.hide();
       } else if (!floorLabelHidden) {
-        this.showEl(this.floorLabelElement);
+        this.floorLabelElement.show();
       }
     }
   }
 
-  private isLabelBelowFloorLab(label: SliderLabelDirective): boolean {
+  private isLabelBelowFloorLabel(label: SliderLabelDirective): boolean {
     const pos: number = label.position;
     const dim: number = label.dimension;
     const floorPos: number = this.floorLabelElement.position;
@@ -1377,7 +1298,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       : pos <= floorPos + floorDim + 2;
   }
 
-  private isLabelAboveCeilLab(label: SliderLabelDirective): boolean {
+  private isLabelAboveCeilLabel(label: SliderLabelDirective): boolean {
     const pos: number = label.position;
     const dim: number = label.dimension;
     const ceilPos: number = this.ceilLabelElement.position;
@@ -1423,27 +1344,21 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
         position = 0;
       }
     }
-    this.setDimension(this.selectionBarElement, dimension);
-    this.setPosition(this.selectionBarElement, position);
+    this.selectionBarElement.setDimension(dimension);
+    this.selectionBarElement.setPosition(position);
     if (this.range && this.viewOptions.showOuterSelectionBars) {
       if (this.viewOptions.rightToLeft) {
-        this.setDimension(this.rightOuterSelectionBarElement, position);
-        this.setPosition(this.rightOuterSelectionBarElement, 0);
-        this.calculateElementDimension(this.fullBarElement);
-        this.setDimension(
-          this.leftOuterSelectionBarElement,
-          this.fullBarElement.dimension - (position + dimension)
-        );
-        this.setPosition(this.leftOuterSelectionBarElement, position + dimension);
+        this.rightOuterSelectionBarElement.setDimension(position);
+        this.rightOuterSelectionBarElement.setPosition(0);
+        this.fullBarElement.calculateDimension();
+        this.leftOuterSelectionBarElement.setDimension(this.fullBarElement.dimension - (position + dimension));
+        this.leftOuterSelectionBarElement.setPosition(position + dimension);
       } else {
-        this.setDimension(this.leftOuterSelectionBarElement, position);
-        this.setPosition(this.leftOuterSelectionBarElement, 0);
-        this.calculateElementDimension(this.fullBarElement);
-        this.setDimension(
-          this.rightOuterSelectionBarElement,
-          this.fullBarElement.dimension - (position + dimension)
-        );
-        this.setPosition(this.rightOuterSelectionBarElement, position + dimension);
+        this.leftOuterSelectionBarElement.setDimension(position);
+        this.leftOuterSelectionBarElement.setPosition(0);
+        this.fullBarElement.calculateDimension();
+        this.rightOuterSelectionBarElement.setDimension(this.fullBarElement.dimension - (position + dimension));
+        this.rightOuterSelectionBarElement.setPosition(position + dimension);
       }
     }
     if (this.viewOptions.getSelectionBarColor) {
@@ -1478,7 +1393,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
             (reversed ? -this.handleHalfDimension : 0)) +
           'px';
         this.barStyle.backgroundSize =
-          '100% ' + (this.barDimension - this.handleHalfDimension) + 'px';
+          '100% ' + (this.fullBarElement.dimension - this.handleHalfDimension) + 'px';
       } else {
         this.barStyle.backgroundPosition =
           offset -
@@ -1486,7 +1401,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
           (reversed ? this.handleHalfDimension : 0) +
           'px center';
         this.barStyle.backgroundSize =
-          this.barDimension - this.handleHalfDimension + 'px 100%';
+          this.fullBarElement.dimension - this.handleHalfDimension + 'px 100%';
       }
     }
   }
@@ -1535,11 +1450,11 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     if (isLabelOverlap) {
       const lowDisplayValue: string = this.getDisplayValue(this.viewLowValue, LabelType.Low);
       const highDisplayValue: string = this.getDisplayValue(this.viewHighValue, LabelType.High);
-      const labelVal: string = this.viewOptions.rightToLeft
-        ? this.combineLabels(highDisplayValue, lowDisplayValue)
-        : this.combineLabels(lowDisplayValue, highDisplayValue);
+      const combinedLabelValue: string = this.viewOptions.rightToLeft
+        ? this.viewOptions.combineLabels(highDisplayValue, lowDisplayValue)
+        : this.viewOptions.combineLabels(lowDisplayValue, highDisplayValue);
 
-      this.setLabelValue(labelVal, this.combinedLabelElement);
+      this.combinedLabelElement.setValue(combinedLabelValue);
       const pos: number = this.viewOptions.boundPointerLabels
         ? Math.min(
             Math.max(
@@ -1548,22 +1463,20 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
                 this.combinedLabelElement.dimension / 2,
               0
             ),
-            this.barDimension - this.combinedLabelElement.dimension
+            this.fullBarElement.dimension - this.combinedLabelElement.dimension
           )
         : this.selectionBarElement.position + this.selectionBarElement.dimension / 2 - this.combinedLabelElement.dimension / 2;
 
-      this.setPosition(this.combinedLabelElement, pos);
-      this.cmbLabelShown = true;
-      this.hideEl(this.minHandleLabelElement);
-      this.hideEl(this.maxHandleLabelElement);
-      this.showEl(this.combinedLabelElement);
+      this.combinedLabelElement.setPosition(pos);
+      this.minHandleLabelElement.hide();
+      this.maxHandleLabelElement.hide();
+      this.combinedLabelElement.show();
     } else {
-      this.cmbLabelShown = false;
       this.updateHighHandle(this.valueToPosition(this.viewHighValue));
       this.updateLowHandle(this.valueToPosition(this.viewLowValue));
-      this.showEl(this.maxHandleLabelElement);
-      this.showEl(this.minHandleLabelElement);
-      this.hideEl(this.combinedLabelElement);
+      this.maxHandleLabelElement.show();
+      this.minHandleLabelElement.show();
+      this.combinedLabelElement.hide();
     }
     if (this.viewOptions.autoHideLimitLabels) {
       this.updateFloorAndCeilLabelsVisibility();
@@ -1575,7 +1488,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     if (this.viewOptions.stepsArray && !this.viewOptions.bindIndexForStepsArray) {
       value = this.getStepValue(value);
     }
-    return this.translate(value, which);
+    return this.viewOptions.translate(value, which);
   }
 
   // Round value to step and precision based on minValue
@@ -1585,51 +1498,6 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       (value - this.viewOptions.floor) / step, this.viewOptions.precisionLimit);
     steppedDifference = Math.round(steppedDifference) * step;
     return MathHelper.roundToPrecisionLimit(this.viewOptions.floor + steppedDifference, this.viewOptions.precisionLimit);
-  }
-
-  // Hide element
-  private hideEl(element: SliderElementDirective): void {
-    element.css('opacity', '0');
-  }
-
-  // Show element
-  private showEl(element: SliderElementDirective): void {
-    if (!!element.alwaysHide) {
-      return;
-    }
-
-    element.css('opacity', '1');
-  }
-
-  // Set element left/top position depending on whether slider is horizontal or vertical
-  private setPosition(elem: SliderElementDirective, pos: number): void {
-    elem.position = pos;
-    if (this.viewOptions.vertical) {
-      elem.css('bottom', Math.round(pos) + 'px');
-    } else {
-      elem.css('left', Math.round(pos) + 'px');
-    }
-  }
-
-  // Calculate element's width/height depending on whether slider is horizontal or vertical
-  private calculateElementDimension(elem: SliderElementDirective): void {
-    const val: ClientRect = elem.getBoundingClientRect();
-    if (this.viewOptions.vertical) {
-      elem.dimension = (val.bottom - val.top) * this.viewOptions.scale;
-    } else {
-      elem.dimension = (val.right - val.left) * this.viewOptions.scale;
-    }
-  }
-
-  // Set element width/height depending on whether slider is horizontal or vertical
-  private setDimension(elem: SliderElementDirective, dim: number): number {
-    elem.dimension = dim;
-    if (this.viewOptions.vertical) {
-      elem.css('height', Math.round(dim) + 'px');
-    } else {
-      elem.css('width', Math.round(dim) + 'px');
-    }
-    return dim;
   }
 
   // Translate value to pixel position
@@ -1723,11 +1591,6 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     return position > this.minHandleElement.position ? PointerType.Min : PointerType.Max;
   }
 
-  // Wrapper function to focus an angular element
-  private focusElement(el: SliderElementDirective): void {
-    el.focus();
-  }
-
   // Bind mouse and touch events to slider handles
   private bindEvents(): void {
     const draggableRange: boolean = this.viewOptions.draggableRange;
@@ -1806,6 +1669,8 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
   // Unbind mouse and touch events to slider handles
   private unbindEvents(): void {
+    this.unsubscribeOnMove();
+    this.unsubscribeOnEnd();
     this.minHandleElement.off();
     this.maxHandleElement.off();
     this.fullBarElement.off();
@@ -1833,7 +1698,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
     // We have to do this in case the HTML where the sliders are on
     // have been animated into view.
-    this.calcViewDimensions();
+    this.calculateViewDimensions();
 
     if (ValueHelper.isNullOrUndefined(pointerType)) {
       pointerType = this.getNearestHandle(event);
@@ -1841,11 +1706,11 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
     this.currentTrackingPointer = pointerType;
 
-    const pointerElement: SliderElementDirective = this.getPointerElement(pointerType);
-    pointerElement.addClass('ng5-slider-active');
+    const pointerElement: SliderHandleDirective = this.getPointerElement(pointerType);
+    pointerElement.active = true;
 
     if (this.viewOptions.keyboardSupport) {
-      this.focusElement(pointerElement);
+      pointerElement.focus();
     }
 
     if (bindMove) {
@@ -1880,8 +1745,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
     if (CompatibilityHelper.isTouchEvent(event) && (event as TouchEvent).changedTouches) {
       // Store the touch identifier
-      if (!this.touchId) {
-        this.isDragging = true;
+      if (ValueHelper.isNullOrUndefined(this.touchId)) {
         this.touchId = (event as TouchEvent).changedTouches[0].identifier;
       }
     }
@@ -1948,12 +1812,11 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       }
     }
 
-    this.isDragging = false;
     this.touchId = null;
 
     if (!this.viewOptions.keyboardSupport) {
-      this.minHandleElement.removeClass('ng5-slider-active');
-      this.maxHandleElement.removeClass('ng5-slider-active');
+      this.minHandleElement.active = false;
+      this.maxHandleElement.active = false;
       this.currentTrackingPointer = null;
     }
     this.dragging.active = false;
@@ -1965,11 +1828,11 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
 
   private onPointerFocus(pointerType: PointerType): void {
-    const pointerElement: SliderElementDirective = this.getPointerElement(pointerType);
+    const pointerElement: SliderHandleDirective = this.getPointerElement(pointerType);
     pointerElement.on('blur', (): void => this.onPointerBlur(pointerElement));
     pointerElement.on('keydown', (event: KeyboardEvent): void => this.onKeyboardEvent(event));
     pointerElement.on('keyup', (): void => this.onKeyUp());
-    pointerElement.addClass('ng5-slider-active');
+    pointerElement.active = true;
 
     this.currentTrackingPointer = pointerType;
     this.currentFocusPointer = pointerType;
@@ -1981,12 +1844,12 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     this.userChangeEnd.emit(this.getChangeContext());
   }
 
-  private onPointerBlur(pointer: SliderElementDirective): void {
+  private onPointerBlur(pointer: SliderHandleDirective): void {
     pointer.off('blur');
     pointer.off('keydown');
     pointer.off('keyup');
-    pointer.removeClass('ng5-slider-active');
-    if (!this.isDragging) {
+    pointer.active = false;
+    if (ValueHelper.isNullOrUndefined(this.touchId)) {
       this.currentTrackingPointer = null;
       this.currentFocusPointer = null;
     }
@@ -2163,8 +2026,8 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
     let ceilLimit: number,
         floorLimit: number,
-        floorHandleElement: SliderElementDirective,
-        ceilHandleElement: SliderElementDirective;
+        floorHandleElement: SliderHandleDirective,
+        ceilHandleElement: SliderHandleDirective;
     if (this.viewOptions.rightToLeft) {
       ceilLimit = this.dragging.lowLimit;
       floorLimit = this.dragging.highLimit;
@@ -2246,10 +2109,10 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
           this.updateHandles(PointerType.Min, this.maxHandleElement.position);
           this.updateAriaAttributes();
           this.currentTrackingPointer = PointerType.Max;
-          this.minHandleElement.removeClass('ng5-slider-active');
-          this.maxHandleElement.addClass('ng5-slider-active');
+          this.minHandleElement.active = false;
+          this.maxHandleElement.active = true;
           if (this.viewOptions.keyboardSupport) {
-            this.focusElement(this.maxHandleElement);
+            this.maxHandleElement.focus();
           }
         } else if (this.currentTrackingPointer === PointerType.Max &&
                    newValue < this.viewLowValue) {
@@ -2258,10 +2121,10 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
           this.updateHandles(PointerType.Max, this.minHandleElement.position);
           this.updateAriaAttributes();
           this.currentTrackingPointer = PointerType.Min;
-          this.maxHandleElement.removeClass('ng5-slider-active');
-          this.minHandleElement.addClass('ng5-slider-active');
+          this.maxHandleElement.active = false;
+          this.minHandleElement.active = true;
           if (this.viewOptions.keyboardSupport) {
-            this.focusElement(this.minHandleElement);
+            this.minHandleElement.focus();
           }
         }
       }
