@@ -267,10 +267,10 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   private dragging: Dragging = new Dragging();
 
   // Half of the width or height of the slider handles
-  private handleHalfDim: number = 0;
+  private handleHalfDimension: number = 0;
 
   // Maximum position the slider handle can have
-  private maxPos: number = 0;
+  private maxHandlePosition: number = 0;
 
   // Which handle is currently tracked for move events
   private currentTrackingPointer: PointerType = null;
@@ -322,8 +322,8 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     // We need to run these two things first, before the rest of the init in ngAfterViewInit(),
     // because these two settings are set through @HostBinding and Angular change detection
     // mechanism doesn't like them changing in ngAfterViewInit()
-    this.setDisabledStateAttr();
-    this.setVerticalClass();
+    this.updateDisabledState();
+    this.updateVerticalState();
   }
 
   ngAfterViewInit(): void {
@@ -343,11 +343,11 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     }
 
     this.manageElementsStyle();
-    this.setDisabledStateAttr();
+    this.updateDisabledState();
     this.calcViewDimensions();
     this.addAccessibility();
-    this.updateCeilLab();
-    this.updateFloorLab();
+    this.updateCeilLabel();
+    this.updateFloorLabel();
     this.initHandles();
     this.manageEventsBindings();
 
@@ -487,7 +487,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   setDisabledState(isDisabled: boolean): void {
     if (this.viewOptions) {
       this.viewOptions.disabled = isDisabled;
-      this.setDisabledStateAttr();
+      this.updateDisabledState();
     }
   }
 
@@ -664,7 +664,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     this.updateTicksScale();
     this.updateAriaAttributes();
     if (this.range) {
-      this.updateCmbLabel();
+      this.updateCombinedLabel();
     }
 
     // At the end, we need to communicate the model change to the outputs as well
@@ -775,31 +775,9 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       !ValueHelper.isNullOrUndefined(this.viewOptions.showSelectionBarFromValue);
 
     if (this.viewOptions.stepsArray) {
-      this.parseStepsArray();
+      this.applyStepsArrayOptions();
     } else {
-      if (ValueHelper.isNullOrUndefined(this.viewOptions.step)) {
-        this.viewOptions.step = 1;
-      } else {
-        this.viewOptions.step = +this.viewOptions.step;
-        if (this.viewOptions.step <= 0) {
-          this.viewOptions.step = 1;
-       }
-      }
-
-      if (ValueHelper.isNullOrUndefined(this.viewOptions.ceil) ||
-          ValueHelper.isNullOrUndefined(this.viewOptions.floor)) {
-        throw Error('floor and ceil options must be supplied');
-      }
-      this.viewOptions.ceil = +this.viewOptions.ceil;
-      this.viewOptions.floor = +this.viewOptions.floor;
-
-      if (this.viewOptions.translate) {
-        this.translate = this.viewOptions.translate;
-      } else {
-        this.translate = (value: number): string => String(value);
-      }
-
-      this.getLegend = this.viewOptions.getLegend;
+      this.applyFloorCeilOptions();
     }
 
     if (this.viewOptions.combineLabels) {
@@ -815,7 +793,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     }
   }
 
-  private parseStepsArray(): void {
+  private applyStepsArrayOptions(): void {
     this.viewOptions.floor = 0;
     this.viewOptions.ceil = this.viewOptions.stepsArray.length - 1;
     this.viewOptions.step = 1;
@@ -837,15 +815,41 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     };
   }
 
+  private applyFloorCeilOptions(): void {
+    if (ValueHelper.isNullOrUndefined(this.viewOptions.step)) {
+      this.viewOptions.step = 1;
+    } else {
+      this.viewOptions.step = +this.viewOptions.step;
+      if (this.viewOptions.step <= 0) {
+        this.viewOptions.step = 1;
+     }
+    }
+
+    if (ValueHelper.isNullOrUndefined(this.viewOptions.ceil) ||
+        ValueHelper.isNullOrUndefined(this.viewOptions.floor)) {
+      throw Error('floor and ceil options must be supplied');
+    }
+    this.viewOptions.ceil = +this.viewOptions.ceil;
+    this.viewOptions.floor = +this.viewOptions.floor;
+
+    if (this.viewOptions.translate) {
+      this.translate = this.viewOptions.translate;
+    } else {
+      this.translate = (value: number): string => String(value);
+    }
+
+    this.getLegend = this.viewOptions.getLegend;
+  }
+
   // Resets slider
   private resetSlider(): void {
     this.manageElementsStyle();
     this.addAccessibility();
-    this.updateCeilLab();
-    this.updateFloorLab();
+    this.updateCeilLabel();
+    this.updateFloorLabel();
     this.unbindEvents();
     this.manageEventsBindings();
-    this.setDisabledStateAttr();
+    this.updateDisabledState();
     this.calcViewDimensions();
     this.refocusPointerIfNeeded();
   }
@@ -920,7 +924,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     }
 
     if (this.sliderElementVerticalClass !== this.viewOptions.vertical) {
-      this.setVerticalClass();
+      this.updateVerticalState();
       // The above change in host component class will not be applied until the end of this cycle
       // However, functions calculating the slider position expect the slider to be already styled as vertical
       // So as a workaround, we need to reset the slider once again to compute the correct values
@@ -963,12 +967,12 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
 
   // Set the disabled state based on disabled option
-  private setDisabledStateAttr(): void {
+  private updateDisabledState(): void {
     this.sliderElementDisabledAttr = this.viewOptions.disabled ? 'disabled' : null;
   }
 
   // Set vertical class based on vertical option
-  private setVerticalClass(): void {
+  private updateVerticalState(): void {
     this.sliderElementVerticalClass = this.viewOptions.vertical;
   }
 
@@ -988,7 +992,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     this.updateSelectionBar();
 
     if (this.range) {
-      this.updateCmbLabel();
+      this.updateCombinedLabel();
     }
 
     this.updateTicksScale();
@@ -1088,7 +1092,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
     const handleWidth: number = this.minHandleElement.dimension;
 
-    this.handleHalfDim = handleWidth / 2;
+    this.handleHalfDimension = handleWidth / 2;
 
     if (this.viewOptions.barDimension) {
       this.fullBarElement.dimension = this.viewOptions.barDimension;
@@ -1098,11 +1102,11 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
     this.barDimension = this.fullBarElement.dimension;
 
-    this.maxPos = this.barDimension - handleWidth;
+    this.maxHandlePosition = this.barDimension - handleWidth;
 
     if (this.initHasRun) {
-      this.updateFloorLab();
-      this.updateCeilLab();
+      this.updateFloorLabel();
+      this.updateCeilLabel();
       this.initHandles();
     }
   }
@@ -1124,7 +1128,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       let position: number = this.valueToPosition(value);
 
       if (this.viewOptions.vertical) {
-        position = this.maxPos - position;
+        position = this.maxHandlePosition - position;
       }
 
       const translation: string = translate + '(' + Math.round(position) + 'px)';
@@ -1217,7 +1221,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
 
   // Update position of the floor label
-  private updateFloorLab(): void {
+  private updateFloorLabel(): void {
     if (!this.floorLabelElement.alwaysHide) {
       this.setLabelValue(this.getDisplayValue(this.viewOptions.floor, LabelType.Floor), this.floorLabelElement);
       this.calculateElementDimension(this.floorLabelElement);
@@ -1229,7 +1233,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
 
   // Update position of the ceiling label
-  private updateCeilLab(): void {
+  private updateCeilLabel(): void {
     if (!this.ceilLabelElement.alwaysHide) {
       this.setLabelValue(this.getDisplayValue(this.viewOptions.ceil, LabelType.Ceil), this.ceilLabelElement);
       this.calculateElementDimension(this.ceilLabelElement);
@@ -1251,7 +1255,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     this.updateSelectionBar();
     this.updateTicksScale();
     if (this.range) {
-      this.updateCmbLabel();
+      this.updateCombinedLabel();
     }
   }
 
@@ -1260,7 +1264,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     const labelDimension: number = (labelType === PointerType.Min)
       ? this.minHandleLabelElement.dimension
       : this.maxHandleLabelElement.dimension;
-    const nearHandlePos: number = newPos - labelDimension / 2 + this.handleHalfDim;
+    const nearHandlePos: number = newPos - labelDimension / 2 + this.handleHalfDimension;
     const endOfBarPos: number = this.barDimension - labelDimension;
 
     if (!this.viewOptions.boundPointerLabels) {
@@ -1292,7 +1296,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     }
 
     if (this.viewOptions.autoHideLimitLabels) {
-      this.shFloorCeil();
+      this.updateFloorAndCeilLabelsVisibility();
     }
   }
 
@@ -1312,79 +1316,79 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       };
     }
     if (this.viewOptions.autoHideLimitLabels) {
-      this.shFloorCeil();
+      this.updateFloorAndCeilLabelsVisibility();
     }
   }
 
   // Show/hide floor/ceiling label
-  private shFloorCeil(): void {
+  private updateFloorAndCeilLabelsVisibility(): void {
     // Show based only on hideLimitLabels if pointer labels are hidden
     if (this.viewOptions.hidePointerLabels) {
       return;
     }
-    let flHidden: boolean = false;
-    let clHidden: boolean = false;
-    const isMinLabAtFloor: boolean = this.isLabelBelowFloorLab(this.minHandleLabelElement);
-    const isMinLabAtCeil: boolean = this.isLabelAboveCeilLab(this.minHandleLabelElement);
-    const isMaxLabAtCeil: boolean = this.isLabelAboveCeilLab(this.maxHandleLabelElement);
-    const isCmbLabAtFloor: boolean = this.isLabelBelowFloorLab(this.combinedLabelElement);
-    const isCmbLabAtCeil: boolean = this.isLabelAboveCeilLab(this.combinedLabelElement);
+    let floorLabelHidden: boolean = false;
+    let ceilLabelHidden: boolean = false;
+    const isMinLabelAtFloor: boolean = this.isLabelBelowFloorLab(this.minHandleLabelElement);
+    const isMinLabelAtCeil: boolean = this.isLabelAboveCeilLab(this.minHandleLabelElement);
+    const isMaxLabelAtCeil: boolean = this.isLabelAboveCeilLab(this.maxHandleLabelElement);
+    const isCombinedLabelAtFloor: boolean = this.isLabelBelowFloorLab(this.combinedLabelElement);
+    const isCombinedLabelAtCeil: boolean = this.isLabelAboveCeilLab(this.combinedLabelElement);
 
-    if (isMinLabAtFloor) {
-      flHidden = true;
+    if (isMinLabelAtFloor) {
+      floorLabelHidden = true;
       this.hideEl(this.floorLabelElement);
     } else {
-      flHidden = false;
+      floorLabelHidden = false;
       this.showEl(this.floorLabelElement);
     }
 
-    if (isMinLabAtCeil) {
-      clHidden = true;
+    if (isMinLabelAtCeil) {
+      ceilLabelHidden = true;
       this.hideEl(this.ceilLabelElement);
     } else {
-      clHidden = false;
+      ceilLabelHidden = false;
       this.showEl(this.ceilLabelElement);
     }
 
     if (this.range) {
-      const hideCeil: boolean = this.cmbLabelShown ? isCmbLabAtCeil : isMaxLabAtCeil;
+      const hideCeil: boolean = this.cmbLabelShown ? isCombinedLabelAtCeil : isMaxLabelAtCeil;
       const hideFloor: boolean = this.cmbLabelShown
-        ? isCmbLabAtFloor
-        : isMinLabAtFloor;
+        ? isCombinedLabelAtFloor
+        : isMinLabelAtFloor;
 
       if (hideCeil) {
         this.hideEl(this.ceilLabelElement);
-      } else if (!clHidden) {
+      } else if (!ceilLabelHidden) {
         this.showEl(this.ceilLabelElement);
       }
 
       // Hide or show floor label
       if (hideFloor) {
         this.hideEl(this.floorLabelElement);
-      } else if (!flHidden) {
+      } else if (!floorLabelHidden) {
         this.showEl(this.floorLabelElement);
       }
     }
   }
 
   private isLabelBelowFloorLab(label: SliderLabelDirective): boolean {
-    const isRTL: boolean = this.viewOptions.rightToLeft;
     const pos: number = label.position;
     const dim: number = label.dimension;
     const floorPos: number = this.floorLabelElement.position;
     const floorDim: number = this.floorLabelElement.dimension;
-    return isRTL
+    return this.viewOptions.rightToLeft
       ? pos + dim >= floorPos - 2
       : pos <= floorPos + floorDim + 2;
   }
 
   private isLabelAboveCeilLab(label: SliderLabelDirective): boolean {
-    const isRTL: boolean = this.viewOptions.rightToLeft;
     const pos: number = label.position;
     const dim: number = label.dimension;
     const ceilPos: number = this.ceilLabelElement.position;
     const ceilDim: number = this.ceilLabelElement.dimension;
-    return isRTL ? pos <= ceilPos + ceilDim + 2 : pos + dim >= ceilPos - 2;
+    return this.viewOptions.rightToLeft
+      ? pos <= ceilPos + ceilDim + 2
+      : pos + dim >= ceilPos - 2;
   }
 
   // Update slider selection bar, combined label and range label
@@ -1395,8 +1399,8 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
         ? !this.viewOptions.showSelectionBarEnd
         : this.viewOptions.showSelectionBarEnd;
     const positionForRange: number = this.viewOptions.rightToLeft
-        ? this.maxHandleElement.position + this.handleHalfDim
-        : this.minHandleElement.position + this.handleHalfDim;
+        ? this.maxHandleElement.position + this.handleHalfDimension
+        : this.minHandleElement.position + this.handleHalfDimension;
 
     if (this.range) {
       dimension = Math.abs(this.maxHandleElement.position - this.minHandleElement.position);
@@ -1410,16 +1414,16 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
             : this.viewLowValue > center;
         if (isModelGreaterThanCenter) {
           dimension = this.minHandleElement.position - centerPosition;
-          position = centerPosition + this.handleHalfDim;
+          position = centerPosition + this.handleHalfDimension;
         } else {
           dimension = centerPosition - this.minHandleElement.position;
-          position = this.minHandleElement.position + this.handleHalfDim;
+          position = this.minHandleElement.position + this.handleHalfDimension;
         }
       } else if (isSelectionBarFromRight) {
-        dimension = Math.ceil(Math.abs(this.maxPos - this.minHandleElement.position) + this.handleHalfDim);
-        position = Math.floor(this.minHandleElement.position + this.handleHalfDim);
+        dimension = Math.ceil(Math.abs(this.maxHandlePosition - this.minHandleElement.position) + this.handleHalfDimension);
+        position = Math.floor(this.minHandleElement.position + this.handleHalfDimension);
       } else {
-        dimension = this.minHandleElement.position + this.handleHalfDim;
+        dimension = this.minHandleElement.position + this.handleHalfDimension;
         position = 0;
       }
     }
@@ -1475,18 +1479,18 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
           (offset +
             dimension +
             position +
-            (reversed ? -this.handleHalfDim : 0)) +
+            (reversed ? -this.handleHalfDimension : 0)) +
           'px';
         this.barStyle.backgroundSize =
-          '100% ' + (this.barDimension - this.handleHalfDim) + 'px';
+          '100% ' + (this.barDimension - this.handleHalfDimension) + 'px';
       } else {
         this.barStyle.backgroundPosition =
           offset -
           position +
-          (reversed ? this.handleHalfDim : 0) +
+          (reversed ? this.handleHalfDimension : 0) +
           'px center';
         this.barStyle.backgroundSize =
-          this.barDimension - this.handleHalfDim + 'px 100%';
+          this.barDimension - this.handleHalfDimension + 'px 100%';
       }
     }
   }
@@ -1522,7 +1526,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
 
   // Update combined label position and value
-  private updateCmbLabel(): void {
+  private updateCombinedLabel(): void {
     let isLabelOverlap: boolean = null;
     if (this.viewOptions.rightToLeft) {
       isLabelOverlap =
@@ -1533,11 +1537,11 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     }
 
     if (isLabelOverlap) {
-      const lowTr: string = this.getDisplayValue(this.viewLowValue, LabelType.Low);
-      const highTr: string = this.getDisplayValue(this.viewHighValue, LabelType.High);
+      const lowDisplayValue: string = this.getDisplayValue(this.viewLowValue, LabelType.Low);
+      const highDisplayValue: string = this.getDisplayValue(this.viewHighValue, LabelType.High);
       const labelVal: string = this.viewOptions.rightToLeft
-        ? this.combineLabels(highTr, lowTr)
-        : this.combineLabels(lowTr, highTr);
+        ? this.combineLabels(highDisplayValue, lowDisplayValue)
+        : this.combineLabels(lowDisplayValue, highDisplayValue);
 
       this.setLabelValue(labelVal, this.combinedLabelElement);
       const pos: number = this.viewOptions.boundPointerLabels
@@ -1566,7 +1570,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       this.hideEl(this.combinedLabelElement);
     }
     if (this.viewOptions.autoHideLimitLabels) {
-      this.shFloorCeil();
+      this.updateFloorAndCeilLabelsVisibility();
     }
   }
 
@@ -1646,12 +1650,12 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     if (this.viewOptions.rightToLeft) {
       percent = 1 - percent;
     }
-    return percent * this.maxPos;
+    return percent * this.maxHandlePosition;
   }
 
   // Translate position to model value
   private positionToValue(position: number): number {
-    let percent: number = position / this.maxPos;
+    let percent: number = position / this.maxHandlePosition;
     if (this.viewOptions.rightToLeft) {
       percent = 1 - percent;
     }
@@ -1698,7 +1702,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     } else {
       eventPos = this.getEventXY(event, targetTouchId) - sliderPos;
     }
-    return eventPos * this.viewOptions.scale - this.handleHalfDim;
+    return eventPos * this.viewOptions.scale - this.handleHalfDimension;
   }
 
   // Get the handle closest to an event
@@ -1927,7 +1931,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
     if (newPos <= 0) {
       newValue = flrValue;
-    } else if (newPos >= this.maxPos) {
+    } else if (newPos >= this.maxHandlePosition) {
       newValue = ceilValue;
     } else {
       newValue = this.positionToValue(newPos);
@@ -2162,34 +2166,34 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     const newPos: number = this.getEventPosition(event);
 
     let ceilLimit: number,
-        flrLimit: number,
-        flrHElem: SliderElementDirective,
-        ceilHElem: SliderElementDirective;
+        floorLimit: number,
+        floorHandleElement: SliderElementDirective,
+        ceilHandleElement: SliderElementDirective;
     if (this.viewOptions.rightToLeft) {
       ceilLimit = this.dragging.lowLimit;
-      flrLimit = this.dragging.highLimit;
-      flrHElem = this.maxHandleElement;
-      ceilHElem = this.minHandleElement;
+      floorLimit = this.dragging.highLimit;
+      floorHandleElement = this.maxHandleElement;
+      ceilHandleElement = this.minHandleElement;
     } else {
       ceilLimit = this.dragging.highLimit;
-      flrLimit = this.dragging.lowLimit;
-      flrHElem = this.minHandleElement;
-      ceilHElem = this.maxHandleElement;
+      floorLimit = this.dragging.lowLimit;
+      floorHandleElement = this.minHandleElement;
+      ceilHandleElement = this.maxHandleElement;
     }
 
-    const isUnderFlrLimit: boolean = newPos <= flrLimit;
-    const isOverCeilLimit: boolean = newPos >= this.maxPos - ceilLimit;
+    const isUnderFlrLimit: boolean = (newPos <= floorLimit);
+    const isOverCeilLimit: boolean = (newPos >= this.maxHandlePosition - ceilLimit);
 
     let newMinValue: number;
     let newMaxValue: number;
     if (isUnderFlrLimit) {
-      if (flrHElem.position === 0) {
+      if (floorHandleElement.position === 0) {
         return;
       }
       newMinValue = this.getMinValue(newPos, true, false);
       newMaxValue = this.getMaxValue(newPos, true, false);
     } else if (isOverCeilLimit) {
-      if (ceilHElem.position === this.maxPos) {
+      if (ceilHandleElement.position === this.maxHandlePosition) {
         return;
       }
       newMaxValue = this.getMaxValue(newPos, true, true);
