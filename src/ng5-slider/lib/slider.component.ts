@@ -133,27 +133,35 @@ const NG5_SLIDER_CONTROL_VALUE_ACCESSOR: any = {
 })
 export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDestroy, ControlValueAccessor {
   // Model for low value of slider. For simple slider, this is the only input. For range slider, this is the low value.
-  @Input() value: number = null;
+  @Input()
+  public value: number = null;
   // Output for low value slider to support two-way bindings
-  @Output() valueChange: EventEmitter<number> = new EventEmitter();
+  @Output()
+  public valueChange: EventEmitter<number> = new EventEmitter();
 
   // Model for high value of slider. Not used in simple slider. For range slider, this is the high value.
-  @Input() highValue: number = null;
+  @Input()
+  public highValue: number = null;
   // Output for high value slider to support two-way bindings
-  @Output() highValueChange: EventEmitter<number> = new EventEmitter();
+  @Output()
+  public highValueChange: EventEmitter<number> = new EventEmitter();
 
   // An object with all the other options of the slider.
   // Each option can be updated at runtime and the slider will automatically be re-rendered.
-  @Input() options: Options = new Options();
+  @Input()
+  public options: Options = new Options();
 
   // Event emitted when user starts interaction with the slider
-  @Output() userChangeStart: EventEmitter<ChangeContext> = new EventEmitter();
+  @Output()
+  public userChangeStart: EventEmitter<ChangeContext> = new EventEmitter();
 
   // Event emitted on each change coming from user interaction
-  @Output() userChange: EventEmitter<ChangeContext> = new EventEmitter();
+  @Output()
+  public userChange: EventEmitter<ChangeContext> = new EventEmitter();
 
   // Event emitted when user finishes interaction with the slider
-  @Output() userChangeEnd: EventEmitter<ChangeContext> = new EventEmitter();
+  @Output()
+  public userChangeEnd: EventEmitter<ChangeContext> = new EventEmitter();
 
   private manualRefreshSubscription: any;
   // Input event that triggers slider refresh (re-positioning of slider elements)
@@ -176,17 +184,18 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
 
   // Slider type, true means range slider
-  get range(): boolean {
+  public get range(): boolean {
     return !ValueHelper.isNullOrUndefined(this.value) && !ValueHelper.isNullOrUndefined(this.highValue);
   }
 
   // Set to true if init method already executed
   private initHasRun: boolean = false;
 
-    // Changes in model inputs are passed through this subject
+  // Changes in model inputs are passed through this subject
   // These are all changes coming in from outside the component through input bindings or reactive form inputs
   private inputModelChangeSubject: Subject<InputModelChange> = new Subject<InputModelChange>();
   private inputModelChangeSubscription: Subscription = null;
+
   // Changes to model outputs are passed through this subject
   // These are all changes that need to be communicated to output emitters and registered callbacks
   private outputModelChangeSubject: Subject<OutputModelChange> = new Subject<OutputModelChange>();
@@ -308,14 +317,16 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   private onTouchedCallback: (value: any) => void = null;
   private onChangeCallback: (value: any) => void = null;
 
-  constructor(private renderer: Renderer2,
+
+  public constructor(private renderer: Renderer2,
               private elementRef: ElementRef,
               private changeDetectionRef: ChangeDetectorRef,
               private zone: NgZone) {
     this.eventListenerHelper = new EventListenerHelper(this.renderer);
   }
 
-  ngOnInit(): void {
+  // OnInit interface
+  public ngOnInit(): void {
     this.viewOptions = new Options();
     Object.assign(this.viewOptions, this.options);
 
@@ -326,7 +337,8 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     this.updateVerticalState();
   }
 
-  ngAfterViewInit(): void {
+  // AfterViewInit interface
+  public ngAfterViewInit(): void {
     this.applyOptions();
 
     this.subscribeInputModelChangeSubject(this.viewOptions.inputEventsInterval);
@@ -359,7 +371,8 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     this.changeDetectionRef.detectChanges();
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
+  // OnChanges interface
+  public ngOnChanges(changes: SimpleChanges): void {
     // Always apply options first
     if (!ValueHelper.isNullOrUndefined(changes.options)) {
       this.onChangeOptions();
@@ -377,64 +390,8 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     }
   }
 
-  onChangeOptions(): void {
-    if (!this.initHasRun) {
-      return;
-    }
-
-    const previousInputEventsInterval: number = this.viewOptions.inputEventsInterval;
-    const previousOutputEventsInterval: number = this.viewOptions.outputEventsInterval;
-
-    this.applyOptions();
-
-    if (previousInputEventsInterval !== this.viewOptions.inputEventsInterval) {
-      this.unsubscribeInputModelChangeSubject();
-      this.subscribeInputModelChangeSubject(this.viewOptions.inputEventsInterval);
-    }
-
-    if (previousOutputEventsInterval !== this.viewOptions.outputEventsInterval) {
-      this.unsubscribeInputModelChangeSubject();
-      this.subscribeInputModelChangeSubject(this.viewOptions.outputEventsInterval);
-    }
-
-    // With new options, we need to re-normalise model values if necessary
-    this.renormaliseModelValues();
-
-    this.viewLowValue = this.modelValueToViewValue(this.value);
-    if (this.range) {
-      this.viewHighValue = this.modelValueToViewValue(this.highValue);
-    } else {
-      this.viewHighValue = null;
-    }
-
-    this.resetSlider();
-  }
-
-  renormaliseModelValues(): void {
-    const previousModelValues: ModelValues = {
-      value: this.value,
-      highValue: this.highValue
-    };
-    const normalisedModelValues: ModelValues = this.normaliseModelValues(previousModelValues);
-    if (!ModelValues.compare(normalisedModelValues, previousModelValues)) {
-      this.value = normalisedModelValues.value;
-      this.highValue = normalisedModelValues.highValue;
-
-      this.outputModelChangeSubject.next({
-        value: this.value,
-        highValue: this.highValue,
-        forceChange: true,
-        userEventInitiated: false
-      });
-    }
-  }
-
-  @HostListener('window:resize', ['$event'])
-  onResize(event: any): void {
-    this.calculateViewDimensionsAndDetectChanges();
-  }
-
-  ngOnDestroy(): void {
+  // OnDestroy interface
+  public ngOnDestroy(): void {
     this.unsubscribeOnMove();
     this.unsubscribeOnEnd();
 
@@ -449,9 +406,8 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     this.unsubscribeTriggerFocus();
   }
 
-
   // ControlValueAccessor interface
-  writeValue(obj: any): void {
+  public writeValue(obj: any): void {
     if (obj instanceof Array) {
       this.value = obj[0];
       this.highValue = obj[1];
@@ -468,17 +424,25 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     });
   }
 
-  registerOnChange(onChangeCallback: any): void {
+  // ControlValueAccessor interface
+  public registerOnChange(onChangeCallback: any): void {
     this.onChangeCallback = onChangeCallback;
   }
 
-  registerOnTouched(onTouchedCallback: any): void {
+  // ControlValueAccessor interface
+  public registerOnTouched(onTouchedCallback: any): void {
     this.onTouchedCallback = onTouchedCallback;
   }
 
-  setDisabledState(isDisabled: boolean): void {
+  // ControlValueAccessor interface
+  public setDisabledState(isDisabled: boolean): void {
     this.viewOptions.disabled = isDisabled;
     this.updateDisabledState();
+  }
+
+  @HostListener('window:resize', ['$event'])
+  public onResize(event: any): void {
+    this.calculateViewDimensionsAndDetectChanges();
   }
 
   private subscribeInputModelChangeSubject(interval?: number): void {
@@ -739,6 +703,58 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     }
 
     return normalisedInput;
+  }
+
+  private renormaliseModelValues(): void {
+    const previousModelValues: ModelValues = {
+      value: this.value,
+      highValue: this.highValue
+    };
+    const normalisedModelValues: ModelValues = this.normaliseModelValues(previousModelValues);
+    if (!ModelValues.compare(normalisedModelValues, previousModelValues)) {
+      this.value = normalisedModelValues.value;
+      this.highValue = normalisedModelValues.highValue;
+
+      this.outputModelChangeSubject.next({
+        value: this.value,
+        highValue: this.highValue,
+        forceChange: true,
+        userEventInitiated: false
+      });
+    }
+  }
+
+  private onChangeOptions(): void {
+    if (!this.initHasRun) {
+      return;
+    }
+
+    const previousInputEventsInterval: number = this.viewOptions.inputEventsInterval;
+    const previousOutputEventsInterval: number = this.viewOptions.outputEventsInterval;
+
+    this.applyOptions();
+
+    if (previousInputEventsInterval !== this.viewOptions.inputEventsInterval) {
+      this.unsubscribeInputModelChangeSubject();
+      this.subscribeInputModelChangeSubject(this.viewOptions.inputEventsInterval);
+    }
+
+    if (previousOutputEventsInterval !== this.viewOptions.outputEventsInterval) {
+      this.unsubscribeInputModelChangeSubject();
+      this.subscribeInputModelChangeSubject(this.viewOptions.outputEventsInterval);
+    }
+
+    // With new options, we need to re-normalise model values if necessary
+    this.renormaliseModelValues();
+
+    this.viewLowValue = this.modelValueToViewValue(this.value);
+    if (this.range) {
+      this.viewHighValue = this.modelValueToViewValue(this.highValue);
+    } else {
+      this.viewHighValue = null;
+    }
+
+    this.resetSlider();
   }
 
   // Read the user options and apply them to the slider model
