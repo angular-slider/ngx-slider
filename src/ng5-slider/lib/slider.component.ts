@@ -80,7 +80,13 @@ class ModelValues {
   highValue: number;
 
   public static compare(x?: ModelValues, y?: ModelValues): boolean {
-    return x && y && x.value === y.value && x.highValue === y.highValue;
+    if (ValueHelper.isNullOrUndefined(x) && ValueHelper.isNullOrUndefined(y)) {
+      return false;
+    }
+    if (ValueHelper.isNullOrUndefined(x) !== ValueHelper.isNullOrUndefined(y)) {
+      return false;
+    }
+    return x.value === y.value && x.highValue === y.highValue;
   }
 }
 
@@ -90,8 +96,13 @@ class ModelChange extends ModelValues {
   forceChange: boolean;
 
   public static compare(x?: ModelChange, y?: ModelChange): boolean {
-    return x && y &&
-           x.value === y.value &&
+    if (ValueHelper.isNullOrUndefined(x) && ValueHelper.isNullOrUndefined(y)) {
+      return false;
+    }
+    if (ValueHelper.isNullOrUndefined(x) !== ValueHelper.isNullOrUndefined(y)) {
+      return false;
+    }
+    return x.value === y.value &&
            x.highValue === y.highValue &&
            x.forceChange === y.forceChange;
   }
@@ -275,7 +286,10 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   public ticksUnderValuesClass: boolean = false;
 
   // Whether to show/hide ticks
-  public showTicks: boolean = false;
+  public get showTicks(): boolean {
+    return this.viewOptions.showTicks;
+  }
+
   /* If tickStep is set or ticksArray is specified.
      In this case, ticks values should be displayed below the slider. */
   private intermediateTicks: boolean = false;
@@ -347,12 +361,13 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
   ngOnChanges(changes: SimpleChanges): void {
     // Always apply options first
-    if (changes.options) {
+    if (!ValueHelper.isNullOrUndefined(changes.options)) {
       this.onChangeOptions();
     }
 
     // Then value changes
-    if (changes.value || changes.highValue) {
+    if (!ValueHelper.isNullOrUndefined(changes.value) ||
+        !ValueHelper.isNullOrUndefined(changes.highValue)) {
       this.inputModelChangeSubject.next({
         value: this.value,
         highValue: this.highValue,
@@ -462,10 +477,8 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
 
   setDisabledState(isDisabled: boolean): void {
-    if (this.viewOptions) {
-      this.viewOptions.disabled = isDisabled;
-      this.updateDisabledState();
-    }
+    this.viewOptions.disabled = isDisabled;
+    this.updateDisabledState();
   }
 
   private subscribeInputModelChangeSubject(interval?: number): void {
@@ -508,42 +521,42 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
 
   private unsubscribeOnMove(): void {
-    if (this.onMoveEventListener) {
+    if (!ValueHelper.isNullOrUndefined(this.onMoveEventListener)) {
       this.eventListenerHelper.detachEventListener(this.onMoveEventListener);
       this.onMoveEventListener = null;
     }
   }
 
   private unsubscribeOnEnd(): void {
-    if (this.onEndEventListener) {
+    if (!ValueHelper.isNullOrUndefined(this.onEndEventListener)) {
       this.eventListenerHelper.detachEventListener(this.onEndEventListener);
       this.onEndEventListener = null;
     }
   }
 
   private unsubscribeInputModelChangeSubject(): void {
-    if (this.inputModelChangeSubscription) {
+    if (!ValueHelper.isNullOrUndefined(this.inputModelChangeSubscription)) {
       this.inputModelChangeSubscription.unsubscribe();
       this.inputModelChangeSubscription = null;
     }
   }
 
   private unsubscribeOutputModelChangeSubject(): void {
-    if (this.outputModelChangeSubscription) {
+    if (!ValueHelper.isNullOrUndefined(this.outputModelChangeSubscription)) {
       this.outputModelChangeSubscription.unsubscribe();
       this.outputModelChangeSubscription = null;
     }
   }
 
   private unsubscribeManualRefresh(): void {
-    if (this.manualRefreshSubscription) {
+    if (!ValueHelper.isNullOrUndefined(this.manualRefreshSubscription)) {
       this.manualRefreshSubscription.unsubscribe();
       this.manualRefreshSubscription = null;
     }
   }
 
   private unsubscribeTriggerFocus(): void {
-    if (this.triggerFocusSubscription) {
+    if (!ValueHelper.isNullOrUndefined(this.triggerFocusSubscription)) {
       this.triggerFocusSubscription.unsubscribe();
       this.triggerFocusSubscription = null;
     }
@@ -572,14 +585,14 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       return NaN;
     }
 
-    if (this.viewOptions.stepsArray && !this.viewOptions.bindIndexForStepsArray) {
-        return ValueHelper.findStepIndex(+modelValue, this.viewOptions.stepsArray);
+    if (!ValueHelper.isNullOrUndefined(this.viewOptions.stepsArray) && !this.viewOptions.bindIndexForStepsArray) {
+      return ValueHelper.findStepIndex(+modelValue, this.viewOptions.stepsArray);
     }
     return +modelValue;
   }
 
   private viewValueToModelValue(viewValue: number): number {
-    if (this.viewOptions.stepsArray && !this.viewOptions.bindIndexForStepsArray) {
+    if (!ValueHelper.isNullOrUndefined(this.viewOptions.stepsArray) && !this.viewOptions.bindIndexForStepsArray) {
       return this.getStepValue(viewValue);
     }
     return viewValue;
@@ -587,7 +600,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
   private getStepValue(sliderValue: number): number {
     const step: CustomStepDefinition = this.viewOptions.stepsArray[sliderValue];
-    return step ? step.value : NaN;
+    return (!ValueHelper.isNullOrUndefined(step)) ? step.value : NaN;
   }
 
   private applyViewChange(): void {
@@ -662,14 +675,14 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
         this.highValueChange.emit(modelChange.highValue);
       }
 
-      if (this.onChangeCallback) {
+      if (!ValueHelper.isNullOrUndefined(this.onChangeCallback)) {
         if (this.range) {
           this.onChangeCallback([modelChange.value, modelChange.highValue]);
         } else {
           this.onChangeCallback(modelChange.value);
         }
       }
-      if (this.onTouchedCallback) {
+      if (!ValueHelper.isNullOrUndefined(this.onTouchedCallback)) {
         if (this.range) {
           this.onTouchedCallback([modelChange.value, modelChange.highValue]);
         } else {
@@ -702,7 +715,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     }
 
     // Don't attempt to normalise further when using steps array (steps may be out of order and that is perfectly fine)
-    if (this.viewOptions.stepsArray || !this.viewOptions.enforceRange) {
+    if (!ValueHelper.isNullOrUndefined(this.viewOptions.stepsArray) || !this.viewOptions.enforceRange) {
       return normalisedInput;
     }
 
@@ -741,17 +754,17 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
     this.viewOptions.showTicks = this.viewOptions.showTicks ||
       this.viewOptions.showTicksValues ||
-      !!this.viewOptions.ticksArray;
-    if (this.viewOptions.showTicks && (!ValueHelper.isNullOrUndefined(this.viewOptions.tickStep) || this.viewOptions.ticksArray)) {
+      !ValueHelper.isNullOrUndefined(this.viewOptions.ticksArray);
+    if (this.viewOptions.showTicks &&
+       (!ValueHelper.isNullOrUndefined(this.viewOptions.tickStep) || !ValueHelper.isNullOrUndefined(this.viewOptions.ticksArray))) {
       this.intermediateTicks = true;
     }
-    this.showTicks = this.viewOptions.showTicks;
 
     this.viewOptions.showSelectionBar = this.viewOptions.showSelectionBar ||
       this.viewOptions.showSelectionBarEnd ||
       !ValueHelper.isNullOrUndefined(this.viewOptions.showSelectionBarFromValue);
 
-    if (this.viewOptions.stepsArray) {
+    if (!ValueHelper.isNullOrUndefined(this.viewOptions.stepsArray)) {
       this.applyStepsArrayOptions();
     } else {
       this.applyFloorCeilOptions();
@@ -962,9 +975,9 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       this.minHandleElement.ariaOrientation = 'vertical';
     }
 
-    if (this.viewOptions.ariaLabel) {
+    if (!ValueHelper.isNullOrUndefined(this.viewOptions.ariaLabel)) {
       this.minHandleElement.ariaLabel = this.viewOptions.ariaLabel;
-    } else if (this.viewOptions.ariaLabelledBy) {
+    } else if (!ValueHelper.isNullOrUndefined(this.viewOptions.ariaLabelledBy)) {
       this.minHandleElement.ariaLabelledBy = this.viewOptions.ariaLabelledBy;
     }
 
@@ -980,9 +993,9 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
       this.maxHandleElement.ariaOrientation = this.viewOptions.vertical ? 'vertical' : 'horizontal';
 
-      if (this.viewOptions.ariaLabelHigh) {
+      if (!ValueHelper.isNullOrUndefined(this.viewOptions.ariaLabelHigh)) {
         this.maxHandleElement.ariaLabel = this.viewOptions.ariaLabelHigh;
-      } else if (this.viewOptions.ariaLabelledByHigh) {
+      } else if (!ValueHelper.isNullOrUndefined(this.viewOptions.ariaLabelledByHigh)) {
         this.maxHandleElement.ariaLabelledBy = this.viewOptions.ariaLabelledByHigh;
       }
     }
@@ -1006,7 +1019,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   // Calculate dimensions that are dependent on view port size
   // Run once during initialization and every time view port changes size.
   private calculateViewDimensions(): void {
-    if (this.viewOptions.handleDimension) {
+    if (!ValueHelper.isNullOrUndefined(this.viewOptions.handleDimension)) {
       this.minHandleElement.setDimension(this.viewOptions.handleDimension);
     } else {
       this.minHandleElement.calculateDimension();
@@ -1016,7 +1029,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
     this.handleHalfDimension = handleWidth / 2;
 
-    if (this.viewOptions.barDimension) {
+    if (!ValueHelper.isNullOrUndefined(this.viewOptions.barDimension)) {
       this.fullBarElement.setDimension(this.viewOptions.barDimension);
     } else {
       this.fullBarElement.calculateDimension();
@@ -1042,7 +1055,9 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       return;
     }
 
-    const ticksArray: number[] = this.viewOptions.ticksArray || this.getTicksArray();
+    const ticksArray: number[] = !ValueHelper.isNullOrUndefined(this.viewOptions.ticksArray)
+      ? this.viewOptions.ticksArray
+      : this.getTicksArray();
     const translate: string = this.viewOptions.vertical ? 'translateY' : 'translateX';
 
     if (this.viewOptions.rightToLeft) {
@@ -1066,28 +1081,28 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
         '-ms-transform': translation,
         transform: translation,
       };
-      if (tick.selected && this.viewOptions.getSelectionBarColor) {
+      if (tick.selected && !ValueHelper.isNullOrUndefined(this.viewOptions.getSelectionBarColor)) {
         tick.style['background-color'] = this.getSelectionBarColor();
       }
-      if (!tick.selected && this.viewOptions.getTickColor) {
+      if (!tick.selected && !ValueHelper.isNullOrUndefined(this.viewOptions.getTickColor)) {
         tick.style['background-color'] = this.getTickColor(value);
       }
-      if (this.viewOptions.ticksTooltip) {
+      if (!ValueHelper.isNullOrUndefined(this.viewOptions.ticksTooltip)) {
         tick.tooltip = this.viewOptions.ticksTooltip(value);
         tick.tooltipPlacement = this.viewOptions.vertical ? 'right' : 'top';
       }
       if (this.viewOptions.showTicksValues && (value % this.viewOptions.tickValueStep === 0)) {
         tick.value = this.getDisplayValue(value, LabelType.TickValue);
-        if (this.viewOptions.ticksValuesTooltip) {
+        if (!ValueHelper.isNullOrUndefined(this.viewOptions.ticksValuesTooltip)) {
           tick.valueTooltip = this.viewOptions.ticksValuesTooltip(value);
           tick.valueTooltipPlacement = this.viewOptions.vertical
             ? 'right'
             : 'top';
         }
       }
-      if (this.viewOptions.getLegend) {
+      if (!ValueHelper.isNullOrUndefined(this.viewOptions.getLegend)) {
         const legend: string = this.viewOptions.getLegend(value);
-        if (legend) {
+        if (!ValueHelper.isNullOrUndefined(legend)) {
           tick.legend = legend;
         }
       }
@@ -1096,7 +1111,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
     // We should avoid re-creating the ticks array if possible
     // This both improves performance and makes CSS animations work correctly
-    if (this.ticks && this.ticks.length === newTicks.length) {
+    if (!ValueHelper.isNullOrUndefined(this.ticks) && this.ticks.length === newTicks.length) {
       for (let i: number = 0; i  < newTicks.length; ++i) {
         Object.assign(this.ticks[i], newTicks[i]);
       }
@@ -1210,10 +1225,9 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     this.minHandleLabelElement.setValue(this.getDisplayValue(this.viewLowValue, LabelType.Low));
     this.minHandleLabelElement.setPosition(this.getHandleLabelPos(PointerType.Min, newPos));
 
-    if (this.viewOptions.getPointerColor) {
-      const pointercolor: string = this.getPointerColor(PointerType.Min);
+    if (!ValueHelper.isNullOrUndefined(this.viewOptions.getPointerColor)) {
       this.minPointerStyle = {
-        backgroundColor: pointercolor,
+        backgroundColor: this.getPointerColor(PointerType.Min),
       };
     }
 
@@ -1228,10 +1242,9 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     this.maxHandleLabelElement.setValue(this.getDisplayValue(this.viewHighValue, LabelType.High));
     this.maxHandleLabelElement.setPosition(this.getHandleLabelPos(PointerType.Max, newPos));
 
-    if (this.viewOptions.getPointerColor) {
-      const pointercolor: string = this.getPointerColor(PointerType.Max);
+    if (!ValueHelper.isNullOrUndefined(this.viewOptions.getPointerColor)) {
       this.maxPointerStyle = {
-        backgroundColor: pointercolor,
+        backgroundColor: this.getPointerColor(PointerType.Max),
       };
     }
     if (this.viewOptions.autoHideLimitLabels) {
@@ -1361,12 +1374,12 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
         this.rightOuterSelectionBarElement.setPosition(position + dimension);
       }
     }
-    if (this.viewOptions.getSelectionBarColor) {
+    if (!ValueHelper.isNullOrUndefined(this.viewOptions.getSelectionBarColor)) {
       const color: string = this.getSelectionBarColor();
       this.barStyle = {
         backgroundColor: color,
       };
-    } else if (this.viewOptions.selectionBarGradient) {
+    } else if (!ValueHelper.isNullOrUndefined(this.viewOptions.selectionBarGradient)) {
       const offset: number = (!ValueHelper.isNullOrUndefined(this.viewOptions.showSelectionBarFromValue))
             ? this.valueToPosition(this.viewOptions.showSelectionBarFromValue)
             : 0;
@@ -1485,7 +1498,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
   // Return the translated value if a translate function is provided else the original value
   private getDisplayValue(value: number, which: LabelType): string {
-    if (this.viewOptions.stepsArray && !this.viewOptions.bindIndexForStepsArray) {
+    if (!ValueHelper.isNullOrUndefined(this.viewOptions.stepsArray) && !this.viewOptions.bindIndexForStepsArray) {
       value = this.getStepValue(value);
     }
     return this.viewOptions.translate(value, which);
@@ -1493,7 +1506,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
   // Round value to step and precision based on minValue
   private roundStep(value: number, customStep?: number): number {
-    const step: number = customStep ? customStep : this.viewOptions.step;
+    const step: number = !ValueHelper.isNullOrUndefined(customStep) ? customStep : this.viewOptions.step;
     let steppedDifference: number = MathHelper.roundToPrecisionLimit(
       (value - this.viewOptions.floor) / step, this.viewOptions.precisionLimit);
     steppedDifference = Math.round(steppedDifference) * step;
@@ -1503,14 +1516,17 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   // Translate value to pixel position
   private valueToPosition(val: number): number {
     let fn: ValueToPositionFunction  = ValueHelper.linearValueToPosition;
-    if (this.viewOptions.customValueToPosition) {
+    if (!ValueHelper.isNullOrUndefined(this.viewOptions.customValueToPosition)) {
       fn = this.viewOptions.customValueToPosition;
     } else if (this.viewOptions.logScale) {
       fn = ValueHelper.logValueToPosition;
     }
 
     val = MathHelper.clampToRange(val, this.viewOptions.floor, this.viewOptions.ceil);
-    let percent: number = fn(val, this.viewOptions.floor, this.viewOptions.ceil) || 0;
+    let percent: number = fn(val, this.viewOptions.floor, this.viewOptions.ceil);
+    if (ValueHelper.isNullOrUndefined(percent)) {
+      percent = 0;
+    }
     if (this.viewOptions.rightToLeft) {
       percent = 1 - percent;
     }
@@ -1524,12 +1540,13 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       percent = 1 - percent;
     }
     let fn: PositionToValueFunction = ValueHelper.linearPositionToValue;
-    if (this.viewOptions.customPositionToValue) {
+    if (!ValueHelper.isNullOrUndefined(this.viewOptions.customPositionToValue)) {
       fn = this.viewOptions.customPositionToValue;
     } else if (this.viewOptions.logScale) {
       fn = ValueHelper.logPositionToValue;
     }
-    return fn(percent, this.viewOptions.floor, this.viewOptions.ceil) || 0;
+    const value: number = fn(percent, this.viewOptions.floor, this.viewOptions.ceil);
+    return !ValueHelper.isNullOrUndefined(value) ? value : 0;
   }
 
   // Get the X-coordinate or Y-coordinate of an event
@@ -1743,7 +1760,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
     this.userChangeStart.emit(this.getChangeContext());
 
-    if (CompatibilityHelper.isTouchEvent(event) && (event as TouchEvent).changedTouches) {
+    if (CompatibilityHelper.isTouchEvent(event) && !ValueHelper.isNullOrUndefined((event as TouchEvent).changedTouches)) {
       // Store the touch identifier
       if (ValueHelper.isNullOrUndefined(this.touchId)) {
         this.touchId = (event as TouchEvent).changedTouches[0].identifier;
@@ -1764,7 +1781,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
   // onMove event handler
   private onMove(event: MouseEvent|TouchEvent, fromTick?: boolean): void {
-    let touchForThisSlider: Touch;
+    let touchForThisSlider: Touch = null;
 
     if (CompatibilityHelper.isTouchEvent(event)) {
       const changedTouches: TouchList = (event as TouchEvent).changedTouches;
@@ -1775,12 +1792,12 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
         }
       }
 
-      if (!touchForThisSlider) {
+      if (ValueHelper.isNullOrUndefined(touchForThisSlider)) {
         return;
       }
     }
 
-    const newPos: number = touchForThisSlider
+    const newPos: number = !ValueHelper.isNullOrUndefined(touchForThisSlider)
       ? this.getEventPosition(event, touchForThisSlider.identifier)
       : this.getEventPosition(event);
     let newValue: number;
@@ -1896,7 +1913,9 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
   private onKeyboardEvent(event: KeyboardEvent): void {
     const currentValue: number = this.getCurrentTrackingValue();
-    const keyCode: number = event.keyCode || event.which;
+    const keyCode: number = !ValueHelper.isNullOrUndefined(event.keyCode)
+      ? event.keyCode
+      : event.which;
     const keys: {[keyCode: number]: string} = {
         38: 'UP',
         40: 'DOWN',

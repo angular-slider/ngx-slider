@@ -90,6 +90,7 @@
       true,
       "always"
     ],
+    "strict-boolean-expressions": true,
     "triple-equals": true,
     "typedef-whitespace": [
       true,

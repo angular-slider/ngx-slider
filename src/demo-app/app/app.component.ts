@@ -75,9 +75,9 @@ export class AppComponent implements OnInit, OnDestroy {
     this.eventsSub = this.router.events.subscribe((event: Event) => {
       if (event instanceof NavigationEnd) {
         const { fragment } = this.router.parseUrl(this.router.url);
-        if (fragment) {
+        if (fragment !== undefined && fragment !== null) {
           const element: Element = document.querySelector(`#${fragment}`);
-          if (element) {
+          if (element !== undefined && element !== null) {
             element.scrollIntoView();
           }
         } else {

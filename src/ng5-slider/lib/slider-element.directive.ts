@@ -1,6 +1,7 @@
 import { Directive, ElementRef, Renderer2, HostBinding } from '@angular/core';
 import { EventListenerHelper } from './event-listener-helper';
 import { EventListener } from './event-listener';
+import { ValueHelper } from './value-helper';
 
 @Directive({
   selector: '[ng5SliderElement]'
@@ -148,7 +149,7 @@ export class SliderElementDirective {
   off(eventName?: string): void {
     let listenersToKeep: EventListener[];
     let listenersToRemove: EventListener[];
-    if (eventName) {
+    if (!ValueHelper.isNullOrUndefined(eventName)) {
       listenersToKeep = this.eventListeners.filter((event: EventListener) => event.eventName !== eventName);
       listenersToRemove = this.eventListeners.filter((event: EventListener) => event.eventName === eventName);
     } else {

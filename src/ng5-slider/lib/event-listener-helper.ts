@@ -16,7 +16,7 @@ export class EventListenerHelper {
   public attachPassiveEventListener(nativeElement: any, eventName: string, callback: (event: any) => void,
       throttleInterval?: number): EventListener {
     // Only use passive event listeners if the browser supports it
-    if (! detectPassiveEvents.hasSupport) {
+    if (detectPassiveEvents.hasSupport !== true) {
       return this.attachEventListener(nativeElement, eventName, callback, throttleInterval);
     }
 
@@ -47,17 +47,17 @@ export class EventListenerHelper {
   }
 
   public detachEventListener(eventListener: EventListener): void {
-    if (eventListener.eventsSubscription) {
+    if (!ValueHelper.isNullOrUndefined(eventListener.eventsSubscription)) {
       eventListener.eventsSubscription.unsubscribe();
       eventListener.eventsSubscription = null;
     }
 
-    if (eventListener.events) {
+    if (!ValueHelper.isNullOrUndefined(eventListener.events)) {
       eventListener.events.complete();
       eventListener.events = null;
     }
 
-    if (eventListener.teardownCallback) {
+    if (!ValueHelper.isNullOrUndefined(eventListener.teardownCallback)) {
       eventListener.teardownCallback();
       eventListener.teardownCallback = null;
     }
