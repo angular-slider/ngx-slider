@@ -1630,16 +1630,16 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
     if (!this.viewOptions.onlyBindHandles) {
       this.selectionBarElement.on('mousedown',
-        (event: MouseEvent): void => this.onBarStart(draggableRange, event, true, true, true)
+        (event: MouseEvent): void => this.onBarStart(null, draggableRange, event, true, true, true)
       );
     }
 
     if (this.viewOptions.draggableRangeOnly) {
       this.minHandleElement.on('mousedown',
-        (event: MouseEvent): void => this.onBarStart(draggableRange, event, true, true)
+        (event: MouseEvent): void => this.onBarStart(PointerType.Min, draggableRange, event, true, true)
       );
       this.maxHandleElement.on('mousedown',
-        (event: MouseEvent): void => this.onBarStart(draggableRange, event, true, true)
+        (event: MouseEvent): void => this.onBarStart(PointerType.Max, draggableRange, event, true, true)
       );
     } else {
       this.minHandleElement.on('mousedown',
@@ -1663,15 +1663,15 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
     if (!this.viewOptions.onlyBindHandles) {
       this.selectionBarElement.onPassive('touchstart',
-        (event: TouchEvent): void => this.onBarStart(draggableRange, event, true, true)
+        (event: TouchEvent): void => this.onBarStart(null, draggableRange, event, true, true)
       );
     }
     if (this.viewOptions.draggableRangeOnly) {
       this.minHandleElement.onPassive('touchstart',
-        (event: TouchEvent): void => this.onBarStart(draggableRange, event, true, true)
+        (event: TouchEvent): void => this.onBarStart(PointerType.Min, draggableRange, event, true, true)
       );
       this.maxHandleElement.onPassive('touchstart',
-        (event: TouchEvent): void => this.onBarStart(draggableRange, event, true, true)
+        (event: TouchEvent): void => this.onBarStart(PointerType.Max, draggableRange, event, true, true)
       );
     } else {
       this.minHandleElement.onPassive('touchstart',
@@ -1711,12 +1711,12 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     this.ticksElement.off();
   }
 
-  private onBarStart(draggableRange: boolean, event: MouseEvent|TouchEvent,
+  private onBarStart(pointerType: PointerType, draggableRange: boolean, event: MouseEvent|TouchEvent,
     bindMove: boolean, bindEnd: boolean, simulateImmediateMove?: boolean, simulateImmediateEnd?: boolean): void {
     if (draggableRange) {
-      this.onDragStart(PointerType.Max, event, bindMove, bindEnd);
+      this.onDragStart(pointerType, event, bindMove, bindEnd);
     } else {
-      this.onStart(PointerType.Min, event, bindMove, bindEnd, simulateImmediateMove, simulateImmediateEnd);
+      this.onStart(pointerType, event, bindMove, bindEnd, simulateImmediateMove, simulateImmediateEnd);
     }
   }
 
