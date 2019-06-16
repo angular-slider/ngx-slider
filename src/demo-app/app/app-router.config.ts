@@ -3,12 +3,14 @@ import { Routes } from '@angular/router';
 import { DemosComponent } from './demos.component';
 import { HomeComponent } from './home.component';
 import {
+  CustomTicksLegendSliderComponent,
   DraggableRangeSliderComponent,
   PushRangeSliderComponent,
   RangeSliderComponent,
   ReactiveFormRangeSliderComponent,
   ReactiveFormSimpleSliderComponent,
   SimpleSliderComponent,
+  TicksValuesSliderComponent,
   VerticalSlidersComponent,
 } from './snippets';
 
@@ -26,6 +28,8 @@ export let routerConfig: Routes = [
   { path: 'reactive-form-simple-slider', component: ReactiveFormSimpleSliderComponent },
   { path: 'simple-slider', component: SimpleSliderComponent },
   { path: 'vertical-sliders', component: VerticalSlidersComponent },
+  { path: 'custom-ticks-legend-slider', component: CustomTicksLegendSliderComponent },
+  { path: 'ticks-values-slider', component: TicksValuesSliderComponent },
 
   { path: '**', pathMatch: 'full', redirectTo: ''}
 ];

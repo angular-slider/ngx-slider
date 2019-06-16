@@ -12,6 +12,22 @@ export class SliderSubElement {
     private sliderSubElement: ElementFinder) {
   }
 
+  isPresent(): promise.Promise<boolean> {
+    return new promise.Promise<boolean>(
+      (resolve: promise.IFulfilledCallback<boolean>,
+       reject: promise.IRejectedCallback): void => {
+        try {
+          this.sliderSubElement.getWebElement().then(
+            () => resolve(true),
+            () => resolve(false)
+          );
+        } catch (e) {
+          resolve(false);
+        }
+      }
+    );
+  }
+
   isVisible(): promise.Promise<boolean> {
     return new promise.Promise<boolean>(
       (resolve: promise.IFulfilledCallback<boolean>,
@@ -90,6 +106,78 @@ export class SliderSubElement {
           }
         );
       });
+  }
+
+  /** Simulates a mouse click on the element with optional offset from centre of the element */
+  mouseClick(offsetX: number = 0, offsetY: number = 0): promise.Promise<void> {
+    return new promise.Promise<void>(
+      (resolve: promise.IFulfilledCallback<void>,
+        reject: promise.IRejectedCallback): void => {
+
+        this.sliderSubElement.getSize()
+        .then(
+          (size: ElementSize) => {
+            const clickLocation: ElementLocation = {
+              x: Math.round(size.width / 2) + offsetX,
+              y: Math.round(size.height / 2) + offsetY
+            };
+
+            browser.driver.actions()
+              .mouseMove(this.sliderSubElement, clickLocation)
+              .click()
+              .perform()
+              .then(() => {
+                resolve(null);
+              },
+              (error: any): void => {
+                reject(error);
+              });
+          },
+          (error: any): void => {
+            reject(error);
+          }
+        );
+      }
+    );
+  }
+
+  /** Simulates a touch tap on the element with optional offset from centre of the element */
+  touchTap(offsetX: number = 0, offsetY: number = 0): promise.Promise<void> {
+    return new promise.Promise<void>(
+      (resolve: promise.IFulfilledCallback<void>,
+        reject: promise.IRejectedCallback): void => {
+
+        promise.all([
+          this.sliderSubElement.getLocation() as promise.Promise<any>,
+          this.sliderSubElement.getSize() as promise.Promise<any>
+        ])
+        .then(
+          (values: any[]) => {
+            const location: ElementLocation = values[0];
+            const size: ElementSize = values[1];
+
+            const tapLocation: ElementLocation = {
+              x: Math.round(location.x + size.width / 2) + offsetX,
+              y: Math.round(location.y + size.height / 2) + offsetY
+            };
+
+            browser.driver.touchActions()
+              .tapAndHold(tapLocation)
+              .release(tapLocation)
+              .perform()
+              .then(() => {
+                resolve(null);
+              },
+              (error: any): void => {
+                reject(error);
+              });
+          },
+          (error: any): void => {
+            reject(error);
+          }
+        );
+      }
+    );
   }
 
   /** Simulates a mouse drag from the element's position to a given offset */
