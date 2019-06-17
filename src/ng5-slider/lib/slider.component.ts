@@ -1658,7 +1658,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
     if (!this.viewOptions.onlyBindHandles) {
       this.selectionBarElement.onPassive('touchstart',
-        (event: TouchEvent): void => this.onBarStart(null, draggableRange, event, true, true)
+        (event: TouchEvent): void => this.onBarStart(null, draggableRange, event, true, true, true)
       );
     }
     if (this.viewOptions.draggableRangeOnly) {
