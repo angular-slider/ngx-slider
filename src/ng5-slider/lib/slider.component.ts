@@ -392,12 +392,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
   // OnDestroy interface
   public ngOnDestroy(): void {
-    this.unsubscribeOnMove();
-    this.unsubscribeOnEnd();
-
-    for (const element of this.getAllSliderElements()) {
-      element.off();
-    }
+    this.unbindEvents();
 
     this.unsubscribeResizeObserver();
     this.unsubscribeInputModelChangeSubject();
@@ -1704,11 +1699,10 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   private unbindEvents(): void {
     this.unsubscribeOnMove();
     this.unsubscribeOnEnd();
-    this.minHandleElement.off();
-    this.maxHandleElement.off();
-    this.fullBarElement.off();
-    this.selectionBarElement.off();
-    this.ticksElement.off();
+
+    for (const element of this.getAllSliderElements()) {
+      element.off();
+    }
   }
 
   private onBarStart(pointerType: PointerType, draggableRange: boolean, event: MouseEvent|TouchEvent,
@@ -1820,10 +1814,10 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     const ceilValue: number = this.viewOptions.rightToLeft
         ? this.viewOptions.floor
         : this.viewOptions.ceil;
-    const flrValue: number = this.viewOptions.rightToLeft ? this.viewOptions.ceil : this.viewOptions.floor;
+    const floorValue: number = this.viewOptions.rightToLeft ? this.viewOptions.ceil : this.viewOptions.floor;
 
     if (newPos <= 0) {
-      newValue = flrValue;
+      newValue = floorValue;
     } else if (newPos >= this.maxHandlePosition) {
       newValue = ceilValue;
     } else {
@@ -2075,12 +2069,12 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       ceilHandleElement = this.maxHandleElement;
     }
 
-    const isUnderFlrLimit: boolean = (newPos <= floorLimit);
+    const isUnderFloorLimit: boolean = (newPos <= floorLimit);
     const isOverCeilLimit: boolean = (newPos >= this.maxHandlePosition - ceilLimit);
 
     let newMinValue: number;
     let newMaxValue: number;
-    if (isUnderFlrLimit) {
+    if (isUnderFloorLimit) {
       if (floorHandleElement.position === 0) {
         return;
       }
