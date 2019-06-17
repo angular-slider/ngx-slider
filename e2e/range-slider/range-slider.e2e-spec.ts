@@ -218,6 +218,146 @@ describe('range slider', () => {
     });
   });
 
+  describe('after clicking on slider bar', () => {
+    describe('below low pointer', () => {
+      const testCases: () => void = (): void => {
+        it('moves the low pointer element to the click position', () => {
+          expect(page.getSliderLowPointerLabel().getText()).toBe('40');
+          expect(page.getSliderHighPointerLabel().getText()).toBe('200');
+
+          expect(page.getLowValueInput().getAttribute('value')).toEqual('40');
+          expect(page.getHighValueInput().getAttribute('value')).toEqual('200');
+
+          expect(page.getSliderLowPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 116, y: 21});
+          expect(page.getSliderHighPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 581, y: 21});
+
+          expect(page.getSliderSelectionBar().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 132, y: 3});
+          expect(page.getSliderSelectionBar().getSize()).toBeApproximateSize({width: 465, height: 32});
+        });
+      };
+
+      describe('with mouse', () => {
+        beforeEach(() => {
+          page.getSliderFullBar().mouseClick(-248, 0);
+        });
+
+        testCases();
+      });
+
+      describe('with touch gesture', () => {
+        beforeEach(() => {
+          page.getSliderFullBar().touchTap(-248, 0);
+        });
+
+        testCases();
+      });
+    });
+
+    describe('above high pointer', () => {
+      const testCases: () => void = (): void => {
+        it('moves the high pointer element to the click position', () => {
+          expect(page.getSliderLowPointerLabel().getText()).toBe('50');
+          expect(page.getSliderHighPointerLabel().getText()).toBe('210');
+
+          expect(page.getLowValueInput().getAttribute('value')).toEqual('50');
+          expect(page.getHighValueInput().getAttribute('value')).toEqual('210');
+
+          expect(page.getSliderLowPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 145, y: 21});
+          expect(page.getSliderHighPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 610, y: 21});
+
+          expect(page.getSliderSelectionBar().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 161, y: 3});
+          expect(page.getSliderSelectionBar().getSize()).toBeApproximateSize({width: 465, height: 32});
+        });
+      };
+
+      describe('with mouse', () => {
+        beforeEach(() => {
+          page.getSliderFullBar().mouseClick(248, 0);
+        });
+
+        testCases();
+      });
+
+      describe('with touch gesture', () => {
+        beforeEach(() => {
+          page.getSliderFullBar().touchTap(248, 0);
+        });
+
+        testCases();
+      });
+    });
+  });
+
+  describe('after clicking on selection bar', () => {
+    describe('closer to low pointer', () => {
+      const testCases: () => void = (): void => {
+        it('moves the low pointer element to the click position', () => {
+          expect(page.getSliderLowPointerLabel().getText()).toBe('90');
+          expect(page.getSliderHighPointerLabel().getText()).toBe('200');
+
+          expect(page.getLowValueInput().getAttribute('value')).toEqual('90');
+          expect(page.getHighValueInput().getAttribute('value')).toEqual('200');
+
+          expect(page.getSliderLowPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 261, y: 21});
+          expect(page.getSliderHighPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 581, y: 21});
+
+          expect(page.getSliderSelectionBar().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 277, y: 3});
+          expect(page.getSliderSelectionBar().getSize()).toBeApproximateSize({width: 319, height: 32});
+        });
+      };
+
+      describe('with mouse', () => {
+        beforeEach(() => {
+          page.getSliderSelectionBar().mouseClick(-102, 0);
+        });
+
+        testCases();
+      });
+
+      describe('with touch gesture', () => {
+        beforeEach(() => {
+          page.getSliderSelectionBar().touchTap(-102, 0);
+        });
+
+        testCases();
+      });
+    });
+
+    describe('closer to high pointer', () => {
+      const testCases: () => void = (): void => {
+        it('moves the high pointer element to the click position', () => {
+          expect(page.getSliderLowPointerLabel().getText()).toBe('50');
+          expect(page.getSliderHighPointerLabel().getText()).toBe('160');
+
+          expect(page.getLowValueInput().getAttribute('value')).toEqual('50');
+          expect(page.getHighValueInput().getAttribute('value')).toEqual('160');
+
+          expect(page.getSliderLowPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 145, y: 21});
+          expect(page.getSliderHighPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 465, y: 21});
+
+          expect(page.getSliderSelectionBar().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 161, y: 3});
+          expect(page.getSliderSelectionBar().getSize()).toBeApproximateSize({width: 319, height: 32});
+        });
+      };
+
+      describe('with mouse', () => {
+        beforeEach(() => {
+          page.getSliderSelectionBar().mouseClick(102, 0);
+        });
+
+        testCases();
+      });
+
+      describe('with touch gesture', () => {
+        beforeEach(() => {
+          page.getSliderSelectionBar().touchTap(102, 0);
+        });
+
+        testCases();
+      });
+    });
+  });
+
   describe('keyboard input', () => {
     describe('on the low pointer element', () => {
       describe('after pressing right arrow', () => {

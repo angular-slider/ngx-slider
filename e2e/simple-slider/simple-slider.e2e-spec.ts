@@ -74,6 +74,32 @@ describe('simple slider', () => {
     });
   });
 
+  describe('after clicking on slider bar', () => {
+    const testCases: () => void = (): void => {
+      it('moves the pointer element to the click position', () => {
+        expect(page.getSliderPointerLabel().getText()).toBe('160');
+        expect(page.getValueInput().getAttribute('value')).toBe('160');
+        expect(page.getSliderPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 465, y: 21});
+      });
+    };
+
+    describe('with mouse', () => {
+      beforeEach(() => {
+        page.getSliderFullBar().mouseClick(102, 0);
+      });
+
+      testCases();
+    });
+
+    describe('with touch gesture', () => {
+      beforeEach(() => {
+        page.getSliderFullBar().touchTap(102, 0);
+      });
+
+      testCases();
+    });
+  });
+
   describe('keyboard input', () => {
     describe('after pressing right arrow', () => {
       beforeEach(() => {
