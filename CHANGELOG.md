@@ -1,3 +1,6 @@
+# 1.2.3
+ * fix visibility of high slider pointer in case of inherited CSS style
+
 # 1.2.2
  * fix detecting nearest slider handle when clicking on slider bar (issue #110)
  * finish refactoring legacy slider code to modern Angular 2+ style
