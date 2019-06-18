@@ -12,11 +12,11 @@ describe('draggable range slider', () => {
   });
 
   describe('initial state', () => {
-    it('should display starting values', () => {
-      expect(page.getSliderFloorLabel().getText()).toEqual('0');
-      expect(page.getSliderCeilLabel().getText()).toEqual('10');
-      expect(page.getSliderLowPointerLabel().getText()).toEqual('1');
-      expect(page.getSliderHighPointerLabel().getText()).toEqual('8');
+    it('displays starting values', () => {
+      expect(page.getSliderFloorLabel().getText()).toBe('0');
+      expect(page.getSliderCeilLabel().getText()).toBe('10');
+      expect(page.getSliderLowPointerLabel().getText()).toBe('1');
+      expect(page.getSliderHighPointerLabel().getText()).toBe('8');
     });
   });
 
@@ -24,8 +24,8 @@ describe('draggable range slider', () => {
     describe('after dragging the low slider pointer to the left', () => {
       const testCases: () => void = (): void => {
         it('moves only the low pointer along', () => {
-          expect(page.getSliderLowPointerLabel().getText()).toEqual('0');
-          expect(page.getSliderHighPointerLabel().getText()).toEqual('8');
+          expect(page.getSliderLowPointerLabel().getText()).toBe('0');
+          expect(page.getSliderHighPointerLabel().getText()).toBe('8');
         });
       };
 
@@ -49,8 +49,8 @@ describe('draggable range slider', () => {
     describe('after dragging the low slider pointer to the right', () => {
       const testCases: () => void = (): void => {
         it('moves only the low pointer along', () => {
-          expect(page.getSliderLowPointerLabel().getText()).toEqual('2');
-          expect(page.getSliderHighPointerLabel().getText()).toEqual('8');
+          expect(page.getSliderLowPointerLabel().getText()).toBe('2');
+          expect(page.getSliderHighPointerLabel().getText()).toBe('8');
         });
       };
 
@@ -76,8 +76,8 @@ describe('draggable range slider', () => {
     describe('after dragging the high slider pointer to the left', () => {
       const testCases: () => void = (): void => {
         it('moves only the high pointer along', () => {
-          expect(page.getSliderLowPointerLabel().getText()).toEqual('1');
-          expect(page.getSliderHighPointerLabel().getText()).toEqual('7');
+          expect(page.getSliderLowPointerLabel().getText()).toBe('1');
+          expect(page.getSliderHighPointerLabel().getText()).toBe('7');
         });
       };
 
@@ -101,8 +101,8 @@ describe('draggable range slider', () => {
     describe('after dragging the high slider pointer to the right', () => {
       const testCases: () => void = (): void => {
         it('moves only the high pointer along', () => {
-          expect(page.getSliderLowPointerLabel().getText()).toEqual('1');
-          expect(page.getSliderHighPointerLabel().getText()).toEqual('9');
+          expect(page.getSliderLowPointerLabel().getText()).toBe('1');
+          expect(page.getSliderHighPointerLabel().getText()).toBe('9');
         });
       };
 
@@ -127,12 +127,9 @@ describe('draggable range slider', () => {
   describe('selection bar interactions', () => {
     describe('after dragging the selection bar to the left', () => {
       const testCases: () => void = (): void => {
-        it('moves the low pointer along', () => {
-          expect(page.getSliderLowPointerLabel().getText()).toEqual('0');
-        });
-
-        it('moves the high pointer along', () => {
-          expect(page.getSliderHighPointerLabel().getText()).toEqual('7');
+        it('moves both the low and high pointer along', () => {
+          expect(page.getSliderLowPointerLabel().getText()).toBe('0');
+          expect(page.getSliderHighPointerLabel().getText()).toBe('7');
         });
       };
 
@@ -155,12 +152,9 @@ describe('draggable range slider', () => {
 
     describe('after dragging the selection bar to the right', () => {
       const testCases: () => void = (): void => {
-        it('moves the low pointer along', () => {
-          expect(page.getSliderLowPointerLabel().getText()).toEqual('2');
-        });
-
-        it('moves the high pointer along', () => {
-          expect(page.getSliderHighPointerLabel().getText()).toEqual('9');
+        it('moves both the low and high pointer along', () => {
+          expect(page.getSliderLowPointerLabel().getText()).toBe('2');
+          expect(page.getSliderHighPointerLabel().getText()).toBe('9');
         });
       };
 

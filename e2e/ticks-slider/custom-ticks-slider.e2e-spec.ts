@@ -12,7 +12,7 @@ describe('custom ticks slider', () => {
   });
 
   describe('initial state', () => {
-    it('should hide normal labels and display tick values and legend', () => {
+    it('hides normal labels and displays tick values and legend and ', () => {
       expect(page.getSliderFloorLabel().isVisible()).toBe(false);
       expect(page.getSliderCeilLabel().isVisible()).toBe(false);
       expect(page.getSliderPointerLabel().isVisible()).toBe(false);
@@ -45,7 +45,7 @@ describe('custom ticks slider', () => {
       expect(page.getSliderTickLegend(9).getText()).toBe('Excellent');
     });
 
-    it('should position the slider elements correctly', () => {
+    it('positions the slider elements correctly', () => {
       expect(page.getSliderFullBar().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 0, y: 3});
       expect(page.getSliderFullBar().getSize()).toBeApproximateSize({width: 758, height: 32});
 

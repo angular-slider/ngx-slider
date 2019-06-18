@@ -12,23 +12,20 @@ describe('push range slider', () => {
   });
 
   describe('initial state', () => {
-    it('should display starting values', () => {
-      expect(page.getSliderFloorLabel().getText()).toEqual('0');
-      expect(page.getSliderCeilLabel().getText()).toEqual('100');
-      expect(page.getSliderLowPointerLabel().getText()).toEqual('60');
-      expect(page.getSliderHighPointerLabel().getText()).toEqual('70');
+    it('displays starting values', () => {
+      expect(page.getSliderFloorLabel().getText()).toBe('0');
+      expect(page.getSliderCeilLabel().getText()).toBe('100');
+      expect(page.getSliderLowPointerLabel().getText()).toBe('60');
+      expect(page.getSliderHighPointerLabel().getText()).toBe('70');
     });
   });
 
   describe('low pointer interactions', () => {
     describe('after dragging the low pointer to the left within changeable range', () => {
       const testCases: () => void = (): void => {
-        it('should move the low pointer to the new value', () => {
-          expect(page.getSliderLowPointerLabel().getText()).toEqual('50');
-        });
-
-        it('should leave the high pointer unchanged', () => {
-          expect(page.getSliderHighPointerLabel().getText()).toEqual('70');
+        it('moves the low pointer to the new value and leave the high pointer unchanged', () => {
+          expect(page.getSliderLowPointerLabel().getText()).toBe('50');
+          expect(page.getSliderHighPointerLabel().getText()).toBe('70');
         });
       };
 
@@ -51,12 +48,9 @@ describe('push range slider', () => {
 
     describe('after dragging the low pointer to the left exceeding range limit', () => {
       const testCases: () => void = (): void => {
-        it('should move the low pointer to the new value', () => {
-          expect(page.getSliderLowPointerLabel().getText()).toEqual('30');
-        });
-
-        it('should pull the high pointer along', () => {
-          expect(page.getSliderHighPointerLabel().getText()).toEqual('60');
+        it('moves the low pointer to the new value and pull the high pointer along', () => {
+          expect(page.getSliderLowPointerLabel().getText()).toBe('30');
+          expect(page.getSliderHighPointerLabel().getText()).toBe('60');
         });
       };
 
@@ -79,12 +73,9 @@ describe('push range slider', () => {
 
     describe('after dragging the low pointer to the left below lowest value', () => {
       const testCases: () => void = (): void => {
-        it('should move the low pointer to the minimum value', () => {
-          expect(page.getSliderLowPointerLabel().getText()).toEqual('0');
-        });
-
-        it('should pull the high pointer to the maximum range', () => {
-          expect(page.getSliderHighPointerLabel().getText()).toEqual('30');
+        it('moves the low pointer to the minimum value and pull the high pointer to the maximum range', () => {
+          expect(page.getSliderLowPointerLabel().getText()).toBe('0');
+          expect(page.getSliderHighPointerLabel().getText()).toBe('30');
         });
       };
 
@@ -107,12 +98,9 @@ describe('push range slider', () => {
 
     describe('after dragging the low slider pointer to the right', () => {
       const testCases: () => void = (): void => {
-        it('should move the low pointer to the new value', () => {
-          expect(page.getSliderLowPointerLabel().getText()).toEqual('65');
-        });
-
-        it('should push the high pointer along', () => {
-          expect(page.getSliderHighPointerLabel().getText()).toEqual('75');
+        it('should move the low pointer to the new value and push the high pointer along', () => {
+          expect(page.getSliderLowPointerLabel().getText()).toBe('65');
+          expect(page.getSliderHighPointerLabel().getText()).toBe('75');
         });
       };
 
@@ -135,12 +123,9 @@ describe('push range slider', () => {
 
     describe('after dragging the low slider pointer to the right above maximum value', () => {
       const testCases: () => void = (): void => {
-        it('should move the low pointer to the maximum value minus minimum range', () => {
-          expect(page.getSliderLowPointerLabel().getText()).toEqual('90');
-        });
-
-        it('should push the high pointer to the maximum value', () => {
-          expect(page.getSliderHighPointerLabel().getText()).toEqual('100');
+        it('should move the low pointer to the maximum value minus minimum range and push the high pointer to the maximum value', () => {
+          expect(page.getSliderLowPointerLabel().getText()).toBe('90');
+          expect(page.getSliderHighPointerLabel().getText()).toBe('100');
         });
       };
 
@@ -165,12 +150,9 @@ describe('push range slider', () => {
   describe('high pointer interactions', () => {
     describe('after dragging the high pointer to the right below maximum range', () => {
       const testCases: () => void = (): void => {
-        it('should move the high pointer to the new value', () => {
-          expect(page.getSliderHighPointerLabel().getText()).toEqual('80');
-        });
-
-        it('should leave the low pointer unchanged', () => {
-          expect(page.getSliderLowPointerLabel().getText()).toEqual('60');
+        it('should move the high pointer to the new value and leave the low pointer unchanged', () => {
+          expect(page.getSliderHighPointerLabel().getText()).toBe('80');
+          expect(page.getSliderLowPointerLabel().getText()).toBe('60');
         });
       };
 
@@ -193,12 +175,9 @@ describe('push range slider', () => {
 
     describe('after dragging the high pointer to the right exceeding maximum range', () => {
       const testCases: () => void = (): void => {
-        it('should move the high pointer to the new value', () => {
-          expect(page.getSliderHighPointerLabel().getText()).toEqual('95');
-        });
-
-        it('should pull the low pointer along', () => {
-          expect(page.getSliderLowPointerLabel().getText()).toEqual('65');
+        it('should move the high pointer to the new value and pull the low pointer along', () => {
+          expect(page.getSliderHighPointerLabel().getText()).toBe('95');
+          expect(page.getSliderLowPointerLabel().getText()).toBe('65');
         });
       };
 
@@ -221,12 +200,9 @@ describe('push range slider', () => {
 
     describe('after dragging the high slider pointer to the right above highest value', () => {
       const testCases: () => void = (): void => {
-        it('should move the high pointer to the maximum value', () => {
-          expect(page.getSliderHighPointerLabel().getText()).toEqual('100');
-        });
-
-        it('should pull the low pointer along', () => {
-          expect(page.getSliderLowPointerLabel().getText()).toEqual('70');
+        it('should move the high pointer to the maximum value and pull the low pointer along', () => {
+          expect(page.getSliderHighPointerLabel().getText()).toBe('100');
+          expect(page.getSliderLowPointerLabel().getText()).toBe('70');
         });
       };
 
@@ -249,12 +225,9 @@ describe('push range slider', () => {
 
     describe('after dragging the high slider pointer to the left', () => {
       const testCases: () => void = (): void => {
-        it('should move the high pointer to the new value', () => {
-          expect(page.getSliderHighPointerLabel().getText()).toEqual('60');
-        });
-
-        it('should push the low pointer along', () => {
-          expect(page.getSliderLowPointerLabel().getText()).toEqual('50');
+        it('should move the high pointer to the new value and push the low pointer along', () => {
+          expect(page.getSliderHighPointerLabel().getText()).toBe('60');
+          expect(page.getSliderLowPointerLabel().getText()).toBe('50');
         });
       };
 
@@ -277,12 +250,10 @@ describe('push range slider', () => {
 
     describe('after dragging the high slider pointer to the left below minimum value', () => {
       const testCases: () => void = (): void => {
-        it('should move the high pointer to the minimum value value plus minimum range', () => {
-          expect(page.getSliderHighPointerLabel().getText()).toEqual('10');
-        });
-
-        it('should push the low pointer to the minimum value', () => {
-          expect(page.getSliderLowPointerLabel().getText()).toEqual('0');
+        it('should move the high pointer to the minimum value value plus minimum range ' +
+           'and push the low pointer to the minimum value', () => {
+          expect(page.getSliderHighPointerLabel().getText()).toBe('10');
+          expect(page.getSliderLowPointerLabel().getText()).toBe('0');
         });
       };
 

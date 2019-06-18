@@ -13,7 +13,7 @@ describe('ticks slider', () => {
   });
 
   describe('initial state', () => {
-    it('should hide normal labels and display tick values', () => {
+    it('hides normal labels and displays tick values', () => {
       expect(page.getSliderFloorLabel().isVisible()).toBe(false);
       expect(page.getSliderCeilLabel().isVisible()).toBe(false);
       expect(page.getSliderPointerLabel().isVisible()).toBe(false);
@@ -31,7 +31,7 @@ describe('ticks slider', () => {
       expect(page.getSliderTickValue(11).getText()).toBe('10');
     });
 
-    it('should position the slider elements correctly', () => {
+    it('positions the slider elements correctly', () => {
       expect(page.getSliderFullBar().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 0, y: 3});
       expect(page.getSliderFullBar().getSize()).toBeApproximateSize({width: 758, height: 32});
 
@@ -197,7 +197,7 @@ describe('ticks slider', () => {
         page.getSliderPointer().sendKeys(Key.ARROW_RIGHT);
       });
 
-      it('should move the slider up one tick', () => {
+      it('moves the slider up one tick', () => {
         expect(page.getSliderPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 436, y: 21});
       });
     });
@@ -207,7 +207,7 @@ describe('ticks slider', () => {
         page.getSliderPointer().sendKeys(Key.ARROW_UP);
       });
 
-      it('should move the slider up one tick', () => {
+      it('moves the slider up one tick', () => {
         expect(page.getSliderPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 436, y: 21});
       });
     });
@@ -217,7 +217,7 @@ describe('ticks slider', () => {
         page.getSliderPointer().sendKeys(Key.ARROW_LEFT);
       });
 
-      it('should move the slider down one tick', () => {
+      it('moves the slider down one tick', () => {
         expect(page.getSliderPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 290, y: 21});
       });
     });
@@ -227,7 +227,7 @@ describe('ticks slider', () => {
         page.getSliderPointer().sendKeys(Key.ARROW_DOWN);
       });
 
-      it('should move the slider down one tick', () => {
+      it('moves the slider down one tick', () => {
         expect(page.getSliderPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 290, y: 21});
       });
     });
@@ -237,7 +237,7 @@ describe('ticks slider', () => {
         page.getSliderPointer().sendKeys(Key.PAGE_UP);
       });
 
-      it('should move the slider up one tick', () => {
+      it('moves the slider up one tick', () => {
         expect(page.getSliderPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 436, y: 21});
       });
     });
@@ -247,7 +247,7 @@ describe('ticks slider', () => {
         page.getSliderPointer().sendKeys(Key.PAGE_DOWN);
       });
 
-      it('should move the slider down one tick', () => {
+      it('moves the slider down one tick', () => {
         expect(page.getSliderPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 290, y: 21});
       });
     });
@@ -257,7 +257,7 @@ describe('ticks slider', () => {
         page.getSliderPointer().sendKeys(Key.HOME);
       });
 
-      it('should move the slider to the first tick', () => {
+      it('moves the slider to the first tick', () => {
         expect(page.getSliderPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 0, y: 21});
       });
     });
@@ -267,7 +267,7 @@ describe('ticks slider', () => {
         page.getSliderPointer().sendKeys(Key.END);
       });
 
-      it('should move the slider to the last tick', () => {
+      it('moves the slider to the last tick', () => {
         expect(page.getSliderPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 726, y: 21});
       });
     });

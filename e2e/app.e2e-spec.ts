@@ -9,6 +9,6 @@ describe('demo app', () => {
 
   it('should display welcome message', () => {
     page.navigateTo();
-    expect(page.getParagraphText()).toEqual('ng5-slider');
+    expect(page.getParagraphText()).toBe('ng5-slider');
   });
 });
