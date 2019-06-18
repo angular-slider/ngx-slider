@@ -93,6 +93,10 @@ Full API documentation is available on [official website](https://angular-slider
 
 An overview of how to apply your own style to the slider is described in [STYLING.md](STYLING.md).
 
+## Animations
+
+As of v1.2.0 the slider features CSS animations of slider movement. If you prefer the previous behaviour, without animations, you can set the flag `animate: false` in your slider options.
+
 ## Tooltips
 
 The slider allows for customising how to implement tooltips. See [TOOLTIPS.md](TOOLTIPS.md) for more information.
