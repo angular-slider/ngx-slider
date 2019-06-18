@@ -17,7 +17,7 @@
 <!-- // 4 Low slider handle -->
 <span ng5SliderHandle #minHandle class="ng5-slider-span ng5-slider-pointer ng5-slider-pointer-min" [ngStyle]=minPointerStyle></span>
 <!-- // 5 High slider handle -->
-<span ng5SliderHandle #maxHandle [hidden]="!range" class="ng5-slider-span ng5-slider-pointer ng5-slider-pointer-max" [ngStyle]=maxPointerStyle></span>
+<span ng5SliderHandle #maxHandle [style.display]="range ? 'inherit' : 'none'" class="ng5-slider-span ng5-slider-pointer ng5-slider-pointer-max" [ngStyle]=maxPointerStyle></span>
 <!-- // 6 Floor label -->
 <span ng5SliderLabel #floorLabel class="ng5-slider-span ng5-slider-bubble ng5-slider-limit ng5-slider-floor"></span>
 <!-- // 7 Ceiling label -->
