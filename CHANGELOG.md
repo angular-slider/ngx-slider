@@ -1,3 +1,7 @@
+# 1.2.2
+ * fix detecting nearest slider handle when clicking on slider bar (issue #110)
+ * finish refactoring legacy slider code to modern Angular 2+ style
+
 # 1.2.1
  * fix erratic slider behaviour when using simple slider with ticksArray
  * fix tick parameters not getting updated correctly (issue #105 and #89)
