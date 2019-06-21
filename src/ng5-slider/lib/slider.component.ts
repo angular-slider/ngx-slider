@@ -354,6 +354,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       this.viewHighValue = null;
     }
 
+    this.updateVerticalState(); // need to run this again to cover changes to slider elements
     this.manageElementsStyle();
     this.updateDisabledState();
     this.calculateViewDimensions();
@@ -921,7 +922,10 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   private updateVerticalState(): void {
     this.sliderElementVerticalClass = this.viewOptions.vertical;
     for (const element of this.getAllSliderElements()) {
-      element.setVertical(this.viewOptions.vertical);
+      // This is also called before ngAfterInit, so need to check that view child bindings work
+      if (!ValueHelper.isNullOrUndefined(element)) {
+        element.setVertical(this.viewOptions.vertical);
+      }
     }
   }
 
