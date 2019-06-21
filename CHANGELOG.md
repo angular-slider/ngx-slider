@@ -1,3 +1,6 @@
+# 1.2.4
+ * fix bug with setting vertical state on slider initialisation
+
 # 1.2.3
  * fix visibility of high slider pointer in case of inherited CSS style
 
