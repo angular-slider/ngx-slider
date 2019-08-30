@@ -1138,7 +1138,9 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       this.ticks = newTicks;
     }
 
-    this.changeDetectionRef.detectChanges();
+    if (!this.changeDetectionRef['destroyed']) {
+      this.changeDetectionRef.detectChanges();
+    }
   }
 
   private getTicksArray(): number[] {
