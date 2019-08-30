@@ -31,7 +31,9 @@ describe('SliderComponent', () => {
       ceil: 10
     };
     component.value = 5;
-    fixture.detectChanges();
+    if (!fixture['destroyed']) {
+      fixture.detectChanges();
+    }
   });
 
   it('should create', () => {
