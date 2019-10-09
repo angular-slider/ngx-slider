@@ -78,7 +78,7 @@
     "mkdirp": "^0.5.1",
     "ng-packagr": "^2.4.2",
     "prismjs": "^1.14.0",
-    "protractor": "~5.1.2",
+    "protractor": "^5.4.2",
     "protractor-console-plugin": "^0.1.1",
     "rimraf": "^2.6.2",
     "scss-bundle": "^2.4.0",
