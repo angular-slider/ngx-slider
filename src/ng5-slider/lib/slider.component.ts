@@ -176,17 +176,16 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   // Input event that triggers slider refresh (re-positioning of slider elements)
   // also updating the view options
   @Input() set manualRefreshWithOptions(manualRefresh: EventEmitter<Options>) {
-    manualRefresh.subscribe((it: Options) => {
+    this.unsubscribeManualRefresh();
+
+    this.manualRefreshSubscription = manualRefresh.subscribe((newOptions: Options) => {
       // merge options objects
-      this.options = { ...this.options, ...it };
+      this.options = { ...this.options, ...newOptions };
       this.viewOptions = { ...this.viewOptions, ...this.options };
 
       this.onChangeOptions();
 
-      // emit event to trigger existing "manualRefresh" Input()
-      const tmpEventEmitter: EventEmitter<void> = new EventEmitter<void>();
-      this.manualRefresh = tmpEventEmitter;
-      tmpEventEmitter.emit();
+      setTimeout(() => this.calculateViewDimensionsAndDetectChanges());
     });
   }
 
