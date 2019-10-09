@@ -179,13 +179,15 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     this.unsubscribeManualRefresh();
 
     this.manualRefreshSubscription = manualRefresh.subscribe((newOptions: Options) => {
-      // merge options objects
-      this.options = { ...this.options, ...newOptions };
-      this.viewOptions = { ...this.viewOptions, ...this.options };
+      setTimeout(() => {
+        // merge options objects
+        this.options = { ...this.options, ...newOptions };
+        this.viewOptions = { ...this.viewOptions, ...this.options };
 
-      this.onChangeOptions();
+        this.onChangeOptions();
 
-      setTimeout(() => this.calculateViewDimensionsAndDetectChanges());
+        this.calculateViewDimensionsAndDetectChanges();
+      });
     });
   }
 
