@@ -1,3 +1,6 @@
+# 1.2.5
+ * remove `rxjs-compat`
+
 # 1.2.4
  * fix bug with setting vertical state on slider initialisation
 

@@ -1,6 +1,6 @@
 {
   "name": "ng5-slider",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "private": true,
   "description": "Self-contained, mobile friendly slider component for Angular 5+ based on angularjs-slider",
   "keywords": [
@@ -30,7 +30,7 @@
     "prepare": "npm run prepare:lib && npm run prepare:demo-app",
     "prepare:lib": "node scripts/generate-lib-files.js",
     "prepare:demo-app": "node scripts/generate-demo-app-snippets.js && node scripts/generate-demo-app-docs.js",
-    "start": "npm run prepare && ng serve",
+    "start": "npm run prepare && ng serve --port 4201",
     "build": "npm run build:lib && npm run build:demo-app",
     "build:lib": "npm run prepare && rimraf dist/ng5-slider dist/ng5-slider.tgz && ng-packagr -p src/ng5-slider/package.json && scss-bundle -e src/ng5-slider/lib/main.scss -d dist/ng5-slider/scss/ng5-slider.scss",
     "build:demo-app": "npm run prepare && rimraf dist/demo-app && ng build --prod --base-href /ng5-slider/",
@@ -55,7 +55,6 @@
     "core-js": "^2.4.1",
     "detect-passive-events": "^1.0.4",
     "rxjs": ">=5.5.6",
-    "rxjs-compat": "^6.5.2",
     "zone.js": "^0.8.19"
   },
   "devDependencies": {
