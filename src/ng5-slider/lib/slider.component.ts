@@ -369,7 +369,9 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     this.initHasRun = true;
 
     // Run change detection manually to resolve some issues when init procedure changes values used in the view
-    this.changeDetectionRef.detectChanges();
+    if (!this.isRefDestroyed()) {
+      this.changeDetectionRef.detectChanges();
+    }
   }
 
   // OnChanges interface
@@ -1061,7 +1063,17 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
   private calculateViewDimensionsAndDetectChanges(): void {
     this.calculateViewDimensions();
-    this.changeDetectionRef.detectChanges();
+    if (!this.isRefDestroyed()) {
+      this.changeDetectionRef.detectChanges();
+   }
+  }
+
+  /**
+   * If the slider reference is already destroyed
+   * @returns boolean - true if ref is destroyed
+   */
+  private isRefDestroyed(): boolean {
+    return this.changeDetectionRef['destroyed'];
   }
 
   // Update the ticks position
@@ -1134,7 +1146,9 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       this.ticks = newTicks;
     }
 
-    this.changeDetectionRef.detectChanges();
+    if (!this.isRefDestroyed()) {
+      this.changeDetectionRef.detectChanges();
+    }
   }
 
   private getTicksArray(): number[] {
