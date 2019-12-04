@@ -986,9 +986,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       this.minHandleElement.tabindex = '';
     }
 
-    if (this.viewOptions.vertical) {
-      this.minHandleElement.ariaOrientation = 'vertical';
-    }
+    this.minHandleElement.ariaOrientation = this.viewOptions.vertical ? 'vertical' : 'horizontal';
 
     if (!ValueHelper.isNullOrUndefined(this.viewOptions.ariaLabel)) {
       this.minHandleElement.ariaLabel = this.viewOptions.ariaLabel;
