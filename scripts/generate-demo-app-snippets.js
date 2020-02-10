@@ -20,19 +20,27 @@ function generateTemplate(templateFile, snippetsDir) {
   const codeFile = templateFile.replace('.template.html', '.ts');
   const styleFile = templateFile.replace('.template.html', '.scss');
 
-  const titleTemplateFileContent = fs.readFileSync(path.resolve(snippetsDir, titleTemplateFile), { encoding: 'utf8' });
+  const titleTemplateFileContent = fs.readFileSync(path.resolve(snippetsDir, titleTemplateFile), {
+    encoding: 'utf8'
+  });
 
-  const templateFileContent = fs.readFileSync(path.resolve(snippetsDir, templateFile), { encoding: 'utf8' });
+  const templateFileContent = fs.readFileSync(path.resolve(snippetsDir, templateFile), {
+    encoding: 'utf8'
+  });
   const templateTabHtml = tabHtml(path.basename(outputTemplateFile), templateFileContent, 'html');
 
-  let codeFileContent = fs.readFileSync(path.resolve(snippetsDir, codeFile), { encoding: 'utf8' });
+  let codeFileContent = fs.readFileSync(path.resolve(snippetsDir, codeFile), {
+    encoding: 'utf8'
+  });
   // The only modification to the source file is to remove the @local prefix from slider import
   codeFileContent = codeFileContent.replace(/@local\/ng5-slider/g, "ng5-slider");
   const codeTabHtml = tabHtml(path.basename(codeFile), codeFileContent, 'typescript');
 
   let styleTabHtml = '';
   if (fs.existsSync(path.resolve(snippetsDir, styleFile))) {
-    const styleFileContent = fs.readFileSync(path.resolve(snippetsDir, styleFile), { encoding: 'utf8' });
+    const styleFileContent = fs.readFileSync(path.resolve(snippetsDir, styleFile), {
+      encoding: 'utf8'
+    });
     styleTabHtml = tabHtml(path.basename(styleFile), styleFileContent, 'scss');
   }
 
@@ -53,7 +61,9 @@ function generateTemplate(templateFile, snippetsDir) {
   </div>
 </div>`;
 
-  fs.writeFileSync(path.resolve(snippetsDir, outputTemplateFile), outputHtmlFileContent, { encoding: 'utf8' });
+  fs.writeFileSync(path.resolve(snippetsDir, outputTemplateFile), outputHtmlFileContent, {
+    encoding: 'utf8'
+  });
 }
 
 /** Generate highlighted source code using prism */
@@ -77,7 +87,7 @@ function tabHtml(tabTitle, codeContent, codeLang) {
 }
 
 
-const snippetsDir = path.resolve(__dirname, '../src/demo-app/app/snippets');
+const snippetsDir = path.resolve(__dirname, '../projects/demo-app/src/app/snippets');
 
 const templateFiles = utils.readdirRecursivelySync(snippetsDir)
   .filter((file) => file.endsWith('component.template.html'));

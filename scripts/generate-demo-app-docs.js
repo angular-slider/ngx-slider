@@ -13,7 +13,7 @@ const path = require('path');
 const mkdirp = require('mkdirp');
 const fs = require('fs');
 const rimraf = require('rimraf');
-const typedoc = require('typedoc');
+const TypeDoc = require('typedoc');
 
 const utils = require('./utils.js');
 
@@ -21,11 +21,13 @@ const utils = require('./utils.js');
  * The resulting files are not really useful on their own; they will be used later to generate demo app code
  */
 function generateTypedocDocs(typedocDocsDir) {
-  const publicApiConfigFile = path.resolve(__dirname, '../src/ng5-slider/lib/public_api.json');
-  const publicApiConfig = JSON.parse(fs.readFileSync(publicApiConfigFile, { encoding: 'utf8' }));
+  const publicApiConfigFile = path.resolve(__dirname, '../projects/ng5-slider/src/public_api.json');
+  const publicApiConfig = JSON.parse(fs.readFileSync(publicApiConfigFile, {
+    encoding: 'utf8'
+  }));
 
   const files = publicApiConfig.exports
-    .map(exportDef => path.resolve(__dirname, `../src/ng5-slider/lib/${exportDef.file}.ts`));
+    .map(exportDef => path.resolve(__dirname, `../projects/ng5-slider/src/lib/${exportDef.file}.ts`));
 
   const themeDir = path.resolve(__dirname, '../typedoc-theme');
 
@@ -35,16 +37,24 @@ function generateTypedocDocs(typedocDocsDir) {
   const apiDocsReadmeFile = path.resolve(__dirname, '../typedoc-theme/README.md');
   utils.copyReadmeMd(apiDocsReadmeFile);
 
-  const app = new typedoc.Application({
+  const app = new TypeDoc.Application();
+  app.options.addReader(new TypeDoc.TSConfigReader());
+
+  app.bootstrap({
+    mode: 'modules',
+    logger: 'none',
+    target: 'es2015',
     module: 'commonjs',
-    target: 'es6',
-    includeDeclarations: false,
     experimentalDecorators: true,
     excludeExternals: true,
-    theme: themeDir
+    theme: themeDir,
   });
 
-  app.generateDocs(files, typedocDocsDir);
+  const project = app.convert(app.expandInputFiles(files));
+
+  if (project) {
+    app.generateDocs(project, typedocDocsDir);
+  }
 
   // HACK: restore the README.md to original
   const mainReadmeFile = path.resolve(__dirname, '../README.md');
@@ -60,10 +70,14 @@ function generateComponent(typedocHtmlFile, relativeTypedocHtmlFile, demoAppDocs
   const componentHtmlFileName = fileName.replace(/\.html$/, '.component.html');
 
   const componentHtmlFile = path.join(demoAppDocsModuleDir, directory, componentHtmlFileName);
-  const typedocHtmlFileContent = fs.readFileSync(typedocHtmlFile, { encoding: 'utf8' });
+  const typedocHtmlFileContent = fs.readFileSync(typedocHtmlFile, {
+    encoding: 'utf8'
+  });
   const escapedHtmlFileContent = fixRouterFragments(fixReadmeMdLinks(escapeHtmlForAngular(typedocHtmlFileContent)));
 
-  fs.writeFileSync(componentHtmlFile, escapedHtmlFileContent, { encoding: 'utf8' });
+  fs.writeFileSync(componentHtmlFile, escapedHtmlFileContent, {
+    encoding: 'utf8'
+  });
 
   const componentFileName = fileName.replace(/\.html$/, '.component');
   const componentTsFileName = componentFileName + '.ts';
@@ -77,7 +91,9 @@ function generateComponent(typedocHtmlFile, relativeTypedocHtmlFile, demoAppDocs
 })
 export class ${componentName} { }
 `;
-  fs.writeFileSync(componentTsFile, componentTsFileContent, { encoding: 'utf8' });
+  fs.writeFileSync(componentTsFile, componentTsFileContent, {
+    encoding: 'utf8'
+  });
 
   // Return metadata for generating module file
   return {
@@ -152,7 +168,9 @@ export class DocsModule { }
 `;
 
   const moduleTsFile = path.join(demoAppDocsModuleDir, 'docs.module.ts');
-  fs.writeFileSync(moduleTsFile, moduleTsFileContents, { encoding: 'utf8' });
+  fs.writeFileSync(moduleTsFile, moduleTsFileContents, {
+    encoding: 'utf8'
+  });
 }
 
 
@@ -160,7 +178,7 @@ const typedocDocsDir = path.resolve(__dirname, '../docs');
 rimraf.sync(typedocDocsDir);
 generateTypedocDocs(typedocDocsDir);
 
-const demoAppDocsModuleDir = path.resolve(__dirname, '../src/demo-app/app/docs');
+const demoAppDocsModuleDir = path.resolve(__dirname, '../projects/demo-app/src/app/docs');
 rimraf.sync(demoAppDocsModuleDir);
 
 const typedocHtmlFiles = utils.readdirRecursivelySync(typedocDocsDir)
