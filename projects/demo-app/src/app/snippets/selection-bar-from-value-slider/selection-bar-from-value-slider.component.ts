@@ -6,7 +6,7 @@ import { Options } from 'ng5-slider';
   templateUrl: './selection-bar-from-value-slider.component.html'
 })
 export class SelectionBarFromValueSliderComponent {
-  value: number = 5;
+  value = 5;
   options: Options = {
     floor: -10,
     ceil: 10,

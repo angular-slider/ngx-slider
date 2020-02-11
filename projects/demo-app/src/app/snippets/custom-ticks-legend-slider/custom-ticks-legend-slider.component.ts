@@ -6,7 +6,7 @@ import { Options } from 'ng5-slider';
   templateUrl: './custom-ticks-legend-slider.component.html'
 })
 export class CustomTicksLegendSliderComponent {
-  value: number = 5;
+  value = 5;
   options: Options = {
     showTicksValues: true,
     stepsArray: [

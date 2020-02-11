@@ -6,7 +6,7 @@ import { Options } from 'ng5-slider';
   templateUrl: './stepped-slider.component.html'
 })
 export class SteppedSliderComponent {
-  value: number = 12;
+  value = 12;
   options: Options = {
     floor: 10,
     ceil: 100,

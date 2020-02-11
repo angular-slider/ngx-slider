@@ -6,13 +6,13 @@ import { Options, ChangeContext, PointerType } from 'ng5-slider';
   templateUrl: './user-events-slider.component.html'
 })
 export class UserEventsSliderComponent {
-  minValue: number = 20;
-  maxValue: number = 80;
+  minValue = 20;
+  maxValue = 80;
   options: Options = {
     floor: 0,
     ceil: 100
   };
-  logText: string = '';
+  logText = '';
 
   onUserChangeStart(changeContext: ChangeContext): void {
     this.logText += `onUserChangeStart(${this.getChangeContextString(changeContext)})\n`;

@@ -6,8 +6,8 @@ import { Options } from 'ng5-slider';
   templateUrl: './limited-range-slider.component.html'
 })
 export class LimitedRangeSliderComponent {
-  minValue: number = 40;
-  maxValue: number = 60;
+  minValue = 40;
+  maxValue = 60;
   options: Options = {
     floor: 0,
     ceil: 100,

@@ -7,20 +7,20 @@ import { Options, LabelType } from 'ng5-slider';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent {
-  simpleSliderValue: number = 50;
+  simpleSliderValue = 50;
   simpleSliderOptions: Options = {
     floor: 0,
     ceil: 100
   };
 
-  rangeSliderLowValue: number = 25;
-  rangeSliderHighValue: number = 75;
+  rangeSliderLowValue = 25;
+  rangeSliderHighValue = 75;
   rangeSliderOptions: Options = {
     floor: 0,
     ceil: 100
   };
 
-  ticksSliderValue: number = 5;
+  ticksSliderValue = 5;
   ticksSliderOptions: Options = {
     floor: 0,
     ceil: 10,
@@ -29,8 +29,8 @@ export class HomeComponent {
     showTicksValues: true
   };
 
-  customisedSliderLowValue: number = 150;
-  customisedSliderHighValue: number = 350;
+  customisedSliderLowValue = 150;
+  customisedSliderHighValue = 350;
   customisedSliderOptions: Options = {
     floor: 0,
     ceil: 500,
@@ -46,8 +46,8 @@ export class HomeComponent {
     }
   };
 
-  styledSliderLowValue: number = 30;
-  styledSliderHighValue: number = 70;
+  styledSliderLowValue = 30;
+  styledSliderHighValue = 70;
   styledSliderOptions: Options = {
     floor: 0,
     ceil: 100,
@@ -55,7 +55,7 @@ export class HomeComponent {
     showTicks: true
   };
 
-  verticalSliderValue: number = 5;
+  verticalSliderValue = 5;
   verticalSliderOptions: Options = {
     floor: 0,
     ceil: 10,

@@ -6,8 +6,8 @@ import { Options } from 'ng5-slider';
   templateUrl: './no-switching-range-slider.component.html'
 })
 export class NoSwitchingRangeSliderComponent {
-  minValue: number = 10;
-  maxValue: number = 90;
+  minValue = 10;
+  maxValue = 90;
   options: Options = {
     floor: 0,
     ceil: 100,

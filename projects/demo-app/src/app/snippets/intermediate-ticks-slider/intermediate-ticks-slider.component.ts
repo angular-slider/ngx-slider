@@ -6,7 +6,7 @@ import { Options } from 'ng5-slider';
   templateUrl: './intermediate-ticks-slider.component.html'
 })
 export class IntermediateTicksSliderComponent {
-  value: number = 55;
+  value = 55;
   options: Options = {
     floor: 0,
     ceil: 100,

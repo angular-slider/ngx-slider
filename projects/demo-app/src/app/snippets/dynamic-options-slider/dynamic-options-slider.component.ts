@@ -6,7 +6,7 @@ import { Options } from 'ng5-slider';
   templateUrl: './dynamic-options-slider.component.html'
 })
 export class DynamicOptionsSliderComponent {
-  value: number = 100;
+  value = 100;
   options: Options = {
     floor: 0,
     ceil: 250

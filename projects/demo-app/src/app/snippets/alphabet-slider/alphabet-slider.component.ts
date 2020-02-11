@@ -6,7 +6,7 @@ import { Options, LabelType, CustomStepDefinition } from 'ng5-slider';
   templateUrl: './alphabet-slider.component.html'
 })
 export class AlphabetSliderComponent {
-  alphabet: string = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   value: number = this.letterToIndex('E');
   options: Options = {
     stepsArray: this.alphabet.split('').map((letter: string): CustomStepDefinition => {

@@ -1,3 +1,4 @@
+  // tslint:disable: variable-name
 import { Directive, ElementRef, Renderer2, HostBinding } from '@angular/core';
 import { EventListenerHelper } from './event-listener-helper';
 import { EventListener } from './event-listener';
@@ -7,48 +8,48 @@ import { ValueHelper } from './value-helper';
   selector: '[ng5SliderElement]'
 })
 export class SliderElementDirective {
-  private _position: number = 0;
+  private _position = 0;
   get position(): number {
     return this._position;
   }
 
-  private _dimension: number = 0;
+  private _dimension = 0;
   get dimension(): number {
     return this._dimension;
   }
 
-  private _alwaysHide: boolean = false;
+  private _alwaysHide = false;
   get alwaysHide(): boolean {
     return this._alwaysHide;
   }
 
-  private _vertical: boolean = false;
+  private _vertical = false;
   get vertical(): boolean {
     return this._vertical;
   }
 
-  private _scale: number = 1;
+  private _scale = 1;
   get scale(): number {
     return this._scale;
   }
 
   @HostBinding('style.opacity')
-  opacity: number = 1;
+  opacity = 1;
 
   @HostBinding('style.visibility')
-  visibility: string = 'visible';
+  visibility = 'visible';
 
   @HostBinding('style.left')
-  left: string = '';
+  left = '';
 
   @HostBinding('style.bottom')
-  bottom: string = '';
+  bottom = '';
 
   @HostBinding('style.height')
-  height: string = '';
+  height = '';
 
   @HostBinding('style.width')
-  width: string = '';
+  width = '';
 
   private eventListenerHelper: EventListenerHelper;
   private eventListeners: EventListener[] = [];

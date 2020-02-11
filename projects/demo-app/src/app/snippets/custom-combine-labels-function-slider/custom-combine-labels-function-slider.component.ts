@@ -6,8 +6,8 @@ import { Options } from 'ng5-slider';
   templateUrl: './custom-combine-labels-function-slider.component.html'
 })
 export class CustomCombineLabelsFunctionSliderComponent {
-  minValue: number = 100;
-  maxValue: number = 400;
+  minValue = 100;
+  maxValue = 400;
   options: Options = {
     floor: 0,
     ceil: 500,

@@ -6,7 +6,7 @@ import { Options } from 'ng5-slider';
   templateUrl: './custom-scale-slider.component.html'
 })
 export class CustomScaleSliderComponent {
-  value: number = 50;
+  value = 50;
   options: Options = {
     floor: 0,
     ceil: 100,

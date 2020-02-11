@@ -6,7 +6,7 @@ import { Options } from 'ng5-slider';
   templateUrl: './dynamic-color-selection-bar-slider.component.html'
 })
 export class DynamicColorSelectionBarSliderComponent {
-  value: number = 12;
+  value = 12;
   options: Options = {
     floor: 0,
     ceil: 12,

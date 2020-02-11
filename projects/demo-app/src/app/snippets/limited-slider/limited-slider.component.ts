@@ -6,7 +6,7 @@ import { Options } from 'ng5-slider';
   templateUrl: './limited-slider.component.html'
 })
 export class LimitedSliderComponent {
-  value: number = 50;
+  value = 50;
   options: Options = {
     floor: 0,
     ceil: 100,

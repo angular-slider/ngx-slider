@@ -7,8 +7,8 @@ import { Options } from 'ng5-slider';
   styleUrls: ['./styled-slider.component.scss']
 })
 export class StyledSliderComponent {
-  minValue: number = 10;
-  maxValue: number = 90;
+  minValue = 10;
+  maxValue = 90;
   options: Options = {
     floor: 0,
     ceil: 100,

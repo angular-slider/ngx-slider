@@ -6,34 +6,34 @@ import { SliderElementDirective } from './slider-element.directive';
 })
 export class SliderHandleDirective extends SliderElementDirective {
   @HostBinding('class.ng5-slider-active')
-  active: boolean = false;
+  active = false;
 
   @HostBinding('attr.role')
-  role: string = '';
+  role = '';
 
   @HostBinding('attr.tabindex')
-  tabindex: string = '';
+  tabindex = '';
 
   @HostBinding('attr.aria-orientation')
-  ariaOrientation: string = '';
+  ariaOrientation = '';
 
   @HostBinding('attr.aria-label')
-  ariaLabel: string = '';
+  ariaLabel = '';
 
   @HostBinding('attr.aria-labelledby')
-  ariaLabelledBy: string = '';
+  ariaLabelledBy = '';
 
   @HostBinding('attr.aria-valuenow')
-  ariaValueNow: string = '';
+  ariaValueNow = '';
 
   @HostBinding('attr.aria-valuetext')
-  ariaValueText: string = '';
+  ariaValueText = '';
 
   @HostBinding('attr.aria-valuemin')
-  ariaValueMin: string = '';
+  ariaValueMin = '';
 
   @HostBinding('attr.aria-valuemax')
-  ariaValueMax: string = '';
+  ariaValueMax = '';
 
   focus(): void {
     this.elemRef.nativeElement.focus();

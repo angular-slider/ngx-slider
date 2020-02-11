@@ -6,7 +6,7 @@ import { Options } from 'ng5-slider';
   templateUrl: './floating-point-slider.component.html'
 })
 export class FloatingPointSliderComponent {
-  value: number = 0.5;
+  value = 0.5;
   options: Options = {
     floor: 0,
     ceil: 2,

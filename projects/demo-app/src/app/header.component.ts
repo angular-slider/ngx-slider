@@ -9,9 +9,9 @@ import { environment } from '../environments/environment';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-  navbarCollapsed: boolean = true;
-  atRootUrl: boolean = false;
-  atDocsUrl: boolean = false;
+  navbarCollapsed = true;
+  atRootUrl = false;
+  atDocsUrl = false;
   urlSub: any;
   enableExternalImages: boolean = environment.enableExternalImages;
 

@@ -6,7 +6,7 @@ import { Options } from 'ng5-slider';
   templateUrl: './log-scale-slider.component.html'
 })
 export class LogScaleSliderComponent {
-  value: number = 1;
+  value = 1;
   options: Options = {
     floor: 1,
     ceil: 100,

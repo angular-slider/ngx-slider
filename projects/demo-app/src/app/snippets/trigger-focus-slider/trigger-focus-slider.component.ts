@@ -7,8 +7,8 @@ import { Options, PointerType } from 'ng5-slider';
 })
 export class TriggerFocusSliderComponent {
   triggerFocus: EventEmitter<PointerType> = new EventEmitter<PointerType>();
-  minValue: number = 20;
-  maxValue: number = 80;
+  minValue = 20;
+  maxValue = 80;
   options: Options = {
     floor: 0,
     ceil: 100,

@@ -19,7 +19,7 @@ export class DateSliderComponent {
 
   createDateRange(): Date[] {
     const dates: Date[] = [];
-    for (let i: number = 1; i <= 31; i++) {
+    for (let i = 1; i <= 31; i++) {
       dates.push(new Date(2018, 5, i));
     }
     return dates;

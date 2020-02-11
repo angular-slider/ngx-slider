@@ -1,41 +1,41 @@
 import { ValueHelper } from './value-helper';
 import { CustomStepDefinition } from './options';
 
-const precision: number = 0.0001;
+const precision = 0.0001;
 
 describe('ValueHelper', () => {
   describe('linearValueToPosition', () => {
     it('converts using linear interpolation', () => {
-      const number: number = 55;
-      const minValue: number = 0;
-      const maxValue: number = 100;
-      expect(ValueHelper.linearValueToPosition(number, minValue, maxValue)).toBeCloseTo(0.55, precision);
+      const num = 55;
+      const minValue = 0;
+      const maxValue = 100;
+      expect(ValueHelper.linearValueToPosition(num, minValue, maxValue)).toBeCloseTo(0.55, precision);
     });
   });
 
   describe('linearPositionToValue', () => {
     it('converts using linear interpolation', () => {
-      const percent: number = 0.55;
-      const minValue: number = 0;
-      const maxValue: number = 100;
+      const percent = 0.55;
+      const minValue = 0;
+      const maxValue = 100;
       expect(ValueHelper.linearPositionToValue(percent, minValue, maxValue)).toBeCloseTo(55, precision);
     });
   });
 
   describe('logValueToPosition', () => {
     it('converts using log scale', () => {
-      const number: number = 1e2;
-      const minValue: number = 1e0;
-      const maxValue: number = 1e10;
-      expect(ValueHelper.logValueToPosition(number, minValue, maxValue)).toBeCloseTo(0.2, precision);
+      const num = 1e2;
+      const minValue = 1e0;
+      const maxValue = 1e10;
+      expect(ValueHelper.logValueToPosition(num, minValue, maxValue)).toBeCloseTo(0.2, precision);
     });
   });
 
   describe('logPositionToValue', () => {
     it('converts using log scale', () => {
-      const percent: number = 0.2;
-      const minValue: number = 1e0;
-      const maxValue: number = 1e10;
+      const percent = 0.2;
+      const minValue = 1e0;
+      const maxValue = 1e10;
       expect(ValueHelper.logPositionToValue(percent, minValue, maxValue)).toBeCloseTo(1e2, precision);
     });
   });

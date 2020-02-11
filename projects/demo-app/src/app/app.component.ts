@@ -52,7 +52,7 @@ export class AppComponent implements OnInit, OnDestroy {
   ];
 
   @HostBinding('class.test-mode')
-  testMode: boolean = false;
+  testMode = false;
 
   private queryParamsSub: any;
   private fragmentSub: any;
@@ -62,7 +62,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.queryParamsSub = this.route.queryParams.subscribe((params: any): void => {
-      this.testMode = params['testMode'] === 'true';
+      this.testMode = params.testMode === 'true';
     });
 
     // Provide redirects for old site links

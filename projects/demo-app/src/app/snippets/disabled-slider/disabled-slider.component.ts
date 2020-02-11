@@ -6,9 +6,9 @@ import { Options } from 'ng5-slider';
   templateUrl: './disabled-slider.component.html'
 })
 export class DisabledSliderComponent {
-  disabled: boolean = true;
-  minValue: number = 10;
-  maxValue: number = 90;
+  disabled = true;
+  minValue = 10;
+  maxValue = 90;
   options: Options = {
     floor: 0,
     ceil: 100,

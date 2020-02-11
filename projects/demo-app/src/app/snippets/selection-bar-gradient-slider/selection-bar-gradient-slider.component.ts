@@ -6,8 +6,8 @@ import { Options } from 'ng5-slider';
   templateUrl: './selection-bar-gradient-slider.component.html'
 })
 export class SelectionBarGradientSliderComponent {
-  minValue: number = 0;
-  maxValue: number = 80;
+  minValue = 0;
+  maxValue = 80;
   options: Options = {
     ceil: 100,
     showSelectionBar: true,

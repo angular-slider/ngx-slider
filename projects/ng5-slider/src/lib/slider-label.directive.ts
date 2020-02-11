@@ -6,6 +6,7 @@ import { ValueHelper } from './value-helper';
   selector: '[ng5SliderLabel]'
 })
 export class SliderLabelDirective extends SliderElementDirective {
+  // tslint:disable-next-line: variable-name
   private _value: string = null;
   get value(): string {
     return this._value;
@@ -16,7 +17,7 @@ export class SliderLabelDirective extends SliderElementDirective {
   }
 
   setValue(value: string): void {
-    let recalculateDimension: boolean = false;
+    let recalculateDimension = false;
 
     if (!this.alwaysHide &&
         (ValueHelper.isNullOrUndefined(this.value) ||

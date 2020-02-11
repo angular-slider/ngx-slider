@@ -6,8 +6,8 @@ import { Options, LabelType } from 'ng5-slider';
   templateUrl: './custom-html-display-function-slider.component.html'
 })
 export class CustomHtmlDisplayFunctionSliderComponent {
-  minValue: number = 100;
-  maxValue: number = 400;
+  minValue = 100;
+  maxValue = 400;
   options: Options = {
     floor: 0,
     ceil: 500,

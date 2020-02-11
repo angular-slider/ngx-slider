@@ -6,8 +6,8 @@ import { Options } from 'ng5-slider';
   templateUrl: './intermediate-ticks-values-range-slider.component.html'
 })
 export class IntermediateTicksValuesRangeSliderComponent {
-  minValue: number = 15;
-  maxValue: number = 85;
+  minValue = 15;
+  maxValue = 85;
   options: Options = {
     floor: 0,
     ceil: 100,

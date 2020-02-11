@@ -6,7 +6,7 @@ import { Options } from 'ng5-slider';
   templateUrl: './dynamic-tick-color-slider.component.html'
 })
 export class DynamicTickColorSliderComponent {
-  value: number = 0;
+  value = 0;
   options: Options = {
     ceil: 12,
     floor: 0,

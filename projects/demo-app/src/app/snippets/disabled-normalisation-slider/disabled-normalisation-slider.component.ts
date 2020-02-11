@@ -6,8 +6,8 @@ import { Options } from 'ng5-slider';
   templateUrl: './disabled-normalisation-slider.component.html'
 })
 export class DisabledNormalisationSliderComponent {
-  minValue: number = 50;
-  maxValue: number = 200;
+  minValue = 50;
+  maxValue = 200;
   options: Options = {
     floor: 0,
     ceil: 250,

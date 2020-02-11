@@ -6,7 +6,7 @@ import { Options } from 'ng5-slider';
   templateUrl: './right-to-left-slider.component.html'
 })
 export class RightToLeftSliderComponent {
-  value: number = 20;
+  value = 20;
   options: Options = {
     floor: 10,
     ceil: 100,

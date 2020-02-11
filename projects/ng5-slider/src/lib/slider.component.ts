@@ -1,3 +1,4 @@
+// tslint:disable: deprecation
 import {
   Component,
   OnInit,
@@ -55,7 +56,7 @@ declare class ResizeObserver {
 }
 
 export class Tick {
-  selected: boolean = false;
+  selected = false;
   style: any = {};
   tooltip: string = null;
   tooltipPlacement: string = null;
@@ -66,12 +67,12 @@ export class Tick {
 }
 
 class Dragging {
-  active: boolean = false;
-  value: number = 0;
-  difference: number = 0;
-  position: number = 0;
-  lowLimit: number = 0;
-  highLimit: number = 0;
+  active = false;
+  value = 0;
+  difference = 0;
+  position = 0;
+  lowLimit = 0;
+  highLimit = 0;
 }
 
 class ModelValues {
@@ -127,6 +128,7 @@ const NG5_SLIDER_CONTROL_VALUE_ACCESSOR: any = {
   selector: 'ng5-slider',
   templateUrl: './slider.component.html',
   styleUrls: ['./slider.component.scss'],
+  // tslint:disable-next-line: no-host-metadata-property
   host: { class: 'ng5-slider' },
   providers: [NG5_SLIDER_CONTROL_VALUE_ACCESSOR]
 })
@@ -188,7 +190,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
 
   // Set to true if init method already executed
-  private initHasRun: boolean = false;
+  private initHasRun = false;
 
   // Changes in model inputs are passed through this subject
   // These are all changes coming in from outside the component through input bindings or reactive form inputs
@@ -208,16 +210,16 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   private viewOptions: Options = new Options();
 
   // Half of the width or height of the slider handles
-  private handleHalfDimension: number = 0;
+  private handleHalfDimension = 0;
   // Maximum position the slider handle can have
-  private maxHandlePosition: number = 0;
+  private maxHandlePosition = 0;
 
   // Which handle is currently tracked for move events
   private currentTrackingPointer: PointerType = null;
   // Internal variable to keep track of the focus element
   private currentFocusPointer: PointerType = null;
   // Used to call onStart on the first keydown event
-  private firstKeyDown: boolean = false;
+  private firstKeyDown = false;
   // Current touch id of touch event being handled
   private touchId: number = null;
   // Values recorded when first dragging the bar
@@ -279,9 +281,9 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
   // Host element class bindings
   @HostBinding('class.vertical')
-  public sliderElementVerticalClass: boolean = false;
+  public sliderElementVerticalClass = false;
   @HostBinding('class.animate')
-  public sliderElementAnimateClass: boolean = false;
+  public sliderElementAnimateClass = false;
   @HostBinding('attr.disabled')
   public sliderElementDisabledAttr: string = null;
 
@@ -289,9 +291,9 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   public barStyle: any = {};
   public minPointerStyle: any = {};
   public maxPointerStyle: any = {};
-  public fullBarTransparentClass: boolean = false;
-  public selectionBarDraggableClass: boolean = false;
-  public ticksUnderValuesClass: boolean = false;
+  public fullBarTransparentClass = false;
+  public selectionBarDraggableClass = false;
+  public ticksUnderValuesClass = false;
 
   // Whether to show/hide ticks
   public get showTicks(): boolean {
@@ -300,7 +302,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
   /* If tickStep is set or ticksArray is specified.
      In this case, ticks values should be displayed below the slider. */
-  private intermediateTicks: boolean = false;
+  private intermediateTicks = false;
   // Ticks array as displayed in view
   public ticks: Tick[] = [];
 
@@ -318,9 +320,9 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
 
   public constructor(private renderer: Renderer2,
-              private elementRef: ElementRef,
-              private changeDetectionRef: ChangeDetectorRef,
-              private zone: NgZone) {
+                     private elementRef: ElementRef,
+                     private changeDetectionRef: ChangeDetectorRef,
+                     private zone: NgZone) {
     this.eventListenerHelper = new EventListenerHelper(this.renderer);
   }
 
@@ -1126,7 +1128,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     // We should avoid re-creating the ticks array if possible
     // This both improves performance and makes CSS animations work correctly
     if (!ValueHelper.isNullOrUndefined(this.ticks) && this.ticks.length === newTicks.length) {
-      for (let i: number = 0; i  < newTicks.length; ++i) {
+      for (let i = 0; i  < newTicks.length; ++i) {
         Object.assign(this.ticks[i], newTicks[i]);
       }
     } else {
@@ -1272,8 +1274,8 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     if (this.viewOptions.hidePointerLabels) {
       return;
     }
-    let floorLabelHidden: boolean = false;
-    let ceilLabelHidden: boolean = false;
+    let floorLabelHidden = false;
+    let ceilLabelHidden = false;
     const isMinLabelAtFloor: boolean = this.isLabelBelowFloorLabel(this.minHandleLabelElement);
     const isMinLabelAtCeil: boolean = this.isLabelAboveCeilLabel(this.minHandleLabelElement);
     const isMaxLabelAtCeil: boolean = this.isLabelAboveCeilLabel(this.maxHandleLabelElement);
@@ -1337,8 +1339,8 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
   // Update slider selection bar, combined label and range label
   private updateSelectionBar(): void {
-    let position: number = 0;
-    let dimension: number = 0;
+    let position = 0;
+    let dimension = 0;
     const isSelectionBarFromRight: boolean = this.viewOptions.rightToLeft
         ? !this.viewOptions.showSelectionBarEnd
         : this.viewOptions.showSelectionBarEnd;
@@ -1569,10 +1571,10 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       return this.viewOptions.vertical ? event.clientY : event.clientX;
     }
 
-    let touchIndex: number = 0;
+    let touchIndex = 0;
     const touches: TouchList = event.touches;
     if (!ValueHelper.isNullOrUndefined(targetTouchId)) {
-      for (let i: number = 0; i < touches.length; i++) {
+      for (let i = 0; i < touches.length; i++) {
         if (touches[i].identifier === targetTouchId) {
           touchIndex = i;
           break;
@@ -1591,7 +1593,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
     const sliderPos: number = this.viewOptions.vertical ?
       sliderElementBoundingRect.bottom : sliderElementBoundingRect.left;
-    let eventPos: number = 0;
+    let eventPos = 0;
     if (this.viewOptions.vertical) {
       eventPos = -this.getEventXY(event, targetTouchId) + sliderPos;
     } else {
@@ -1709,7 +1711,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
 
   private onBarStart(pointerType: PointerType, draggableRange: boolean, event: MouseEvent|TouchEvent,
-    bindMove: boolean, bindEnd: boolean, simulateImmediateMove?: boolean, simulateImmediateEnd?: boolean): void {
+                     bindMove: boolean, bindEnd: boolean, simulateImmediateMove?: boolean, simulateImmediateEnd?: boolean): void {
     if (draggableRange) {
       this.onDragStart(pointerType, event, bindMove, bindEnd);
     } else {
@@ -1719,7 +1721,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
   // onStart event handler
   private onStart(pointerType: PointerType, event: MouseEvent|TouchEvent,
-      bindMove: boolean, bindEnd: boolean, simulateImmediateMove?: boolean, simulateImmediateEnd?: boolean): void {
+                  bindMove: boolean, bindEnd: boolean, simulateImmediateMove?: boolean, simulateImmediateEnd?: boolean): void {
     event.stopPropagation();
     // Only call preventDefault() when handling non-passive events (passive events don't need it)
     if (!CompatibilityHelper.isTouchEvent(event) || !detectPassiveEvents.hasSupport) {
@@ -1798,7 +1800,8 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
     if (CompatibilityHelper.isTouchEvent(event)) {
       const changedTouches: TouchList = (event as TouchEvent).changedTouches;
-      for (let i: number = 0; i < changedTouches.length; i++) {
+      // tslint:disable-next-line: prefer-for-of
+      for (let i = 0; i < changedTouches.length; i++) {
         if (changedTouches[i].identifier === this.touchId) {
           touchForThisSlider = changedTouches[i];
           break;
@@ -1983,7 +1986,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
   // onDragStart event handler, handles dragging of the middle bar
   private onDragStart(pointerType: PointerType, event: MouseEvent|TouchEvent,
-    bindMove: boolean, bindEnd: boolean): void {
+                      bindMove: boolean, bindEnd: boolean): void {
     const position: number = this.getEventPosition(event);
 
     this.dragging = new Dragging();
@@ -2056,10 +2059,10 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   private onDragMove(event?: MouseEvent|TouchEvent): void {
     const newPos: number = this.getEventPosition(event);
 
-    let ceilLimit: number,
-        floorLimit: number,
-        floorHandleElement: SliderHandleDirective,
-        ceilHandleElement: SliderHandleDirective;
+    let ceilLimit: number;
+    let floorLimit: number;
+    let floorHandleElement: SliderHandleDirective;
+    let ceilHandleElement: SliderHandleDirective;
     if (this.viewOptions.rightToLeft) {
       ceilLimit = this.dragging.lowLimit;
       floorLimit = this.dragging.highLimit;

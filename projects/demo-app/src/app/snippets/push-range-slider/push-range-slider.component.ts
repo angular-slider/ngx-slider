@@ -6,8 +6,8 @@ import { Options } from 'ng5-slider';
   templateUrl: './push-range-slider.component.html'
 })
 export class PushRangeSliderComponent {
-  minValue: number = 60;
-  maxValue: number = 70;
+  minValue = 60;
+  maxValue = 70;
   options: Options = {
     floor: 0,
     ceil: 100,

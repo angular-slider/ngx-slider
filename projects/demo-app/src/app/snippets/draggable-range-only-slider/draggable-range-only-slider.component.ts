@@ -6,8 +6,8 @@ import { Options } from 'ng5-slider';
   templateUrl: './draggable-range-only-slider.component.html'
 })
 export class DraggableRangeOnlySliderComponent {
-  minValue: number = 4;
-  maxValue: number = 6;
+  minValue = 4;
+  maxValue = 6;
   options: Options = {
     floor: 0,
     ceil: 10,

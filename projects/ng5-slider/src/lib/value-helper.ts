@@ -35,8 +35,8 @@ export class ValueHelper {
   static findStepIndex(modelValue: number, stepsArray: CustomStepDefinition[]): number {
     const differences: number[] = stepsArray.map((step: CustomStepDefinition): number => Math.abs(modelValue - step.value));
 
-    let minDifferenceIndex: number = 0;
-    for (let index: number = 0; index < stepsArray.length; index++) {
+    let minDifferenceIndex = 0;
+    for (let index = 0; index < stepsArray.length; index++) {
       if (differences[index] !== differences[minDifferenceIndex] && differences[index] < differences[minDifferenceIndex]) {
         minDifferenceIndex = index;
       }

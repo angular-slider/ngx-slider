@@ -6,8 +6,8 @@ import { Options } from 'ng5-slider';
   templateUrl: './read-only-slider.component.html'
 })
 export class ReadOnlySliderComponent {
-  readOnly: boolean = true;
-  value: number = 50;
+  readOnly = true;
+  value = 50;
   options: Options = {
     floor: 0,
     ceil: 100,
