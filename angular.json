@@ -22,13 +22,13 @@
             "main": "projects/demo-app/src/main.ts",
             "polyfills": "projects/demo-app/src/polyfills.ts",
             "tsConfig": "projects/demo-app/tsconfig.app.json",
+            "aot": false,
             "assets": [
               "projects/demo-app/src/favicon.ico",
               "projects/demo-app/src/assets"
             ],
             "styles": ["projects/demo-app/src/styles.scss"],
-            "scripts": [],
-            "es5BrowserSupport": true
+            "scripts": []
           },
           "configurations": {
             "production": {
@@ -46,10 +46,16 @@
               "vendorChunk": false,
               "buildOptimizer": true,
               "budgets": [{
-                "type": "initial",
-                "maximumWarning": "2mb",
-                "maximumError": "5mb"
-              }]
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
             }
           }
         },
