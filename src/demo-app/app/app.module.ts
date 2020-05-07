@@ -123,7 +123,7 @@ import { routerConfig } from './app-router.config';
     ReactiveFormsModule,
     DocsModule,
     RouterModule.forRoot(routerConfig),
-    NgbModule.forRoot(),
+    NgbModule,
     Ng5SliderModule
   ],
   providers: [],
