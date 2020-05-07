@@ -35,16 +35,25 @@ function generateTypedocDocs(typedocDocsDir) {
   const apiDocsReadmeFile = path.resolve(__dirname, '../typedoc-theme/README.md');
   utils.copyReadmeMd(apiDocsReadmeFile);
 
-  const app = new typedoc.Application({
+  const app = new typedoc.Application();
+  app.options.addReader(new typedoc.TSConfigReader());
+
+  app.bootstrap({
+    mode: 'modules',
+    logger: 'none',
     module: 'commonjs',
-    target: 'es6',
+    target: 'es2015',
     includeDeclarations: false,
     experimentalDecorators: true,
     excludeExternals: true,
     theme: themeDir
   });
 
-  app.generateDocs(files, typedocDocsDir);
+  const project = app.convert(app.expandInputFiles(files));
+
+  if (project) {
+    app.generateDocs(project, typedocDocsDir);
+  }
 
   // HACK: restore the README.md to original
   const mainReadmeFile = path.resolve(__dirname, '../README.md');
