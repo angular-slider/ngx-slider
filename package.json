@@ -79,7 +79,7 @@
     "protractor": "~5.1.2",
     "protractor-console-plugin": "^0.1.1",
     "rimraf": "^2.6.2",
-    "scss-bundle": "^2.4.0",
+    "scss-bundle": "^2.5.1",
     "ts-node": "~4.1.0",
     "tsickle": "^0.37.0",
     "tslint": "~5.9.1",
