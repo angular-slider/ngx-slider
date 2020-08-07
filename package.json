@@ -77,7 +77,7 @@
     "karma-jasmine-html-reporter": "^0.2.2",
     "mkdirp": "^0.5.1",
     "ng-packagr": "^2.4.2",
-    "prismjs": "^1.14.0",
+    "prismjs": "^1.21.0",
     "protractor": "~5.1.2",
     "protractor-console-plugin": "^0.1.1",
     "rimraf": "^2.6.2",
