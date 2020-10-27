@@ -54,7 +54,7 @@
     "@ng-bootstrap/ng-bootstrap": "^1.0.0",
     "core-js": "^2.4.1",
     "detect-passive-events": "^1.0.4",
-    "rxjs": ">=5.5.6",
+    "rxjs": "^5.5.6",
     "rxjs-compat": "^6.5.2",
     "zone.js": "^0.8.19"
   },
