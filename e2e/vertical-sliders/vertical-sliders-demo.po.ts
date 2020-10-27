@@ -7,43 +7,43 @@ export class VerticalSlidersDemoPage {
   }
 
   getSliderElement(sliderNumber: number): ElementFinder {
-    return element(by.css(`.row .col-2:nth-of-type(${sliderNumber}) ng5-slider`));
+    return element(by.css(`.row .col-2:nth-of-type(${sliderNumber}) ngx-slider`));
   }
 
   getSliderFullBar(sliderNumber: number): SliderSubElement {
-    return this.getSliderSubElement(sliderNumber, 'ng5-slider-full-bar');
+    return this.getSliderSubElement(sliderNumber, 'ngx-slider-full-bar');
   }
 
   getSliderSelectionBar(sliderNumber: number): SliderSubElement {
-    return this.getSliderSubElement(sliderNumber, 'ng5-slider-selection-bar');
+    return this.getSliderSubElement(sliderNumber, 'ngx-slider-selection-bar');
   }
 
   getSliderFloorLabel(sliderNumber: number): SliderSubElement {
-    return this.getSliderSubElement(sliderNumber, 'ng5-slider-floor');
+    return this.getSliderSubElement(sliderNumber, 'ngx-slider-floor');
   }
 
   getSliderCeilLabel(sliderNumber: number): SliderSubElement {
-    return this.getSliderSubElement(sliderNumber, 'ng5-slider-ceil');
+    return this.getSliderSubElement(sliderNumber, 'ngx-slider-ceil');
   }
 
   getSliderLowPointer(sliderNumber: number): SliderSubElement {
-    return this.getSliderSubElement(sliderNumber, 'ng5-slider-pointer-min');
+    return this.getSliderSubElement(sliderNumber, 'ngx-slider-pointer-min');
   }
 
   getSliderLowPointerLabel(sliderNumber: number): SliderSubElement {
-    return this.getSliderSubElement(sliderNumber, 'ng5-slider-model-value');
+    return this.getSliderSubElement(sliderNumber, 'ngx-slider-model-value');
   }
 
   getSliderHighPointer(sliderNumber: number): SliderSubElement {
-    return this.getSliderSubElement(sliderNumber, 'ng5-slider-pointer-max');
+    return this.getSliderSubElement(sliderNumber, 'ngx-slider-pointer-max');
   }
 
   getSliderHighPointerLabel(sliderNumber: number): SliderSubElement {
-    return this.getSliderSubElement(sliderNumber, 'ng5-slider-model-high');
+    return this.getSliderSubElement(sliderNumber, 'ngx-slider-model-high');
   }
 
   getSliderCombinedLabel(sliderNumber: number): SliderSubElement {
-    return this.getSliderSubElement(sliderNumber, 'ng5-slider-combined');
+    return this.getSliderSubElement(sliderNumber, 'ngx-slider-combined');
   }
 
   private getSliderSubElement(sliderNumber: number, subElementClass: string): SliderSubElement {

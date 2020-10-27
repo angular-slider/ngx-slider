@@ -8,14 +8,14 @@ When using a custom template, elements that would normally be rendered as `<div 
 
 The syntax for specifying the custom template is the following:
 ```html
-<ng5-slider [(value)]="value" [options]="options">
+<ngx-slider [(value)]="value" [options]="options">
   <ng-template #tooltipTemplate let-tooltip="tooltip" let-placement="placement" let-content="content">
     <!-- TODO: provide tooltip around the content.
          {{tooltip}} will bind to the tooltip text
          {{placement}} will bind to the tooltip placement ('top', 'bottom', 'right', 'left') -->
     <div>{{content}}</div>
   </ng-template>
-</ng5-slider>
+</ngx-slider>
 ```
 
-For more concrete examples, please refer to tooltip samples on [official site](https://angular-slider.github.io/ng5-slider/demos#ticks-custom-tooltips-slider).
+For more concrete examples, please refer to tooltip samples on [official site](https://angular-slider.github.io/ngx-slider/demos#ticks-custom-tooltips-slider).

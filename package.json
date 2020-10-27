@@ -1,5 +1,5 @@
 {
-  "name": "ng5-slider",
+  "name": "@angular-slider/ngx-slider",
   "version": "1.2.6",
   "private": true,
   "description": "Self-contained, mobile friendly slider component for Angular 5+ based on angularjs-slider",
@@ -9,31 +9,26 @@
     "component",
     "angular",
     "ng",
-    "angular2",
-    "ng2",
-    "angular4",
-    "ng4",
-    "angular5",
-    "ng5"
+    "ngx"
   ],
   "author": "Piotr Dziwinski",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/angular-slider/ng5-slider.git"
+    "url": "https://github.com/angular-slider/ngx-slider.git"
   },
   "bugs": {
-    "url": "https://github.com/angular-slider/ng5-slider/issues"
+    "url": "https://github.com/angular-slider/ngx-slider/issues"
   },
-  "homepage": "https://github.com/angular-slider/ng5-slider#readme",
+  "homepage": "https://github.com/angular-slider/ngx-slider#readme",
   "scripts": {
     "prepare": "npm run prepare:lib && npm run prepare:demo-app",
     "prepare:lib": "node scripts/generate-lib-files.js",
     "prepare:demo-app": "node scripts/generate-demo-app-snippets.js && node scripts/generate-demo-app-docs.js",
     "start": "npm run prepare && ng serve",
     "build": "npm run build:lib && npm run build:demo-app",
-    "build:lib": "npm run prepare && rimraf dist/ dist/ng5-slider.tgz && ng-packagr -p src/ng5-slider/package.json && scss-bundle -e src/ng5-slider/lib/main.scss -d dist/ng5-slider/scss/ng5-slider.scss && rimraf dist/ng5-slider.tgz",
-    "build:demo-app": "npm run prepare && rimraf dist/demo-app && ng build --prod --base-href /ng5-slider/",
+    "build:lib": "npm run prepare && rimraf dist/ngx-slider && ng-packagr -p src/ngx-slider/package.json && scss-bundle -e src/ngx-slider/lib/main.scss -d dist/ngx-slider/scss/ngx-slider.scss",
+    "build:demo-app": "npm run prepare && rimraf dist/demo-app && ng build --prod --base-href /ngx-slider/",
     "publish-gh": "scripts/publish-gh-pages.sh",
     "test": "npm run prepare && ng test",
     "test:once": "npm run prepare && ng test --watch=false",

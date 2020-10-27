@@ -7,7 +7,7 @@ import { SliderLabelDirective } from './slider-label.directive';
 import { TooltipWrapperComponent } from './tooltip-wrapper.component';
 
 /**
- * Ng5Slider module
+ * NgxSlider module
  *
  * The module exports the slider component
  */
@@ -26,4 +26,4 @@ import { TooltipWrapperComponent } from './tooltip-wrapper.component';
     SliderComponent
   ]
 })
-export class Ng5SliderModule { }
+export class NgxSliderModule { }

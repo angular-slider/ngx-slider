@@ -1,14 +1,14 @@
 // We need to use ::ng-deep to overcome view encapsulation
 ::ng-deep {
-  .custom-slider .ng5-slider .ng5-slider-bar {
+  .custom-slider .ngx-slider .ngx-slider-bar {
     background: #ffe4d1;
     height: 2px;
   }
-  .custom-slider .ng5-slider .ng5-slider-selection {
+  .custom-slider .ngx-slider .ngx-slider-selection {
     background: orange;
   }
 
-  .custom-slider .ng5-slider .ng5-slider-pointer {
+  .custom-slider .ngx-slider .ngx-slider-pointer {
     width: 8px;
     height: 16px;
     top: auto; /* to remove the default positioning */
@@ -18,20 +18,20 @@
     border-top-right-radius: 3px;
   }
 
-  .custom-slider .ng5-slider .ng5-slider-pointer:after {
+  .custom-slider .ngx-slider .ngx-slider-pointer:after {
     display: none;
   }
 
-  .custom-slider .ng5-slider .ng5-slider-bubble {
+  .custom-slider .ngx-slider .ngx-slider-bubble {
     bottom: 14px;
   }
 
-  .custom-slider .ng5-slider .ng5-slider-limit {
+  .custom-slider .ngx-slider .ngx-slider-limit {
     font-weight: bold;
     color: orange;
   }
 
-  .custom-slider .ng5-slider .ng5-slider-tick {
+  .custom-slider .ngx-slider .ngx-slider-tick {
     width: 1px;
     height: 10px;
     margin-left: 4px;
@@ -40,7 +40,7 @@
     top: -1px;
   }
 
-  .custom-slider .ng5-slider .ng5-slider-tick.ng5-slider-selected {
+  .custom-slider .ngx-slider .ngx-slider-tick.ngx-slider-selected {
     background: orange;
   }
 }

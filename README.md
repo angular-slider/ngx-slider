@@ -1,38 +1,40 @@
-# ng5-slider
-[![npm version](https://badge.fury.io/js/ng5-slider.svg)](https://badge.fury.io/js/ng5-slider)
-[![Travis CI Build](https://travis-ci.org/angular-slider/ng5-slider.svg?branch=master)](https://travis-ci.org/angular-slider/ng5-slider)
+# ngx-slider
+[![npm version](https://badge.fury.io/js/ngx-slider.svg)](https://badge.fury.io/js/ngx-slider)
+[![Travis CI Build](https://travis-ci.org/angular-slider/ngx-slider.svg?branch=master)](https://travis-ci.org/angular-slider/ngx-slider)
 
-Website: https://angular-slider.github.io/ng5-slider/
+Website: https://angular-slider.github.io/ngx-slider/
 
-Self-contained, mobile friendly slider component for Angular 5+ based on [angularjs-slider](https://github.com/angular-slider/angularjs-slider).
+Self-contained, mobile friendly slider component for Angular 6+ based on [angularjs-slider](https://github.com/angular-slider/angularjs-slider).
+
+**NOTE:** This component used to be known as ng5-slider before the v2.0.0 release. Starting with v2.0.0, it has been re-branded as ngx-slider, targeting Angular 6+. If you have been using the previous version in your app, please follow the instructions in [UPGRADING.md](UPGRADING.md). If you are sticking with the old version, it will continue to be available in the v1.2.x release line under the old name of ng5-slider.
 
 ## Demos
 
- * Single slider - [StackBlitz](https://stackblitz.com/edit/ng5-slider-simple-slider-example?file=src%2Fapp%2Fapp.component.ts)
+ * Single slider - [StackBlitz](https://stackblitz.com/edit/ngx-slider-simple-slider-example?file=src%2Fapp%2Fapp.component.ts)
 
-   ![simple slider image](https://raw.githubusercontent.com/angular-slider/ng5-slider/master/assets/simple-slider.png)
+   ![simple slider image](https://raw.githubusercontent.com/angular-slider/ngx-slider/master/assets/simple-slider.png)
 
- * Range slider - [StackBlitz](https://stackblitz.com/edit/ng5-slider-range-slider-example?file=src%2Fapp%2Fapp.component.ts)
+ * Range slider - [StackBlitz](https://stackblitz.com/edit/ngx-slider-range-slider-example?file=src%2Fapp%2Fapp.component.ts)
 
-   ![range slider image](https://raw.githubusercontent.com/angular-slider/ng5-slider/master/assets/range-slider.png)
+   ![range slider image](https://raw.githubusercontent.com/angular-slider/ngx-slider/master/assets/range-slider.png)
 
- * Slider with ticks - [StackBlitz](https://stackblitz.com/edit/ng5-slider-ticks-example?file=src%2Fapp%2Fapp.component.ts)
+ * Slider with ticks - [StackBlitz](https://stackblitz.com/edit/ngx-slider-ticks-example?file=src%2Fapp%2Fapp.component.ts)
 
-   ![ticks slider image](https://raw.githubusercontent.com/angular-slider/ng5-slider/master/assets/ticks-slider.png)
+   ![ticks slider image](https://raw.githubusercontent.com/angular-slider/ngx-slider/master/assets/ticks-slider.png)
 
- * Customised slider - [StackBlitz](https://stackblitz.com/edit/ng5-slider-customised-range-slider-example?file=src%2Fapp%2Fapp.component.ts)
+ * Customised slider - [StackBlitz](https://stackblitz.com/edit/ngx-slider-customised-range-slider-example?file=src%2Fapp%2Fapp.component.ts)
 
-   ![customised slider image](https://raw.githubusercontent.com/angular-slider/ng5-slider/master/assets/customised-slider.png)
+   ![customised slider image](https://raw.githubusercontent.com/angular-slider/ngx-slider/master/assets/customised-slider.png)
 
- * Slider with custom style - [StackBlitz](https://stackblitz.com/edit/ng5-slider-styled-slider-example?file=src%2Fapp%2Fapp.component.ts)
+ * Slider with custom style - [StackBlitz](https://stackblitz.com/edit/ngx-slider-styled-slider-example?file=src%2Fapp%2Fapp.component.ts)
 
-   ![styled slider image](https://raw.githubusercontent.com/angular-slider/ng5-slider/master/assets/styled-slider.png)
+   ![styled slider image](https://raw.githubusercontent.com/angular-slider/ngx-slider/master/assets/styled-slider.png)
 
- * Vertical slider - [StackBlitz](https://stackblitz.com/edit/ng5-slider-vertical-slider-example?file=src%2Fapp%2Fapp.component.ts)
+ * Vertical slider - [StackBlitz](https://stackblitz.com/edit/ngx-slider-vertical-slider-example?file=src%2Fapp%2Fapp.component.ts)
 
-   ![vertical slider image](https://raw.githubusercontent.com/angular-slider/ng5-slider/master/assets/vertical-slider.png)
+   ![vertical slider image](https://raw.githubusercontent.com/angular-slider/ngx-slider/master/assets/vertical-slider.png)
 
- * [More examples on official website](https://angular-slider.github.io/ng5-slider/demos)
+ * [More examples on official website](https://angular-slider.github.io/ngx-slider/demos)
 
 ## Dependencies
 
@@ -43,12 +45,12 @@ Self-contained, mobile friendly slider component for Angular 5+ based on [angula
 
 To add the slider to your Angular project:
 ```
-npm install --save ng5-slider
+npm install --save @angular-slider/ngx-slider
 ```
 
 Once installed, add the slider to your `app.module.ts`:
 ```typescript
-import { Ng5SliderModule } from 'ng5-slider';
+import { NgxSliderModule } from '@angular-slider/ngx-slider';
 
 ...
 
@@ -56,7 +58,7 @@ import { Ng5SliderModule } from 'ng5-slider';
    ...
    imports: [
      ...
-     Ng5SliderModule,
+     NgxSliderModule,
     ...
    ],
    ...
@@ -68,7 +70,7 @@ export class AppModule {}
 
 Now you can use the slider component in your app components, for example in `app.component.ts`:
 ```typescript
-import { Options } from 'ng5-slider';
+import { Options } from '@angular-slider/ngx-slider';
 ...
 
 @Component({...})
@@ -83,11 +85,11 @@ export class AppComponent {
 
 And in template file `app.component.html`:
 ```html
-<ng5-slider [(value)]="value" [options]="options"></ng5-slider>
+<ngx-slider [(value)]="value" [options]="options"></ngx-slider>
 ```
 
 ## Documentation
-Full API documentation is available on [official website](https://angular-slider.github.io/ng5-slider/docs).
+Full API documentation is available on [official website](https://angular-slider.github.io/ngx-slider/docs).
 
 ## Styling
 
@@ -117,9 +119,9 @@ Before reporting a new bug, please look at [KNOWN_ISSUES.md](KNOWN_ISSUES.md) fo
 
 ## Bugs
 
-You can report any bugs as [Github issues](https://github.com/angular-slider/ng5-slider/issues).
+You can report any bugs as [Github issues](https://github.com/angular-slider/ngx-slider/issues).
 
-Please describe the issue in detail pasting any relevant code, or preferrably a StackBlitz with reproduction of the problem by [forking and editing this sample StackBlitz](https://stackblitz.com/edit/ng5-slider-simple-slider-example?file=src/app/app.component.ts). Please also provide the version of NPM package you are using.
+Please describe the issue in detail pasting any relevant code, or preferrably a StackBlitz with reproduction of the problem by [forking and editing this sample StackBlitz](https://stackblitz.com/edit/ngx-slider-simple-slider-example?file=src/app/app.component.ts). Please also provide the version of NPM package you are using.
 
 ## Changelog
 

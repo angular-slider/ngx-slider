@@ -4,7 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
-import { Ng5SliderModule } from '@local/ng5-slider';
+import { NgxSliderModule } from '@local/ngx-slider';
 
 import { DocsModule } from './docs/docs.module';
 
@@ -124,7 +124,7 @@ import { routerConfig } from './app-router.config';
     DocsModule,
     RouterModule.forRoot(routerConfig),
     NgbModule.forRoot(),
-    Ng5SliderModule
+    NgxSliderModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -19,7 +19,7 @@ function readdirRecursivelySync(dir) {
 
 /** Copy README.md from given location to the library directory */
 function copyReadmeMd(sourceReadmeMd) {
-  const libReadmeFile = path.resolve(__dirname, '../src/ng5-slider/README.md');
+  const libReadmeFile = path.resolve(__dirname, '../src/ngx-slider/README.md');
 
   const sourceReadme = fs.readFileSync(sourceReadmeMd, { encoding: 'utf8'});
   fs.writeFileSync(libReadmeFile, sourceReadme, {encoding: 'utf8'});

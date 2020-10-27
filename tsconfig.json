@@ -17,7 +17,7 @@
       "dom"
     ],
     "paths": {
-      "@local/ng5-slider": [ "dist/ng5-slider" ]
+      "@local/ngx-slider": [ "dist/ngx-slider" ]
     }
   }
 }

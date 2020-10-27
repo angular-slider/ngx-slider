@@ -6,8 +6,8 @@ const utils = require('./utils.js');
 /** Generate package.json file based on package.json.template and main package.json */
 function generatePackageJson() {
   const mainFile = path.resolve(__dirname, '../package.json');
-  const libTemplateFile = path.resolve(__dirname, '../src/ng5-slider/package.json.template');
-  const libFile = path.resolve(__dirname, '../src/ng5-slider/package.json');
+  const libTemplateFile = path.resolve(__dirname, '../src/ngx-slider/package.json.template');
+  const libFile = path.resolve(__dirname, '../src/ngx-slider/package.json');
 
   const libTemplateConfig = JSON.parse(fs.readFileSync(libTemplateFile, { encoding: 'utf8' }));
   const mainConfig = JSON.parse(fs.readFileSync(mainFile, { encoding: 'utf8' }));
@@ -42,8 +42,8 @@ function generatePackageJson() {
 
 /** Convert public_api.json to public_api.ts */
 function generatePublicApiTs() {
-  const configFile = path.resolve(__dirname, '../src/ng5-slider/lib/public_api.json');
-  const tsFile = path.resolve(__dirname, '../src/ng5-slider/lib/public_api.ts');
+  const configFile = path.resolve(__dirname, '../src/ngx-slider/lib/public_api.json');
+  const tsFile = path.resolve(__dirname, '../src/ngx-slider/lib/public_api.ts');
 
   const config = JSON.parse(fs.readFileSync(configFile, { encoding: 'utf8' }));
 

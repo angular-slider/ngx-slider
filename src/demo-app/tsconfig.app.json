@@ -2,7 +2,7 @@
   "extends": "../../tsconfig.json",
   "angularCompilerOptions": {
     "paths": {
-      "@local/ng5-slider": [ "../ng5-slider/lib/public_api.ts" ]
+      "@local/ngx-slider": [ "../ngx-slider/lib/public_api.ts" ]
     }
   },
   "compilerOptions": {
@@ -11,7 +11,7 @@
     "baseUrl": "",
     "types": [],
     "paths": {
-      "@local/ng5-slider": [ "../ng5-slider/lib/public_api.ts" ]
+      "@local/ngx-slider": [ "../ngx-slider/lib/public_api.ts" ]
     }
   },
   "exclude": [

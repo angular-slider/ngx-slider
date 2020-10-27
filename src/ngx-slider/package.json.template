@@ -25,7 +25,7 @@
     "lib": {
       "entryFile": "lib/public_api.ts"
     },
-    "dest": "../../dist/ng5-slider",
+    "dest": "../../dist/ngx-slider",
     "whitelistedNonPeerDependencies": []
   }
 }

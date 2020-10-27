@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Options, LabelType } from '@local/ng5-slider';
+import { Options, LabelType } from '@local/ngx-slider';
 
 @Component({
   selector: 'app-custom-html-display-function-slider',

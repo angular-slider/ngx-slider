@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Options, ChangeContext, PointerType } from '@local/ng5-slider';
+import { Options, ChangeContext, PointerType } from '@local/ngx-slider';
 
 @Component({
   selector: 'app-user-events-slider',

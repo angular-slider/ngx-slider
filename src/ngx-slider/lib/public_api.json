@@ -2,7 +2,7 @@
   "exports": [
     {
       "what": [
-        "Ng5SliderModule"
+        "NgxSliderModule"
       ],
       "file": "./slider.module"
     },

@@ -1,21 +1,23 @@
 ## Introduction
 
-These pages are generated from source code of ng5-slider using Typedoc.
+These pages are generated from source code of ngx-slider using Typedoc.
 
 Below, you will find an overview of using the slider directive, and following the navigation links, you can explore the public API portion of the library.
 
-The public API is made up of all declarations made available when importing the `ng5-slider` package, for instance the `Options` class:
+The public API is made up of all declarations made available when importing the `ngx-slider` package, for instance the `Options` class:
 ```ts
-import { Options } from 'ng5-slider';
+import { Options } from '@angular-slider/ngx-slider';
 ```
 
-You can see that Typedoc organises the files into global "modules", but it is only an artefact of code organisation. All declarations described here are available directly by importing them from `ng5-slider`.
+You can see that Typedoc organises the files into global "modules", but it is only an artefact of code organisation. All declarations described here are available directly by importing them from `ngx-slider`.
+
+**NOTE:** If you are looking for old documentation of v1.2.x releases under the old name of ng5-slider, they are archived in the old branch: *TODO: add link here*.
 
 ## Slider directive
 
 The slider component takes the following inputs and outputs:
 ```html
-<ng5-slider
+<ngx-slider
   [(value)]="<number>"
   [(highValue)]="<number>"
   [options]="<options object>"
@@ -26,7 +28,7 @@ The slider component takes the following inputs and outputs:
   (userChangeEnd)="<event handler>"
   (valueChange)="<event handler>"
   (highValueChange)="<event handler>"
-></ng5-slider>
+></ngx-slider>
 ```
 
 ### Model bindings

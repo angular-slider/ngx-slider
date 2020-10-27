@@ -1,4 +1,4 @@
-# Contributing to ng5-slider
+# Contributing to ngx-slider
 
 # Structure
 
@@ -10,12 +10,12 @@ The project relies on some auto-generated code using a number of scripts in `scr
 
 # Building the library
 
-To build the ng5-slider library (NPM package), use:
+To build the ngx-slider library (NPM package), use:
 ```
 npm run build:lib
 ```
 
-The ng5-slider NPM package files will be generated in `dist/` folder.
+The ngx-slider NPM package files will be generated in `dist/` folder.
 
 # Running the demo app
 

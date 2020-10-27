@@ -33,7 +33,7 @@ touch .nojekyll
 
 # All done - commit and push
 git add -A .
-git commit -m "Release github pages for ng5-slider ${rev}"
+git commit -m "Release github pages for ngx-slider ${rev}"
 git push upstream gh-pages
 
 popd &>/dev/null

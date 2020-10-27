@@ -7,31 +7,31 @@ export class BaseSimpleSliderDemoPage {
   }
 
   getSliderElement(): ElementFinder {
-    return element(by.css('ng5-slider'));
+    return element(by.css('ngx-slider'));
   }
 
   getSliderFullBar(): SliderSubElement {
-    return this.getSliderSubElement('ng5-slider-full-bar');
+    return this.getSliderSubElement('ngx-slider-full-bar');
   }
 
   getSliderSelectionBar(): SliderSubElement {
-    return this.getSliderSubElement('ng5-slider-selection-bar');
+    return this.getSliderSubElement('ngx-slider-selection-bar');
   }
 
   getSliderFloorLabel(): SliderSubElement {
-    return this.getSliderSubElement('ng5-slider-floor');
+    return this.getSliderSubElement('ngx-slider-floor');
   }
 
   getSliderCeilLabel(): SliderSubElement {
-    return this.getSliderSubElement('ng5-slider-ceil');
+    return this.getSliderSubElement('ngx-slider-ceil');
   }
 
   getSliderPointer(): SliderSubElement {
-    return this.getSliderSubElement('ng5-slider-pointer-min');
+    return this.getSliderSubElement('ngx-slider-pointer-min');
   }
 
   getSliderPointerLabel(): SliderSubElement {
-    return this.getSliderSubElement('ng5-slider-model-value');
+    return this.getSliderSubElement('ngx-slider-model-value');
   }
 
   private getSliderSubElement(subElementClass: string): SliderSubElement {
