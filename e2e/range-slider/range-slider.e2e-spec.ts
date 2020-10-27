@@ -683,8 +683,16 @@ describe('range slider', () => {
   describe('after changing low input value in the form', () => {
     beforeEach(() => {
       // Due to normalisation checks, we need to ensure that inputs contain valid data at all times while editing
-      // Low value: 50 -> 5 -> 125
-      page.getLowValueInput().sendKeys(Key.END, Key.BACK_SPACE, Key.LEFT, Key.LEFT, '12');
+      // Low value: 50 -> 5 -> 25 -> 125
+      page.getLowValueInput().sendKeys(Key.END, Key.BACK_SPACE).then(() => {
+        browser.sleep(200).then(() => {
+          page.getLowValueInput().sendKeys(Key.HOME, '2').then(() => {
+            browser.sleep(200).then(() => {
+              page.getLowValueInput().sendKeys(Key.HOME, '1');
+            });
+          });
+        });
+      });
     });
 
     it('sets the low value to new input', () => {

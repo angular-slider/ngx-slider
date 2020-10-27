@@ -1,6 +1,6 @@
 import { SimpleSliderDemoPage } from './simple-slider-demo.po';
 import { approximateGeometryMatchers } from '../utils';
-import { Key } from 'protractor';
+import { browser, Key } from 'protractor';
 
 describe('simple slider', () => {
   let page: SimpleSliderDemoPage;
@@ -193,7 +193,15 @@ describe('simple slider', () => {
     beforeEach(() => {
       // Due to normalisation code, we need to ensure that the number in input is always valid when entering it
       // This should end up with: 100 -> 10 -> 150 -> 50
-      page.getValueInput().sendKeys(Key.END, Key.BACK_SPACE, Key.LEFT, '5', Key.LEFT, Key.BACK_SPACE);
+      page.getValueInput().sendKeys(Key.END, Key.BACK_SPACE).then(() => {
+        browser.sleep(200).then(() => {
+          page.getValueInput().sendKeys(Key.HOME, Key.RIGHT, '5').then(() => {
+            browser.sleep(200).then(() => {
+              page.getValueInput().sendKeys(Key.HOME, Key.RIGHT, Key.BACK_SPACE);
+            });
+          });
+        });
+      });
     });
 
     it('sets the value to the new input', () => {
