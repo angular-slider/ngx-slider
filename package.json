@@ -78,7 +78,7 @@
     "mkdirp": "^0.5.1",
     "ng-packagr": "^2.4.2",
     "prismjs": "^1.21.0",
-    "protractor": "~5.1.2",
+    "protractor": "^5.4.4",
     "protractor-console-plugin": "^0.1.1",
     "rimraf": "^2.6.2",
     "scss-bundle": "^2.4.0",
@@ -86,6 +86,7 @@
     "tsickle": "~0.25.5",
     "tslint": "~5.9.1",
     "typedoc": "^0.11.1",
-    "typescript": "^2.8.4"
+    "typescript": "^2.8.4",
+    "webdriver-manager": "^12.1.7"
   }
 }
