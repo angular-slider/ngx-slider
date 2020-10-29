@@ -1,5 +1,5 @@
 import { Renderer2 } from '@angular/core';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 import { throttleTime, tap } from 'rxjs/operators';
 import detectPassiveEvents from 'detect-passive-events';
 

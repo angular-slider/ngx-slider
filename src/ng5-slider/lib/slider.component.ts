@@ -22,8 +22,7 @@ import {
 
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
-import { Subject } from 'rxjs/Subject';
-import { Subscription } from 'rxjs/Subscription';
+import { Subject, Subscription } from 'rxjs';	
 import { distinctUntilChanged, filter, throttleTime, tap } from 'rxjs/operators';
 
 import detectPassiveEvents from 'detect-passive-events';
@@ -1719,7 +1718,9 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     this.unsubscribeOnEnd();
 
     for (const element of this.getAllSliderElements()) {
-      element.off();
+      if (!ValueHelper.isNullOrUndefined(element)) {
+        element.off();	
+      }
     }
   }
 
