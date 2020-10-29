@@ -1,4 +1,4 @@
-import { Directive, ElementRef, Renderer2, HostBinding } from '@angular/core';
+import { Directive, ElementRef, Renderer2, HostBinding, ChangeDetectorRef } from '@angular/core';
 import { EventListenerHelper } from './event-listener-helper';
 import { EventListener } from './event-listener';
 import { ValueHelper } from './value-helper';
@@ -53,7 +53,7 @@ export class SliderElementDirective {
   private eventListenerHelper: EventListenerHelper;
   private eventListeners: EventListener[] = [];
 
-  constructor(protected elemRef: ElementRef, protected renderer: Renderer2) {
+  constructor(protected elemRef: ElementRef, protected renderer: Renderer2, protected changeDetectionRef: ChangeDetectorRef) {
     this.eventListenerHelper = new EventListenerHelper(this.renderer);
   }
 
@@ -102,6 +102,10 @@ export class SliderElementDirective {
 
    // Set element left/top position depending on whether slider is horizontal or vertical
   setPosition(pos: number): void {
+    if (this._position !== pos && !this.isRefDestroyed()) {
+      this.changeDetectionRef.markForCheck();
+    }
+
     this._position = pos;
     if (this._vertical) {
       this.bottom = Math.round(pos) + 'px';
@@ -122,6 +126,10 @@ export class SliderElementDirective {
 
   // Set element width/height depending on whether slider is horizontal or vertical
   setDimension(dim: number): void {
+    if (this._dimension !== dim && !this.isRefDestroyed()) {
+      this.changeDetectionRef.markForCheck();
+    }
+
     this._dimension = dim;
     if (this._vertical) {
       this.height = Math.round(dim) + 'px';
@@ -162,5 +170,9 @@ export class SliderElementDirective {
     }
 
     this.eventListeners = listenersToKeep;
+  }
+
+  private isRefDestroyed(): boolean {
+    return ValueHelper.isNullOrUndefined(this.changeDetectionRef) || this.changeDetectionRef['destroyed'];
   }
 }

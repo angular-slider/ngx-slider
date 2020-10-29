@@ -1,4 +1,4 @@
-import { Directive, ElementRef, Renderer2 } from '@angular/core';
+import { ChangeDetectorRef, Directive, ElementRef, Renderer2 } from '@angular/core';
 import { SliderElementDirective } from './slider-element.directive';
 import { ValueHelper } from './value-helper';
 
@@ -11,8 +11,8 @@ export class SliderLabelDirective extends SliderElementDirective {
     return this._value;
   }
 
-  constructor(elemRef: ElementRef, renderer: Renderer2) {
-    super(elemRef, renderer);
+  constructor(elemRef: ElementRef, renderer: Renderer2, changeDetectionRef: ChangeDetectorRef) {
+    super(elemRef, renderer, changeDetectionRef);
   }
 
   setValue(value: string): void {
