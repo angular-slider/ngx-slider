@@ -32,7 +32,7 @@
     "prepare:demo-app": "node scripts/generate-demo-app-snippets.js && node scripts/generate-demo-app-docs.js",
     "start": "npm run prepare && ng serve",
     "build": "npm run build:lib && npm run build:demo-app",
-    "build:lib": "npm run prepare && rimraf dist/ng5-slider dist/ng5-slider.tgz && ng-packagr -p src/ng5-slider/package.json && scss-bundle -e src/ng5-slider/lib/main.scss -d dist/ng5-slider/scss/ng5-slider.scss",
+    "build:lib": "npm run prepare && rimraf dist/ dist/ng5-slider.tgz && ng-packagr -p src/ng5-slider/package.json && scss-bundle -e src/ng5-slider/lib/main.scss -d dist/ng5-slider/scss/ng5-slider.scss && rimraf dist/ng5-slider.tgz",
     "build:demo-app": "npm run prepare && rimraf dist/demo-app && ng build --prod --base-href /ng5-slider/",
     "publish-gh": "scripts/publish-gh-pages.sh",
     "test": "npm run prepare && ng test",
