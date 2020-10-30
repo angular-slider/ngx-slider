@@ -1,3 +1,11 @@
+# 1.2.5
+ * fix rxjs imports to work correctly with Angular 9+ (issues #181 and #197)
+ * fix ngOnDestroy throwing an exception (issue #215)
+ * fix "Attempt to use a destroyed view" error on Angular 8+ (issue #140)
+ * allow slider to be used with OnPush change detection strategy (issue #158)
+ * remove unnecessary packages from package.json (issue #113)
+ * update some outdated dependencies as reported by dependabot
+
 # 1.2.4
  * fix bug with setting vertical state on slider initialisation
 
