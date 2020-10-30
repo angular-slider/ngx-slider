@@ -97,6 +97,16 @@ An overview of how to apply your own style to the slider is described in [STYLIN
 
 As of v1.2.0 the slider features CSS animations of slider movement. If you prefer the previous behaviour, without animations, you can set the flag `animate: false` in your slider options.
 
+## Keyboard Shortcuts
+
+In addition to mouse/touch events, the slider can also be controlled through keyboard. The available shortcuts are:
+ - right/up arrow - increase by single step,
+ - left/down arrow - decreate by single step,
+ - page up - increase by 10% of slider range,
+ - page down - decrease by 10% of slider range,
+ - home - move to minimum value,
+ - end - move to maximum value.
+
 ## Tooltips
 
 The slider allows for customising how to implement tooltips. See [TOOLTIPS.md](TOOLTIPS.md) for more information.
