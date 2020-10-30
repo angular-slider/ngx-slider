@@ -101,7 +101,7 @@ As of v1.2.0 the slider features CSS animations of slider movement. If you prefe
 
 In addition to mouse/touch events, the slider can also be controlled through keyboard. The available shortcuts are:
  - right/up arrow - increase by single step,
- - left/down arrow - decreate by single step,
+ - left/down arrow - decrease by single step,
  - page up - increase by 10% of slider range,
  - page down - decrease by 10% of slider range,
  - home - move to minimum value,
