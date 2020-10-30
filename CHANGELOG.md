@@ -1,3 +1,8 @@
+# 1.2.6
+ * re-publish with correct README.md, LICENSE.md and scss files
+ * fix build script to avoid publishing mistakes in the future
+ * document available keyboard shortcuts in README.md (issue #218)
+
 # 1.2.5
  * fix rxjs imports to work correctly with Angular 9+ (issues #181 and #197)
  * fix ngOnDestroy throwing an exception (issue #215)
