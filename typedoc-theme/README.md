@@ -11,7 +11,7 @@ import { Options } from '@angular-slider/ngx-slider';
 
 You can see that Typedoc organises the files into global "modules", but it is only an artefact of code organisation. All declarations described here are available directly by importing them from `ngx-slider`.
 
-**NOTE:** If you are looking for old documentation of v1.2.x releases under the old name of ng5-slider, they are archived in the old branch: *TODO: add link here*.
+**NOTE:** If you are looking for old documentation of v1.2.x releases under the old name of ng5-slider, they are [archived in the Github repository](https://raw.githubusercontent.com/angular-slider/ngx-slider/master/archive/ng5-slider-v1.2.6-site-archive.zip).
 
 ## Slider directive
 

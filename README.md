@@ -6,7 +6,7 @@ Website: https://angular-slider.github.io/ngx-slider/
 
 Self-contained, mobile friendly slider component for Angular 6+ based on [angularjs-slider](https://github.com/angular-slider/angularjs-slider).
 
-**NOTE:** This component used to be known as ng5-slider before the v2.0.0 release. Starting with v2.0.0, it has been re-branded as ngx-slider, targeting Angular 6+. If you have been using the previous version in your app, please follow the instructions in [UPGRADING.md](UPGRADING.md). If you are sticking with the old version, it will continue to be available in the v1.2.x release line under the old name of ng5-slider.
+**NOTE:** This component used to be known as ng5-slider before the v2.0.0 release. Starting with v2.0.0, it has been re-branded as ngx-slider, targeting Angular 6+. If you have been using the previous version in your app, please follow the instructions in [UPGRADING.md](UPGRADING.md). If you are sticking with the old version, it will continue to be available in the v1.2.x release line under the old name of ng5-slider. If you are looking for documentation for the old version, it is available as [archived copy on Github](https://raw.githubusercontent.com/angular-slider/ngx-slider/master/archive/ng5-slider-v1.2.6-site-archive.zip).
 
 ## Demos
 
