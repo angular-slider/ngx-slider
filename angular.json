@@ -1,0 +1,129 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "ngx-slider-demo-app": {
+      "root": "",
+      "sourceRoot": "src/demo-app",
+      "projectType": "application",
+      "prefix": "app",
+      "schematics": {},
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/demo-app",
+            "index": "src/demo-app/index.html",
+            "main": "src/demo-app/main.ts",
+            "polyfills": "src/demo-app/polyfills.ts",
+            "tsConfig": "src/demo-app/tsconfig.app.json",
+            "assets": [
+              "src/demo-app/favicon.ico",
+              "src/demo-app/assets"
+            ],
+            "styles": [
+              "src/demo-app/styles.scss",
+              "src/demo-app/docs-styles.scss"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "src/demo-app/environments/environment.ts",
+                  "with": "src/demo-app/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "ngx-slider-demo-app:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "ngx-slider-demo-app:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "ngx-slider-demo-app:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "src/demo-app/test.ts",
+            "polyfills": "src/demo-app/polyfills.ts",
+            "tsConfig": "src/demo-app/tsconfig.spec.json",
+            "karmaConfig": "src/demo-app/karma.conf.js",
+            "styles": [
+              "src/demo-app/styles.scss",
+              "src/demo-app/docs-styles.scss"
+            ],
+            "scripts": [],
+            "assets": [
+              "src/demo-app/favicon.ico",
+              "src/demo-app/assets"
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "src/demo-app/tsconfig.app.json",
+              "src/demo-app/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "ngx-slider-demo-app-e2e": {
+      "root": "e2e/",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "e2e/protractor.conf.js",
+            "devServerTarget": "ngx-slider-demo-app:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "ngx-slider-demo-app:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": "e2e/tsconfig.e2e.json",
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "defaultProject": "ngx-slider-demo-app"
+}
