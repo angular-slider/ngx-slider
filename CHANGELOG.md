@@ -1,3 +1,8 @@
+# 2.0.0
+ * update to use rxjs >=6, targeting Angular >=6
+ * re-brand to ngx-slider
+ * publish under new NPM namespace @angular-slider/npx-slider
+
 # 1.2.6
  * re-publish with correct README.md, LICENSE.md and scss files
  * fix build script to avoid publishing mistakes in the future
