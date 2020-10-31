@@ -1,5 +1,5 @@
 import { TicksSliderDemoPage } from './ticks-slider-demo.po';
-import { approximateGeometryMatchers } from '../utils';
+import { approximateGeometryMatchers, expect } from '../utils';
 
 describe('custom ticks slider', () => {
   let page: TicksSliderDemoPage;

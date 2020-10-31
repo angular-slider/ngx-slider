@@ -1,5 +1,5 @@
 import { BaseRangeSliderDemoPage } from '../base-range-slider-demo.po';
-import { approximateGeometryMatchers } from '../utils';
+import { approximateGeometryMatchers, expect } from '../utils';
 
 describe('draggable range only slider', () => {
   let page: BaseRangeSliderDemoPage;

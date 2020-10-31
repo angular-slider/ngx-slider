@@ -1,5 +1,5 @@
 import { ReactiveFormSimpleSliderDemoPage } from './reactive-form-simple-slider-demo.po';
-import { approximateGeometryMatchers } from '../utils';
+import { approximateGeometryMatchers, expect } from '../utils';
 
 describe('reactive form simple slider', () => {
   let page: ReactiveFormSimpleSliderDemoPage;

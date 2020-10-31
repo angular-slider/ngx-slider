@@ -1,5 +1,5 @@
 import { ReactiveFormRangeSliderDemoPage } from './reactive-form-range-slider-demo.po';
-import { approximateGeometryMatchers } from '../utils';
+import { approximateGeometryMatchers, expect } from '../utils';
 
 describe('reactive form range slider', () => {
   let page: ReactiveFormRangeSliderDemoPage;

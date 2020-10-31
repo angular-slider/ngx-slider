@@ -1,5 +1,5 @@
 import { VerticalSlidersDemoPage } from './vertical-sliders-demo.po';
-import { approximateGeometryMatchers } from '../utils';
+import { approximateGeometryMatchers, expect } from '../utils';
 import { Key } from 'protractor';
 
 /* tslint:disable:max-line-length */

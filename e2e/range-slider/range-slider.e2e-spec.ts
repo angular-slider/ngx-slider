@@ -1,5 +1,5 @@
 import { RangeSliderDemoPage } from './range-slider-demo.po';
-import { approximateGeometryMatchers } from '../utils';
+import { approximateGeometryMatchers, expect } from '../utils';
 import { Key, browser } from 'protractor';
 
 describe('range slider', () => {

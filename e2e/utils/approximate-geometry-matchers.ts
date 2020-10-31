@@ -58,7 +58,7 @@ class ApproximateSizeMatcher extends BaseMatcher {
   }
 }
 
-export let approximateGeometryMatchers: CustomMatcherFactories = {
+export const approximateGeometryMatchers: CustomMatcherFactories = {
   toBeApproximateLocation(util: MatchersUtil, customEqualityTesters: CustomEqualityTester[]): CustomMatcher {
     const matcher: ApproximateLocationMatcher = new ApproximateLocationMatcher(util, customEqualityTesters);
     return {
@@ -77,3 +77,16 @@ export let approximateGeometryMatchers: CustomMatcherFactories = {
     };
   }
 };
+
+// HACK: typescript compiler as invoked in e2e tests is getting quite confused about types,
+// even if it is fed the right type declarations in .d.ts file.
+// As a workaround, this module re-exports the global expect object, extending it with interface defining our custom matchers
+// It may be stupid, but it hey, it works
+export interface ApproximateGeometryMatchersInterface<T> extends jasmine.Matchers<T> {
+  toBeApproximateLocation(expected: any, expectationFailOutput?: any): boolean;
+  toBeApproximateSize(expected: any, expectationFailOutput?: any): boolean;
+}
+
+const _global: any = <any>(typeof window === 'undefined' ? global : window);
+export const expect: (actual: any) => ApproximateGeometryMatchersInterface<any> = <any>_global.expect;
+

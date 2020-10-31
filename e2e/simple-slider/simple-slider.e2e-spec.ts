@@ -1,5 +1,5 @@
 import { SimpleSliderDemoPage } from './simple-slider-demo.po';
-import { approximateGeometryMatchers } from '../utils';
+import { approximateGeometryMatchers, expect } from '../utils';
 import { browser, Key } from 'protractor';
 
 describe('simple slider', () => {
