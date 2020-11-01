@@ -308,6 +308,8 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   private eventListenerHelper: EventListenerHelper = null;
   private onMoveEventListener: EventListener = null;
   private onEndEventListener: EventListener = null;
+  // Whether currently moving the slider (between onStart() and onEnd())
+  private moving: boolean = false;
 
   // Observer for slider element resize events
   private resizeObserver: ResizeObserver = null;
@@ -1740,6 +1742,8 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       event.preventDefault();
     }
 
+    this.moving = false;
+
     // We have to do this in case the HTML where the sliders are on
     // have been animated into view.
     this.calculateViewDimensions();
@@ -1824,6 +1828,14 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       }
     }
 
+    if (this.viewOptions.animate && !this.viewOptions.animateOnMove) {
+      if (this.moving) {
+        this.sliderElementAnimateClass = false;
+      }
+    }
+
+    this.moving = true;
+
     const newPos: number = !ValueHelper.isNullOrUndefined(touchForThisSlider)
       ? this.getEventPosition(event, touchForThisSlider.identifier)
       : this.getEventPosition(event);
@@ -1854,6 +1866,11 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       if (changedTouches[0].identifier !== this.touchId) {
         return;
       }
+    }
+
+    this.moving = false;
+    if (this.viewOptions.animate) {
+      this.sliderElementAnimateClass = true;
     }
 
     this.touchId = null;
@@ -2069,6 +2086,14 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
   private onDragMove(event?: MouseEvent|TouchEvent): void {
     const newPos: number = this.getEventPosition(event);
+
+    if (this.viewOptions.animate && !this.viewOptions.animateOnMove) {
+      if (this.moving) {
+        this.sliderElementAnimateClass = false;
+      }
+    }
+
+    this.moving = true;
 
     let ceilLimit: number,
         floorLimit: number,

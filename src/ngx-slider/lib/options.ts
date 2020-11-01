@@ -302,4 +302,7 @@ export class Options {
 
   /** Enable/disable CSS animations */
   animate?: boolean = true;
+
+  /** Enable/disable CSS animations while moving the slider */
+  animateOnMove?: boolean = false;
 }
