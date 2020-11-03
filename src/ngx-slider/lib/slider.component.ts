@@ -678,8 +678,8 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
         normalisedInput.value = this.viewOptions.stepsArray[valueIndex].value;
 
         if (this.range) {
-          const valueIndex: number = ValueHelper.findStepIndex(normalisedInput.highValue, this.viewOptions.stepsArray);
-          normalisedInput.highValue = this.viewOptions.stepsArray[valueIndex].value;
+          const highValueIndex: number = ValueHelper.findStepIndex(normalisedInput.highValue, this.viewOptions.stepsArray);
+          normalisedInput.highValue = this.viewOptions.stepsArray[highValueIndex].value;
         }
       }
 
@@ -1103,7 +1103,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       ticksArray.reverse();
     }
 
-    const tickValueStep = !ValueHelper.isNullOrUndefined(this.viewOptions.tickValueStep) ? this.viewOptions.tickValueStep :
+    const tickValueStep: number = !ValueHelper.isNullOrUndefined(this.viewOptions.tickValueStep) ? this.viewOptions.tickValueStep :
         (!ValueHelper.isNullOrUndefined(this.viewOptions.tickStep) ? this.viewOptions.tickStep : this.viewOptions.step);
 
     const newTicks: Tick[] = ticksArray.map((value: number): Tick => {
@@ -1171,8 +1171,11 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     const step: number = (!ValueHelper.isNullOrUndefined(this.viewOptions.tickStep)) ? this.viewOptions.tickStep : this.viewOptions.step;
     const ticksArray: number[] = [];
 
-    const numberOfValues: number = 1 + MathHelper.roundToPrecisionLimit(Math.abs(this.viewOptions.ceil - this.viewOptions.floor) / step, this.viewOptions.precisionLimit);
-    for (let index = 0; index < numberOfValues; ++index) {
+    const numberOfValues: number = 1 + MathHelper.roundToPrecisionLimit(
+      Math.abs(this.viewOptions.ceil - this.viewOptions.floor) / step,
+      this.viewOptions.precisionLimit
+    );
+    for (let index: number = 0; index < numberOfValues; ++index) {
       ticksArray.push(MathHelper.roundToPrecisionLimit(this.viewOptions.floor + step * index, this.viewOptions.precisionLimit));
     }
 

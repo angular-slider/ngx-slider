@@ -5,7 +5,7 @@ export class MathHelper {
     return +( value.toPrecision(precisionLimit) );
   }
 
-  static isModuloWithinPrecisionLimit(value: number, modulo: number, precisionLimit: number) {
+  static isModuloWithinPrecisionLimit(value: number, modulo: number, precisionLimit: number): boolean {
     const limit: number = Math.pow(10, -precisionLimit);
     return Math.abs(value % modulo) <= limit || Math.abs(Math.abs(value % modulo) - modulo) <= limit;
   }
