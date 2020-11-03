@@ -670,6 +670,22 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     normalisedInput.value = input.value;
     normalisedInput.highValue = input.highValue;
 
+    if (!ValueHelper.isNullOrUndefined(this.viewOptions.stepsArray)) {
+      // When using steps array, only round to nearest step in the array
+      // No other enforcement can be done, as the step array may be out of order, and that is perfectly fine
+      if (this.viewOptions.enforceStepsArray) {
+        const valueIndex: number = ValueHelper.findStepIndex(normalisedInput.value, this.viewOptions.stepsArray);
+        normalisedInput.value = this.viewOptions.stepsArray[valueIndex].value;
+
+        if (this.range) {
+          const valueIndex: number = ValueHelper.findStepIndex(normalisedInput.highValue, this.viewOptions.stepsArray);
+          normalisedInput.highValue = this.viewOptions.stepsArray[valueIndex].value;
+        }
+      }
+
+      return normalisedInput;
+    }
+
     if (this.viewOptions.enforceStep) {
       normalisedInput.value = this.roundStep(normalisedInput.value);
       if (this.range) {
@@ -677,27 +693,24 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       }
     }
 
-    // Don't attempt to normalise further when using steps array (steps may be out of order and that is perfectly fine)
-    if (!ValueHelper.isNullOrUndefined(this.viewOptions.stepsArray) || !this.viewOptions.enforceRange) {
-      return normalisedInput;
-    }
+    if (this.viewOptions.enforceRange) {
+      normalisedInput.value = MathHelper.clampToRange(normalisedInput.value, this.viewOptions.floor, this.viewOptions.ceil);
 
-    normalisedInput.value = MathHelper.clampToRange(normalisedInput.value, this.viewOptions.floor, this.viewOptions.ceil);
+      if (this.range) {
+        normalisedInput.highValue = MathHelper.clampToRange(normalisedInput.highValue, this.viewOptions.floor, this.viewOptions.ceil);
+      }
 
-    if (this.range) {
-      normalisedInput.highValue = MathHelper.clampToRange(normalisedInput.highValue, this.viewOptions.floor, this.viewOptions.ceil);
-    }
-
-    // Make sure that range slider invariant (value <= highValue) is always satisfied
-    if (this.range && input.value > input.highValue) {
-      // We know that both values are now clamped correctly, they may just be in the wrong order
-      // So the easy solution is to swap them... except swapping is sometimes disabled in options, so we make the two values the same
-      if (this.viewOptions.noSwitching) {
-        normalisedInput.value = normalisedInput.highValue;
-      } else {
-        const tempValue: number = input.value;
-        normalisedInput.value = input.highValue;
-        normalisedInput.highValue = tempValue;
+      // Make sure that range slider invariant (value <= highValue) is always satisfied
+      if (this.range && input.value > input.highValue) {
+        // We know that both values are now clamped correctly, they may just be in the wrong order
+        // So the easy solution is to swap them... except swapping is sometimes disabled in options, so we make the two values the same
+        if (this.viewOptions.noSwitching) {
+          normalisedInput.value = normalisedInput.highValue;
+        } else {
+          const tempValue: number = input.value;
+          normalisedInput.value = input.highValue;
+          normalisedInput.highValue = tempValue;
+        }
       }
     }
 

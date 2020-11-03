@@ -226,15 +226,20 @@ export class Options {
     so that the slider is rendered properly and the events are handled correctly. */
   scale?: number = 1;
 
-  /** Set to true to force the value to be rounded to the step, even when modified from the outside.
+  /** Set to true to force the value(s) to be rounded to the step, even when modified from the outside.
     When set to false, if the model values are modified from outside the slider, they are not rounded
     and can be between two steps. */
   enforceStep?: boolean = true;
 
-  /** Set to true to force the value to be normalised to allowed range (floor to ceil), even when modified from the outside.
+  /** Set to true to force the value(s) to be normalised to allowed range (floor to ceil), even when modified from the outside.
     When set to false, if the model values are modified from outside the slider, and they are outside allowed range,
     the slider may be rendered incorrectly. However, setting this to false may be useful if you want to perform custom normalisation. */
   enforceRange?: boolean = true;
+
+  /** Set to true to force the value(s) to be rounded to the nearest step value, even when modified from the outside.
+    When set to false, if the model values are modified from outside the slider, and they are outside allowed range,
+    the slider may be rendered incorrectly. However, setting this to false may be useful if you want to perform custom normalisation. */
+  enforceStepsArray?: boolean = true;
 
   /** Set to true to prevent to user from switching the min and max handles. Applies to range slider only. */
   noSwitching?: boolean = false;
