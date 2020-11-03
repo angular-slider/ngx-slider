@@ -1117,7 +1117,8 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
         tick.tooltip = this.viewOptions.ticksTooltip(value);
         tick.tooltipPlacement = this.viewOptions.vertical ? 'right' : 'top';
       }
-      if (this.viewOptions.showTicksValues && (value % this.viewOptions.tickValueStep === 0)) {
+      if (this.viewOptions.showTicksValues && !ValueHelper.isNullOrUndefined(this.viewOptions.tickValueStep) &&
+          MathHelper.isModuloWithinPrecisionLimit(value, this.viewOptions.tickValueStep, this.viewOptions.precisionLimit)) {
         tick.value = this.getDisplayValue(value, LabelType.TickValue);
         if (!ValueHelper.isNullOrUndefined(this.viewOptions.ticksValuesTooltip)) {
           tick.valueTooltip = this.viewOptions.ticksValuesTooltip(value);
@@ -1153,9 +1154,12 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   private getTicksArray(): number[] {
     const step: number = (!ValueHelper.isNullOrUndefined(this.viewOptions.tickStep)) ? this.viewOptions.tickStep : this.viewOptions.step;
     const ticksArray: number[] = [];
-    for (let value: number = this.viewOptions.floor; value <= this.viewOptions.ceil; value += step) {
-      ticksArray.push(value);
+
+    const numberOfValues: number = 1 + MathHelper.roundToPrecisionLimit(Math.abs(this.viewOptions.ceil - this.viewOptions.floor) / step, this.viewOptions.precisionLimit);
+    for (let index = 0; index < numberOfValues; ++index) {
+      ticksArray.push(MathHelper.roundToPrecisionLimit(this.viewOptions.floor + step * index, this.viewOptions.precisionLimit));
     }
+
     return ticksArray;
   }
 

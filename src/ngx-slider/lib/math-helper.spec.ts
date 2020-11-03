@@ -18,6 +18,24 @@ describe('MathHelper', () => {
     });
   });
 
+  describe('isModuloWithinPrecisionLimit', () => {
+    it('works for decimal modulo', () => {
+      expect(2 % 0.1 === 0).toBeFalsy();
+      expect(MathHelper.isModuloWithinPrecisionLimit(2, 0.1, 10)).toBeTruthy();
+
+      expect(MathHelper.isModuloWithinPrecisionLimit(2 - 1e-12, 0.1, 10)).toBeTruthy();
+      expect(MathHelper.isModuloWithinPrecisionLimit(2 + 1e-12, 0.1, 10)).toBeTruthy();
+
+      expect(MathHelper.isModuloWithinPrecisionLimit(2, 0.1 - 1e-12, 10)).toBeTruthy();
+      expect(MathHelper.isModuloWithinPrecisionLimit(2, 0.1 + 1e-12, 10)).toBeTruthy();
+
+      expect(MathHelper.isModuloWithinPrecisionLimit(2 + 1e-9, 0.1, 10)).toBeFalsy();
+      expect(MathHelper.isModuloWithinPrecisionLimit(2 - 1e-9, 0.1, 10)).toBeFalsy();
+      expect(MathHelper.isModuloWithinPrecisionLimit(2, 0.1 - 1e-9, 10)).toBeFalsy();
+      expect(MathHelper.isModuloWithinPrecisionLimit(2, 0.1 + 1e-9, 10)).toBeFalsy();
+    });
+  });
+
   describe('clampToRange', () => {
     it('returns original value if in range', () => {
       expect(MathHelper.clampToRange(40, 0, 100)).toEqual(40);
