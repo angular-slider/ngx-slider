@@ -1090,6 +1090,9 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       ticksArray.reverse();
     }
 
+    const tickValueStep = !ValueHelper.isNullOrUndefined(this.viewOptions.tickValueStep) ? this.viewOptions.tickValueStep :
+        (!ValueHelper.isNullOrUndefined(this.viewOptions.tickStep) ? this.viewOptions.tickStep : this.viewOptions.step);
+
     const newTicks: Tick[] = ticksArray.map((value: number): Tick => {
       let position: number = this.valueToPosition(value);
 
@@ -1117,8 +1120,8 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
         tick.tooltip = this.viewOptions.ticksTooltip(value);
         tick.tooltipPlacement = this.viewOptions.vertical ? 'right' : 'top';
       }
-      if (this.viewOptions.showTicksValues && !ValueHelper.isNullOrUndefined(this.viewOptions.tickValueStep) &&
-          MathHelper.isModuloWithinPrecisionLimit(value, this.viewOptions.tickValueStep, this.viewOptions.precisionLimit)) {
+      if (this.viewOptions.showTicksValues && !ValueHelper.isNullOrUndefined(tickValueStep) &&
+          MathHelper.isModuloWithinPrecisionLimit(value, tickValueStep, this.viewOptions.precisionLimit)) {
         tick.value = this.getDisplayValue(value, LabelType.TickValue);
         if (!ValueHelper.isNullOrUndefined(this.viewOptions.ticksValuesTooltip)) {
           tick.valueTooltip = this.viewOptions.ticksValuesTooltip(value);

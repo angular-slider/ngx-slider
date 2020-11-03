@@ -171,8 +171,9 @@ export class Options {
     Not used when ticksArray is specified. */
   tickStep?: number = null;
 
-  /* The step between displaying each tick step value. */
-  tickValueStep?: number = 1;
+  /* The step between displaying each tick step value.
+    If not set, then tickStep or step is used, depending on which one is set. */
+  tickValueStep?: number = null;
 
   /** Use to display ticks at specific positions.
     The array contains the index of the ticks that should be displayed.
