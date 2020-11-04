@@ -744,7 +744,14 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     const previousInputEventsInterval: number = this.viewOptions.inputEventsInterval;
     const previousOutputEventsInterval: number = this.viewOptions.outputEventsInterval;
 
+    const previousOptionsInfluencingEventBindings: boolean[] = this.getOptionsInfluencingEventBindings(this.viewOptions);
+
     this.applyOptions();
+
+    const newOptionsInfluencingEventBindings: boolean[] = this.getOptionsInfluencingEventBindings(this.viewOptions);
+    // Avoid re-binding events in case nothing changes that can influence it
+    // It makes it possible to change options while dragging the slider
+    const rebindEvents: boolean = !ValueHelper.areArraysEqual(previousOptionsInfluencingEventBindings, newOptionsInfluencingEventBindings);
 
     if (previousInputEventsInterval !== this.viewOptions.inputEventsInterval) {
       this.unsubscribeInputModelChangeSubject();
@@ -766,7 +773,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       this.viewHighValue = null;
     }
 
-    this.resetSlider();
+    this.resetSlider(rebindEvents);
   }
 
   // Read the user options and apply them to the slider model
@@ -852,13 +859,15 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   }
 
   // Resets slider
-  private resetSlider(): void {
+  private resetSlider(rebindEvents: boolean = true): void {
     this.manageElementsStyle();
     this.addAccessibility();
     this.updateCeilLabel();
     this.updateFloorLabel();
-    this.unbindEvents();
-    this.manageEventsBindings();
+    if (rebindEvents) {
+      this.unbindEvents();
+      this.manageEventsBindings();
+    }
     this.updateDisabledState();
     this.calculateViewDimensions();
     this.refocusPointerIfNeeded();
@@ -1733,6 +1742,15 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
         this.maxHandleElement.on('focus', (): void => this.onPointerFocus(PointerType.Max));
       }
     }
+  }
+
+  private getOptionsInfluencingEventBindings(options: Options): boolean[] {
+    return [
+      options.draggableRange,
+      options.draggableRangeOnly,
+      options.onlyBindHandles,
+      options.keyboardSupport
+    ];
   }
 
   // Unbind mouse and touch events to slider handles

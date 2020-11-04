@@ -8,6 +8,20 @@ export class ValueHelper {
     return value === undefined || value === null;
   }
 
+  static areArraysEqual(array1: any[], array2: any[]): boolean {
+    if (array1.length !== array2.length) {
+      return false;
+    }
+
+    for (let i: number = 0; i < array1.length; ++i) {
+      if (array1[i] !== array2[i]) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
   static linearValueToPosition(val: number, minVal: number, maxVal: number): number {
     const range: number = maxVal - minVal;
     return (val - minVal) / range;
