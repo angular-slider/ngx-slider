@@ -1,3 +1,6 @@
+# 2.0.2
+ * fix Angular version reference in NPM package (issue #219)
+
 # 2.0.1
  * disable animation on moving slider by default (issue #114)
  * fix dragging slider while setting options dynamically (#111)
