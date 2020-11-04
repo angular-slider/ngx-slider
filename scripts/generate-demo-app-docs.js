@@ -29,7 +29,7 @@ function generateTypedocDocs(typedocDocsDir) {
 
   const themeDir = path.resolve(__dirname, '../typedoc-theme');
 
-  // HACK: When Typedoc finda a README.md file, it uses it to generate content for the index page of documentation
+  // HACK: When Typedoc finds a README.md file, it uses it to generate content for the index page of documentation
   // This is not very helpful, as it repeats the same stuff that's already shown on Github and NPM
   // So instead, replace the README.md with our own file
   const apiDocsReadmeFile = path.resolve(__dirname, '../typedoc-theme/README.md');
