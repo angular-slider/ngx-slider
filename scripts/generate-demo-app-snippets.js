@@ -40,7 +40,7 @@ function generateTemplate(templateFile, snippetsDir) {
 
   const outputHtmlFileContent = `
   <h2 class="snippet-title" id="${sectionIdTemplateFileContent}">${titleTemplateFileContent}
-    <a routerLink="./" fragment="${sectionIdTemplateFileContent}"><svg class="bi section-link" width="1em" height="1em" fill="currentColor"><use xlink:href="/assets/bootstrap-icons.svg#link"/></svg></a>
+    <a routerLink="./" fragment="${sectionIdTemplateFileContent}"><svg class="bi section-link" width="1em" height="1em" fill="currentColor"><use xlink:href="assets/bootstrap-icons.svg#link"/></svg></a>
   </h2>
 <div class="snippet-card card">
   <div class="card-body">
