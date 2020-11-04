@@ -16,6 +16,7 @@ export * from './dynamic-color-selection-bar-slider/dynamic-color-selection-bar-
 export * from './dynamic-options-slider/dynamic-options-slider.component';
 export * from './dynamic-pointer-color-slider/dynamic-pointer-color-slider.component';
 export * from './dynamic-tick-color-slider/dynamic-tick-color-slider.component';
+export * from './dynamically-created-sliders/dynamically-created-sliders.component';
 export * from './floating-point-slider/floating-point-slider.component';
 export * from './intermediate-ticks-slider/intermediate-ticks-slider.component';
 export * from './intermediate-ticks-values-range-slider/intermediate-ticks-values-range-slider.component';
