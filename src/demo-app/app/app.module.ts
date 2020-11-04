@@ -62,7 +62,7 @@ import {
   UserEventsSliderComponent,
   VerticalSlidersComponent,
 } from './snippets';
-import { routerConfig } from './app-router.config';
+import { routerConfig, routerOptions } from './app-router.config';
 
 @NgModule({
   declarations: [
@@ -124,7 +124,7 @@ import { routerConfig } from './app-router.config';
     FormsModule,
     ReactiveFormsModule,
     DocsModule,
-    RouterModule.forRoot(routerConfig),
+    RouterModule.forRoot(routerConfig, routerOptions),
     NgbModule.forRoot(),
     NgxSliderModule
   ],

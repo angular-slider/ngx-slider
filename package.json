@@ -24,7 +24,7 @@
   "scripts": {
     "prepare": "npm run prepare:lib && npm run prepare:demo-app",
     "prepare:lib": "node scripts/generate-lib-files.js",
-    "prepare:demo-app": "node scripts/generate-demo-app-snippets.js && node scripts/generate-demo-app-docs.js",
+    "prepare:demo-app": "node scripts/generate-demo-app-snippets.js && node scripts/generate-demo-app-docs.js && node scripts/copy-bootstrap-icons.js",
     "start": "npm run prepare && ng serve",
     "build": "npm run build:lib && npm run build:demo-app",
     "build:lib": "npm run prepare && rimraf dist/ngx-slider && ng-packagr -p src/ngx-slider/package.json && scss-bundle -e src/ngx-slider/lib/main.scss -d dist/ngx-slider/scss/ngx-slider.scss",
@@ -47,6 +47,7 @@
     "@angular/platform-browser-dynamic": "^6.1.0",
     "@angular/router": "^6.1.0",
     "@ng-bootstrap/ng-bootstrap": "^2.0.0",
+    "bootstrap-icons": "^1.1.0",
     "core-js": "^2.5.4",
     "detect-passive-events": "^1.0.4",
     "rxjs": "^6.5.2",

@@ -1,4 +1,4 @@
-import { Routes } from '@angular/router';
+import { ExtraOptions, Routes } from '@angular/router';
 
 import { DemosComponent } from './demos.component';
 import { HomeComponent } from './home.component';
@@ -15,7 +15,7 @@ import {
   VerticalSlidersComponent,
 } from './snippets';
 
-export let routerConfig: Routes = [
+export const routerConfig: Routes = [
   { path: '', pathMatch: 'full', component: HomeComponent },
   { path: 'home', component: HomeComponent },
   { path: 'demos', component: DemosComponent },
@@ -35,3 +35,8 @@ export let routerConfig: Routes = [
 
   { path: '**', pathMatch: 'full', redirectTo: ''}
 ];
+
+export const routerOptions: ExtraOptions = {
+  useHash: false,
+  anchorScrolling: 'enabled'
+};
