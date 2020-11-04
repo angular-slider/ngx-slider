@@ -1,3 +1,10 @@
+# 2.0.1
+ * disable animation on moving slider by default (issue #114)
+ * fix dragging slider while setting options dynamically (#111)
+ * fix displaying ticks if using decimal step values and make tickValueStep option more intuitive to use (issue #128)
+ * fix input normalisation when using stepsArray (issue #137)
+ * always set aria orientation for min slider pointer (issue #163)
+
 # 2.0.0
  * update to use rxjs >=6, targeting Angular >=6
  * re-brand to ngx-slider
