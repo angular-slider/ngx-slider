@@ -2,4 +2,4 @@
 app/docs/
 
 # boostrap-icons.svg is copied from node_nodules/ package
-app/assets/bootstrap-icons.svg
+assets/bootstrap-icons.svg
