@@ -1746,6 +1746,8 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
   private getOptionsInfluencingEventBindings(options: Options): boolean[] {
     return [
+      options.disabled,
+      options.readOnly,
       options.draggableRange,
       options.draggableRangeOnly,
       options.onlyBindHandles,
