@@ -1183,10 +1183,10 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     const step: number = (!ValueHelper.isNullOrUndefined(this.viewOptions.tickStep)) ? this.viewOptions.tickStep : this.viewOptions.step;
     const ticksArray: number[] = [];
 
-    const numberOfValues: number = 1 + MathHelper.roundToPrecisionLimit(
+    const numberOfValues: number = 1 + Math.floor(MathHelper.roundToPrecisionLimit(
       Math.abs(this.viewOptions.ceil - this.viewOptions.floor) / step,
       this.viewOptions.precisionLimit
-    );
+    ));
     for (let index: number = 0; index < numberOfValues; ++index) {
       ticksArray.push(MathHelper.roundToPrecisionLimit(this.viewOptions.floor + step * index, this.viewOptions.precisionLimit));
     }
