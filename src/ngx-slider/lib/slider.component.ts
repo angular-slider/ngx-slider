@@ -829,11 +829,6 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
         return String(modelValue);
       };
     }
-
-    this.viewOptions.getLegend = (index: number): string => {
-      const step: CustomStepDefinition = this.viewOptions.stepsArray[index];
-      return step.legend;
-    };
   }
 
   private applyFloorCeilOptions(): void {
@@ -1152,12 +1147,20 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
             : 'top';
         }
       }
-      if (!ValueHelper.isNullOrUndefined(this.viewOptions.getLegend)) {
-        const legend: string = this.viewOptions.getLegend(value);
-        if (!ValueHelper.isNullOrUndefined(legend)) {
-          tick.legend = legend;
+
+      let legend: string = null;
+      if (!ValueHelper.isNullOrUndefined(this.viewOptions.stepsArray)) {
+        const step: CustomStepDefinition = this.viewOptions.stepsArray[value];
+        if (!ValueHelper.isNullOrUndefined(step)) {
+          legend = step.legend;
         }
+      } else if (!ValueHelper.isNullOrUndefined(this.viewOptions.getLegend)) {
+        legend = this.viewOptions.getLegend(value);
       }
+      if (!ValueHelper.isNullOrUndefined(legend)) {
+        tick.legend = legend;
+      }
+
       return tick;
     });
 
