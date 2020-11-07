@@ -282,6 +282,8 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   public sliderElementVerticalClass: boolean = false;
   @HostBinding('class.animate')
   public sliderElementAnimateClass: boolean = false;
+  @HostBinding('class.with-legend')
+  public sliderElementWithLegendClass: boolean = false;
   @HostBinding('attr.disabled')
   public sliderElementDisabledAttr: string = null;
 
@@ -1095,6 +1097,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   // Update the ticks position
   private updateTicksScale(): void {
     if (!this.viewOptions.showTicks) {
+      setTimeout(() => { this.sliderElementWithLegendClass = false; });
       return;
     }
 
@@ -1109,6 +1112,8 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
     const tickValueStep: number = !ValueHelper.isNullOrUndefined(this.viewOptions.tickValueStep) ? this.viewOptions.tickValueStep :
         (!ValueHelper.isNullOrUndefined(this.viewOptions.tickStep) ? this.viewOptions.tickStep : this.viewOptions.step);
+
+    let hasAtLeastOneLegend: boolean = false;
 
     const newTicks: Tick[] = ticksArray.map((value: number): Tick => {
       let position: number = this.valueToPosition(value);
@@ -1159,10 +1164,13 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       }
       if (!ValueHelper.isNullOrUndefined(legend)) {
         tick.legend = legend;
+        hasAtLeastOneLegend = true;
       }
 
       return tick;
     });
+
+    setTimeout(() => { this.sliderElementWithLegendClass = hasAtLeastOneLegend; });
 
     // We should avoid re-creating the ticks array if possible
     // This both improves performance and makes CSS animations work correctly
