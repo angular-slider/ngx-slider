@@ -1,3 +1,8 @@
+# 2.0.3
+ * apply with-legend class to the slider element (issue #170)
+ * fix counting number of ticks to create with non-integer divisions and access legend from stepArray in safe way (issue #222)
+ * fix changing disabled/read-only slider dynamically (issue #220)
+
 # 2.0.2
  * fix Angular version reference in NPM package (issue #219)
 
