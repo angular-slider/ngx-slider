@@ -358,6 +358,7 @@ export class SliderComponent
     // We need to run these two things first, before the rest of the init in ngAfterViewInit(),
     // because these two settings are set through @HostBinding and Angular change detection
     // mechanism doesn't like them changing in ngAfterViewInit()
+    this.updateRotate();
     this.updateDisabledState();
     this.updateVerticalState();
   }
@@ -1080,6 +1081,12 @@ export class SliderComponent
   private updateScale(): void {
     for (const element of this.getAllSliderElements()) {
       element.setScale(this.viewOptions.scale);
+    }
+  }
+
+  private updateRotate(): void {
+    for (const element of this.getAllSliderElements()) {
+      element.setRotate(this.viewOptions.rotate);
     }
   }
 
