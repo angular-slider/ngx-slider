@@ -32,6 +32,11 @@ export class SliderElementDirective {
     return this._scale;
   }
 
+  private _rotate: number = 0;
+  get rotate(): number {
+    return this._rotate;
+  }
+
   @HostBinding('style.opacity')
   opacity: number = 1;
 
@@ -49,6 +54,9 @@ export class SliderElementDirective {
 
   @HostBinding('style.width')
   width: string = '';
+
+  @HostBinding('style.transform')
+  transform: string = '';
 
   private eventListenerHelper: EventListenerHelper;
   private eventListeners: EventListener[] = [];
@@ -98,6 +106,15 @@ export class SliderElementDirective {
 
   setScale(scale: number): void {
     this._scale = scale;
+  }
+
+  setRotate(rotate: number): void {
+    this._rotate = rotate;
+    this.transform = 'rotate(' + rotate + 'deg)';
+  }
+
+  getRotate(): number {
+    return this._rotate;
   }
 
    // Set element left/top position depending on whether slider is horizontal or vertical
