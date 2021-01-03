@@ -358,7 +358,7 @@ export class SliderComponent
     // We need to run these two things first, before the rest of the init in ngAfterViewInit(),
     // because these two settings are set through @HostBinding and Angular change detection
     // mechanism doesn't like them changing in ngAfterViewInit()
-    this.updateRotate();
+
     this.updateDisabledState();
     this.updateVerticalState();
   }
@@ -996,7 +996,6 @@ export class SliderComponent
   // Update each elements style based on options
   private manageElementsStyle(): void {
     this.updateScale();
-
     this.floorLabelElement.setAlwaysHide(
       this.viewOptions.showTicksValues || this.viewOptions.hideLimitLabels
     );
@@ -1049,6 +1048,7 @@ export class SliderComponent
         this.sliderElementAnimateClass = this.viewOptions.animate;
       });
     }
+    this.updateRotate();
   }
 
   // Manage the events bindings based on readOnly and disabled options
@@ -1144,9 +1144,10 @@ export class SliderComponent
       this.minHandleElement.tabindex = "";
     }
 
-    this.minHandleElement.ariaOrientation = this.viewOptions.vertical
-      ? "vertical"
-      : "horizontal";
+    this.minHandleElement.ariaOrientation =
+      this.viewOptions.vertical || this.viewOptions.rotate !== 0
+        ? "vertical"
+        : "horizontal";
 
     if (!ValueHelper.isNullOrUndefined(this.viewOptions.ariaLabel)) {
       this.minHandleElement.ariaLabel = this.viewOptions.ariaLabel;
@@ -1168,9 +1169,10 @@ export class SliderComponent
         this.maxHandleElement.tabindex = "";
       }
 
-      this.maxHandleElement.ariaOrientation = this.viewOptions.vertical
-        ? "vertical"
-        : "horizontal";
+      this.maxHandleElement.ariaOrientation =
+        this.viewOptions.vertical || this.viewOptions.rotate !== 0
+          ? "vertical"
+          : "horizontal";
 
       if (!ValueHelper.isNullOrUndefined(this.viewOptions.ariaLabelHigh)) {
         this.maxHandleElement.ariaLabel = this.viewOptions.ariaLabelHigh;
@@ -1927,7 +1929,9 @@ export class SliderComponent
     targetTouchId?: number
   ): number {
     if (event instanceof MouseEvent) {
-      return this.viewOptions.vertical ? event.clientY : event.clientX;
+      return this.viewOptions.vertical || this.viewOptions.rotate !== 0
+        ? event.clientY
+        : event.clientX;
     }
 
     let touchIndex: number = 0;
@@ -1943,7 +1947,7 @@ export class SliderComponent
 
     // Return the target touch or if the target touch was not found in the event
     // returns the coordinates of the first touch
-    return this.viewOptions.vertical
+    return this.viewOptions.vertical || this.viewOptions.rotate !== 0
       ? touches[touchIndex].clientY
       : touches[touchIndex].clientX;
   }
@@ -1956,15 +1960,18 @@ export class SliderComponent
     const sliderElementBoundingRect: ClientRect =
       this.elementRef.nativeElement.getBoundingClientRect();
 
-    const sliderPos: number = this.viewOptions.vertical
-      ? sliderElementBoundingRect.bottom
-      : sliderElementBoundingRect.left;
+    const sliderPos: number =
+      this.viewOptions.vertical || this.viewOptions.rotate !== 0
+        ? sliderElementBoundingRect.bottom
+        : sliderElementBoundingRect.left;
     let eventPos: number = 0;
-    if (this.viewOptions.vertical) {
+
+    if (this.viewOptions.vertical || this.viewOptions.rotate !== 0) {
       eventPos = -this.getEventXY(event, targetTouchId) + sliderPos;
     } else {
       eventPos = this.getEventXY(event, targetTouchId) - sliderPos;
     }
+
     return eventPos * this.viewOptions.scale - this.handleHalfDimension;
   }
 
@@ -2388,6 +2395,10 @@ export class SliderComponent
       actions.RIGHT = decreaseStep;
       // right to left and vertical means we also swap up and down
       if (this.viewOptions.vertical) {
+        actions.UP = decreaseStep;
+        actions.DOWN = increaseStep;
+      }
+      if (this.viewOptions.rotate !== 0) {
         actions.UP = decreaseStep;
         actions.DOWN = increaseStep;
       }
