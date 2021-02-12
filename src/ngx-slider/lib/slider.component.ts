@@ -30,7 +30,7 @@ import {
   tap,
 } from "rxjs/operators";
 
-import detectPassiveEvents from "detect-passive-events";
+import { supportsPassiveEvents } from 'detect-passive-events';
 
 import {
   Options,
@@ -2146,10 +2146,7 @@ export class SliderComponent
   ): void {
     event.stopPropagation();
     // Only call preventDefault() when handling non-passive events (passive events don't need it)
-    if (
-      !CompatibilityHelper.isTouchEvent(event) ||
-      !detectPassiveEvents.hasSupport
-    ) {
+    if (!CompatibilityHelper.isTouchEvent(event) || !supportsPassiveEvents) {
       event.preventDefault();
     }
 

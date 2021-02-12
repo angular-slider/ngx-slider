@@ -49,7 +49,7 @@
     "@ng-bootstrap/ng-bootstrap": "^11.0.0-rc.0",
     "bootstrap-icons": "^1.1.0",
     "core-js": "^3.5.4",
-    "detect-passive-events": "^1.0.5",
+    "detect-passive-events": "^2.0.3",
     "rxjs": "^7.4.0",
     "tslib": "2.3.1",
     "zone.js": "~0.11.4"
