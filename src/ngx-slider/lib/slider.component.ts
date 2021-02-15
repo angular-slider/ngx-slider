@@ -2146,7 +2146,7 @@ export class SliderComponent
   ): void {
     event.stopPropagation();
     // Only call preventDefault() when handling non-passive events (passive events don't need it)
-    if (!CompatibilityHelper.isTouchEvent(event) || !supportsPassiveEvents) {
+    if (!CompatibilityHelper.isTouchEvent(event) && !supportsPassiveEvents) {
       event.preventDefault();
     }
 
