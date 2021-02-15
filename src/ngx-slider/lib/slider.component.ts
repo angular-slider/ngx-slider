@@ -1792,7 +1792,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       bindMove: boolean, bindEnd: boolean, simulateImmediateMove?: boolean, simulateImmediateEnd?: boolean): void {
     event.stopPropagation();
     // Only call preventDefault() when handling non-passive events (passive events don't need it)
-    if (!CompatibilityHelper.isTouchEvent(event) || !supportsPassiveEvents) {
+    if (!CompatibilityHelper.isTouchEvent(event) && !supportsPassiveEvents) {
       event.preventDefault();
     }
 
