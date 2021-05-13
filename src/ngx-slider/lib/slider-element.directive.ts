@@ -38,8 +38,12 @@ export class SliderElementDirective {
   @HostBinding('style.visibility')
   visibility: string = 'visible';
 
+
   @HostBinding('style.left')
-  left: string = '';
+  left: string = '0px';
+
+  @HostBinding('style.transform')
+  transform: string = '';
 
   @HostBinding('style.bottom')
   bottom: string = '';
@@ -88,8 +92,9 @@ export class SliderElementDirective {
   setVertical(vertical: boolean): void {
     this._vertical = vertical;
     if (this._vertical) {
-      this.left = '';
+      this.transform = '';
       this.width = '';
+      this.left = '';
     } else {
       this.bottom = '';
       this.height = '';
@@ -110,7 +115,7 @@ export class SliderElementDirective {
     if (this._vertical) {
       this.bottom = Math.round(pos) + 'px';
     } else {
-      this.left = Math.round(pos) + 'px';
+      this.transform = 'translateX(' + Math.round(pos) + 'px)';
     }
   }
 

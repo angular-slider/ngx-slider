@@ -10,7 +10,8 @@ export class HomeComponent {
   simpleSliderValue: number = 50;
   simpleSliderOptions: Options = {
     floor: 0,
-    ceil: 100
+    ceil: 100,
+    animateOnMove: true
   };
 
   rangeSliderLowValue: number = 25;
