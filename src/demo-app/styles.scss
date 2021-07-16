@@ -13,3 +13,21 @@ body {
     }
   }
 }
+
+// override bootstrap classes for accessibility
+a {
+  // used https://pinetools.com/darken-color
+  // to make #007bff darker: #003d7f
+  color: #003d7f;
+}
+
+.btn-info {
+  // #17a2b8 > #0b515c
+  background-color: #0b515c;
+  color: white;
+}
+
+.btn-primary {
+  // #007bff > #003d7f
+  background-color: #003d7f;
+}

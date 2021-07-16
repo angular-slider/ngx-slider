@@ -302,14 +302,14 @@ export class Options {
   selectionBarGradient?: { from: string; to: string } = null;
 
   /** Use to add a label directly to the slider for accessibility. Adds the aria-label attribute. */
-  ariaLabel?: string = null;
+  ariaLabel?: string = 'ngx-slider';
 
   /** Use instead of ariaLabel to reference the id of an element which will be used to label the slider.
     Adds the aria-labelledby attribute. */
   ariaLabelledBy?: string = null;
 
   /** Use to add a label directly to the slider range for accessibility. Adds the aria-label attribute. */
-  ariaLabelHigh?: string = null;
+  ariaLabelHigh?: string = 'ngx-slider-max';
 
   /** Use instead of ariaLabelHigh to reference the id of an element which will be used to label the slider range.
     Adds the aria-labelledby attribute. */
