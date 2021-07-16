@@ -1,50 +1,52 @@
-<div class="jumbotron jumbotron-fluid pb-3 mb-0">
-  <div class="container">
-    <div class="d-flex flex-row">
-      <div class="mr-3">
-          <img alt="logo" src="assets/logo.png" style="height: 5rem;">
-      </div>
+<header>
+  <div class="jumbotron jumbotron-fluid pb-3 mb-0">
+    <div class="container">
+      <div class="d-flex flex-row">
+        <div class="mr-3">
+            <img alt="logo" src="assets/logo.png" style="height: 5rem;">
+        </div>
 
-      <div>
-        <h1 class="display-4">ngx-slider</h1>
+        <div>
+          <h1 class="display-4">ngx-slider</h1>
 
-        <a *ngIf="enableExternalImages"
-           href="https://github.com/angular-slider/ngx-slider">
-          <img class="fork-me-ribbon"
-              src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67"
-              alt="Fork me on GitHub"
-              data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png">
-        </a>
+          <a *ngIf="enableExternalImages"
+            href="https://github.com/angular-slider/ngx-slider">
+            <img class="fork-me-ribbon"
+                src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67"
+                alt="Fork me on GitHub"
+                data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png">
+          </a>
 
-        <p class="lead">Self-contained, mobile-friendly slider component for Angular 6+ based on <a href="https://github.com/angular-slider/angularjs-slider">angularjs-slider</a></p>
-        <p><strong>NEW:</strong>Now re-branded from ng5-slider to ngx-slider in v2.0.0</p>
-        <p><a *ngIf="enableExternalImages" href="https://badge.fury.io/js/%40angular-slider%2Fngx-slider" rel="nofollow"><img src="https://badge.fury.io/js/%40angular-slider%2Fngx-slider.svg" alt="npm version"></a></p>
+          <p class="lead">Self-contained, mobile-friendly slider component for Angular 6+ based on <a href="https://github.com/angular-slider/angularjs-slider">angularjs-slider</a></p>
+          <p><strong>NEW:</strong>Now re-branded from ng5-slider to ngx-slider in v2.0.0</p>
+          <p><a *ngIf="enableExternalImages" href="https://badge.fury.io/js/%40angular-slider%2Fngx-slider" rel="nofollow"><img src="https://badge.fury.io/js/%40angular-slider%2Fngx-slider.svg" alt="npm version"></a></p>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<nav class="navbar navbar-light navbar-expand-sm mb-5">
-  <a class="navbar-brand d-block d-sm-none" href="#">ngx-slider</a>
+  <nav class="navbar navbar-expand-sm mb-5">
+    <a class="navbar-brand d-block d-sm-none" href="#">ngx-slider</a>
 
-  <button class="navbar-toggler navbar-toggler-right" type="button" (click)="navbarCollapsed = !navbarCollapsed"
-          [attr.aria-expanded]="!navbarCollapsed" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+    <button class="navbar-toggler navbar-toggler-right" type="button" (click)="navbarCollapsed = !navbarCollapsed"
+            [attr.aria-expanded]="!navbarCollapsed" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-  <div class="navbar-collapse d-lg-flex justify-content-center" [ngbCollapse]="navbarCollapsed" id="navbarContent">
-    <ul class="navbar-nav">
-      <li class="nav-item" [class.active]="atRootUrl">
-        <a class="nav-link" [routerLink]="['/home']" (click)="navbarCollapsed = true">Home</a>
-      </li>
+    <div class="navbar-collapse d-lg-flex justify-content-center" [ngbCollapse]="navbarCollapsed" id="navbarContent">
+      <ul class="navbar-nav">
+        <li class="nav-item" [class.active]="atRootUrl">
+          <a class="nav-link" [routerLink]="['/home']" (click)="navbarCollapsed = true" aria-label="Navigate to home">Home</a>
+        </li>
 
-      <li class="nav-item" [routerLinkActive]="['active']">
-        <a class="nav-link" [routerLink]="['/demos']" (click)="navbarCollapsed = true">Demos</a>
-      </li>
+        <li class="nav-item" [routerLinkActive]="['active']">
+          <a class="nav-link" [routerLink]="['/demos']" (click)="navbarCollapsed = true" aria-label="Navigate to Demos">Demos</a>
+        </li>
 
-      <li class="nav-item" [class.active]="atDocsUrl">
-        <a class="nav-link" [routerLink]="['/docs']" (click)="navbarCollapsed = true">API Documentation</a>
-      </li>
-    </ul>
-  </div>
-</nav>
+        <li class="nav-item" [class.active]="atDocsUrl">
+          <a class="nav-link" [routerLink]="['/docs']" (click)="navbarCollapsed = true" aria-label="Navigate to API Documentation">API Documentation</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</header>

@@ -286,6 +286,8 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   public sliderElementWithLegendClass: boolean = false;
   @HostBinding('attr.disabled')
   public sliderElementDisabledAttr: string = null;
+  @HostBinding('attr.aria-label')
+  public sliderElementAriaLabel: string = 'ngx-slider';
 
   // CSS styles and class flags
   public barStyle: any = {};
@@ -338,6 +340,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     // mechanism doesn't like them changing in ngAfterViewInit()
     this.updateDisabledState();
     this.updateVerticalState();
+    this.updateAriaLabel();
   }
 
   // AfterViewInit interface
@@ -366,6 +369,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     this.updateFloorLabel();
     this.initHandles();
     this.manageEventsBindings();
+    this.updateAriaLabel();
 
     this.subscribeResizeObserver();
 
@@ -440,6 +444,12 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     this.viewOptions.disabled = isDisabled;
     this.updateDisabledState();
   }
+
+  public setAriaLabel(ariaLabel: string): void {
+    this.viewOptions.ariaLabel = ariaLabel;
+    this.updateAriaLabel();
+  }
+
 
   @HostListener('window:resize', ['$event'])
   public onResize(event: any): void {
@@ -866,6 +876,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       this.manageEventsBindings();
     }
     this.updateDisabledState();
+    this.updateAriaLabel();
     this.calculateViewDimensions();
     this.refocusPointerIfNeeded();
   }
@@ -938,6 +949,11 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   // Set the disabled state based on disabled option
   private updateDisabledState(): void {
     this.sliderElementDisabledAttr = this.viewOptions.disabled ? 'disabled' : null;
+  }
+
+  // Set the aria-label state based on ariaLabel option
+  private updateAriaLabel(): void {
+    this.sliderElementAriaLabel = this.viewOptions.ariaLabel || 'nxg-slider';
   }
 
   // Set vertical state based on vertical option
