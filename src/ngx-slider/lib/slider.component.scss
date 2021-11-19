@@ -283,6 +283,10 @@
 
       .ngx-slider-pointer {
         transition: all linear $animationDuration;
+
+        &:after {
+          transition: all linear $animationDuration;
+        }
       }
 
       .ngx-slider-bubble {
