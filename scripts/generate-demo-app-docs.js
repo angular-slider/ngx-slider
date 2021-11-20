@@ -158,10 +158,12 @@ export class DocsModule { }
 
 const typedocDocsDir = path.resolve(__dirname, '../docs');
 rimraf.sync(typedocDocsDir);
+mkdirp.sync(typedocDocsDir);
 generateTypedocDocs(typedocDocsDir);
 
 const demoAppDocsModuleDir = path.resolve(__dirname, '../src/demo-app/app/docs');
 rimraf.sync(demoAppDocsModuleDir);
+mkdirp.sync(demoAppDocsModuleDir);
 
 const typedocHtmlFiles = utils.readdirRecursivelySync(typedocDocsDir)
   .filter((file) => file.endsWith('.html'));
