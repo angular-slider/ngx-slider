@@ -1,17 +1,17 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { BrowserModule } from "@angular/platform-browser";
+import { NgModule } from "@angular/core";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { RouterModule } from "@angular/router";
+import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 
-import { NgxSliderModule } from '@local/ngx-slider';
+import { NgxSliderModule } from "@local/ngx-slider";
 
-import { DocsModule } from './docs/docs.module';
+import { DocsModule } from "./docs/docs.module";
 
-import { AppComponent } from './app.component';
-import { HeaderComponent } from './header.component';
-import { HomeComponent } from './home.component';
-import { DemosComponent } from './demos.component';
+import { AppComponent } from "./app.component";
+import { HeaderComponent } from "./header.component";
+import { HomeComponent } from "./home.component";
+import { DemosComponent } from "./demos.component";
 import {
   AlphabetSliderComponent,
   CustomCombineLabelsFunctionSliderComponent,
@@ -61,8 +61,8 @@ import {
   TriggerFocusSliderComponent,
   UserEventsSliderComponent,
   VerticalSlidersComponent,
-} from './snippets';
-import { routerConfig, routerOptions } from './app-router.config';
+} from "./snippets";
+import { routerConfig, routerOptions } from "./app-router.config";
 
 @NgModule({
   declarations: [
@@ -125,10 +125,10 @@ import { routerConfig, routerOptions } from './app-router.config';
     ReactiveFormsModule,
     DocsModule,
     RouterModule.forRoot(routerConfig, routerOptions),
-    NgbModule.forRoot(),
-    NgxSliderModule
+    NgbModule,
+    NgxSliderModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
