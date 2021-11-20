@@ -37,14 +37,15 @@
     "ci": "npm run test:once && npm run e2e && npm run lint && npm run build:lib && npm run build:demo-app"
   },
   "dependencies": {
-    "@angular/animations": "8.2.14",
-    "@angular/common": "8.2.14",
-    "@angular/compiler": "8.2.14",
-    "@angular/core": "8.2.14",
-    "@angular/forms": "8.2.14",
-    "@angular/platform-browser": "8.2.14",
-    "@angular/platform-browser-dynamic": "8.2.14",
-    "@angular/router": "8.2.14",
+    "@angular-devkit/schematics": "^9.1.13",
+    "@angular/animations": "9.1.13",
+    "@angular/common": "9.1.13",
+    "@angular/compiler": "9.1.13",
+    "@angular/core": "9.1.13",
+    "@angular/forms": "9.1.13",
+    "@angular/platform-browser": "9.1.13",
+    "@angular/platform-browser-dynamic": "9.1.13",
+    "@angular/router": "9.1.13",
     "@ng-bootstrap/ng-bootstrap": "^6.0.0",
     "bootstrap-icons": "^1.1.0",
     "core-js": "^2.5.4",
@@ -52,13 +53,13 @@
     "rxjs": "^6.6.7",
     "rxjs-compat": "^6.5.2",
     "tslib": "1.10",
-    "zone.js": "^0.9.1"
+    "zone.js": "^0.10.3"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~0.803.29",
-    "@angular/cli": "~8.3.29",
-    "@angular/compiler-cli": "^8.2.14",
-    "@angular/language-service": "^8.2.14",
+    "@angular-devkit/build-angular": "~0.901.15",
+    "@angular/cli": "~9.1.15",
+    "@angular/compiler-cli": "^9.1.13",
+    "@angular/language-service": "^9.1.13",
     "@types/jasmine": "~2.8.8",
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "14.6.2",
@@ -82,7 +83,7 @@
     "tsickle": "~0.37.0",
     "tslint": "~5.9.1",
     "typedoc": "^0.15.8",
-    "typescript": "~3.4.0",
+    "typescript": "~3.8.3",
     "webdriver-manager": "^12.1.7"
   }
 }
