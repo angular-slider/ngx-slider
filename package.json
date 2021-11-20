@@ -1,8 +1,8 @@
 {
-  "name": "@angular-slider/ngx-slider",
-  "version": "2.0.3",
+  "name": "@rp3e11/ngx-slider",
+  "version": "12.0.0",
   "private": true,
-  "description": "Self-contained, mobile friendly slider component for Angular 5+ based on angularjs-slider",
+  "description": "Self-contained, mobile friendly slider component for Angular 12 based on angularjs-slider",
   "keywords": [
     "slider",
     "ui",
@@ -34,7 +34,8 @@
     "test:once": "npm run prepare && ng test --watch=false",
     "lint": "npm run prepare && ng lint",
     "e2e": "npm run prepare && ng e2e",
-    "ci": "npm run test:once && npm run e2e && npm run lint && npm run build:lib && npm run build:demo-app"
+    "ci": "npm run test:once && npm run e2e && npm run lint && npm run build:lib && npm run build:demo-app",
+    "postinstall": "ivy-ngcc"
   },
   "dependencies": {
     "@angular/animations": "12.2.13",

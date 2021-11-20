@@ -32,7 +32,7 @@ function generatePackageJson() {
   delete libConfig.dependenciesToCopyAsPeerDependenciesFromMainPackageJson;
 
   for (let dependency of libTemplateConfig.dependenciesToCopyFromMainPackageJson) {
-    libConfig.ngPackage.whitelistedNonPeerDependencies.push(dependency);
+    libConfig.ngPackage.allowedNonPeerDependencies.push(dependency);
   }
 
   const prettyPrintedLibConfig = JSON.stringify(libConfig, null, 2);
