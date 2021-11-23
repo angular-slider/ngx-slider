@@ -1,8 +1,9 @@
 {
   "extends": "../../tsconfig.json",
   "angularCompilerOptions": {
+    "enableIvy": true,
     "paths": {
-      "@local/ngx-slider": [ "../ngx-slider/lib/public_api.ts" ]
+      "@local/ngx-slider": ["../ngx-slider/lib/public_api.ts"]
     }
   },
   "compilerOptions": {
@@ -11,11 +12,8 @@
     "baseUrl": "",
     "types": [],
     "paths": {
-      "@local/ngx-slider": [ "../ngx-slider/lib/public_api.ts" ]
+      "@local/ngx-slider": ["../ngx-slider/lib/public_api.ts"]
     }
   },
-  "exclude": [
-    "test.ts",
-    "**/*.spec.ts"
-  ]
+  "exclude": ["test.ts", "**/*.spec.ts"]
 }

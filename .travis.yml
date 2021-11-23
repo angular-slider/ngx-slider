@@ -6,9 +6,9 @@ services:
   - xvfb
 language: node_js
 node_js:
-  - 8
+  - 14
 before_install:
-  - npm i -g npm@6.14.8
+  - npm i -g npm@8.1.1
 install:
   - npm install
 script:
