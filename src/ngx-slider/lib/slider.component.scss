@@ -1,4 +1,4 @@
-@import 'variables.scss';
+@import "variables.scss";
 
 @include ng-deep($enableNgDeep) {
   .ngx-slider {
@@ -55,8 +55,8 @@
     .ngx-slider-bar-wrapper {
       left: 0;
       box-sizing: border-box;
-      margin-top: -$handleSize / 2;
-      padding-top: $handleSize / 2;
+      margin-top: math.div(-$handleSize, 2);
+      padding-top: math.div($handleSize, 2);
       width: 100%;
       height: $handleSize;
       z-index: 1;
@@ -103,7 +103,7 @@
       @include rounded($handleSize / 2);
 
       &:after {
-        content: '';
+        content: "";
         width: $handlePointerSize;
         height: $handlePointerSize;
         position: absolute;
