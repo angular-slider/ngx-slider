@@ -8,15 +8,10 @@
     "moduleResolution": "node",
     "experimentalDecorators": true,
     "target": "es2015",
-    "typeRoots": [
-      "node_modules/@types"
-    ],
-    "lib": [
-      "es2017",
-      "dom"
-    ],
+    "typeRoots": ["node_modules/@types"],
+    "lib": ["es2017", "dom"],
     "paths": {
-      "@local/ngx-slider": [ "dist/ngx-slider" ]
+      "@local/ngx-slider": ["dist/ngx-slider"]
     }
   }
 }

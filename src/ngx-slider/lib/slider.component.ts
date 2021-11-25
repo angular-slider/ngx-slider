@@ -965,7 +965,7 @@ export class SliderComponent
     }
     this.updateDisabledState();
     this.calculateViewDimensions();
-    this.refocusPointerIfNeeded();
+    // this.refocusPointerIfNeeded();
   }
 
   // Sets focus on the specified pointer
@@ -1242,7 +1242,7 @@ export class SliderComponent
 
   // Update the ticks position
   private updateTicksScale(): void {
-    if (!this.viewOptions.showTicks) {
+    if (!this.viewOptions.showTicks && this.sliderElementWithLegendClass) {
       setTimeout(() => {
         this.sliderElementWithLegendClass = false;
       });
@@ -1342,10 +1342,11 @@ export class SliderComponent
 
       return tick;
     });
-
-    setTimeout(() => {
-      this.sliderElementWithLegendClass = hasAtLeastOneLegend;
-    });
+    if (this.sliderElementWithLegendClass !== hasAtLeastOneLegend) {
+      setTimeout(() => {
+        this.sliderElementWithLegendClass = hasAtLeastOneLegend;
+      });
+    }
 
     // We should avoid re-creating the ticks array if possible
     // This both improves performance and makes CSS animations work correctly
@@ -1358,10 +1359,9 @@ export class SliderComponent
       }
     } else {
       this.ticks = newTicks;
-    }
-
-    if (!this.isRefDestroyed()) {
-      this.changeDetectionRef.detectChanges();
+      if (!this.isRefDestroyed()) {
+        this.changeDetectionRef.detectChanges();
+      }
     }
   }
 

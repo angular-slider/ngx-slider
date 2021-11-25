@@ -7,6 +7,12 @@
       "file": "./slider.module"
     },
     {
+      "what": [
+        "SliderComponent"
+      ],
+      "file": "./slider.component"
+    },
+    {
       "what": "*",
       "file": "./change-context"
     },
