@@ -20,12 +20,12 @@ const utils = require('./utils.js');
 /** Run typedoc over library public API files to generate HTML files from customised typedoc theme
  * The resulting files are not really useful on their own; they will be used later to generate demo app code
  */
-function generateTypedocDocs(typedocDocsDir) {
-  const publicApiConfigFile = path.resolve(__dirname, '../src/ngx-slider/lib/public_api.json');
-  const publicApiConfig = JSON.parse(fs.readFileSync(publicApiConfigFile, { encoding: 'utf8' }));
+async function generateTypedocDocs(typedocDocsDir) {
+  // const publicApiConfigFile = path.resolve(__dirname, '../src/ngx-slider/lib/public_api.json');
+  // const publicApiConfig = JSON.parse(fs.readFileSync(publicApiConfigFile, { encoding: 'utf8' }));
 
-  const files = publicApiConfig.exports
-    .map(exportDef => path.resolve(__dirname, `../src/ngx-slider/lib/${exportDef.file}.ts`));
+  // // const files = publicApiConfig.exports
+  // //   .map(exportDef => path.resolve(__dirname, `../src/ngx-slider/lib/${exportDef.file}.ts`));
 
   const themeDir = path.resolve(__dirname, '../typedoc-theme');
 
@@ -35,20 +35,29 @@ function generateTypedocDocs(typedocDocsDir) {
   const apiDocsReadmeFile = path.resolve(__dirname, '../typedoc-theme/README.md');
   utils.copyReadmeMd(apiDocsReadmeFile);
 
-  const app = new typedoc.Application({
-    module: 'commonjs',
-    target: 'es6',
-    includeDeclarations: false,
-    experimentalDecorators: true,
-    excludeExternals: true,
-    theme: themeDir
-  });
 
-  app.generateDocs(files, typedocDocsDir);
+  const app = new typedoc.Application();
+  app.options.addReader(new typedoc.TSConfigReader());
+  // app.options.({paths: {"@local/ngx-slider": ["src/ngx-slider/lib/public_api.ts"]}})
+  // console.log(app.options.setCompilerOptions({paths: {"@local/ngx-slider": ["src/ngx-slider/lib/public_api.ts"]}}));
 
+  // const app = new typedoc.Application({
+  //   module: 'commonjs',
+  //   target: 'es6',
+  //   includeDeclarations: false,
+  //   experimentalDecorators: true,
+  //   excludeExternals: true,
+  //   theme: themeDir
+  // });
+  app.bootstrap({
+    entryPoints:['src/ngx-slider/lib/public_api.ts'],
+  })
+  const project = app.convert();
+  await app.generateDocs(project,typedocDocsDir );
   // HACK: restore the README.md to original
   const mainReadmeFile = path.resolve(__dirname, '../README.md');
   utils.copyReadmeMd(mainReadmeFile);
+
 }
 
 /** Convert typedoc HTML file into Angular component for use in demo app */
@@ -159,20 +168,23 @@ export class DocsModule { }
 const typedocDocsDir = path.resolve(__dirname, '../docs');
 rimraf.sync(typedocDocsDir);
 mkdirp.sync(typedocDocsDir);
-generateTypedocDocs(typedocDocsDir);
-
-const demoAppDocsModuleDir = path.resolve(__dirname, '../src/demo-app/app/docs');
+generateTypedocDocs(typedocDocsDir)
+.then(() => {
+  const demoAppDocsModuleDir = path.resolve(__dirname, '../src/demo-app/app/docs');
 rimraf.sync(demoAppDocsModuleDir);
 mkdirp.sync(demoAppDocsModuleDir);
-
 const typedocHtmlFiles = utils.readdirRecursivelySync(typedocDocsDir)
   .filter((file) => file.endsWith('.html'));
 
 const componentsMetadata = [];
+
 for (let typedocHtmlFile of typedocHtmlFiles) {
   const relativeTypedocHtmlFile = path.relative(typedocDocsDir, typedocHtmlFile);
   const componentMetadata = generateComponent(typedocHtmlFile, relativeTypedocHtmlFile, demoAppDocsModuleDir);
   componentsMetadata.push(componentMetadata);
 }
-
 generateModuleFile(componentsMetadata, demoAppDocsModuleDir);
+})
+.catch(console.error);
+
+

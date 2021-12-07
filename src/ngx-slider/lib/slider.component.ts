@@ -18,6 +18,7 @@ import {
   SimpleChanges,
   forwardRef,
   NgZone,
+  ChangeDetectionStrategy,
 } from "@angular/core";
 
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
@@ -135,6 +136,7 @@ const NGX_SLIDER_CONTROL_VALUE_ACCESSOR: any = {
   styleUrls: ["./slider.component.scss"],
   host: { class: "ngx-slider" },
   providers: [NGX_SLIDER_CONTROL_VALUE_ACCESSOR],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SliderComponent
   implements OnInit, AfterViewInit, OnChanges, OnDestroy, ControlValueAccessor
@@ -365,22 +367,18 @@ export class SliderComponent
   // AfterViewInit interface
   public ngAfterViewInit(): void {
     this.applyOptions();
-
     this.subscribeInputModelChangeSubject(this.viewOptions.inputEventsInterval);
     this.subscribeOutputModelChangeSubject(
       this.viewOptions.outputEventsInterval
     );
-
     // Once we apply options, we need to normalise model values for the first time
     this.renormaliseModelValues();
-
     this.viewLowValue = this.modelValueToViewValue(this.value);
     if (this.range) {
       this.viewHighValue = this.modelValueToViewValue(this.highValue);
     } else {
       this.viewHighValue = null;
     }
-
     this.updateVerticalState(); // need to run this again to cover changes to slider elements
     this.manageElementsStyle();
     this.updateDisabledState();
@@ -390,11 +388,8 @@ export class SliderComponent
     this.updateFloorLabel();
     this.initHandles();
     this.manageEventsBindings();
-
     this.subscribeResizeObserver();
-
     this.initHasRun = true;
-
     // Run change detection manually to resolve some issues when init procedure changes values used in the view
     if (!this.isRefDestroyed()) {
       this.changeDetectionRef.detectChanges();
@@ -404,15 +399,11 @@ export class SliderComponent
   // OnChanges interface
   public ngOnChanges(changes: SimpleChanges): void {
     // Always apply options first
-    if (!ValueHelper.isNullOrUndefined(changes.options)) {
+    if (this.haveOptionsChanged(changes)) {
       this.onChangeOptions();
     }
-
     // Then value changes
-    if (
-      !ValueHelper.isNullOrUndefined(changes.value) ||
-      !ValueHelper.isNullOrUndefined(changes.highValue)
-    ) {
+    if (this.haveValuesChanged(changes)) {
       this.inputModelChangeSubject.next({
         value: this.value,
         highValue: this.highValue,
@@ -420,6 +411,24 @@ export class SliderComponent
         internalChange: false,
       });
     }
+  }
+
+  private haveOptionsChanged(changes: SimpleChanges) {
+    return (
+      !ValueHelper.isNullOrUndefined(changes.options) &&
+      changes.options.currentValue?.floor !==
+        changes.options.previousValue?.floor &&
+      changes.options.currentValue?.ceil !== changes.options.previousValue?.ceil
+    );
+  }
+
+  private haveValuesChanged(changes: SimpleChanges) {
+    return (
+      (!ValueHelper.isNullOrUndefined(changes.value) &&
+        changes.value.currentValue !== changes.value.previousValue) ||
+      (!ValueHelper.isNullOrUndefined(changes.highValue) &&
+        changes.highValue.currentValue !== changes.highValues.previousValue)
+    );
   }
 
   // OnDestroy interface
@@ -929,9 +938,21 @@ export class SliderComponent
     }
   }
 
+  private getViewOptionsStepOrEstimate() {
+    if (ValueHelper.isNullOrUndefined(this.viewOptions.step)) {
+      return this.viewOptions.step;
+    }
+    const range = this.viewOptions.ceil - this.viewOptions.floor + 1;
+    if (range < 50) {
+      return 1;
+    } else {
+      return Math.floor(range / 20);
+    }
+  }
+
   private applyFloorCeilOptions(): void {
     if (ValueHelper.isNullOrUndefined(this.viewOptions.step)) {
-      this.viewOptions.step = 1;
+      this.viewOptions.step = this.getViewOptionsStepOrEstimate();
     } else {
       this.viewOptions.step = +this.viewOptions.step;
       if (this.viewOptions.step <= 0) {
@@ -1268,7 +1289,7 @@ export class SliderComponent
       ? this.viewOptions.tickValueStep
       : !ValueHelper.isNullOrUndefined(this.viewOptions.tickStep)
       ? this.viewOptions.tickStep
-      : this.viewOptions.step;
+      : this.getViewOptionsStepOrEstimate();
 
     let hasAtLeastOneLegend: boolean = false;
 
@@ -1370,7 +1391,7 @@ export class SliderComponent
       this.viewOptions.tickStep
     )
       ? this.viewOptions.tickStep
-      : this.viewOptions.step;
+      : this.getViewOptionsStepOrEstimate();
     const ticksArray: number[] = [];
 
     const numberOfValues: number =
@@ -1850,7 +1871,7 @@ export class SliderComponent
   private roundStep(value: number, customStep?: number): number {
     const step: number = !ValueHelper.isNullOrUndefined(customStep)
       ? customStep
-      : this.viewOptions.step;
+      : this.getViewOptionsStepOrEstimate();
     let steppedDifference: number = MathHelper.roundToPrecisionLimit(
       (value - this.viewOptions.floor) / step,
       this.viewOptions.precisionLimit
@@ -2347,15 +2368,15 @@ export class SliderComponent
 
   private getKeyActions(currentValue: number): { [key: string]: number } {
     const valueRange: number = this.viewOptions.ceil - this.viewOptions.floor;
-
-    let increaseStep: number = currentValue + this.viewOptions.step;
-    let decreaseStep: number = currentValue - this.viewOptions.step;
+    const step = this.getViewOptionsStepOrEstimate();
+    let increaseStep: number = currentValue + step;
+    let decreaseStep: number = currentValue - step;
     let increasePage: number = currentValue + valueRange / 10;
     let decreasePage: number = currentValue - valueRange / 10;
 
     if (this.viewOptions.reversedControls) {
-      increaseStep = currentValue - this.viewOptions.step;
-      decreaseStep = currentValue + this.viewOptions.step;
+      increaseStep = currentValue - step;
+      decreaseStep = currentValue + step;
       increasePage = currentValue - valueRange / 10;
       decreasePage = currentValue + valueRange / 10;
     }
@@ -2753,7 +2774,7 @@ export class SliderComponent
       this.viewOptions.minRange
     )
       ? this.viewOptions.minRange
-      : this.viewOptions.step;
+      : this.getViewOptionsStepOrEstimate();
     const maxRange: number = this.viewOptions.maxRange;
     // if smaller than minRange
     if (difference < minRange) {

@@ -1,8 +1,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "outDir": "./dist/out-tsc",
-    "baseUrl": "src",
+    "baseUrl": ".",
     "sourceMap": true,
     "declaration": false,
     "moduleResolution": "node",
@@ -11,7 +10,7 @@
     "typeRoots": ["node_modules/@types"],
     "lib": ["es2017", "dom"],
     "paths": {
-      "@local/ngx-slider": ["dist/ngx-slider"]
+      "@local/ngx-slider": ["src/ngx-slider/lib/public_api.ts"]
     }
   }
 }

@@ -1,15 +1,8 @@
 {
   "extends": "../../tsconfig.json",
-  "angularCompilerOptions": {
-    "enableIvy": true,
-    "paths": {
-      "@local/ngx-slider": ["../ngx-slider/lib/public_api.ts"]
-    }
-  },
   "compilerOptions": {
     "outDir": "../../out-tsc/demo-app",
-    "module": "es2015",
-    "baseUrl": "",
+    "baseUrl": ".",
     "types": [],
     "paths": {
       "@local/ngx-slider": ["../ngx-slider/lib/public_api.ts"]

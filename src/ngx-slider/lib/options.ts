@@ -1,4 +1,4 @@
-import { PointerType } from './pointer-type';
+import { PointerType } from "./pointer-type";
 
 /** Label type */
 export enum LabelType {
@@ -11,21 +11,32 @@ export enum LabelType {
   /** Label for maximum slider value */
   Ceil,
   /** Label below legend tick */
-  TickValue
+  TickValue,
 }
 
 /** Function to translate label value into text */
 export type TranslateFunction = (value: number, label: LabelType) => string;
 /** Function to combind */
-export type CombineLabelsFunction = (minLabel: string, maxLabel: string) => string;
+export type CombineLabelsFunction = (
+  minLabel: string,
+  maxLabel: string
+) => string;
 /** Function to provide legend  */
 export type GetLegendFunction = (value: number) => string;
 
 /** Function converting slider value to slider position */
-export type ValueToPositionFunction = (val: number, minVal: number, maxVal: number) => number;
+export type ValueToPositionFunction = (
+  val: number,
+  minVal: number,
+  maxVal: number
+) => number;
 
 /** Function converting slider position to slider value */
-export type PositionToValueFunction = (percent: number, minVal: number, maxVal: number) => number;
+export type PositionToValueFunction = (
+  percent: number,
+  minVal: number,
+  maxVal: number
+) => number;
 
 /**
  * Custom step definition
@@ -51,7 +62,7 @@ export class Options {
 
   /** Step between each value.
     Not applicable when using stepsArray. */
-  step?: number = 1;
+  step?: number = null;
 
   /** The minimum range authorized on the slider.
     Applies to range slider only.
@@ -284,7 +295,7 @@ export class Options {
 
   /** Use to display the selection bar as a gradient.
     The given object must contain from and to properties which are colors. */
-  selectionBarGradient?: {from: string, to: string} = null;
+  selectionBarGradient?: { from: string; to: string } = null;
 
   /** Use to add a label directly to the slider for accessibility. Adds the aria-label attribute. */
   ariaLabel?: string = null;
