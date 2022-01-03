@@ -1156,7 +1156,9 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       let legend: string = null;
       if (!ValueHelper.isNullOrUndefined(this.viewOptions.stepsArray)) {
         const step: CustomStepDefinition = this.viewOptions.stepsArray[value];
-        if (!ValueHelper.isNullOrUndefined(step)) {
+        if (!ValueHelper.isNullOrUndefined(this.viewOptions.getStepLegend)) {
+          legend = this.viewOptions.getStepLegend(step);
+        } else if (!ValueHelper.isNullOrUndefined(step)) {
           legend = step.legend;
         }
       } else if (!ValueHelper.isNullOrUndefined(this.viewOptions.getLegend)) {
