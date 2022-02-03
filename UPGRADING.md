@@ -98,7 +98,7 @@ export class MyComponent {
 
 Before:
 ```html
-<ng5-slider [(value)]="value" [options]="options"></ngx-slider>
+<ng5-slider [(value)]="value" [options]="options"></ng5-slider>
 ```
 
 After:
