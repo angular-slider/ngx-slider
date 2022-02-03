@@ -25,7 +25,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Subject, Subscription } from 'rxjs';
 import { distinctUntilChanged, filter, throttleTime, tap } from 'rxjs/operators';
 
-import detectPassiveEvents from 'detect-passive-events';
+import { supportsPassiveEvents } from 'detect-passive-events';
 
 import {
   Options,
@@ -1792,7 +1792,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       bindMove: boolean, bindEnd: boolean, simulateImmediateMove?: boolean, simulateImmediateEnd?: boolean): void {
     event.stopPropagation();
     // Only call preventDefault() when handling non-passive events (passive events don't need it)
-    if (!CompatibilityHelper.isTouchEvent(event) || !detectPassiveEvents.hasSupport) {
+    if (!CompatibilityHelper.isTouchEvent(event) && !supportsPassiveEvents) {
       event.preventDefault();
     }
 

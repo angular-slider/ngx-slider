@@ -1,7 +1,7 @@
 import { Renderer2 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { throttleTime, tap } from 'rxjs/operators';
-import detectPassiveEvents from 'detect-passive-events';
+import { supportsPassiveEvents } from 'detect-passive-events';
 
 import { EventListener } from './event-listener';
 import { ValueHelper } from './value-helper';
@@ -16,7 +16,7 @@ export class EventListenerHelper {
   public attachPassiveEventListener(nativeElement: any, eventName: string, callback: (event: any) => void,
       throttleInterval?: number): EventListener {
     // Only use passive event listeners if the browser supports it
-    if (detectPassiveEvents.hasSupport !== true) {
+    if (supportsPassiveEvents !== true) {
       return this.attachEventListener(nativeElement, eventName, callback, throttleInterval);
     }
 
