@@ -1,3 +1,11 @@
+# 2.0.4
+ * apply changes only when options object really changes
+ * remove throttling options (#282, #283)
+ * add option to set slider rotation (#232)
+ * expose getStepLegend to show a custom object when we have stepsArray (#302)
+ * update detect-passive-events to v2 (#244)
+ * update accessibility options (#273)
+
 # 2.0.3
  * apply with-legend class to the slider element (issue #170)
  * fix counting number of ticks to create with non-integer divisions and access legend from stepArray in safe way (issue #222)
