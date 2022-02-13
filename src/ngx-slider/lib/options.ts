@@ -161,22 +161,6 @@ export class Options {
   /** Set to true to disable the slider. */
   disabled?: boolean = false;
 
-  /** Throttle interval for mouse events in milliseconds.
-   * This is provided to avoid a flood of events when moving the slider with mouse. */
-  mouseEventsInterval?: number = 50;
-
-  /** Throttle interval for touch events in milliseconds.
-   * This is provided to avoid a flood of events when moving the slider with touch gesture. */
-  touchEventsInterval?: number = 50;
-
-  /** Throttle interval for input changes (changes to bindings or reactive form inputs)
-   * This is provided to avoid a flood of events on frequent input binding changes affecting performance. */
-  inputEventsInterval?: number = 100;
-
-  /** Throttle interval for output changes (signalling changes to output bindings and user callbacks)
-   * This is provided to avoid a flood of outgoing events affecting Angular app performance. */
-  outputEventsInterval?: number = 100;
-
   /** Set to true to display a tick for each step of the slider. */
   showTicks?: boolean = false;
 

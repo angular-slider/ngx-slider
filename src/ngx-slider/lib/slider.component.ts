@@ -23,12 +23,7 @@ import {
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
 
 import { Subject, Subscription } from "rxjs";
-import {
-  distinctUntilChanged,
-  filter,
-  throttleTime,
-  tap,
-} from "rxjs/operators";
+import { distinctUntilChanged, filter } from "rxjs/operators";
 
 import { supportsPassiveEvents } from "detect-passive-events";
 
@@ -370,10 +365,8 @@ export class SliderComponent
   public ngAfterViewInit(): void {
     this.applyOptions();
 
-    this.subscribeInputModelChangeSubject(this.viewOptions.inputEventsInterval);
-    this.subscribeOutputModelChangeSubject(
-      this.viewOptions.outputEventsInterval
-    );
+    this.subscribeInputModelChangeSubject();
+    this.subscribeOutputModelChangeSubject();
 
     // Once we apply options, we need to normalise model values for the first time
     this.renormaliseModelValues();
@@ -482,7 +475,7 @@ export class SliderComponent
     this.calculateViewDimensionsAndDetectChanges();
   }
 
-  private subscribeInputModelChangeSubject(interval?: number): void {
+  private subscribeInputModelChangeSubject(): void {
     this.inputModelChangeSubscription = this.inputModelChangeSubject
       .pipe(
         distinctUntilChanged(ModelChange.compare),
@@ -491,24 +484,16 @@ export class SliderComponent
         filter(
           (modelChange: InputModelChange) =>
             !modelChange.forceChange && !modelChange.internalChange
-        ),
-        !ValueHelper.isNullOrUndefined(interval)
-          ? throttleTime(interval, undefined, { leading: true, trailing: true })
-          : tap(() => {}) // no-op
+        )
       )
       .subscribe((modelChange: InputModelChange) =>
         this.applyInputModelChange(modelChange)
       );
   }
 
-  private subscribeOutputModelChangeSubject(interval?: number): void {
+  private subscribeOutputModelChangeSubject(): void {
     this.outputModelChangeSubscription = this.outputModelChangeSubject
-      .pipe(
-        distinctUntilChanged(ModelChange.compare),
-        !ValueHelper.isNullOrUndefined(interval)
-          ? throttleTime(interval, undefined, { leading: true, trailing: true })
-          : tap(() => {}) // no-op
-      )
+      .pipe(distinctUntilChanged(ModelChange.compare))
       .subscribe((modelChange: OutputModelChange) =>
         this.publishOutputModelChange(modelChange)
       );
@@ -824,11 +809,6 @@ export class SliderComponent
       return;
     }
 
-    const previousInputEventsInterval: number =
-      this.viewOptions.inputEventsInterval;
-    const previousOutputEventsInterval: number =
-      this.viewOptions.outputEventsInterval;
-
     const previousOptionsInfluencingEventBindings: boolean[] =
       this.getOptionsInfluencingEventBindings(this.viewOptions);
 
@@ -842,22 +822,6 @@ export class SliderComponent
       previousOptionsInfluencingEventBindings,
       newOptionsInfluencingEventBindings
     );
-
-    if (previousInputEventsInterval !== this.viewOptions.inputEventsInterval) {
-      this.unsubscribeInputModelChangeSubject();
-      this.subscribeInputModelChangeSubject(
-        this.viewOptions.inputEventsInterval
-      );
-    }
-
-    if (
-      previousOutputEventsInterval !== this.viewOptions.outputEventsInterval
-    ) {
-      this.unsubscribeInputModelChangeSubject();
-      this.subscribeInputModelChangeSubject(
-        this.viewOptions.outputEventsInterval
-      );
-    }
 
     // With new options, we need to re-normalise model values if necessary
     this.renormaliseModelValues();
@@ -2199,15 +2163,13 @@ export class SliderComponent
           this.eventListenerHelper.attachPassiveEventListener(
             document,
             "touchmove",
-            onMoveCallback,
-            this.viewOptions.touchEventsInterval
+            onMoveCallback
           );
       } else {
         this.onMoveEventListener = this.eventListenerHelper.attachEventListener(
           document,
           "mousemove",
-          onMoveCallback,
-          this.viewOptions.mouseEventsInterval
+          onMoveCallback
         );
       }
     }
