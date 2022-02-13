@@ -338,6 +338,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     // We need to run these two things first, before the rest of the init in ngAfterViewInit(),
     // because these two settings are set through @HostBinding and Angular change detection
     // mechanism doesn't like them changing in ngAfterViewInit()
+
     this.updateDisabledState();
     this.updateVerticalState();
     this.updateAriaLabel();
@@ -906,7 +907,6 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   // Update each elements style based on options
   private manageElementsStyle(): void {
     this.updateScale();
-
     this.floorLabelElement.setAlwaysHide(this.viewOptions.showTicksValues || this.viewOptions.hideLimitLabels);
     this.ceilLabelElement.setAlwaysHide(this.viewOptions.showTicksValues || this.viewOptions.hideLimitLabels);
 
@@ -935,6 +935,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     if (this.sliderElementAnimateClass !== this.viewOptions.animate) {
       setTimeout((): void => { this.sliderElementAnimateClass = this.viewOptions.animate; });
     }
+    this.updateRotate();
   }
 
   // Manage the events bindings based on readOnly and disabled options
@@ -970,6 +971,12 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   private updateScale(): void {
     for (const element of this.getAllSliderElements()) {
       element.setScale(this.viewOptions.scale);
+    }
+  }
+
+  private updateRotate(): void {
+    for (const element of this.getAllSliderElements()) {
+      element.setRotate(this.viewOptions.rotate);
     }
   }
 
@@ -1024,7 +1031,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       this.minHandleElement.tabindex = '';
     }
 
-    this.minHandleElement.ariaOrientation = this.viewOptions.vertical ? 'vertical' : 'horizontal';
+    this.minHandleElement.ariaOrientation = this.viewOptions.vertical || this.viewOptions.rotate !== 0 ? 'vertical' : 'horizontal';
 
     if (!ValueHelper.isNullOrUndefined(this.viewOptions.ariaLabel)) {
       this.minHandleElement.ariaLabel = this.viewOptions.ariaLabel;
@@ -1042,7 +1049,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
         this.maxHandleElement.tabindex = '';
       }
 
-      this.maxHandleElement.ariaOrientation = this.viewOptions.vertical ? 'vertical' : 'horizontal';
+      this.maxHandleElement.ariaOrientation = this.viewOptions.vertical || this.viewOptions.rotate !== 0 ? 'vertical' : 'horizontal';
 
       if (!ValueHelper.isNullOrUndefined(this.viewOptions.ariaLabelHigh)) {
         this.maxHandleElement.ariaLabel = this.viewOptions.ariaLabelHigh;
@@ -1641,7 +1648,7 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   // Get the X-coordinate or Y-coordinate of an event
   private getEventXY(event: MouseEvent|TouchEvent, targetTouchId?: number): number {
     if (event instanceof MouseEvent) {
-      return this.viewOptions.vertical ? event.clientY : event.clientX;
+      return this.viewOptions.vertical || this.viewOptions.rotate !== 0 ? event.clientY : event.clientX;
     }
 
     let touchIndex: number = 0;
@@ -1657,21 +1664,23 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
     // Return the target touch or if the target touch was not found in the event
     // returns the coordinates of the first touch
-    return this.viewOptions.vertical ? touches[touchIndex].clientY : touches[touchIndex].clientX;
+    return this.viewOptions.vertical || this.viewOptions.rotate !== 0 ? touches[touchIndex].clientY : touches[touchIndex].clientX;
   }
 
   // Compute the event position depending on whether the slider is horizontal or vertical
   private getEventPosition(event: MouseEvent|TouchEvent, targetTouchId?: number): number {
     const sliderElementBoundingRect: ClientRect = this.elementRef.nativeElement.getBoundingClientRect();
 
-    const sliderPos: number = this.viewOptions.vertical ?
+    const sliderPos: number = this.viewOptions.vertical || this.viewOptions.rotate !== 0 ?
       sliderElementBoundingRect.bottom : sliderElementBoundingRect.left;
     let eventPos: number = 0;
-    if (this.viewOptions.vertical) {
+
+    if (this.viewOptions.vertical || this.viewOptions.rotate !== 0) {
       eventPos = -this.getEventXY(event, targetTouchId) + sliderPos;
     } else {
       eventPos = this.getEventXY(event, targetTouchId) - sliderPos;
     }
+
     return eventPos * this.viewOptions.scale - this.handleHalfDimension;
   }
 
@@ -2020,6 +2029,10 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       actions.RIGHT = decreaseStep;
       // right to left and vertical means we also swap up and down
       if (this.viewOptions.vertical) {
+        actions.UP = decreaseStep;
+        actions.DOWN = increaseStep;
+      }
+      if (this.viewOptions.rotate !== 0) {
         actions.UP = decreaseStep;
         actions.DOWN = increaseStep;
       }
