@@ -402,7 +402,8 @@ export class SliderComponent
   // OnChanges interface
   public ngOnChanges(changes: SimpleChanges): void {
     // Always apply options first
-    if (!ValueHelper.isNullOrUndefined(changes.options)) {
+    if (!ValueHelper.isNullOrUndefined(changes.options) &&
+     JSON.stringify(changes.options.previousValue) !== JSON.stringify(changes.options.currentValue)) {
       this.onChangeOptions();
     }
 
