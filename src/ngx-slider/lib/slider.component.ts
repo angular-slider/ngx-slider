@@ -2408,11 +2408,7 @@ export class SliderComponent
       actions.LEFT = increaseStep;
       actions.RIGHT = decreaseStep;
       // right to left and vertical means we also swap up and down
-      if (this.viewOptions.vertical) {
-        actions.UP = decreaseStep;
-        actions.DOWN = increaseStep;
-      }
-      if (this.viewOptions.rotate !== 0) {
+      if (this.viewOptions.vertical || this.viewOptions.rotate !== 0) {
         actions.UP = decreaseStep;
         actions.DOWN = increaseStep;
       }

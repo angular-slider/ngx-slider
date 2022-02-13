@@ -242,8 +242,8 @@ export class Options {
     so that the slider is rendered properly and the events are handled correctly. */
   scale?: number = 1;
 
-  /** If you display the slider in an element that uses transform: rotate(90deg), set the rotate value to 90deg
-   so that the slider is rendered properly and the events are handled correctly. */
+  /** If you display the slider in an element that uses transform: rotate(90deg), set the rotate value to 90
+   so that the slider is rendered properly and the events are handled correctly. Value is in degrees. */
   rotate?: number = 0;
 
   /** Set to true to force the value(s) to be rounded to the step, even when modified from the outside.
