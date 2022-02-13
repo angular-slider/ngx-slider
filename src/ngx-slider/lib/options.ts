@@ -20,6 +20,7 @@ export type TranslateFunction = (value: number, label: LabelType) => string;
 export type CombineLabelsFunction = (minLabel: string, maxLabel: string) => string;
 /** Function to provide legend  */
 export type GetLegendFunction = (value: number) => string;
+export type GetStepLegendFunction = (step: CustomStepDefinition) => string;
 
 /** Function converting slider value to slider position */
 export type ValueToPositionFunction = (val: number, minVal: number, maxVal: number) => number;
@@ -95,6 +96,10 @@ export class Options {
      the corresponding tick.You can also directly provide the legend values
      in the stepsArray option. */
   getLegend?: GetLegendFunction = null;
+
+   /** Use to display a custom legend of a stepItem from stepsArray.
+    It will be the same as getLegen but for stepsArray. */
+  getStepLegend?: GetStepLegendFunction = null;
 
   /** If you want to display a slider with non linear/number steps.
      Just pass an array with each slider value and that's it; the floor, ceil and step settings
