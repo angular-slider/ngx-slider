@@ -23,7 +23,7 @@ import {
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { Subject, Subscription } from 'rxjs';
-import { distinctUntilChanged, filter, throttleTime, tap } from 'rxjs/operators';
+import { distinctUntilChanged, filter } from 'rxjs/operators';
 
 import { supportsPassiveEvents } from 'detect-passive-events';
 
@@ -348,8 +348,8 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
   public ngAfterViewInit(): void {
     this.applyOptions();
 
-    this.subscribeInputModelChangeSubject(this.viewOptions.inputEventsInterval);
-    this.subscribeOutputModelChangeSubject(this.viewOptions.outputEventsInterval);
+    this.subscribeInputModelChangeSubject();
+    this.subscribeOutputModelChangeSubject();
 
     // Once we apply options, we need to normalise model values for the first time
     this.renormaliseModelValues();
@@ -457,27 +457,21 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     this.calculateViewDimensionsAndDetectChanges();
   }
 
-  private subscribeInputModelChangeSubject(interval?: number): void {
+  private subscribeInputModelChangeSubject(): void {
     this.inputModelChangeSubscription = this.inputModelChangeSubject
     .pipe(
       distinctUntilChanged(ModelChange.compare),
       // Hack to reset the status of the distinctUntilChanged() - if a "fake" event comes through with forceChange=true,
       // we forcefully by-pass distinctUntilChanged(), but otherwise drop the event
-      filter((modelChange: InputModelChange) => !modelChange.forceChange && !modelChange.internalChange),
-      (!ValueHelper.isNullOrUndefined(interval))
-          ? throttleTime(interval, undefined, { leading: true, trailing: true})
-          : tap(() => {}) // no-op
+      filter((modelChange: InputModelChange) => !modelChange.forceChange && !modelChange.internalChange)
     )
     .subscribe((modelChange: InputModelChange) => this.applyInputModelChange(modelChange));
   }
 
-  private subscribeOutputModelChangeSubject(interval?: number): void {
+  private subscribeOutputModelChangeSubject(): void {
     this.outputModelChangeSubscription = this.outputModelChangeSubject
       .pipe(
-        distinctUntilChanged(ModelChange.compare),
-        (!ValueHelper.isNullOrUndefined(interval))
-          ? throttleTime(interval, undefined, { leading: true, trailing: true})
-          : tap(() => {}) // no-op
+        distinctUntilChanged(ModelChange.compare)
       )
       .subscribe((modelChange: OutputModelChange) => this.publishOutputModelChange(modelChange));
   }
@@ -754,9 +748,6 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
       return;
     }
 
-    const previousInputEventsInterval: number = this.viewOptions.inputEventsInterval;
-    const previousOutputEventsInterval: number = this.viewOptions.outputEventsInterval;
-
     const previousOptionsInfluencingEventBindings: boolean[] = this.getOptionsInfluencingEventBindings(this.viewOptions);
 
     this.applyOptions();
@@ -765,16 +756,6 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
     // Avoid re-binding events in case nothing changes that can influence it
     // It makes it possible to change options while dragging the slider
     const rebindEvents: boolean = !ValueHelper.areArraysEqual(previousOptionsInfluencingEventBindings, newOptionsInfluencingEventBindings);
-
-    if (previousInputEventsInterval !== this.viewOptions.inputEventsInterval) {
-      this.unsubscribeInputModelChangeSubject();
-      this.subscribeInputModelChangeSubject(this.viewOptions.inputEventsInterval);
-    }
-
-    if (previousOutputEventsInterval !== this.viewOptions.outputEventsInterval) {
-      this.unsubscribeInputModelChangeSubject();
-      this.subscribeInputModelChangeSubject(this.viewOptions.outputEventsInterval);
-    }
 
     // With new options, we need to re-normalise model values if necessary
     this.renormaliseModelValues();
@@ -1850,10 +1831,10 @@ export class SliderComponent implements OnInit, AfterViewInit, OnChanges, OnDest
 
       if (CompatibilityHelper.isTouchEvent(event)) {
         this.onMoveEventListener = this.eventListenerHelper.attachPassiveEventListener(
-          document, 'touchmove', onMoveCallback, this.viewOptions.touchEventsInterval);
+          document, 'touchmove', onMoveCallback);
       } else {
         this.onMoveEventListener = this.eventListenerHelper.attachEventListener(
-          document, 'mousemove', onMoveCallback, this.viewOptions.mouseEventsInterval);
+          document, 'mousemove', onMoveCallback);
       }
     }
 
