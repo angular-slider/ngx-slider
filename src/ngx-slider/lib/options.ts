@@ -109,7 +109,7 @@ export class Options {
   getLegend?: GetLegendFunction = null;
 
    /** Use to display a custom legend of a stepItem from stepsArray.
-    It will be the same as getLegen but for stepsArray. */
+    It will be the same as getLegend but for stepsArray. */
   getStepLegend?: GetStepLegendFunction = null;
 
   /** If you want to display a slider with non linear/number steps.
