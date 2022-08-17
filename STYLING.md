@@ -60,7 +60,7 @@ The hierarchy slider elements and their CSS classes is:
        - `ngx-slider-pointer-max` is applied to high pointer
     * `ngx-slider-bubble` class is applied to all labels:
        - `ngx-slider-floor` class is applied to floor label
-       - `ngx-slider-ceil` class is applied to floor label
+       - `ngx-slider-ceil` class is applied to ceil label
        - `ngx-slider-model-value` class is applied to low pointer label
        - `ngx-slider-model-high` class is applied to high pointer label
        - `ngx-slider-combined` class is appied to combined label
