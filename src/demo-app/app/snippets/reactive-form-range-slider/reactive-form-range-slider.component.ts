@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormControl } from '@angular/forms';
 import { Options } from '@local/ngx-slider';
 
 @Component({
@@ -7,8 +7,8 @@ import { Options } from '@local/ngx-slider';
   templateUrl: './reactive-form-range-slider.component.html'
 })
 export class ReactiveFormRangeSliderComponent {
-  sliderForm: FormGroup = new FormGroup({
-    sliderControl: new FormControl([20, 80])
+  sliderForm: UntypedFormGroup = new UntypedFormGroup({
+    sliderControl: new UntypedFormControl([20, 80])
   });
   options: Options = {
     floor: 0,

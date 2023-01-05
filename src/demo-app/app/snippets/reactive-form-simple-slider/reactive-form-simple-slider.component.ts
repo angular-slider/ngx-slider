@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { Options } from '@local/ngx-slider';
 
 @Component({
@@ -7,7 +7,7 @@ import { Options } from '@local/ngx-slider';
   templateUrl: './reactive-form-simple-slider.component.html'
 })
 export class ReactiveFormSimpleSliderComponent {
-  sliderControl: FormControl = new FormControl(100);
+  sliderControl: UntypedFormControl = new UntypedFormControl(100);
 
   options: Options = {
     floor: 0,

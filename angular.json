@@ -111,7 +111,6 @@
       }
     }
   },
-  "defaultProject": "ngx-slider-demo-app",
   "cli": {
     "analytics": false
   }
