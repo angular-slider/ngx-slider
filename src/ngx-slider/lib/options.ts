@@ -62,7 +62,7 @@ export class Options {
 
   /** Step between each value.
     Not applicable when using stepsArray. */
-  step?: number = null;
+  step?: number = 1;
 
   /** The minimum range authorized on the slider.
     Applies to range slider only.
