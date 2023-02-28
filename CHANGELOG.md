@@ -1,3 +1,9 @@
+# 15.0.X
+ * add support for Angular 15
+
+# 14.0.X
+ * add support for Angular 14
+
 # 2.0.4
  * apply changes only when options object really changes
  * remove throttling options (#282, #283)
