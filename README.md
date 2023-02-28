@@ -10,10 +10,10 @@ Self-contained, mobile friendly slider component for Angular 6+ based on [angula
 
 ## Dependencies
 
-| ngx-slider-v2 | Angular     |
-| ------------- | ----------- |
-| 14.0.4        | 14.x.       |
-| 15.0.3        | 15.x.       |
+| ngx-slider-v2 | Angular     | RxJS        |
+| ------------- | ----------- | ----------- |
+| 14.0.4        | 14.x.       | rxjs 6.x    |
+| 15.0.3        | 15.x.       | rxjs 7.x    |
 
 ## Demos
 
@@ -42,11 +42,6 @@ Self-contained, mobile friendly slider component for Angular 6+ based on [angula
    ![vertical slider image](https://raw.githubusercontent.com/angular-slider/ngx-slider/master/assets/vertical-slider.png)
 
  * [More examples on official website](https://angular-slider.github.io/ngx-slider/demos)
-
-## Dependencies
-
- * Angular 6+
- * rxjs 6+
 
 ## Installation
 
