@@ -1,7 +1,10 @@
-# 15.0.X
+# 16.0.0
+ * add support for Angular 16
+
+# 15.0.0
  * add support for Angular 15
 
-# 14.0.X
+# 14.0.0
  * add support for Angular 14
 
 # 2.0.4
