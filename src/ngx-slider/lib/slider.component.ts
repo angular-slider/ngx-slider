@@ -18,6 +18,7 @@ import {
   SimpleChanges,
   forwardRef,
   NgZone,
+  ChangeDetectionStrategy,
 } from "@angular/core";
 
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
@@ -130,6 +131,7 @@ const NGX_SLIDER_CONTROL_VALUE_ACCESSOR: any = {
   styleUrls: ["./slider.component.scss"],
   host: { class: "ngx-slider" },
   providers: [NGX_SLIDER_CONTROL_VALUE_ACCESSOR],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SliderComponent
   implements OnInit, AfterViewInit, OnChanges, OnDestroy, ControlValueAccessor
@@ -402,8 +404,11 @@ export class SliderComponent
   // OnChanges interface
   public ngOnChanges(changes: SimpleChanges): void {
     // Always apply options first
-    if (!ValueHelper.isNullOrUndefined(changes.options) &&
-     JSON.stringify(changes.options.previousValue) !== JSON.stringify(changes.options.currentValue)) {
+    if (
+      !ValueHelper.isNullOrUndefined(changes.options) &&
+      JSON.stringify(changes.options.previousValue) !==
+        JSON.stringify(changes.options.currentValue)
+    ) {
       this.onChangeOptions();
     }
 
