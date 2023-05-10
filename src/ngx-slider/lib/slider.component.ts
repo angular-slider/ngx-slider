@@ -131,6 +131,7 @@ const NGX_SLIDER_CONTROL_VALUE_ACCESSOR: any = {
   styleUrls: ["./slider.component.scss"],
   host: { class: "ngx-slider" },
   providers: [NGX_SLIDER_CONTROL_VALUE_ACCESSOR],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SliderComponent
   implements OnInit, AfterViewInit, OnChanges, OnDestroy, ControlValueAccessor
