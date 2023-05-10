@@ -37,7 +37,7 @@ function generateTemplate(templateFile, snippetsDir) {
     const styleFileContent = fs.readFileSync(path.resolve(snippetsDir, styleFile), { encoding: 'utf8' });
     styleNavHtml = navHtml(path.basename(styleFile), styleFileContent, 'scss');
   }
-  const fileNameAndPath = templateFile.split('/');
+  const fileNameAndPath = process.platform === "win32" ? templateFile.split('\\') : templateFile.split('/');
   const fileName = fileNameAndPath[fileNameAndPath.length -1];
   const navName = fileName.replace(/-/g,'').replace('.component','').replace('.template.html', 'Nav');
 

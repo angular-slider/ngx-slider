@@ -7,7 +7,7 @@ import { ElementLocation } from './element-location';
 import { ElementSize } from './element-size';
 
 class BaseMatcher {
-  constructor(private util: MatchersUtil, private customEqualityTesters: CustomEqualityTester[]) {}
+  constructor(private util: MatchersUtil) {}
 
   isWithinTolerance(actual: number, expected: number, tolerance: number): boolean {
     return Math.abs(actual - expected) <= tolerance;
@@ -15,8 +15,8 @@ class BaseMatcher {
 }
 
 class ApproximateLocationMatcher extends BaseMatcher {
-  constructor(util: MatchersUtil, customEqualityTesters: CustomEqualityTester[]) {
-    super(util, customEqualityTesters);
+  constructor(util: MatchersUtil) {
+    super(util);
   }
 
   compare(actual: ElementLocation, expected: ElementLocation, tolerance: number = 1): CustomMatcherResult {
@@ -37,8 +37,8 @@ class ApproximateLocationMatcher extends BaseMatcher {
 }
 
 class ApproximateSizeMatcher extends BaseMatcher {
-  constructor(util: MatchersUtil, customEqualityTesters: CustomEqualityTester[]) {
-    super(util, customEqualityTesters);
+  constructor(util: MatchersUtil) {
+    super(util);
   }
 
   compare(actual: ElementSize, expected: ElementSize, tolerance: number = 1): CustomMatcherResult {
@@ -59,8 +59,8 @@ class ApproximateSizeMatcher extends BaseMatcher {
 }
 
 export const approximateGeometryMatchers: CustomMatcherFactories = {
-  toBeApproximateLocation(util: MatchersUtil, customEqualityTesters: CustomEqualityTester[]): CustomMatcher {
-    const matcher: ApproximateLocationMatcher = new ApproximateLocationMatcher(util, customEqualityTesters);
+  toBeApproximateLocation(util: MatchersUtil): CustomMatcher {
+    const matcher: ApproximateLocationMatcher = new ApproximateLocationMatcher(util);
     return {
       compare: (actual: ElementLocation, expected: ElementLocation, tolerance: number = 1): CustomMatcherResult => {
         return matcher.compare(actual, expected, tolerance);
@@ -68,8 +68,8 @@ export const approximateGeometryMatchers: CustomMatcherFactories = {
     };
   },
 
-  toBeApproximateSize(util: MatchersUtil, customEqualityTesters: CustomEqualityTester[]): CustomMatcher {
-    const matcher: ApproximateSizeMatcher = new ApproximateSizeMatcher(util, customEqualityTesters);
+  toBeApproximateSize(util: MatchersUtil): CustomMatcher {
+    const matcher: ApproximateSizeMatcher = new ApproximateSizeMatcher(util);
     return {
       compare: (actual: ElementSize, expected: ElementSize, tolerance: number = 1): CustomMatcherResult => {
         return matcher.compare(actual, expected, tolerance);

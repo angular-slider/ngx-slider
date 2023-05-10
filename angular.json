@@ -76,7 +76,7 @@
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
             "main": "src/demo-app/test.ts",
-            "polyfills": "src/demo-app/polyfills.ts",
+            "polyfills": ["zone.js", "zone.js/testing", "src/demo-app/polyfills.ts"],
             "tsConfig": "src/demo-app/tsconfig.spec.json",
             "karmaConfig": "src/demo-app/karma.conf.js",
             "styles": [

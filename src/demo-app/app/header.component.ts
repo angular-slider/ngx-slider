@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router, RouterEvent, NavigationEnd } from '@angular/router';
+import { Router, NavigationEnd, Event } from '@angular/router';
 
 import { environment } from '../environments/environment';
 
@@ -20,7 +20,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.urlSub = this.router.events.subscribe(
-      (event: RouterEvent) => {
+      (event: Event) => {
         if (event instanceof NavigationEnd) {
           this.atRootUrl = event.url === '/' || event.url === '/home';
           this.atDocsUrl = event.url.indexOf('/docs') === 0;
