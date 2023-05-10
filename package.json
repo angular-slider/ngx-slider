@@ -1,6 +1,6 @@
 {
   "name": "ngx-slider-v2",
-  "version": "16.0.0",
+  "version": "16.0.1",
   "private": true,
   "description": "Self-contained, mobile friendly slider component for Angular 14/15/16 based on angularjs-slider",
   "keywords": [

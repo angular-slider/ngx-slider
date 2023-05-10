@@ -1,3 +1,6 @@
+# 16.0.1/15.0.5/14.0.5
+ * Fix performance with high ceil values
+
 # 16.0.0
  * add support for Angular 16
 
