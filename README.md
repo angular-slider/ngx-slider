@@ -12,9 +12,9 @@ Self-contained, mobile friendly slider component for Angular 6+ based on [angula
 
 | ngx-slider-v2 | Angular     | RxJS        |
 | ------------- | ----------- | ----------- |
-| 14.0.4        | 14.x.       | rxjs 6.x    |
-| 15.0.4        | 15.x.       | rxjs 7.x    |
-| 16.0.0        | 16.x.       | rxjs 7.x    |
+| 14.x          | 14.x        | 6.x         |
+| 15.x          | 15.x        | 7.x         |
+| 16.x          | 16.x        | 7.x         |
 
 ## Demos
 
