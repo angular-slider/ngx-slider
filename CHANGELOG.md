@@ -1,3 +1,7 @@
+# 16.0.2/15.0.6/14.0.6
+ * Fix typo in slider tick's scss
+ * Added new 'AllowUnsafeHtmlInSlider' option
+
 # 16.0.1/15.0.5/14.0.5
  * Fix performance with high ceil values
 
