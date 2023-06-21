@@ -1,3 +1,4 @@
+import { InjectionToken } from "@angular/core";
 import { PointerType } from "./pointer-type";
 
 /** Label type */
@@ -108,7 +109,7 @@ export class Options {
      in the stepsArray option. */
   getLegend?: GetLegendFunction = null;
 
-   /** Use to display a custom legend of a stepItem from stepsArray.
+  /** Use to display a custom legend of a stepItem from stepsArray.
     It will be the same as getLegend but for stepsArray. */
   getStepLegend?: GetStepLegendFunction = null;
 
@@ -291,14 +292,14 @@ export class Options {
   selectionBarGradient?: { from: string; to: string } = null;
 
   /** Use to add a label directly to the slider for accessibility. Adds the aria-label attribute. */
-  ariaLabel?: string = 'ngx-slider';
+  ariaLabel?: string = "ngx-slider";
 
   /** Use instead of ariaLabel to reference the id of an element which will be used to label the slider.
     Adds the aria-labelledby attribute. */
   ariaLabelledBy?: string = null;
 
   /** Use to add a label directly to the slider range for accessibility. Adds the aria-label attribute. */
-  ariaLabelHigh?: string = 'ngx-slider-max';
+  ariaLabelHigh?: string = "ngx-slider-max";
 
   /** Use instead of ariaLabelHigh to reference the id of an element which will be used to label the slider range.
     Adds the aria-labelledby attribute. */
@@ -316,3 +317,7 @@ export class Options {
   /** Enable/disable CSS animations while moving the slider */
   animateOnMove?: boolean = false;
 }
+
+export const AllowUnsafeHtmlInSlider = new InjectionToken<boolean>(
+  "AllowUnsafeHtmlInSlider"
+);

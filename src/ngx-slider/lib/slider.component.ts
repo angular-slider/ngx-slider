@@ -19,6 +19,8 @@ import {
   forwardRef,
   NgZone,
   ChangeDetectionStrategy,
+  Inject,
+  Optional,
 } from "@angular/core";
 
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
@@ -34,6 +36,7 @@ import {
   ValueToPositionFunction,
   PositionToValueFunction,
   CustomStepDefinition,
+  AllowUnsafeHtmlInSlider,
 } from "./options";
 import { PointerType } from "./pointer-type";
 import { ChangeContext } from "./change-context";
@@ -344,7 +347,8 @@ export class SliderComponent
     private renderer: Renderer2,
     private elementRef: ElementRef,
     private changeDetectionRef: ChangeDetectorRef,
-    private zone: NgZone
+    private zone: NgZone,
+    @Inject(AllowUnsafeHtmlInSlider) @Optional() public allowUnsafeHtmlInSlider: boolean
   ) {
     this.eventListenerHelper = new EventListenerHelper(this.renderer);
   }

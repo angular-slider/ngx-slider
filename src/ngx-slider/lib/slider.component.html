@@ -34,6 +34,7 @@
     <ngx-slider-tooltip-wrapper [template]="tooltipTemplate" [tooltip]="t.tooltip" [placement]="t.tooltipPlacement"></ngx-slider-tooltip-wrapper>
     <ngx-slider-tooltip-wrapper *ngIf="t.value != null" class="ngx-slider-span ngx-slider-tick-value"
         [template]="tooltipTemplate" [tooltip]="t.valueTooltip" [placement]="t.valueTooltipPlacement" [content]="t.value"></ngx-slider-tooltip-wrapper>
-    <span *ngIf="t.legend != null" class="ngx-slider-span ngx-slider-tick-legend" [innerHTML]="t.legend"></span>
+    <span *ngIf="t.legend != null && allowUnsafeHtmlInSlider === false" class="ngx-slider-span ngx-slider-tick-legend" [innerText]="t.legend"></span>
+    <span *ngIf="t.legend != null && (allowUnsafeHtmlInSlider == null || allowUnsafeHtmlInSlider)" class="ngx-slider-span ngx-slider-tick-legend" [innerHTML]="t.legend"></span>
   </span>
 </span>
