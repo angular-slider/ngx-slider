@@ -168,7 +168,7 @@
       position: absolute;
       top: 0;
       left: 0;
-      margin-left: math.div($handleSize, 2) - math-div($ticksWidth, 2); // for centering
+      margin-left: math.div($handleSize, 2) - math.div($ticksWidth, 2); // for centering
 
       &.ngx-slider-selected {
         background: $selectedTicksColor;
