@@ -9,13 +9,13 @@
        sets up router config so that original HTML URLs will map to the generated components.
  */
 
-const path = require('path');
-const mkdirp = require('mkdirp');
-const fs = require('fs');
-const rimraf = require('rimraf');
-const typedoc = require('typedoc');
+const path = require("path");
+const mkdirp = require("mkdirp");
+const fs = require("fs");
+const rimraf = require("rimraf");
+const typedoc = require("typedoc");
 
-const utils = require('./utils.js');
+const utils = require("./utils.js");
 
 /** Run typedoc over library public API files to generate HTML files from customised typedoc theme
  * The resulting files are not really useful on their own; they will be used later to generate demo app code
@@ -27,16 +27,22 @@ async function generateTypedocDocs(typedocDocsDir) {
   // // const files = publicApiConfig.exports
   // //   .map(exportDef => path.resolve(__dirname, `../src/ngx-slider/lib/${exportDef.file}.ts`));
 
-  const themeDir = path.resolve(__dirname, '../typedoc-theme');
+  const themeDir = path.resolve(__dirname, "../typedoc-theme");
 
   // HACK: When Typedoc finds a README.md file, it uses it to generate content for the index page of documentation
   // This is not very helpful, as it repeats the same stuff that's already shown on Github and NPM
   // So instead, replace the README.md with our own file
-  const apiDocsReadmeFile = path.resolve(__dirname, '../typedoc-theme/README.md');
+  const apiDocsReadmeFile = path.resolve(
+    __dirname,
+    "../typedoc-theme/README.md"
+  );
   utils.copyReadmeMd(apiDocsReadmeFile);
 
+  // TODO - restore doc generation
+  const app = await typedoc.Application.bootstrap({
+    entryPoints: ["src/ngx-slider/lib/public_api.ts"],
+  });
 
-  const app = new typedoc.Application();
   app.options.addReader(new typedoc.TSConfigReader());
   // app.options.({paths: {"@local/ngx-slider": ["src/ngx-slider/lib/public_api.ts"]}})
   // console.log(app.options.setCompilerOptions({paths: {"@local/ngx-slider": ["src/ngx-slider/lib/public_api.ts"]}}));
@@ -49,34 +55,48 @@ async function generateTypedocDocs(typedocDocsDir) {
   //   excludeExternals: true,
   //   theme: themeDir
   // });
-  app.bootstrap({
-    entryPoints:['src/ngx-slider/lib/public_api.ts'],
-  })
-  const project = app.convert();
-  await app.generateDocs(project,typedocDocsDir );
+  // const project = await app.convert();
+  // await app.generateDocs(project, typedocDocsDir);
   // HACK: restore the README.md to original
-  const mainReadmeFile = path.resolve(__dirname, '../README.md');
+  const mainReadmeFile = path.resolve(__dirname, "../README.md");
   utils.copyReadmeMd(mainReadmeFile);
-
 }
 
 /** Convert typedoc HTML file into Angular component for use in demo app */
-function generateComponent(typedocHtmlFile, relativeTypedocHtmlFile, demoAppDocsModuleDir) {
+function generateComponent(
+  typedocHtmlFile,
+  relativeTypedocHtmlFile,
+  demoAppDocsModuleDir
+) {
   const directory = path.dirname(relativeTypedocHtmlFile);
   mkdirp.sync(path.join(demoAppDocsModuleDir, directory));
 
   const fileName = path.basename(relativeTypedocHtmlFile);
-  const componentHtmlFileName = fileName.replace(/\.html$/, '.component.html');
+  const componentHtmlFileName = fileName.replace(/\.html$/, ".component.html");
 
-  const componentHtmlFile = path.join(demoAppDocsModuleDir, directory, componentHtmlFileName);
-  const typedocHtmlFileContent = fs.readFileSync(typedocHtmlFile, { encoding: 'utf8' });
-  const escapedHtmlFileContent = fixRouterFragments(fixReadmeMdLinks(escapeHtmlForAngular(typedocHtmlFileContent)));
+  const componentHtmlFile = path.join(
+    demoAppDocsModuleDir,
+    directory,
+    componentHtmlFileName
+  );
+  const typedocHtmlFileContent = fs.readFileSync(typedocHtmlFile, {
+    encoding: "utf8",
+  });
+  const escapedHtmlFileContent = fixRouterFragments(
+    fixReadmeMdLinks(escapeHtmlForAngular(typedocHtmlFileContent))
+  );
 
-  fs.writeFileSync(componentHtmlFile, escapedHtmlFileContent, { encoding: 'utf8' });
+  fs.writeFileSync(componentHtmlFile, escapedHtmlFileContent, {
+    encoding: "utf8",
+  });
 
-  const componentFileName = fileName.replace(/\.html$/, '.component');
-  const componentTsFileName = componentFileName + '.ts';
-  const componentTsFile = path.join(demoAppDocsModuleDir, directory, componentTsFileName);
+  const componentFileName = fileName.replace(/\.html$/, ".component");
+  const componentTsFileName = componentFileName + ".ts";
+  const componentTsFile = path.join(
+    demoAppDocsModuleDir,
+    directory,
+    componentTsFileName
+  );
 
   const componentName = generateComponentName(fileName);
   const componentTsFileContent = `import { Component } from '@angular/core';
@@ -86,13 +106,15 @@ function generateComponent(typedocHtmlFile, relativeTypedocHtmlFile, demoAppDocs
 })
 export class ${componentName} { }
 `;
-  fs.writeFileSync(componentTsFile, componentTsFileContent, { encoding: 'utf8' });
+  fs.writeFileSync(componentTsFile, componentTsFileContent, {
+    encoding: "utf8",
+  });
 
   // Return metadata for generating module file
   return {
     name: componentName,
     importPath: `${directory}/${componentFileName}`, // unlike system paths, this is a typescript import path, so always use /
-    route: relativeTypedocHtmlFile // route is based on original file name
+    route: relativeTypedocHtmlFile, // route is based on original file name
   };
 }
 
@@ -111,30 +133,39 @@ function fixReadmeMdLinks(html) {
  * However, annoyingly, fragment links (/target.html#fragment) need special treatment
  *  `routerLink="/target.html#fragment"` needs to become `routerLink="/target.html" fragment="fragment"` */
 function fixRouterFragments(html) {
-  return html.replace(/routerLink="([^"]+)#([^"]+)"/g, 'routerLink="$1" fragment="$2"');
+  return html.replace(
+    /routerLink="([^"]+)#([^"]+)"/g,
+    'routerLink="$1" fragment="$2"'
+  );
 }
 
 /** Generate component name from HTML file name
  * It preserves all except for _ and . characters that get added by typedoc
  * The generated named is still weird, but it doesn't matter */
 function generateComponentName(fileName) {
-  const bareName = fileName.replace(/\.html$/, '').replace(/[._]/g, '');
-  return bareName.charAt(0).toUpperCase() + bareName.substr(1) + 'Component';
+  const bareName = fileName.replace(/\.html$/, "").replace(/[._]/g, "");
+  return bareName.charAt(0).toUpperCase() + bareName.substr(1) + "Component";
 }
 
 /** Generate module file based on metadata from generated components */
 function generateModuleFile(componentsMetadata, demoAppDocsModuleDir) {
   const imports = componentsMetadata
-    .map(componentMetadata => `import { ${componentMetadata.name} } from './${componentMetadata.importPath}';`)
-    .join('\n');
+    .map(
+      (componentMetadata) =>
+        `import { ${componentMetadata.name} } from './${componentMetadata.importPath}';`
+    )
+    .join("\n");
 
   const components = componentsMetadata
-    .map(componentMetadata => `    ${componentMetadata.name},`)
-    .join('\n');
+    .map((componentMetadata) => `    ${componentMetadata.name},`)
+    .join("\n");
 
   const routes = componentsMetadata
-    .map(componentMetadata => `    { path: 'docs/${componentMetadata.route}', component: ${componentMetadata.name} },`)
-    .join('\n');
+    .map(
+      (componentMetadata) =>
+        `    { path: 'docs/${componentMetadata.route}', component: ${componentMetadata.name} },`
+    )
+    .join("\n");
 
   const moduleTsFileContents = `import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
@@ -160,31 +191,39 @@ ${components}
 export class DocsModule { }
 `;
 
-  const moduleTsFile = path.join(demoAppDocsModuleDir, 'docs.module.ts');
-  fs.writeFileSync(moduleTsFile, moduleTsFileContents, { encoding: 'utf8' });
+  const moduleTsFile = path.join(demoAppDocsModuleDir, "docs.module.ts");
+  fs.writeFileSync(moduleTsFile, moduleTsFileContents, { encoding: "utf8" });
 }
 
-
-const typedocDocsDir = path.resolve(__dirname, '../docs');
+const typedocDocsDir = path.resolve(__dirname, "../docs");
 rimraf.sync(typedocDocsDir);
 mkdirp.sync(typedocDocsDir);
 generateTypedocDocs(typedocDocsDir)
-.then(() => {
-  const demoAppDocsModuleDir = path.resolve(__dirname, '../src/demo-app/app/docs');
-rimraf.sync(demoAppDocsModuleDir);
-mkdirp.sync(demoAppDocsModuleDir);
-const typedocHtmlFiles = utils.readdirRecursivelySync(typedocDocsDir)
-  .filter((file) => file.endsWith('.html'));
+  .then(() => {
+    const demoAppDocsModuleDir = path.resolve(
+      __dirname,
+      "../src/demo-app/app/docs"
+    );
+    rimraf.sync(demoAppDocsModuleDir);
+    mkdirp.sync(demoAppDocsModuleDir);
+    const typedocHtmlFiles = utils
+      .readdirRecursivelySync(typedocDocsDir)
+      .filter((file) => file.endsWith(".html"));
 
-const componentsMetadata = [];
+    const componentsMetadata = [];
 
-for (let typedocHtmlFile of typedocHtmlFiles) {
-  const relativeTypedocHtmlFile = path.relative(typedocDocsDir, typedocHtmlFile);
-  const componentMetadata = generateComponent(typedocHtmlFile, relativeTypedocHtmlFile, demoAppDocsModuleDir);
-  componentsMetadata.push(componentMetadata);
-}
-generateModuleFile(componentsMetadata, demoAppDocsModuleDir);
-})
-.catch(console.error);
-
-
+    for (let typedocHtmlFile of typedocHtmlFiles) {
+      const relativeTypedocHtmlFile = path.relative(
+        typedocDocsDir,
+        typedocHtmlFile
+      );
+      const componentMetadata = generateComponent(
+        typedocHtmlFile,
+        relativeTypedocHtmlFile,
+        demoAppDocsModuleDir
+      );
+      componentsMetadata.push(componentMetadata);
+    }
+    generateModuleFile(componentsMetadata, demoAppDocsModuleDir);
+  })
+  .catch(console.error);
