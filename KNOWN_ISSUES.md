@@ -31,7 +31,7 @@ Therefore, for the present and near future, Angular Universal will not be suppor
 
 ## Using CSS transform: scale makes slider render incorrectly 
 
-Using `transform : scale(N)` in css will mess with the calculation of the slider. You can workaround this by setting the scale in ngx-slider options as the opposite value of the scale set in css. [See Issue.](https://github.com/danisss9/ngx-slider/issues/2)
+Using `transform : scale(N)` in css will mess with the calculation of the slider. You can workaround this by setting the scale in ngx-slider options as the opposite value of the scale set in css.
 
 ## Compatibility with Angular's recommended Content Security Policy (CSP)
 
