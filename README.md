@@ -1,6 +1,5 @@
 # ngx-slider
 [![npm version](https://badge.fury.io/js/%40angular-slider%2Fngx-slider.svg)](https://badge.fury.io/js/%40angular-slider%2Fngx-slider)
-[![Travis CI Build](https://travis-ci.org/angular-slider/ngx-slider.svg?branch=master)](https://travis-ci.org/angular-slider/ngx-slider)
 
 Website: https://angular-slider.github.io/ngx-slider/
 

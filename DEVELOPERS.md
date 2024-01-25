@@ -45,9 +45,9 @@ npm run lint
 
 Note: Currently (v1.2.1) most functionality is tested with e2e tests. This is not ideal for development, as running through the whole suite takes quite a long time. The plan for the future is to add more unit tests, so that development is easier.
 
-# Travis CI
+# Continuous Integration (CI)
 
-The project is also set up to use Travis CI, which runs the script:
+The project is also set up to enable continuous integration, although there is currently no active service used for it (it used to be Travis CI until the free tier was disestablished):
 ```
 npm run ci
 ```
