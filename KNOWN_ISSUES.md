@@ -29,3 +29,10 @@ Unfortunately, there is no easy fix for this, other than re-writing all of the l
 
 Therefore, for the present and near future, Angular Universal will not be supported.
 
+## Using CSS transform: scale makes slider render incorrectly 
+
+Using `transform : scale(N)` in css will mess with the calculation of the slider. You can workaround this by setting the scale in ngx-slider options as the opposite value of the scale set in css. [See Issue.](https://github.com/danisss9/ngx-slider/issues/2)
+
+## Compatibility with Angular's recommended Content Security Policy (CSP)
+
+Ngx-Slider makes use of innerHTML which means that sites that make use of a Content Security Policy (CSP) throw an exceptions. To fix this you can set the value of the `AllowUnsafeHtmlInSlider` provider in your app.module to `false`. Note that this will prevent you from customizing labels using HTML.

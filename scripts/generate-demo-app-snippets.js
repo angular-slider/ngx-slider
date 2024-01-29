@@ -25,18 +25,21 @@ function generateTemplate(templateFile, snippetsDir) {
   const sectionIdTemplateFileContent = fs.readFileSync(path.resolve(snippetsDir, sectionIdTemplateFile), { encoding: 'utf8' }).trim();
 
   const templateFileContent = fs.readFileSync(path.resolve(snippetsDir, templateFile), { encoding: 'utf8' });
-  const templateTabHtml = tabHtml(path.basename(outputTemplateFile), templateFileContent, 'html');
+  const templateNavHtml = navHtml(path.basename(outputTemplateFile), templateFileContent, 'html');
 
   let codeFileContent = fs.readFileSync(path.resolve(snippetsDir, codeFile), { encoding: 'utf8' });
   // The only modification to the source file is to remove the @local prefix from slider import
   codeFileContent = codeFileContent.replace(/@local\/ngx-slider/g, "@angular-slider/ngx-slider");
-  const codeTabHtml = tabHtml(path.basename(codeFile), codeFileContent, 'typescript');
+  const codeNavHtml = navHtml(path.basename(codeFile), codeFileContent, 'typescript');
 
-  let styleTabHtml = '';
+  let styleNavHtml = '';
   if (fs.existsSync(path.resolve(snippetsDir, styleFile))) {
     const styleFileContent = fs.readFileSync(path.resolve(snippetsDir, styleFile), { encoding: 'utf8' });
-    styleTabHtml = tabHtml(path.basename(styleFile), styleFileContent, 'scss');
+    styleNavHtml = navHtml(path.basename(styleFile), styleFileContent, 'scss');
   }
+  const fileNameAndPath = process.platform === "win32" ? templateFile.split('\\') : templateFile.split('/');
+  const fileName = fileNameAndPath[fileNameAndPath.length -1];
+  const navName = fileName.replace(/-/g,'').replace('.component','').replace('.template.html', 'Nav');
 
   const outputHtmlFileContent = `
   <h2 class="snippet-title" id="${sectionIdTemplateFileContent}">${titleTemplateFileContent}
@@ -48,13 +51,14 @@ function generateTemplate(templateFile, snippetsDir) {
       ${templateFileContent}
     </div>
 
-    <ngb-tabset class="snippet-code-tabset">
-      ${codeTabHtml}
+    <ul ngbNav class="nav-tabs" #${navName}="ngbNav">
+      ${codeNavHtml}
 
-      ${templateTabHtml}
+      ${templateNavHtml}
 
-      ${styleTabHtml}
-    </ngb-tabset>
+      ${styleNavHtml}
+    </ul>
+    <div [ngbNavOutlet]="${navName}"></div>
   </div>
 </div>`;
 
@@ -73,12 +77,13 @@ function escapeBraces(html) {
 }
 
 /** Common HTML template for tab */
-function tabHtml(tabTitle, codeContent, codeLang) {
-  return `<ngb-tab title="${escape(tabTitle)}">
-      <ng-template ngbTabContent>
+function navHtml(tabTitle, codeContent, codeLang) {
+  return `<li ngbNavItem>
+      <a ngbNavLink>${escape(tabTitle)}</a>
+      <ng-template ngbNavContent>
         <pre class="language-${codeLang}"><code class="language-${codeLang}">${escapeBraces(highlight(codeContent, codeLang))}</code></pre>
       </ng-template>
-    </ngb-tab>`;
+    </li>`;
 }
 
 

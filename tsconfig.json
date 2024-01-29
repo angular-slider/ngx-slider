@@ -1,14 +1,12 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "outDir": "./dist/out-tsc",
-    "baseUrl": "src",
+    "baseUrl": ".",
     "sourceMap": true,
     "declaration": false,
     "moduleResolution": "node",
-    "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "target": "es5",
+    "target": "ES2022",
     "typeRoots": [
       "node_modules/@types"
     ],
@@ -17,7 +15,10 @@
       "dom"
     ],
     "paths": {
-      "@local/ngx-slider": [ "dist/ngx-slider" ]
-    }
+      "@local/ngx-slider": [
+        "src/ngx-slider/lib/public_api.ts"
+      ]
+    },
+    "useDefineForClassFields": false
   }
 }
