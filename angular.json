@@ -23,14 +23,7 @@
               "src/demo-app/styles.scss",
               "src/demo-app/docs-styles.scss"
             ],
-            "scripts": [],
-            "aot": false,
-            "vendorChunk": true,
-            "extractLicenses": false,
-            "buildOptimizer": false,
-            "sourceMap": true,
-            "optimization": false,
-            "namedChunks": true
+            "scripts": []
           },
           "configurations": {
             "production": {
@@ -87,6 +80,12 @@
             "scripts": [],
             "assets": ["src/demo-app/favicon.ico", "src/demo-app/assets"]
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": ["src/**/*.ts", "src/**/*.html"]
+          }
         }
       }
     },
@@ -110,14 +109,7 @@
     }
   },
   "cli": {
-    "analytics": false
-  },
-  "schematics": {
-    "@angular-eslint/schematics:application": {
-      "setParserOptionsProject": true
-    },
-    "@angular-eslint/schematics:library": {
-      "setParserOptionsProject": true
-    }
+    "analytics": false,
+    "schematicCollections": ["@angular-eslint/schematics"]
   }
 }
