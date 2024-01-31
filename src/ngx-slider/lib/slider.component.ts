@@ -98,7 +98,7 @@ class ModelChange extends ModelValues {
   // (sometimes there is a need to pass values through even though the model values have not changed)
   forceChange: boolean;
 
-  public static compare(x?: ModelChange, y?: ModelChange): boolean {
+  public static override compare(x?: ModelChange, y?: ModelChange): boolean {
     if (ValueHelper.isNullOrUndefined(x) && ValueHelper.isNullOrUndefined(y)) {
       return false;
     }

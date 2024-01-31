@@ -62,7 +62,7 @@ function generateTemplate(templateFile, snippetsDir) {
   </div>
 </div>`;
 
-  fs.writeFileSync(path.resolve(snippetsDir, outputTemplateFile), outputHtmlFileContent, { encoding: 'utf8' });
+  fs.writeFileSync(path.resolve(snippetsDir, outputTemplateFile), escapeAt(outputHtmlFileContent), { encoding: 'utf8' });
 }
 
 /** Generate highlighted source code using prism */
@@ -74,6 +74,10 @@ function highlight(code, lang) {
  * when we're not actually using them for bindings */
 function escapeBraces(html) {
   return html.replace(/([{}])/g, "{{ '$1' }}");
+}
+
+function escapeAt(html) {
+  return html.replace(/@/g, "&#64;");
 }
 
 /** Common HTML template for tab */
