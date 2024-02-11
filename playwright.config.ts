@@ -24,17 +24,26 @@ export default defineConfig({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
-    // baseURL: 'http://127.0.0.1:3000',
-
+    baseURL: 'http://localhost:4200',
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
+    /* Capture screenshots to see what happened in each test */
+    screenshot: 'on',
   },
+  /* Set test timeout to 30 seconds */
+  timeout: 30 * 1000,
 
   /* Configure projects for major browsers */
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      use: {
+        ...devices['Desktop Chrome'],
+        /* We need touch events for some tests */
+        hasTouch: true,
+        /* Uncomment for debugging */
+        //headless: false,
+      },
     },
 
     // {
