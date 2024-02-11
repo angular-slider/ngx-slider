@@ -65,7 +65,6 @@
     "@types/node": "^20.11.13",
     "@typescript-eslint/eslint-plugin": "6.19.0",
     "@typescript-eslint/parser": "6.19.0",
-    "codelyzer": "^6.0.2",
     "escape-html": "^1.0.3",
     "eslint": "^8.56.0",
     "jasmine-core": "~5.1.1",
