@@ -9,6 +9,17 @@ Self-contained, mobile friendly slider component for Angular 6+ based on [angula
 
 **NOTE:** The future of this project depends on willing volunteers. If you are able to help, please get in touch with the maintainers of this project on [dedicated Discord server](https://discord.gg/C6K9S9r7).
 
+## Dependencies
+
+| ngx-slider | Angular     | RxJS        | Actively supported |
+| ------------- | ----------- | ----------- | ------------------ |
+| 14.x          | 14.x        | 6.x         | No                 |
+| 15.x          | 15.x        | 7.x         | Yes                |
+| 16.x          | 16.x        | 7.x         | Yes                |
+| 17.x          | 17.x        | 7.x         | Yes                |
+
+*Note:* Like with Angular only the latest 3 versions are actively supported.
+
 ## Demos
 
  * Single slider - [StackBlitz](https://stackblitz.com/edit/ngx-slider-simple-slider-example?file=src%2Fapp%2Fapp.component.ts)
@@ -36,11 +47,6 @@ Self-contained, mobile friendly slider component for Angular 6+ based on [angula
    ![vertical slider image](https://raw.githubusercontent.com/angular-slider/ngx-slider/master/assets/vertical-slider.png)
 
  * [More examples on official website](https://angular-slider.github.io/ngx-slider/demos)
-
-## Dependencies
-
- * Angular 6+
- * rxjs 6+
 
 ## Installation
 

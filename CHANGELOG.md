@@ -1,3 +1,7 @@
+# 17.0.0
+ * added support for Angular 17
+ * added new 'AllowUnsafeHtmlInSlider' option
+
 # 2.0.4
  * apply changes only when options object really changes
  * remove throttling options (#282, #283)

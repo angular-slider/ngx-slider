@@ -18,10 +18,7 @@
             "main": "src/demo-app/main.ts",
             "polyfills": "src/demo-app/polyfills.ts",
             "tsConfig": "src/demo-app/tsconfig.app.json",
-            "assets": [
-              "src/demo-app/favicon.ico",
-              "src/demo-app/assets"
-            ],
+            "assets": ["src/demo-app/favicon.ico", "src/demo-app/assets"],
             "styles": [
               "src/demo-app/styles.scss",
               "src/demo-app/docs-styles.scss"
@@ -39,37 +36,41 @@
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": true,
               "namedChunks": false,
               "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true
             }
-          }
+          },
+          "defaultConfiguration": ""
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "ngx-slider-demo-app:build"
+            "buildTarget": "ngx-slider-demo-app:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "ngx-slider-demo-app:build:production"
+              "buildTarget": "ngx-slider-demo-app:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "ngx-slider-demo-app:build"
+            "buildTarget": "ngx-slider-demo-app:build"
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
             "main": "src/demo-app/test.ts",
-            "polyfills": "src/demo-app/polyfills.ts",
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing",
+              "src/demo-app/polyfills.ts"
+            ],
             "tsConfig": "src/demo-app/tsconfig.spec.json",
             "karmaConfig": "src/demo-app/karma.conf.js",
             "styles": [
@@ -77,22 +78,13 @@
               "src/demo-app/docs-styles.scss"
             ],
             "scripts": [],
-            "assets": [
-              "src/demo-app/favicon.ico",
-              "src/demo-app/assets"
-            ]
+            "assets": ["src/demo-app/favicon.ico", "src/demo-app/assets"]
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-            "tsConfig": [
-              "src/demo-app/tsconfig.app.json",
-              "src/demo-app/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "lintFilePatterns": ["src/**/*.ts", "src/**/*.html"]
           }
         }
       }
@@ -112,18 +104,12 @@
               "devServerTarget": "ngx-slider-demo-app:serve:production"
             }
           }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": "e2e/tsconfig.e2e.json",
-            "exclude": [
-              "**/node_modules/**"
-            ]
-          }
         }
       }
     }
   },
-  "defaultProject": "ngx-slider-demo-app"
+  "cli": {
+    "analytics": false,
+    "schematicCollections": ["@angular-eslint/schematics"]
+  }
 }

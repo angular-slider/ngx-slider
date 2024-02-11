@@ -3,5 +3,5 @@
   <button type="button" class="btn btn-outline-primary" (click)="focusSlider(PointerType.Max)">Focus max pointer</button>
 </p>
 
-<ngx-slider [(value)]="minValue" [(highValue)]="maxValue" [options]="options" [triggerFocus]="triggerFocus"></ngx-slider>
+<ngx-slider [(value)]="minValue" [(highValue)]="maxValue" [options]="options" [triggerFocus]="$any(triggerFocus)"></ngx-slider>
 
