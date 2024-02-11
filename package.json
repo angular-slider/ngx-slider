@@ -24,7 +24,7 @@
   "scripts": {
     "prepare": "npm run prepare:lib && npm run prepare:demo-app",
     "prepare:lib": "node scripts/generate-lib-files.js",
-    "prepare:demo-app": "node scripts/generate-demo-app-snippets.js && node scripts/generate-demo-app-docs.js && node scripts/copy-bootstrap-icons.js",
+    "prepare:demo-app": "node scripts/generate-demo-app-snippets.js && node scripts/generate-demo-app-docs.js && node scripts/copy-assets-from-node-modules.js",
     "start": "npm run prepare && ng serve",
     "build": "npm run build:lib && npm run build:demo-app",
     "build:lib": "npm run prepare:lib && rimraf dist/ngx-slider && ng-packagr -p src/ngx-slider/ng-package.json && node scripts/bundle-scss.js",

@@ -1,2 +1,4 @@
-# boostrap-icons.svg is copied from node_nodules/ package
+# The following assets are copied from node_modules/ packages
 assets/bootstrap-icons.svg
+assets/bootstrap.min.css
+assets/prism.min.css
