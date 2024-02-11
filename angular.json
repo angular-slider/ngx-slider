@@ -81,6 +81,10 @@
             ],
             "tsConfig": "src/demo-app/tsconfig.spec.json",
             "karmaConfig": "src/demo-app/karma.conf.js",
+            "include": [
+              "../ngx-slider/**/**.spec.ts",
+              "../ngx-slider/**/**.d.ts"
+            ],
             "styles": [
               "src/demo-app/styles.scss"
             ],
