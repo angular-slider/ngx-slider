@@ -132,13 +132,16 @@ const NGX_SLIDER_CONTROL_VALUE_ACCESSOR: any = {
   selector: 'ngx-slider',
   templateUrl: './slider.component.html',
   styleUrls: ['./slider.component.scss'],
-  host: { class: 'ngx-slider' },
   providers: [NGX_SLIDER_CONTROL_VALUE_ACCESSOR],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SliderComponent
   implements OnInit, AfterViewInit, OnChanges, OnDestroy, ControlValueAccessor
 {
+  // Add ngx-slider class to the host element - this is static, should never change
+  @HostBinding('class.ngx-slider')
+  private sliderElementNgxSliderClass: boolean = true;
+
   // Model for low value of slider. For simple slider, this is the only input. For range slider, this is the low value.
   @Input()
   public value: number = null;
