@@ -9,6 +9,7 @@
 
 # dependencies
 /node_modules
+/scripts/scss-bundle-workspace/node_modules
 
 # github pages temporary directory
 /gh-pages

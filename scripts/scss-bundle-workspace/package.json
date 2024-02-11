@@ -1,0 +1,14 @@
+{
+  "name": "scss-bundle-workspace",
+  "version": "1.0.0",
+  "description": "Separate workspace for scss-bundle which unfortunately clashes with other packages in the main package.json file",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Piotr Dziwinski",
+  "license": "MIT",
+  "dependencies": {
+    "scss-bundle": "^3.1.2"
+  }
+}
