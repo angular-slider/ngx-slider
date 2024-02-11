@@ -955,7 +955,7 @@ export class SliderComponent
     this.updateDisabledState();
     this.updateAriaLabel();
     this.calculateViewDimensions();
-    // this.refocusPointerIfNeeded();
+    this.refocusPointerIfNeeded();
   }
 
   // Sets focus on the specified pointer
@@ -974,11 +974,10 @@ export class SliderComponent
 
   private refocusPointerIfNeeded(): void {
     if (!ValueHelper.isNullOrUndefined(this.currentFocusPointer)) {
-      this.onPointerFocus(this.currentFocusPointer);
       const element: SliderHandleDirective = this.getPointerElement(
         this.currentFocusPointer
       );
-      element.focus();
+      element.focusIfNeeded();
     }
   }
 

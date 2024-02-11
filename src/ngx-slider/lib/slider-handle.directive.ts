@@ -45,6 +45,12 @@ export class SliderHandleDirective extends SliderElementDirective {
     this.elemRef.nativeElement.focus();
   }
 
+  focusIfNeeded(): void {
+    if (document.activeElement !== this.elemRef.nativeElement) {
+      this.elemRef.nativeElement.focus();
+    }
+  }
+
   constructor(
     elemRef: ElementRef,
     renderer: Renderer2,
