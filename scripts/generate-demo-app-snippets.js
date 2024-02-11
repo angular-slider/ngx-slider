@@ -51,14 +51,14 @@ function generateTemplate(templateFile, snippetsDir) {
       ${templateFileContent}
     </div>
 
-    <ul ngbNav class="nav-tabs" #${navName}="ngbNav">
+    <ul ngbNav class="nav-tabs snippet-code-tabset" #${navName}="ngbNav">
       ${codeNavHtml}
 
       ${templateNavHtml}
 
       ${styleNavHtml}
     </ul>
-    <div [ngbNavOutlet]="${navName}"></div>
+    <div class="snippet-code-content" [ngbNavOutlet]="${navName}"></div>
   </div>
 </div>`;
 
