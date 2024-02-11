@@ -5,8 +5,19 @@
     "baseUrl": ".",
     "types": [],
     "paths": {
-      "@local/ngx-slider": ["../ngx-slider/lib/public_api.ts"]
+      "@local/ngx-slider": [
+        "../ngx-slider/lib/public_api.ts"
+      ]
     }
   },
-  "exclude": ["test.ts", "**/*.spec.ts"]
+  "files": [
+    "main.ts"
+  ],
+  "include": [
+    "**/*.d.ts"
+  ],
+  "exclude": [
+    "test.ts",
+    "**/*.spec.ts"
+  ]
 }
