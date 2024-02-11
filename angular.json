@@ -16,9 +16,14 @@
             "outputPath": "dist/demo-app",
             "index": "src/demo-app/index.html",
             "main": "src/demo-app/main.ts",
-            "polyfills": "src/demo-app/polyfills.ts",
+            "polyfills": [
+              "zone.js"
+            ],
             "tsConfig": "src/demo-app/tsconfig.app.json",
-            "assets": ["src/demo-app/favicon.ico", "src/demo-app/assets"],
+            "assets": [
+              "src/demo-app/favicon.ico",
+              "src/demo-app/assets"
+            ],
             "styles": [
               "src/demo-app/styles.scss",
               "src/demo-app/docs-styles.scss"
@@ -68,8 +73,7 @@
             "main": "src/demo-app/test.ts",
             "polyfills": [
               "zone.js",
-              "zone.js/testing",
-              "src/demo-app/polyfills.ts"
+              "zone.js/testing"
             ],
             "tsConfig": "src/demo-app/tsconfig.spec.json",
             "karmaConfig": "src/demo-app/karma.conf.js",
@@ -78,13 +82,19 @@
               "src/demo-app/docs-styles.scss"
             ],
             "scripts": [],
-            "assets": ["src/demo-app/favicon.ico", "src/demo-app/assets"]
+            "assets": [
+              "src/demo-app/favicon.ico",
+              "src/demo-app/assets"
+            ]
           }
         },
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
-            "lintFilePatterns": ["src/**/*.ts", "src/**/*.html"]
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
           }
         }
       }
@@ -110,6 +120,8 @@
   },
   "cli": {
     "analytics": false,
-    "schematicCollections": ["@angular-eslint/schematics"]
+    "schematicCollections": [
+      "@angular-eslint/schematics"
+    ]
   }
 }
