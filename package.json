@@ -77,12 +77,9 @@
     "mkdirp": "^3.0.1",
     "ng-packagr": "^17.1.2",
     "prismjs": "^1.29.0",
-    "protractor": "~7.0.0",
-    "protractor-console-plugin": "^0.1.1",
     "rimraf": "^5.0.5",
     "ts-node": "~10.9.2",
     "typedoc": "~0.25.7",
-    "typescript": "~5.2.2",
-    "webdriver-manager": "^12.1.9"
+    "typescript": "~5.2.2"
   }
 }
