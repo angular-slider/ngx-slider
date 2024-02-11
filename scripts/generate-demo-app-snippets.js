@@ -62,7 +62,7 @@ function generateTemplate(templateFile, snippetsDir) {
   </div>
 </div>`;
 
-  fs.writeFileSync(path.resolve(snippetsDir, outputTemplateFile), escapeAt(outputHtmlFileContent), { encoding: 'utf8' });
+  fs.writeFileSync(path.resolve(snippetsDir, outputTemplateFile), utils.escapeAtForAngular(outputHtmlFileContent), { encoding: 'utf8' });
 }
 
 /** Generate highlighted source code using prism */
@@ -70,22 +70,12 @@ function highlight(code, lang) {
   return prism.highlight(code.trim(), prism.languages[lang]);
 }
 
-/** We need to escape { and } in the source code because Angular will complain
- * when we're not actually using them for bindings */
-function escapeBraces(html) {
-  return html.replace(/([{}])/g, "{{ '$1' }}");
-}
-
-function escapeAt(html) {
-  return html.replace(/@/g, "&#64;");
-}
-
 /** Common HTML template for tab */
 function navHtml(tabTitle, codeContent, codeLang) {
   return `<li ngbNavItem>
       <a ngbNavLink>${escape(tabTitle)}</a>
       <ng-template ngbNavContent>
-        <pre class="language-${codeLang}"><code class="language-${codeLang}">${escapeBraces(highlight(codeContent, codeLang))}</code></pre>
+        <pre class="language-${codeLang}"><code class="language-${codeLang}">${utils.escapeBracesForAngular(highlight(codeContent, codeLang))}</code></pre>
       </ng-template>
     </li>`;
 }

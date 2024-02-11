@@ -1,4 +1,8 @@
 ::ng-deep {
+  main {
+    flex-grow: 1;
+  }
+
   .test-mode {
     /* Hide code snippets in test mode, so that we don't get the annoying scroll bar */
     .snippet-code-tabset {

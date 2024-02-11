@@ -1,6 +1,7 @@
 import { ExtraOptions, Routes } from '@angular/router';
 
 import { DemosComponent } from './demos.component';
+import { DocsComponent } from './docs.component';
 import { HomeComponent } from './home.component';
 import {
   CustomTicksLegendSliderComponent,
@@ -19,6 +20,7 @@ export const routerConfig: Routes = [
   { path: '', pathMatch: 'full', component: HomeComponent },
   { path: 'home', component: HomeComponent },
   { path: 'demos', component: DemosComponent },
+  { path: 'docs', component: DocsComponent },
   { path: 'api', redirectTo: 'docs' },
 
   // pages for e2e testing

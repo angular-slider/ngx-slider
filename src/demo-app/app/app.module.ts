@@ -10,6 +10,7 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './header.component';
 import { HomeComponent } from './home.component';
 import { DemosComponent } from './demos.component';
+import { DocsComponent } from './docs.component';
 import {
   AlphabetSliderComponent,
   CustomCombineLabelsFunctionSliderComponent,
@@ -68,6 +69,7 @@ import { routerConfig, routerOptions } from './app-router.config';
     HeaderComponent,
     HomeComponent,
     DemosComponent,
+    DocsComponent,
     AlphabetSliderComponent,
     CustomCombineLabelsFunctionSliderComponent,
     CustomDisplayFunctionSliderComponent,

@@ -25,5 +25,18 @@ function copyReadmeMd(sourceReadmeMd) {
   fs.writeFileSync(libReadmeFile, sourceReadme, {encoding: 'utf8'});
 }
 
+/** Escape { and } or otherwise Angular will complain when we're not actually using them for bindings */
+function escapeBracesForAngular(html) {
+  return html.replace(/([{}])/g, "{{ '$1' }}");
+}
+
+/** Escape at (@) character, which is also reserved in Angular templates now. */
+function escapeAtForAngular(html) {
+  return html.replace(/@/g, "&#64;");
+}
+
+
 exports.readdirRecursivelySync = readdirRecursivelySync;
 exports.copyReadmeMd = copyReadmeMd;
+exports.escapeBracesForAngular = escapeBracesForAngular;
+exports.escapeAtForAngular = escapeAtForAngular;
