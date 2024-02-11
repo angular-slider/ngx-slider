@@ -33,8 +33,8 @@
     "test": "npm run prepare && ng test",
     "test:once": "npm run prepare && ng test --watch=false",
     "lint": "npm run prepare && ng lint",
-    "e2e": "npm run prepare && ng e2e",
-    "ci": "npm run test:once && npm run e2e && npm run lint && npm run build:lib && npm run build:demo-app"
+    "e2e": "npm run prepare && playwright test",
+    "ci": "npm run test:once && playwright test && npm run lint && npm run build:lib && npm run build:demo-app"
   },
   "dependencies": {
     "@angular/animations": "^17.1.1",
@@ -61,6 +61,7 @@
     "@angular-eslint/template-parser": "17.2.1",
     "@angular/cli": "^17.1.1",
     "@angular/compiler-cli": "^17.1.1",
+    "@playwright/test": "^1.41.2",
     "@types/jasmine": "~5.1.4",
     "@types/node": "^20.11.13",
     "@typescript-eslint/eslint-plugin": "6.19.0",
