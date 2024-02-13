@@ -1,5 +1,5 @@
 import { test, Page, Locator } from '@playwright/test';
-import { expect, mouseDragRelative, touchDragRelative } from '../utils';
+import { expect, mouseDragRelative, touchDragRelative } from './utils';
 
 async function setUp(page: Page) {
   await page.setViewportSize({ width: 800, height: 600 });

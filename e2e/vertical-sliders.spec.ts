@@ -1,5 +1,5 @@
 import { test, Page, Locator } from '@playwright/test';
-import { expect, mouseDragRelative, touchDragRelative } from '../utils';
+import { expect, mouseDragRelative, touchDragRelative } from './utils';
 
 // There are multiple sliders on the vertical sliders page
 // These constants refer to the number of slider that they appear in the page left to right
