@@ -1,6 +1,6 @@
 import { Locator } from '@playwright/test';
 
-export async function mouseDragRelative(locator: Locator, offsetX: number, offsetY: number) {
+export async function mouseDragRelative(locator: Locator, options: {offsetX: number, offsetY: number}) {
   const page = locator.page();
   const box = await locator.boundingBox();
 
@@ -9,11 +9,11 @@ export async function mouseDragRelative(locator: Locator, offsetX: number, offse
 
   await page.mouse.move(centerX, centerY);
   await page.mouse.down({ button: 'left' });
-  await page.mouse.move(centerX + offsetX, centerY + offsetY);
+  await page.mouse.move(centerX + options.offsetX, centerY + options.offsetY);
   await page.mouse.up({ button: 'left' });
 }
 
-export async function touchDragRelative(locator: Locator, offsetX: number, offsetY: number) {
+export async function touchDragRelative(locator: Locator, options: {offsetX: number, offsetY: number}) {
   const page = locator.page();
   const box = await locator.boundingBox();
 
@@ -66,6 +66,6 @@ export async function touchDragRelative(locator: Locator, offsetX: number, offse
       });
       document.elementFromPoint(centerX + offsetX, centerY + offsetY).dispatchEvent(touchEndEvent);
     },
-    [centerX, centerY, offsetX, offsetY]
+    [centerX, centerY, options.offsetX, options.offsetY]
   );
 }

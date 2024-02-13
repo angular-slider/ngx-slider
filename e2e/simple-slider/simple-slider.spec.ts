@@ -35,12 +35,13 @@ function getValueInput(page: Page): Locator {
 }
 
 
-test('simple slider initial state', async ({ page }) => {
+test('simple slider initial state displays starting values and position elements correctly', async ({ page }) => {
   await setUp(page);
 
-  await expect(getSliderFloorLabel(page)).toHaveText('0', { useInnerText: true });
-  await expect(getSliderCeilLabel(page)).toHaveText('250', { useInnerText: true });
-  await expect(getSliderPointerLabel(page)).toHaveText('100', { useInnerText: true });
+  await expect(getSliderFloorLabel(page)).toHaveText('0');
+  await expect(getSliderCeilLabel(page)).toHaveText('250');
+  await expect(getSliderPointerLabel(page)).toHaveText('100');
+  await expect(getValueInput(page)).toHaveValue('100');
 
   await expect(getSliderFullBar(page)).toHaveRelativeLocationWithoutMargins({ x: 0, y: 3 }, { relativeTo: getSlider(page) });
   await expect(getSliderFullBar(page)).toHaveApproximateSize({ width: 766, height: 32 });
@@ -53,10 +54,10 @@ test('simple slider initial state', async ({ page }) => {
   await expect(getSliderPointerLabel(page)).toHaveRelativeLocationWithoutMargins({ x: 293, y: -3 }, { relativeTo: getSlider(page) });
 });
 
-test('simple slider after dragging the slider pointer with mouse', async ({ page }) => {
+test('simple slider after dragging the slider pointer with mouse moves the pointer to new position', async ({ page }) => {
   await setUp(page);
 
-  await mouseDragRelative(getSliderPointer(page), -146, 0);
+  await mouseDragRelative(getSliderPointer(page), {offsetX: -146, offsetY: 0});
 
   await expect(getSliderPointerLabel(page)).toHaveText('50');
   await expect(getValueInput(page)).toHaveValue('50');
@@ -64,10 +65,10 @@ test('simple slider after dragging the slider pointer with mouse', async ({ page
   await expect(getSliderPointerLabel(page)).toHaveRelativeLocationWithoutMargins({ x: 151, y: -3 }, { relativeTo: getSlider(page) });
 });
 
-test('simple slider after dragging the slider pointer with touch gesture', async ({ page }) => {
+test('simple slider after dragging the slider pointer with touch gesture moves the pointer to new position', async ({ page }) => {
   await setUp(page);
 
-  await touchDragRelative(getSliderPointer(page), 146, 0);
+  await touchDragRelative(getSliderPointer(page), {offsetX: 146, offsetY: 0});
 
   await expect(getSliderPointerLabel(page)).toHaveText('150');
   await expect(getValueInput(page)).toHaveValue('150');
@@ -75,7 +76,7 @@ test('simple slider after dragging the slider pointer with touch gesture', async
   await expect(getSliderPointerLabel(page)).toHaveRelativeLocationWithoutMargins({ x: 440, y: -3 }, { relativeTo: getSlider(page) });
 });
 
-test('simple slider after clicking on slider bar with mouse', async ({ page }) => {
+test('simple slider after clicking on slider bar with mouse moves the pointer to new position', async ({ page }) => {
   await setUp(page);
 
   await getSliderFullBar(page).click({ position: { x: 192, y: 0 } });
@@ -86,7 +87,7 @@ test('simple slider after clicking on slider bar with mouse', async ({ page }) =
   await expect(getSliderPointerLabel(page)).toHaveRelativeLocationWithoutMargins({ x: 180, y: -3 }, { relativeTo: getSlider(page) });
 });
 
-test('simple slider after tapping on slider bar with touch gesture', async ({ page }) => {
+test('simple slider after tapping on slider bar with touch gesture moves the pointer to new position', async ({ page }) => {
   await setUp(page);
 
   await getSliderFullBar(page).tap({ position: { x: 602, y: 0 } });
