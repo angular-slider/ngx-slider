@@ -427,7 +427,7 @@ async function expectLowPointerIncrementByOneStep(page) {
 test('range slider keyboard input on the low pointer element after pressing right arrow increases the low value by step', async ({ page }) => {
   await setUp(page);
 
-  getSliderLowPointer(page).press('ArrowRight');
+  await getSliderLowPointer(page).press('ArrowRight');
 
   await expectLowPointerIncrementByOneStep(page);
 });
@@ -435,7 +435,7 @@ test('range slider keyboard input on the low pointer element after pressing righ
 test('range slider keyboard input on the low pointer element after pressing up arrow increases the low value by step', async ({ page }) => {
   await setUp(page);
 
-  getSliderLowPointer(page).press('ArrowUp');
+  await getSliderLowPointer(page).press('ArrowUp');
 
   await expectLowPointerIncrementByOneStep(page);
 });
@@ -460,7 +460,7 @@ async function expectLowPointerDecrementByOneStep(page) {
 test('range slider keyboard input on the low pointer element after pressing left arrow increases the low value by step', async ({ page }) => {
   await setUp(page);
 
-  getSliderLowPointer(page).press('ArrowLeft');
+  await getSliderLowPointer(page).press('ArrowLeft');
 
   await expectLowPointerDecrementByOneStep(page);
 });
@@ -468,7 +468,7 @@ test('range slider keyboard input on the low pointer element after pressing left
 test('range slider keyboard input on the low pointer element after pressing down arrow increases the low value by step', async ({ page }) => {
   await setUp(page);
 
-  getSliderLowPointer(page).press('ArrowDown');
+  await getSliderLowPointer(page).press('ArrowDown');
 
   await expectLowPointerDecrementByOneStep(page);
 });
@@ -476,7 +476,7 @@ test('range slider keyboard input on the low pointer element after pressing down
 test('range slider keyboard input on the low pointer element after pressing page up increases the low value by larger offset', async ({ page }) => {
   await setUp(page);
 
-  getSliderLowPointer(page).press('PageUp');
+  await getSliderLowPointer(page).press('PageUp');
 
   await expect(getSliderLowPointerLabel(page)).toHaveText('75');
   await expect(getLowValueInput(page)).toHaveValue('75');
@@ -497,7 +497,7 @@ test('range slider keyboard input on the low pointer element after pressing page
 test('range slider keyboard input on the low pointer element after pressing page down decreases the low value by larger offset', async ({ page }) => {
   await setUp(page);
 
-  getSliderLowPointer(page).press('PageDown');
+  await getSliderLowPointer(page).press('PageDown');
 
   await expect(getSliderLowPointerLabel(page)).toHaveText('25');
   await expect(getLowValueInput(page)).toHaveValue('25');
@@ -518,7 +518,7 @@ test('range slider keyboard input on the low pointer element after pressing page
 test('range slider keyboard input on the low pointer element after pressing home sets the value to minimum and hides the floor label', async ({ page }) => {
   await setUp(page);
 
-  getSliderLowPointer(page).press('Home');
+  await getSliderLowPointer(page).press('Home');
 
   await expect(getSliderLowPointerLabel(page)).toHaveText('0');
   await expect(getLowValueInput(page)).toHaveValue('0');
@@ -541,7 +541,7 @@ test('range slider keyboard input on the low pointer element after pressing home
 test('range slider keyboard input on the low pointer element after pressing end sets the value to maximum, switching pointers and hiding the ceil label', async ({ page }) => {
   await setUp(page);
 
-  getSliderLowPointer(page).press('End');
+  await getSliderLowPointer(page).press('End');
 
   await expect(getSliderLowPointerLabel(page)).toHaveText('200');
   await expect(getLowValueInput(page)).toHaveValue('200');
@@ -581,7 +581,7 @@ async function expectHighPointerIncrementByOneStep(page) {
 test('range slider keyboard input on the high pointer element after pressing right arrow increases the high value by step', async ({ page }) => {
   await setUp(page);
 
-  getSliderHighPointer(page).press('ArrowRight');
+  await getSliderHighPointer(page).press('ArrowRight');
 
   await expectHighPointerIncrementByOneStep(page);
 });
@@ -589,7 +589,7 @@ test('range slider keyboard input on the high pointer element after pressing rig
 test('range slider keyboard input on the high pointer element after pressing up arrow increases the high value by step', async ({ page }) => {
   await setUp(page);
 
-  getSliderHighPointer(page).press('ArrowUp');
+  await getSliderHighPointer(page).press('ArrowUp');
 
   await expectHighPointerIncrementByOneStep(page);
 });
@@ -614,7 +614,7 @@ async function expectHighPointerDecrementByOneStep(page) {
 test('range slider keyboard input on the high pointer element after pressing left arrow increases the high value by step', async ({ page }) => {
   await setUp(page);
 
-  getSliderHighPointer(page).press('ArrowLeft');
+  await getSliderHighPointer(page).press('ArrowLeft');
 
   await expectHighPointerDecrementByOneStep(page);
 });
@@ -622,7 +622,7 @@ test('range slider keyboard input on the high pointer element after pressing lef
 test('range slider keyboard input on the high pointer element after pressing down arrow increases the high value by step', async ({ page }) => {
   await setUp(page);
 
-  getSliderHighPointer(page).press('ArrowDown');
+  await getSliderHighPointer(page).press('ArrowDown');
 
   await expectHighPointerDecrementByOneStep(page);
 });
@@ -630,7 +630,7 @@ test('range slider keyboard input on the high pointer element after pressing dow
 test('range slider keyboard input on the high pointer element after pressing page up increases the high value by larger offset', async ({ page }) => {
   await setUp(page);
 
-  getSliderHighPointer(page).press('PageUp');
+  await getSliderHighPointer(page).press('PageUp');
 
   await expect(getSliderLowPointerLabel(page)).toHaveText('50');
   await expect(getLowValueInput(page)).toHaveValue('50');
@@ -651,7 +651,7 @@ test('range slider keyboard input on the high pointer element after pressing pag
 test('range slider keyboard input on the high pointer element after pressing page down decreases the high value by larger offset', async ({ page }) => {
   await setUp(page);
 
-  getSliderHighPointer(page).press('PageDown');
+  await getSliderHighPointer(page).press('PageDown');
 
   await expect(getSliderLowPointerLabel(page)).toHaveText('50');
   await expect(getLowValueInput(page)).toHaveValue('50');
@@ -672,7 +672,7 @@ test('range slider keyboard input on the high pointer element after pressing pag
 test('range slider keyboard input on the high pointer element after pressing home sets the value to minimum, switching pointers and hiding the floor label', async ({ page }) => {
   await setUp(page);
 
-  getSliderHighPointer(page).press('Home');
+  await getSliderHighPointer(page).press('Home');
 
   await expect(getSliderLowPointerLabel(page)).toHaveText('0');
   await expect(getLowValueInput(page)).toHaveValue('0');
@@ -695,7 +695,7 @@ test('range slider keyboard input on the high pointer element after pressing hom
 test('range slider keyboard input on the high pointer element after pressing end sets the high value to maximum and hides the ceil label', async ({ page }) => {
   await setUp(page);
 
-  getSliderHighPointer(page).press('End');
+  await getSliderHighPointer(page).press('End');
 
   await expect(getSliderLowPointerLabel(page)).toHaveText('50');
   await expect(getLowValueInput(page)).toHaveValue('50');
