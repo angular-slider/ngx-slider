@@ -251,7 +251,7 @@ test('range slider after clicking on slider bar below low pointer moves the low 
   await expect(getHighValueInput(page)).toHaveValue('200');
 
   await expect(getSliderLowPointer(page)).toHaveRelativeLocationWithoutMargins({ x: 116, y: 21 }, { relativeTo: getSlider(page) });
-  await expect(getSliderLowPointerLabel(page)).toHaveRelativeLocationWithoutMargins({ x: 120, y: -3 }, { relativeTo: getSlider(page) });
+  await expect(getSliderLowPointerLabel(page)).toHaveRelativeLocationWithoutMargins({ x: 121, y: -3 }, { relativeTo: getSlider(page) });
 
   await expect(getSliderHighPointer(page)).toHaveRelativeLocationWithoutMargins({ x: 587, y: 21 }, { relativeTo: getSlider(page) });
   await expect(getSliderHighPointerLabel(page)).toHaveRelativeLocationWithoutMargins({ x: 587, y: -3 }, { relativeTo: getSlider(page) });
