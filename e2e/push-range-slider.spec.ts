@@ -1,279 +1,226 @@
-// TODO: convert the tests from protractor to playwright
+import { test, Page, Locator } from '@playwright/test';
+import { expect, mouseDragRelative, touchDragRelative } from './utils';
 
-// import { BaseRangeSliderDemoPage } from '../base-range-slider-demo.po';
-// import { approximateGeometryMatchers, expect } from '../utils';
+async function setUp(page: Page) {
+  await page.setViewportSize({ width: 800, height: 600 });
+  await page.goto('/push-range-slider?testMode=true');
+}
 
-// describe('push range slider', () => {
-//   let page: BaseRangeSliderDemoPage;
+function getSlider(page: Page): Locator {
+  return page.locator('ngx-slider');
+}
 
-//   beforeEach(() => {
-//     jasmine.addMatchers(approximateGeometryMatchers);
+function getSliderFloorLabel(page: Page): Locator {
+  return getSlider(page).locator('span.ngx-slider-floor');
+}
 
-//     page = new BaseRangeSliderDemoPage();
-//     page.navigateTo('push-range-slider');
-//   });
+function getSliderCeilLabel(page: Page): Locator {
+  return getSlider(page).locator('span.ngx-slider-ceil');
+}
 
-//   describe('initial state', () => {
-//     it('displays starting values', () => {
-//       expect(page.getSliderFloorLabel().getText()).toBe('0');
-//       expect(page.getSliderCeilLabel().getText()).toBe('100');
-//       expect(page.getSliderLowPointerLabel().getText()).toBe('60');
-//       expect(page.getSliderHighPointerLabel().getText()).toBe('70');
-//     });
-//   });
+function getSliderLowPointer(page: Page): Locator {
+  return getSlider(page).locator('span.ngx-slider-pointer-min');
+}
 
-//   describe('low pointer interactions', () => {
-//     describe('after dragging the low pointer to the left within changeable range', () => {
-//       const testCases: () => void = (): void => {
-//         it('moves the low pointer to the new value and leave the high pointer unchanged', () => {
-//           expect(page.getSliderLowPointerLabel().getText()).toBe('50');
-//           expect(page.getSliderHighPointerLabel().getText()).toBe('70');
-//         });
-//       };
+function getSliderHighPointer(page: Page): Locator {
+  return getSlider(page).locator('span.ngx-slider-pointer-max');
+}
 
-//       describe('with a mouse', () => {
-//         beforeEach(() => {
-//           page.getSliderLowPointer().mouseDragSync(-73, -50);
-//         });
+function getSliderLowPointerLabel(page: Page): Locator {
+  return getSlider(page).locator('span.ngx-slider-model-value');
+}
 
-//         testCases();
-//       });
+function getSliderHighPointerLabel(page: Page): Locator {
+  return getSlider(page).locator('span.ngx-slider-model-high');
+}
 
-//       describe('with a touch gesture', () => {
-//         beforeEach(() => {
-//           page.getSliderLowPointer().touchDragSync(-73, -50);
-//         });
 
-//         testCases();
-//       });
-//     });
+test('push range slider initial state displays starting values', async ({ page }) => {
+  await setUp(page);
 
-//     describe('after dragging the low pointer to the left exceeding range limit', () => {
-//       const testCases: () => void = (): void => {
-//         it('moves the low pointer to the new value and pull the high pointer along', () => {
-//           expect(page.getSliderLowPointerLabel().getText()).toBe('30');
-//           expect(page.getSliderHighPointerLabel().getText()).toBe('60');
-//         });
-//       };
+  await expect(getSliderFloorLabel(page)).toHaveText('0');
+  await expect(getSliderCeilLabel(page)).toHaveText('100');
+  await expect(getSliderLowPointerLabel(page)).toHaveText('60');
+  await expect(getSliderHighPointerLabel(page)).toHaveText('70');
+});
 
-//       describe('with a mouse', () => {
-//         beforeEach(() => {
-//           page.getSliderLowPointer().mouseDragSync(-215, -50);
-//         });
+test('push range slider low pointer interactions after dragging the low pointer to the left within changeable range with mouse moves the low pointer to the new value and leaves the high pointer unchanged', async ({ page }) => {
+  await setUp(page);
 
-//         testCases();
-//       });
+  await mouseDragRelative(getSliderLowPointer(page), {offsetX: -73, offsetY: -50});
 
-//       describe('with a touch gesture', () => {
-//         beforeEach(() => {
-//           page.getSliderLowPointer().touchDragSync(-215, 50);
-//         });
+  await expect(getSliderLowPointerLabel(page)).toHaveText('50');
+  await expect(getSliderHighPointerLabel(page)).toHaveText('70');
+});
 
-//         testCases();
-//       });
-//     });
+test('push range slider low pointer interactions after dragging the low pointer to the left within changeable range with touch gesture moves the low pointer to the new value and leaves the high pointer unchanged', async ({ page }) => {
+  await setUp(page);
 
-//     describe('after dragging the low pointer to the left below lowest value', () => {
-//       const testCases: () => void = (): void => {
-//         it('moves the low pointer to the minimum value and pull the high pointer to the maximum range', () => {
-//           expect(page.getSliderLowPointerLabel().getText()).toBe('0');
-//           expect(page.getSliderHighPointerLabel().getText()).toBe('30');
-//         });
-//       };
+  await touchDragRelative(getSliderLowPointer(page), {offsetX: -73, offsetY: -50});
 
-//       describe('with a mouse', () => {
-//         beforeEach(() => {
-//           page.getSliderLowPointer().mouseDragSync(-450, -50);
-//         });
+  await expect(getSliderLowPointerLabel(page)).toHaveText('50');
+  await expect(getSliderHighPointerLabel(page)).toHaveText('70');
+});
 
-//         testCases();
-//       });
+test('push range slider low pointer interactions after dragging the low pointer to the left exceeding range limit with mouse moves the low pointer to the new value and pulls the high pointer along', async ({ page }) => {
+  await setUp(page);
 
-//       describe('with a touch gesture', () => {
-//         beforeEach(() => {
-//           page.getSliderLowPointer().touchDragSync(-435, 50);
-//         });
+  await mouseDragRelative(getSliderLowPointer(page), {offsetX: -220, offsetY: -50});
 
-//         testCases();
-//       });
-//     });
+  await expect(getSliderLowPointerLabel(page)).toHaveText('30');
+  await expect(getSliderHighPointerLabel(page)).toHaveText('60');
+});
 
-//     describe('after dragging the low slider pointer to the right', () => {
-//       const testCases: () => void = (): void => {
-//         it('should move the low pointer to the new value and push the high pointer along', () => {
-//           expect(page.getSliderLowPointerLabel().getText()).toBe('65');
-//           expect(page.getSliderHighPointerLabel().getText()).toBe('75');
-//         });
-//       };
+test('push range slider low pointer interactions after dragging the low pointer to the left exceeding range limit with touch gesture moves the low pointer to the new value and pulls the high pointer along', async ({ page }) => {
+  await setUp(page);
 
-//       describe('with a mouse', () => {
-//         beforeEach(() => {
-//           page.getSliderLowPointer().mouseDragSync(37, -50);
-//         });
+  await touchDragRelative(getSliderLowPointer(page), {offsetX: -220, offsetY: -50});
 
-//         testCases();
-//       });
+  await expect(getSliderLowPointerLabel(page)).toHaveText('30');
+  await expect(getSliderHighPointerLabel(page)).toHaveText('60');
+});
 
-//       describe('with a touch gesture', () => {
-//         beforeEach(() => {
-//           page.getSliderLowPointer().touchDragSync(37, 50);
-//         });
+test('push range slider low pointer interactions after dragging the low pointer to the left below lowest value with mouse moves the low pointer to the minimum value and pulls the high pointer to the maximum range', async ({ page }) => {
+  await setUp(page);
 
-//         testCases();
-//       });
-//     });
+  await mouseDragRelative(getSliderLowPointer(page), {offsetX: -450, offsetY: -50});
 
-//     describe('after dragging the low slider pointer to the right above maximum value', () => {
-//       const testCases: () => void = (): void => {
-//         it('should move the low pointer to the maximum value minus minimum range and push the high pointer to the maximum value', () => {
-//           expect(page.getSliderLowPointerLabel().getText()).toBe('90');
-//           expect(page.getSliderHighPointerLabel().getText()).toBe('100');
-//         });
-//       };
+  await expect(getSliderLowPointerLabel(page)).toHaveText('0');
+  await expect(getSliderHighPointerLabel(page)).toHaveText('30');
+});
 
-//       describe('with a mouse', () => {
-//         beforeEach(() => {
-//           page.getSliderLowPointer().mouseDragSync(300, -50);
-//         });
+test('push range slider low pointer interactions after dragging the low pointer to the left below lowest value with touch gesture moves the low pointer to the minimum value and pulls the high pointer to the maximum range', async ({ page }) => {
+  await setUp(page);
 
-//         testCases();
-//       });
+  await touchDragRelative(getSliderLowPointer(page), {offsetX: -450, offsetY: 50});
 
-//       describe('with a touch gesture', () => {
-//         beforeEach(() => {
-//           page.getSliderLowPointer().touchDragSync(300, -50);
-//         });
+  await expect(getSliderLowPointerLabel(page)).toHaveText('0');
+  await expect(getSliderHighPointerLabel(page)).toHaveText('30');
+});
 
-//         testCases();
-//       });
-//     });
-//   });
+test('push range slider low pointer interactions after dragging the low slider pointer to the right with mouse moves the low pointer to the new value and pushes the high pointer along', async ({ page }) => {
+  await setUp(page);
 
-//   describe('high pointer interactions', () => {
-//     describe('after dragging the high pointer to the right below maximum range', () => {
-//       const testCases: () => void = (): void => {
-//         it('should move the high pointer to the new value and leave the low pointer unchanged', () => {
-//           expect(page.getSliderHighPointerLabel().getText()).toBe('80');
-//           expect(page.getSliderLowPointerLabel().getText()).toBe('60');
-//         });
-//       };
+  await mouseDragRelative(getSliderLowPointer(page), {offsetX: 37, offsetY: -50});
 
-//       describe('with a mouse', () => {
-//         beforeEach(() => {
-//           page.getSliderHighPointer().mouseDragSync(73, -50);
-//         });
+  await expect(getSliderLowPointerLabel(page)).toHaveText('65');
+  await expect(getSliderHighPointerLabel(page)).toHaveText('75');
+});
 
-//         testCases();
-//       });
+test('push range slider low pointer interactions after dragging the low slider pointer to the right with touch gesture moves the low pointer to the new value and pushes the high pointer along', async ({ page }) => {
+  await setUp(page);
 
-//       describe('with a touch gesture', () => {
-//         beforeEach(() => {
-//           page.getSliderHighPointer().touchDragSync(73, 50);
-//         });
+  await touchDragRelative(getSliderLowPointer(page), {offsetX: 37, offsetY: 50});
 
-//         testCases();
-//       });
-//     });
+  await expect(getSliderLowPointerLabel(page)).toHaveText('65');
+  await expect(getSliderHighPointerLabel(page)).toHaveText('75');
+});
 
-//     describe('after dragging the high pointer to the right exceeding maximum range', () => {
-//       const testCases: () => void = (): void => {
-//         it('should move the high pointer to the new value and pull the low pointer along', () => {
-//           expect(page.getSliderHighPointerLabel().getText()).toBe('95');
-//           expect(page.getSliderLowPointerLabel().getText()).toBe('65');
-//         });
-//       };
+test('push range slider low pointer interactions after dragging the low slider pointer to the right above maximum value with mouse moves the low pointer to the maximum value minus minimum range and pushes the high pointer to the maximum value', async ({ page }) => {
+  await setUp(page);
 
-//       describe('with a mouse', () => {
-//         beforeEach(() => {
-//           page.getSliderHighPointer().mouseDragSync(185, -50);
-//         });
+  await mouseDragRelative(getSliderLowPointer(page), {offsetX: 300, offsetY: -50});
 
-//         testCases();
-//       });
+  await expect(getSliderLowPointerLabel(page)).toHaveText('90');
+  await expect(getSliderHighPointerLabel(page)).toHaveText('100');
+});
 
-//       describe('with a touch gesture', () => {
-//         beforeEach(() => {
-//           page.getSliderHighPointer().touchDragSync(185, 50);
-//         });
+test('push range slider low pointer interactions after dragging the low slider pointer to the right above maximum value with touch gesture moves the low pointer to the maximum value minus minimum range and pushes the high pointer to the maximum value', async ({ page }) => {
+  await setUp(page);
 
-//         testCases();
-//       });
-//     });
+  await touchDragRelative(getSliderLowPointer(page), {offsetX: 300, offsetY: 50});
 
-//     describe('after dragging the high slider pointer to the right above highest value', () => {
-//       const testCases: () => void = (): void => {
-//         it('should move the high pointer to the maximum value and pull the low pointer along', () => {
-//           expect(page.getSliderHighPointerLabel().getText()).toBe('100');
-//           expect(page.getSliderLowPointerLabel().getText()).toBe('70');
-//         });
-//       };
+  await expect(getSliderLowPointerLabel(page)).toHaveText('90');
+  await expect(getSliderHighPointerLabel(page)).toHaveText('100');
+});
 
-//       describe('with a mouse', () => {
-//         beforeEach(() => {
-//           page.getSliderHighPointer().mouseDragSync(235, -50);
-//         });
+test('push range slider high pointer interactions after dragging the high pointer to the right below maximum range with mouse moves the high pointer to the new value and leaves the low pointer unchanged', async ({ page }) => {
+  await setUp(page);
 
-//         testCases();
-//       });
+  await mouseDragRelative(getSliderHighPointer(page), {offsetX: 73, offsetY: -50});
 
-//       describe('with a touch gesture', () => {
-//         beforeEach(() => {
-//           page.getSliderHighPointer().touchDragSync(235, 50);
-//         });
+  await expect(getSliderLowPointerLabel(page)).toHaveText('60');
+  await expect(getSliderHighPointerLabel(page)).toHaveText('80');
+});
 
-//         testCases();
-//       });
-//     });
+test('push range slider high pointer interactions after dragging the high pointer to the right below maximum range with touch gesture moves the high pointer to the new value and leaves the low pointer unchanged', async ({ page }) => {
+  await setUp(page);
 
-//     describe('after dragging the high slider pointer to the left', () => {
-//       const testCases: () => void = (): void => {
-//         it('should move the high pointer to the new value and push the low pointer along', () => {
-//           expect(page.getSliderHighPointerLabel().getText()).toBe('60');
-//           expect(page.getSliderLowPointerLabel().getText()).toBe('50');
-//         });
-//       };
+  await touchDragRelative(getSliderHighPointer(page), {offsetX: 73, offsetY: -50});
 
-//       describe('with a mouse', () => {
-//         beforeEach(() => {
-//           page.getSliderHighPointer().mouseDragSync(-73, -50);
-//         });
+  await expect(getSliderLowPointerLabel(page)).toHaveText('60');
+  await expect(getSliderHighPointerLabel(page)).toHaveText('80');
+});
 
-//         testCases();
-//       });
 
-//       describe('with a touch gesture', () => {
-//         beforeEach(() => {
-//           page.getSliderHighPointer().touchDragSync(-73, 50);
-//         });
+test('push range slider high pointer interactions after dragging the high pointer to the right exceeding maximum range with mouse moves the high pointer to the new value and pulls the low pointer along', async ({ page }) => {
+  await setUp(page);
 
-//         testCases();
-//       });
-//     });
+  await mouseDragRelative(getSliderHighPointer(page), {offsetX: 185, offsetY: 50});
 
-//     describe('after dragging the high slider pointer to the left below minimum value', () => {
-//       const testCases: () => void = (): void => {
-//         it('should move the high pointer to the minimum value value plus minimum range ' +
-//            'and push the low pointer to the minimum value', () => {
-//           expect(page.getSliderHighPointerLabel().getText()).toBe('10');
-//           expect(page.getSliderLowPointerLabel().getText()).toBe('0');
-//         });
-//       };
+  await expect(getSliderLowPointerLabel(page)).toHaveText('65');
+  await expect(getSliderHighPointerLabel(page)).toHaveText('95');
+});
 
-//       describe('with a mouse', () => {
-//         beforeEach(() => {
-//           page.getSliderHighPointer().mouseDragSync(-450, -50);
-//         });
+test('push range slider high pointer interactions after dragging the high pointer to the right exceeding maximum range with touch gesture moves the high pointer to the new value and pulls the low pointer along', async ({ page }) => {
+  await setUp(page);
 
-//         testCases();
-//       });
+  await touchDragRelative(getSliderHighPointer(page), {offsetX: 185, offsetY: 50});
 
-//       describe('with a touch gesture', () => {
-//         beforeEach(() => {
-//           page.getSliderHighPointer().touchDragSync(-450, 50);
-//         });
+  await expect(getSliderLowPointerLabel(page)).toHaveText('65');
+  await expect(getSliderHighPointerLabel(page)).toHaveText('95');
+});
 
-//         testCases();
-//       });
-//     });
-//   });
-// });
+test('push range slider high pointer interactions after dragging the high slider pointer to the right above highest value with mouse moves the high pointer to the maximum value and pulls the low pointer along', async ({ page }) => {
+  await setUp(page);
+
+  await mouseDragRelative(getSliderHighPointer(page), {offsetX: 235, offsetY: -50});
+
+  await expect(getSliderLowPointerLabel(page)).toHaveText('70');
+  await expect(getSliderHighPointerLabel(page)).toHaveText('100');
+});
+
+test('push range slider high pointer interactions after dragging the high slider pointer to the right above highest value with touch gesture moves the high pointer to the maximum value and pulls the low pointer along', async ({ page }) => {
+  await setUp(page);
+
+  await touchDragRelative(getSliderHighPointer(page), {offsetX: 235, offsetY: -50});
+
+  await expect(getSliderLowPointerLabel(page)).toHaveText('70');
+  await expect(getSliderHighPointerLabel(page)).toHaveText('100');
+});
+
+test('push range slider high pointer interactions after dragging the high slider pointer to the left with mouse moves the high pointer to the new value and pushes the low pointer along', async ({ page }) => {
+  await setUp(page);
+
+  await mouseDragRelative(getSliderHighPointer(page), {offsetX: -73, offsetY: -50});
+
+  await expect(getSliderLowPointerLabel(page)).toHaveText('50');
+  await expect(getSliderHighPointerLabel(page)).toHaveText('60');
+});
+
+test('push range slider high pointer interactions after dragging the high slider pointer to the left with touch gesture moves the high pointer to the new value and pushed the low pointer along', async ({ page }) => {
+  await setUp(page);
+
+  await touchDragRelative(getSliderHighPointer(page), {offsetX: -73, offsetY: -50});
+
+  await expect(getSliderLowPointerLabel(page)).toHaveText('50');
+  await expect(getSliderHighPointerLabel(page)).toHaveText('60');
+});
+
+test('push range slider high pointer interactions after dragging the high slider pointer to the left below minimum value with mouse moves the high pointer to the minimum value value plus minimum range and pushes the low pointer to the minimum value', async ({ page }) => {
+  await setUp(page);
+
+  await mouseDragRelative(getSliderHighPointer(page), {offsetX: -450, offsetY: 50});
+
+  await expect(getSliderLowPointerLabel(page)).toHaveText('0');
+  await expect(getSliderHighPointerLabel(page)).toHaveText('10');
+});
+
+test('push range slider high pointer interactions after dragging the high slider pointer to the left below minimum value with touch gesture moves the high pointer to the minimum value value plus minimum range and pushes the low pointer to the minimum value', async ({ page }) => {
+  await setUp(page);
+
+  await touchDragRelative(getSliderHighPointer(page), {offsetX: -450, offsetY: 50});
+
+  await expect(getSliderLowPointerLabel(page)).toHaveText('0');
+  await expect(getSliderHighPointerLabel(page)).toHaveText('10');
+});
