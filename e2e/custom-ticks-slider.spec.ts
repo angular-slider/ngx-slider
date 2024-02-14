@@ -1,113 +1,144 @@
-// TODO: convert the tests from protractor to playwright
+import { test, Page, Locator } from '@playwright/test';
+import { expect } from './utils';
 
-// import { TicksSliderDemoPage } from './ticks-slider-demo.po';
-// import { approximateGeometryMatchers, expect } from '../utils';
+async function setUp(page: Page) {
+  await page.setViewportSize({ width: 800, height: 600 });
+  await page.goto('/custom-ticks-legend-slider?testMode=true');
+}
 
-// describe('custom ticks slider', () => {
-//   let page: TicksSliderDemoPage;
+function getSlider(page: Page): Locator {
+  return page.locator('ngx-slider');
+}
 
-//   beforeEach(() => {
-//     jasmine.addMatchers(approximateGeometryMatchers);
+function getSliderFloorLabel(page: Page): Locator {
+  return getSlider(page).locator('span.ngx-slider-floor');
+}
 
-//     page = new TicksSliderDemoPage();
-//     page.navigateTo('custom-ticks-legend-slider');
-//   });
+function getSliderCeilLabel(page: Page): Locator {
+  return getSlider(page).locator('span.ngx-slider-ceil');
+}
 
-//   describe('initial state', () => {
-//     it('hides normal labels and displays tick values and legend and ', () => {
-//       expect(page.getSliderFloorLabel().isVisible()).toBe(false);
-//       expect(page.getSliderCeilLabel().isVisible()).toBe(false);
-//       expect(page.getSliderPointerLabel().isVisible()).toBe(false);
+function getSliderPointer(page: Page): Locator {
+  return getSlider(page).locator('span.ngx-slider-pointer-min');
+}
 
-//       expect(page.getSliderTickValue(1).getText()).toBe('1');
-//       expect(page.getSliderTickLegend(1).getText()).toBe('Very poor');
+function getSliderPointerLabel(page: Page): Locator {
+  return getSlider(page).locator('span.ngx-slider-model-value');
+}
 
-//       expect(page.getSliderTickValue(2).getText()).toBe('2');
-//       expect(page.getSliderTickLegend(2).isPresent()).toBe(false);
+function getSliderFullBar(page: Page): Locator {
+  return getSlider(page).locator('span.ngx-slider-full-bar');
+}
 
-//       expect(page.getSliderTickValue(3).getText()).toBe('3');
-//       expect(page.getSliderTickLegend(3).getText()).toBe('Fair');
+function getSliderTick(page: Page, tickNumber: number): Locator {
+  return getSlider(page).locator(`span.ngx-slider-tick:nth-of-type(${tickNumber})`);
+}
 
-//       expect(page.getSliderTickValue(4).getText()).toBe('4');
-//       expect(page.getSliderTickLegend(4).isPresent()).toBe(false);
+function getSliderTickValue(page: Page, tickNumber: number): Locator {
+  return getSliderTick(page, tickNumber).locator('.ngx-slider-tick-value');
+}
 
-//       expect(page.getSliderTickValue(5).getText()).toBe('5');
-//       expect(page.getSliderTickLegend(5).getText()).toBe('Average');
+function getSliderTickLegend(page: Page, tickNumber: number): Locator {
+  return getSliderTick(page, tickNumber).locator('.ngx-slider-tick-legend');
+}
 
-//       expect(page.getSliderTickValue(6).getText()).toBe('6');
-//       expect(page.getSliderTickLegend(6).isPresent()).toBe(false);
 
-//       expect(page.getSliderTickValue(7).getText()).toBe('7');
-//       expect(page.getSliderTickLegend(7).getText()).toBe('Good');
+test('custom ticks slider initial state hides normal labels and displays tick values and legend', async ({ page }) => {
+  await setUp(page);
 
-//       expect(page.getSliderTickValue(8).getText()).toBe('8');
-//       expect(page.getSliderTickLegend(8).isPresent()).toBe(false);
+  await expect(getSliderFloorLabel(page)).toBeHidden();
+  await expect(getSliderCeilLabel(page)).toBeHidden();
+  await expect(getSliderPointerLabel(page)).toBeHidden();
 
-//       expect(page.getSliderTickValue(9).getText()).toBe('9');
-//       expect(page.getSliderTickLegend(9).getText()).toBe('Excellent');
-//     });
+  await expect(getSliderTickValue(page, 1)).toHaveText('1');
+  await expect(getSliderTickLegend(page, 1)).toHaveText('Very poor');
 
-//     it('positions the slider elements correctly', () => {
-//       expect(page.getSliderFullBar().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 0, y: 3});
-//       expect(page.getSliderFullBar().getSize()).toBeApproximateSize({width: 758, height: 32});
+  await expect(getSliderTickValue(page, 2)).toHaveText('2');
+  await expect(getSliderTickLegend(page, 2)).toHaveCount(0);
 
-//       expect(page.getSliderPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 363, y: 21});
-//       expect(page.getSliderPointer().getSize()).toBeApproximateSize({width: 32, height: 32});
+  await expect(getSliderTickValue(page, 3)).toHaveText('3');
+  await expect(getSliderTickLegend(page, 3)).toHaveText('Fair');
 
-//       expect(page.getSliderTick(1).getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 22, y: 32});
-//       expect(page.getSliderTick(1).getSize()).toBeApproximateSize({width: 10, height: 10});
-//       expect(page.getSliderTickValue(1).getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 11.5, y: -2});
-//       expect(page.getSliderTickValue(1).getSize()).toBeApproximateSize({width: 9, height: 24});
-//       expect(page.getSliderTickLegend(1).getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 0, y: 56});
-//       expect(page.getSliderTickLegend(1).getSize()).toBeApproximateSize({width: 32, height: 48});
+  await expect(getSliderTickValue(page, 4)).toHaveText('4');
+  await expect(getSliderTickLegend(page, 4)).toHaveCount(0);
 
-//       expect(page.getSliderTick(2).getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 113, y: 32});
-//       expect(page.getSliderTick(2).getSize()).toBeApproximateSize({width: 10, height: 10});
-//       expect(page.getSliderTickValue(2).getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 102, y: -2});
-//       expect(page.getSliderTickValue(2).getSize()).toBeApproximateSize({width: 9, height: 24});
+  await expect(getSliderTickValue(page, 5)).toHaveText('5');
+  await expect(getSliderTickLegend(page, 5)).toHaveText('Average');
 
-//       expect(page.getSliderTick(3).getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 204, y: 32});
-//       expect(page.getSliderTick(3).getSize()).toBeApproximateSize({width: 10, height: 10});
-//       expect(page.getSliderTickValue(3).getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 193, y: -2});
-//       expect(page.getSliderTickValue(3).getSize()).toBeApproximateSize({width: 9, height: 24});
-//       expect(page.getSliderTickLegend(3).getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 184, y: 56});
-//       expect(page.getSliderTickLegend(3).getSize()).toBeApproximateSize({width: 28, height: 24});
+  await expect(getSliderTickValue(page, 6)).toHaveText('6');
+  await expect(getSliderTickLegend(page, 6)).toHaveCount(0);
 
-//       expect(page.getSliderTick(4).getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 294, y: 32});
-//       expect(page.getSliderTick(4).getSize()).toBeApproximateSize({width: 10, height: 10});
-//       expect(page.getSliderTickValue(4).getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 283, y: -2});
-//       expect(page.getSliderTickValue(4).getSize()).toBeApproximateSize({width: 9, height: 24});
+  await expect(getSliderTickValue(page, 7)).toHaveText('7');
+  await expect(getSliderTickLegend(page, 7)).toHaveText('Good');
 
-//       expect(page.getSliderTick(5).getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 385, y: 32});
-//       expect(page.getSliderTick(5).getSize()).toBeApproximateSize({width: 10, height: 10});
-//       expect(page.getSliderTickValue(5).getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 374, y: -2});
-//       expect(page.getSliderTickValue(5).getSize()).toBeApproximateSize({width: 9, height: 24});
-//       expect(page.getSliderTickLegend(5).getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 354, y: 56});
-//       expect(page.getSliderTickLegend(5).getSize()).toBeApproximateSize({width: 50, height: 48});
+  await expect(getSliderTickValue(page, 8)).toHaveText('8');
+  await expect(getSliderTickLegend(page, 8)).toHaveCount(0);
 
-//       expect(page.getSliderTick(6).getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 476, y: 32});
-//       expect(page.getSliderTick(6).getSize()).toBeApproximateSize({width: 10, height: 10});
-//       expect(page.getSliderTickValue(6).getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 465, y: -2});
-//       expect(page.getSliderTickValue(6).getSize()).toBeApproximateSize({width: 9, height: 24});
+  await expect(getSliderTickValue(page, 9)).toHaveText('9');
+  await expect(getSliderTickLegend(page, 9)).toHaveText('Excellent');
+});
 
-//       expect(page.getSliderTick(7).getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 567, y: 32});
-//       expect(page.getSliderTick(7).getSize()).toBeApproximateSize({width: 10, height: 10});
-//       expect(page.getSliderTickValue(7).getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 556, y: -2});
-//       expect(page.getSliderTickValue(7).getSize()).toBeApproximateSize({width: 9, height: 24});
-//       expect(page.getSliderTickLegend(7).getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 541, y: 56});
-//       expect(page.getSliderTickLegend(7).getSize()).toBeApproximateSize({width: 39, height: 24});
+test('custom ticks slider initial state positions the slider elements correctly', async ({ page }) => {
+  await setUp(page);
 
-//       expect(page.getSliderTick(8).getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 657, y: 32});
-//       expect(page.getSliderTick(8).getSize()).toBeApproximateSize({width: 10, height: 10});
-//       expect(page.getSliderTickValue(8).getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 646, y: -2});
-//       expect(page.getSliderTickValue(8).getSize()).toBeApproximateSize({width: 9, height: 24});
+  await expect(getSliderFullBar(page)).toHaveRelativeLocationWithoutMargins({ x: 0, y: 3 }, { relativeTo: getSlider(page) });
+  await expect(getSliderFullBar(page)).toHaveApproximateSize({ width: 766, height: 32 });
 
-//       expect(page.getSliderTick(9).getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 748, y: 32});
-//       expect(page.getSliderTick(9).getSize()).toBeApproximateSize({width: 10, height: 10});
-//       expect(page.getSliderTickValue(9).getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 737, y: -2});
-//       expect(page.getSliderTickValue(9).getSize()).toBeApproximateSize({width: 9, height: 24});
-//       expect(page.getSliderTickLegend(9).getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 717, y: 56});
-//       expect(page.getSliderTickLegend(9).getSize()).toBeApproximateSize({width: 50, height: 48});
-//     });
-//   });
-// });
+  await expect(getSliderPointer(page)).toHaveRelativeLocationWithoutMargins({ x: 367, y: 21 }, { relativeTo: getSlider(page) });
+  await expect(getSliderPointer(page)).toHaveApproximateSize({ width: 32, height: 32 });
+
+  await expect(getSliderTick(page, 1)).toHaveRelativeLocationWithoutMargins({ x: 22, y: 32 }, { relativeTo: getSlider(page) });
+  await expect(getSliderTick(page, 1)).toHaveApproximateSize({ width: 10, height: 10 });
+  await expect(getSliderTickValue(page, 1)).toHaveRelativeLocationWithoutMargins({ x: 11.5, y: -2 }, { relativeTo: getSlider(page) });
+  await expect(getSliderTickValue(page, 1)).toHaveApproximateSize({ width: 9, height: 24 });
+  await expect(getSliderTickLegend(page, 1)).toHaveRelativeLocationWithoutMargins({ x: 0, y: 56 }, { relativeTo: getSlider(page) });
+  await expect(getSliderTickLegend(page, 1)).toHaveApproximateSize({ width: 32, height: 48 });
+
+  await expect(getSliderTick(page, 2)).toHaveRelativeLocationWithoutMargins({ x: 114, y: 32 }, { relativeTo: getSlider(page) });
+  await expect(getSliderTick(page, 2)).toHaveApproximateSize({ width: 10, height: 10 });
+  await expect(getSliderTickValue(page, 2)).toHaveRelativeLocationWithoutMargins({ x: 103.5, y: -2 }, { relativeTo: getSlider(page) });
+  await expect(getSliderTickValue(page, 2)).toHaveApproximateSize({ width: 9, height: 24 });
+
+  await expect(getSliderTick(page, 3)).toHaveRelativeLocationWithoutMargins({ x: 206, y: 32 }, { relativeTo: getSlider(page) });
+  await expect(getSliderTick(page, 3)).toHaveApproximateSize({ width: 10, height: 10 });
+  await expect(getSliderTickValue(page, 3)).toHaveRelativeLocationWithoutMargins({ x: 195.5, y: -2 }, { relativeTo: getSlider(page) });
+  await expect(getSliderTickValue(page, 3)).toHaveApproximateSize({ width: 9, height: 24 });
+  await expect(getSliderTickLegend(page, 3)).toHaveRelativeLocationWithoutMargins({ x: 186, y: 56 }, { relativeTo: getSlider(page) });
+  await expect(getSliderTickLegend(page, 3)).toHaveApproximateSize({ width: 28, height: 24 });
+
+  await expect(getSliderTick(page, 4)).toHaveRelativeLocationWithoutMargins({ x: 297, y: 32 }, { relativeTo: getSlider(page) });
+  await expect(getSliderTick(page, 4)).toHaveApproximateSize({ width: 10, height: 10 });
+  await expect(getSliderTickValue(page, 4)).toHaveRelativeLocationWithoutMargins({ x: 286.5, y: -2 }, { relativeTo: getSlider(page) });
+  await expect(getSliderTickValue(page, 4)).toHaveApproximateSize({ width: 9, height: 24 });
+
+  await expect(getSliderTick(page, 5)).toHaveRelativeLocationWithoutMargins({ x: 389, y: 32 }, { relativeTo: getSlider(page) });
+  await expect(getSliderTick(page, 5)).toHaveApproximateSize({ width: 10, height: 10 });
+  await expect(getSliderTickValue(page, 5)).toHaveRelativeLocationWithoutMargins({ x: 378.5, y: -2 }, { relativeTo: getSlider(page) });
+  await expect(getSliderTickValue(page, 5)).toHaveApproximateSize({ width: 9, height: 24 });
+  await expect(getSliderTickLegend(page, 5)).toHaveRelativeLocationWithoutMargins({ x: 358, y: 56 }, { relativeTo: getSlider(page) });
+  await expect(getSliderTickLegend(page, 5)).toHaveApproximateSize({ width: 50, height: 48 });
+
+  await expect(getSliderTick(page, 6)).toHaveRelativeLocationWithoutMargins({ x: 481, y: 32 }, { relativeTo: getSlider(page) });
+  await expect(getSliderTick(page, 6)).toHaveApproximateSize({ width: 10, height: 10 });
+  await expect(getSliderTickValue(page, 6)).toHaveRelativeLocationWithoutMargins({ x: 470.5, y: -2 }, { relativeTo: getSlider(page) });
+  await expect(getSliderTickValue(page, 6)).toHaveApproximateSize({ width: 9, height: 24 });
+
+  await expect(getSliderTick(page, 7)).toHaveRelativeLocationWithoutMargins({ x: 573, y: 32 }, { relativeTo: getSlider(page) });
+  await expect(getSliderTick(page, 7)).toHaveApproximateSize({ width: 10, height: 10 });
+  await expect(getSliderTickValue(page, 7)).toHaveRelativeLocationWithoutMargins({ x: 562.5, y: -2 }, { relativeTo: getSlider(page) });
+  await expect(getSliderTickValue(page, 7)).toHaveApproximateSize({ width: 9, height: 24 });
+  await expect(getSliderTickLegend(page, 7)).toHaveRelativeLocationWithoutMargins({ x: 547.5, y: 56 }, { relativeTo: getSlider(page) });
+  await expect(getSliderTickLegend(page, 7)).toHaveApproximateSize({ width: 39, height: 24 });
+
+  await expect(getSliderTick(page, 8)).toHaveRelativeLocationWithoutMargins({ x: 664, y: 32 }, { relativeTo: getSlider(page) });
+  await expect(getSliderTick(page, 8)).toHaveApproximateSize({ width: 10, height: 10 });
+  await expect(getSliderTickValue(page, 8)).toHaveRelativeLocationWithoutMargins({ x: 653.5, y: -2 }, { relativeTo: getSlider(page) });
+  await expect(getSliderTickValue(page, 8)).toHaveApproximateSize({ width: 9, height: 24 });
+
+  await expect(getSliderTick(page, 9)).toHaveRelativeLocationWithoutMargins({ x: 756, y: 32 }, { relativeTo: getSlider(page) });
+  await expect(getSliderTick(page, 9)).toHaveApproximateSize({ width: 10, height: 10 });
+  await expect(getSliderTickValue(page, 9)).toHaveRelativeLocationWithoutMargins({ x: 745.5, y: -2 }, { relativeTo: getSlider(page) });
+  await expect(getSliderTickValue(page, 9)).toHaveApproximateSize({ width: 9, height: 24 });
+  await expect(getSliderTickLegend(page, 9)).toHaveRelativeLocationWithoutMargins({ x: 725, y: 56 }, { relativeTo: getSlider(page) });
+  await expect(getSliderTickLegend(page, 9)).toHaveApproximateSize({ width: 50, height: 48 });
+});

@@ -1,277 +1,253 @@
-// TODO: convert the tests from protractor to playwright
+import { test, Page, Locator } from '@playwright/test';
+import { expect, mouseDragRelative, touchDragRelative } from './utils';
 
-// import { TicksSliderDemoPage } from './ticks-slider-demo.po';
-// import { approximateGeometryMatchers, expect } from '../utils';
-// import { Key } from 'protractor';
+async function setUp(page: Page) {
+  await page.setViewportSize({ width: 800, height: 600 });
+  await page.goto('/ticks-values-slider?testMode=true');
+}
 
-// describe('ticks slider', () => {
-//   let page: TicksSliderDemoPage;
+function getSlider(page: Page): Locator {
+  return page.locator('ngx-slider');
+}
 
-//   beforeEach(() => {
-//     jasmine.addMatchers(approximateGeometryMatchers);
+function getSliderFloorLabel(page: Page): Locator {
+  return getSlider(page).locator('span.ngx-slider-floor');
+}
 
-//     page = new TicksSliderDemoPage();
-//     page.navigateTo('ticks-values-slider');
-//   });
+function getSliderCeilLabel(page: Page): Locator {
+  return getSlider(page).locator('span.ngx-slider-ceil');
+}
 
-//   describe('initial state', () => {
-//     it('hides normal labels and displays tick values', () => {
-//       expect(page.getSliderFloorLabel().isVisible()).toBe(false);
-//       expect(page.getSliderCeilLabel().isVisible()).toBe(false);
-//       expect(page.getSliderPointerLabel().isVisible()).toBe(false);
+function getSliderPointer(page: Page): Locator {
+  return getSlider(page).locator('span.ngx-slider-pointer-min');
+}
 
-//       expect(page.getSliderTickValue(1).getText()).toBe('0');
-//       expect(page.getSliderTickValue(2).getText()).toBe('1');
-//       expect(page.getSliderTickValue(3).getText()).toBe('2');
-//       expect(page.getSliderTickValue(4).getText()).toBe('3');
-//       expect(page.getSliderTickValue(5).getText()).toBe('4');
-//       expect(page.getSliderTickValue(6).getText()).toBe('5');
-//       expect(page.getSliderTickValue(7).getText()).toBe('6');
-//       expect(page.getSliderTickValue(8).getText()).toBe('7');
-//       expect(page.getSliderTickValue(9).getText()).toBe('8');
-//       expect(page.getSliderTickValue(10).getText()).toBe('9');
-//       expect(page.getSliderTickValue(11).getText()).toBe('10');
-//     });
+function getSliderPointerLabel(page: Page): Locator {
+  return getSlider(page).locator('span.ngx-slider-model-value');
+}
 
-//     it('positions the slider elements correctly', () => {
-//       expect(page.getSliderFullBar().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 0, y: 3});
-//       expect(page.getSliderFullBar().getSize()).toBeApproximateSize({width: 758, height: 32});
+function getSliderFullBar(page: Page): Locator {
+  return getSlider(page).locator('span.ngx-slider-full-bar');
+}
 
-//       expect(page.getSliderPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 363, y: 21});
-//       expect(page.getSliderPointer().getSize()).toBeApproximateSize({width: 32, height: 32});
+function getSliderTick(page: Page, tickNumber: number): Locator {
+  return getSlider(page).locator(`span.ngx-slider-tick:nth-of-type(${tickNumber})`);
+}
 
-//       expect(page.getSliderTick(1).getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 22, y: 32});
-//       expect(page.getSliderTick(1).getSize()).toBeApproximateSize({width: 10, height: 10});
-//       expect(page.getSliderTickValue(1).getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 11, y: -2});
-//       expect(page.getSliderTickValue(1).getSize()).toBeApproximateSize({width: 9, height: 24});
+function getSliderTickValue(page: Page, tickNumber: number): Locator {
+  return getSliderTick(page, tickNumber).locator('.ngx-slider-tick-value');
+}
 
-//       expect(page.getSliderTick(2).getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 95, y: 32});
-//       expect(page.getSliderTick(2).getSize()).toBeApproximateSize({width: 10, height: 10});
-//       expect(page.getSliderTickValue(2).getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 84, y: -2});
-//       expect(page.getSliderTickValue(2).getSize()).toBeApproximateSize({width: 9, height: 24});
 
-//       expect(page.getSliderTick(3).getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 167, y: 32});
-//       expect(page.getSliderTick(3).getSize()).toBeApproximateSize({width: 10, height: 10});
-//       expect(page.getSliderTickValue(3).getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 156, y: -2});
-//       expect(page.getSliderTickValue(3).getSize()).toBeApproximateSize({width: 9, height: 24});
+test('ticks slider initial state hides normal labels and displays tick values', async ({ page }) => {
+  await setUp(page);
 
-//       expect(page.getSliderTick(4).getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 240, y: 32});
-//       expect(page.getSliderTick(4).getSize()).toBeApproximateSize({width: 10, height: 10});
-//       expect(page.getSliderTickValue(4).getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 229, y: -2});
-//       expect(page.getSliderTickValue(4).getSize()).toBeApproximateSize({width: 9, height: 24});
+  await expect(getSliderFloorLabel(page)).toBeHidden();
+  await expect(getSliderCeilLabel(page)).toBeHidden();
+  await expect(getSliderPointerLabel(page)).toBeHidden();
 
-//       expect(page.getSliderTick(5).getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 312, y: 32});
-//       expect(page.getSliderTick(5).getSize()).toBeApproximateSize({width: 10, height: 10});
-//       expect(page.getSliderTickValue(5).getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 301, y: -2});
-//       expect(page.getSliderTickValue(5).getSize()).toBeApproximateSize({width: 9, height: 24});
+  await expect(getSliderTickValue(page, 1)).toHaveText('0');
+  await expect(getSliderTickValue(page, 2)).toHaveText('1');
+  await expect(getSliderTickValue(page, 3)).toHaveText('2');
+  await expect(getSliderTickValue(page, 4)).toHaveText('3');
+  await expect(getSliderTickValue(page, 5)).toHaveText('4');
+  await expect(getSliderTickValue(page, 6)).toHaveText('5');
+  await expect(getSliderTickValue(page, 7)).toHaveText('6');
+  await expect(getSliderTickValue(page, 8)).toHaveText('7');
+  await expect(getSliderTickValue(page, 9)).toHaveText('8');
+  await expect(getSliderTickValue(page, 10)).toHaveText('9');
+  await expect(getSliderTickValue(page, 11)).toHaveText('10');
+});
 
-//       expect(page.getSliderTick(6).getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 385, y: 32});
-//       expect(page.getSliderTick(6).getSize()).toBeApproximateSize({width: 10, height: 10});
-//       expect(page.getSliderTickValue(6).getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 374, y: -2});
-//       expect(page.getSliderTickValue(6).getSize()).toBeApproximateSize({width: 9, height: 24});
+test('ticks slider initial state positions the slider elements correctly', async ({ page }) => {
+  await setUp(page);
 
-//       expect(page.getSliderTick(7).getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 458, y: 32});
-//       expect(page.getSliderTick(7).getSize()).toBeApproximateSize({width: 10, height: 10});
-//       expect(page.getSliderTickValue(7).getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 447, y: -2});
-//       expect(page.getSliderTickValue(7).getSize()).toBeApproximateSize({width: 9, height: 24});
+  await expect(getSliderFullBar(page)).toHaveRelativeLocationWithoutMargins({ x: 0, y: 3 }, { relativeTo: getSlider(page) });
+  await expect(getSliderFullBar(page)).toHaveApproximateSize({ width: 766, height: 32 });
 
-//       expect(page.getSliderTick(8).getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 530, y: 32});
-//       expect(page.getSliderTick(8).getSize()).toBeApproximateSize({width: 10, height: 10});
-//       expect(page.getSliderTickValue(8).getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 519, y: -2});
-//       expect(page.getSliderTickValue(8).getSize()).toBeApproximateSize({width: 9, height: 24});
+  await expect(getSliderPointer(page)).toHaveRelativeLocationWithoutMargins({ x: 367, y: 21 }, { relativeTo: getSlider(page) });
+  await expect(getSliderPointer(page)).toHaveApproximateSize({ width: 32, height: 32 });
 
-//       expect(page.getSliderTick(9).getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 603, y: 32});
-//       expect(page.getSliderTick(9).getSize()).toBeApproximateSize({width: 10, height: 10});
-//       expect(page.getSliderTickValue(9).getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 592, y: -2});
-//       expect(page.getSliderTickValue(9).getSize()).toBeApproximateSize({width: 9, height: 24});
+  await expect(getSliderTick(page, 1)).toHaveRelativeLocationWithoutMargins({ x: 22, y: 32 }, { relativeTo: getSlider(page) });
+  await expect(getSliderTick(page, 1)).toHaveApproximateSize({ width: 10, height: 10 });
+  await expect(getSliderTickValue(page, 1)).toHaveRelativeLocationWithoutMargins({ x: 11.5, y: -2 }, { relativeTo: getSlider(page) });
+  await expect(getSliderTickValue(page, 1)).toHaveApproximateSize({ width: 9, height: 24 });
 
-//       expect(page.getSliderTick(10).getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 675, y: 32});
-//       expect(page.getSliderTick(10).getSize()).toBeApproximateSize({width: 10, height: 10});
-//       expect(page.getSliderTickValue(10).getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 664, y: -2});
-//       expect(page.getSliderTickValue(10).getSize()).toBeApproximateSize({width: 9, height: 24});
+  await expect(getSliderTick(page, 2)).toHaveRelativeLocationWithoutMargins({ x: 95, y: 32 }, { relativeTo: getSlider(page) });
+  await expect(getSliderTick(page, 2)).toHaveApproximateSize({ width: 10, height: 10 });
+  await expect(getSliderTickValue(page, 2)).toHaveRelativeLocationWithoutMargins({ x: 84.5, y: -2 }, { relativeTo: getSlider(page) });
+  await expect(getSliderTickValue(page, 2)).toHaveApproximateSize({ width: 9, height: 24 });
 
-//       expect(page.getSliderTick(11).getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 748, y: 32});
-//       expect(page.getSliderTick(11).getSize()).toBeApproximateSize({width: 10, height: 10});
-//       expect(page.getSliderTickValue(11).getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 733, y: -2});
-//       expect(page.getSliderTickValue(11).getSize()).toBeApproximateSize({width: 18, height: 24});
-//     });
-//   });
+  await expect(getSliderTick(page, 3)).toHaveRelativeLocationWithoutMargins({ x: 169, y: 32 }, { relativeTo: getSlider(page) });
+  await expect(getSliderTick(page, 3)).toHaveApproximateSize({ width: 10, height: 10 });
+  await expect(getSliderTickValue(page, 3)).toHaveRelativeLocationWithoutMargins({ x: 158.5, y: -2 }, { relativeTo: getSlider(page) });
+  await expect(getSliderTickValue(page, 3)).toHaveApproximateSize({ width: 9, height: 24 });
 
-//   describe('after dragging the slider pointer left', () => {
-//     const testCases: () => void = (): void => {
-//       it('moves the pointer element to the nearest tick', () => {
-//         expect(page.getSliderPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 290, y: 21});
-//       });
-//     };
+  await expect(getSliderTick(page, 4)).toHaveRelativeLocationWithoutMargins({ x: 242, y: 32 }, { relativeTo: getSlider(page) });
+  await expect(getSliderTick(page, 4)).toHaveApproximateSize({ width: 10, height: 10 });
+  await expect(getSliderTickValue(page, 4)).toHaveRelativeLocationWithoutMargins({ x: 231.5, y: -2 }, { relativeTo: getSlider(page) });
+  await expect(getSliderTickValue(page, 4)).toHaveApproximateSize({ width: 9, height: 24 });
 
-//     describe('with mouse', () => {
-//       beforeEach(() => {
-//         page.getSliderPointer().mouseDragSync(-100, -50);
-//       });
+  await expect(getSliderTick(page, 5)).toHaveRelativeLocationWithoutMargins({ x: 316, y: 32 }, { relativeTo: getSlider(page) });
+  await expect(getSliderTick(page, 5)).toHaveApproximateSize({ width: 10, height: 10 });
+  await expect(getSliderTickValue(page, 5)).toHaveRelativeLocationWithoutMargins({ x: 305.5, y: -2 }, { relativeTo: getSlider(page) });
+  await expect(getSliderTickValue(page, 5)).toHaveApproximateSize({ width: 9, height: 24 });
 
-//       testCases();
-//     });
+  await expect(getSliderTick(page, 6)).toHaveRelativeLocationWithoutMargins({ x: 389, y: 32 }, { relativeTo: getSlider(page) });
+  await expect(getSliderTick(page, 6)).toHaveApproximateSize({ width: 10, height: 10 });
+  await expect(getSliderTickValue(page, 6)).toHaveRelativeLocationWithoutMargins({ x: 378.5, y: -2 }, { relativeTo: getSlider(page) });
+  await expect(getSliderTickValue(page, 6)).toHaveApproximateSize({ width: 9, height: 24 });
 
-//     describe('with touch gesture', () => {
-//       beforeEach(() => {
-//         page.getSliderPointer().touchDragSync(-100, -50);
-//       });
+  await expect(getSliderTick(page, 7)).toHaveRelativeLocationWithoutMargins({ x: 462, y: 32 }, { relativeTo: getSlider(page) });
+  await expect(getSliderTick(page, 7)).toHaveApproximateSize({ width: 10, height: 10 });
+  await expect(getSliderTickValue(page, 7)).toHaveRelativeLocationWithoutMargins({ x: 451.5, y: -2 }, { relativeTo: getSlider(page) });
+  await expect(getSliderTickValue(page, 7)).toHaveApproximateSize({ width: 9, height: 24 });
 
-//       testCases();
-//     });
-//   });
+  await expect(getSliderTick(page, 8)).toHaveRelativeLocationWithoutMargins({ x: 536, y: 32 }, { relativeTo: getSlider(page) });
+  await expect(getSliderTick(page, 8)).toHaveApproximateSize({ width: 10, height: 10 });
+  await expect(getSliderTickValue(page, 8)).toHaveRelativeLocationWithoutMargins({ x: 525.5, y: -2 }, { relativeTo: getSlider(page) });
+  await expect(getSliderTickValue(page, 8)).toHaveApproximateSize({ width: 9, height: 24 });
 
-//   describe('after dragging the slider pointer right', () => {
-//     const testCases: () => void = (): void => {
-//       it('moves the pointer element to the nearest tick', () => {
-//         expect(page.getSliderPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 581, y: 21});
-//       });
-//     };
+  await expect(getSliderTick(page, 9)).toHaveRelativeLocationWithoutMargins({ x: 609, y: 32 }, { relativeTo: getSlider(page) });
+  await expect(getSliderTick(page, 9)).toHaveApproximateSize({ width: 10, height: 10 });
+  await expect(getSliderTickValue(page, 9)).toHaveRelativeLocationWithoutMargins({ x: 598.5, y: -2 }, { relativeTo: getSlider(page) });
+  await expect(getSliderTickValue(page, 9)).toHaveApproximateSize({ width: 9, height: 24 });
 
-//     describe('with mouse', () => {
-//       beforeEach(() => {
-//         page.getSliderPointer().mouseDragSync(200, -50);
-//       });
+  await expect(getSliderTick(page, 10)).toHaveRelativeLocationWithoutMargins({ x: 683, y: 32 }, { relativeTo: getSlider(page) });
+  await expect(getSliderTick(page, 10)).toHaveApproximateSize({ width: 10, height: 10 });
+  await expect(getSliderTickValue(page, 10)).toHaveRelativeLocationWithoutMargins({ x: 672.5, y: -2 }, { relativeTo: getSlider(page) });
+  await expect(getSliderTickValue(page, 10)).toHaveApproximateSize({ width: 9, height: 24 });
 
-//       testCases();
-//     });
+  await expect(getSliderTick(page, 11)).toHaveRelativeLocationWithoutMargins({ x: 756, y: 32 }, { relativeTo: getSlider(page) });
+  await expect(getSliderTick(page, 11)).toHaveApproximateSize({ width: 10, height: 10 });
+  await expect(getSliderTickValue(page, 11)).toHaveRelativeLocationWithoutMargins({ x: 741, y: -2 }, { relativeTo: getSlider(page) });
+  await expect(getSliderTickValue(page, 11)).toHaveApproximateSize({ width: 18, height: 24 });
+});
 
-//     describe('with touch gesture', () => {
-//       beforeEach(() => {
-//         page.getSliderPointer().touchDragSync(200, -50);
-//       });
+test('ticks slider after dragging the slider pointer left with mouse moves the pointer element to the nearest tick', async ({ page }) => {
+  await setUp(page);
 
-//       testCases();
-//     });
-//   });
+  await mouseDragRelative(getSliderPointer(page), {offsetX: -100, offsetY: -50});
 
-//   describe('after clicking on another tick element', () => {
-//     const testCases: () => void = (): void => {
-//       it('moves the pointer element to that tick', () => {
-//         expect(page.getSliderPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 145, y: 21});
-//       });
-//     };
+  await expect(getSliderPointer(page)).toHaveRelativeLocationWithoutMargins({ x: 294, y: 21 }, { relativeTo: getSlider(page) });
+});
 
-//     describe('with mouse', () => {
-//       beforeEach(() => {
-//         page.getSliderTick(3).mouseClick();
-//       });
+test('ticks slider after dragging the slider pointer left with touch gesture moves the pointer element to the nearest tick', async ({ page }) => {
+  await setUp(page);
 
-//       testCases();
-//     });
+  await touchDragRelative(getSliderPointer(page), {offsetX: -100, offsetY: -50});
 
-//     describe('with touch gesture', () => {
-//       beforeEach(() => {
-//         page.getSliderTick(3).touchTap();
-//       });
+  await expect(getSliderPointer(page)).toHaveRelativeLocationWithoutMargins({ x: 294, y: 21 }, { relativeTo: getSlider(page) });
+});
 
-//       testCases();
-//     });
-//   });
+test('ticks slider after dragging the slider pointer right with mouse moves the pointer element to the nearest tick', async ({ page }) => {
+  await setUp(page);
 
-//   describe('after clicking on slider bar', () => {
-//     const testCases: () => void = (): void => {
-//       it('moves the pointer element to the nearest tick', () => {
-//         expect(page.getSliderPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 436, y: 21});
-//       });
-//     };
+  await mouseDragRelative(getSliderPointer(page), {offsetX: 200, offsetY: -50});
 
-//     describe('with mouse', () => {
-//       beforeEach(() => {
-//         page.getSliderFullBar().mouseClick(100, 0);
-//       });
+  await expect(getSliderPointer(page)).toHaveRelativeLocationWithoutMargins({ x: 587, y: 21 }, { relativeTo: getSlider(page) });
+});
 
-//       testCases();
-//     });
+test('ticks slider after dragging the slider pointer right with touch gesture moves the pointer element to the nearest tick', async ({ page }) => {
+  await setUp(page);
 
-//     describe('with touch gesture', () => {
-//       beforeEach(() => {
-//         page.getSliderFullBar().touchTap(100, 0);
-//       });
+  await touchDragRelative(getSliderPointer(page), {offsetX: 200, offsetY: -50});
 
-//       testCases();
-//     });
-//   });
+  await expect(getSliderPointer(page)).toHaveRelativeLocationWithoutMargins({ x: 587, y: 21 }, { relativeTo: getSlider(page) });
+});
 
-//   describe('keyboard input', () => {
-//     describe('after pressing right arrow', () => {
-//       beforeEach(() => {
-//         page.getSliderPointer().sendKeys(Key.ARROW_RIGHT);
-//       });
+test('ticks slider after clicking on another tick element moves the pointer element to that tick', async ({ page }) => {
+  await setUp(page);
 
-//       it('moves the slider up one tick', () => {
-//         expect(page.getSliderPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 436, y: 21});
-//       });
-//     });
+  await getSliderTick(page, 3).click();
 
-//     describe('after pressing up arrow', () => {
-//       beforeEach(() => {
-//         page.getSliderPointer().sendKeys(Key.ARROW_UP);
-//       });
+  await expect(getSliderPointer(page)).toHaveRelativeLocationWithoutMargins({ x: 147, y: 21 }, { relativeTo: getSlider(page) });
+});
 
-//       it('moves the slider up one tick', () => {
-//         expect(page.getSliderPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 436, y: 21});
-//       });
-//     });
+test('ticks slider after tapping on another tick element moves the pointer element to that tick', async ({ page }) => {
+  await setUp(page);
 
-//     describe('after pressing left arrow', () => {
-//       beforeEach(() => {
-//         page.getSliderPointer().sendKeys(Key.ARROW_LEFT);
-//       });
+  await getSliderTick(page, 3).tap();
 
-//       it('moves the slider down one tick', () => {
-//         expect(page.getSliderPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 290, y: 21});
-//       });
-//     });
+  await expect(getSliderPointer(page)).toHaveRelativeLocationWithoutMargins({ x: 147, y: 21 }, { relativeTo: getSlider(page) });
+});
 
-//     describe('after pressing down arrow', () => {
-//       beforeEach(() => {
-//         page.getSliderPointer().sendKeys(Key.ARROW_DOWN);
-//       });
+test('ticks slider after clicking on slider bar moves the pointer element to the nearest tick', async ({ page }) => {
+  await setUp(page);
 
-//       it('moves the slider down one tick', () => {
-//         expect(page.getSliderPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 290, y: 21});
-//       });
-//     });
+  await getSliderFullBar(page).click({position: {x: 500, y: 0}});
 
-//     describe('after pressing page up', () => {
-//       beforeEach(() => {
-//         page.getSliderPointer().sendKeys(Key.PAGE_UP);
-//       });
+  await expect(getSliderPointer(page)).toHaveRelativeLocationWithoutMargins({ x: 514, y: 21 }, { relativeTo: getSlider(page) });
+});
 
-//       it('moves the slider up one tick', () => {
-//         expect(page.getSliderPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 436, y: 21});
-//       });
-//     });
+test('ticks slider after tapping on slider bar moves the pointer element to the nearest tick', async ({ page }) => {
+  await setUp(page);
 
-//     describe('after pressing page down', () => {
-//       beforeEach(() => {
-//         page.getSliderPointer().sendKeys(Key.PAGE_DOWN);
-//       });
+  await getSliderFullBar(page).tap({position: {x: 500, y: 0}});
 
-//       it('moves the slider down one tick', () => {
-//         expect(page.getSliderPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 290, y: 21});
-//       });
-//     });
+  await expect(getSliderPointer(page)).toHaveRelativeLocationWithoutMargins({ x: 514, y: 21 }, { relativeTo: getSlider(page) });
+});
 
-//     describe('after pressing home', () => {
-//       beforeEach(() => {
-//         page.getSliderPointer().sendKeys(Key.HOME);
-//       });
+test('ticks slider keyboard input after pressing right arrow moves the slider up one tick', async ({ page }) => {
+  await setUp(page);
 
-//       it('moves the slider to the first tick', () => {
-//         expect(page.getSliderPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 0, y: 21});
-//       });
-//     });
+  await getSliderPointer(page).press('ArrowRight');
 
-//     describe('after pressing end', () => {
-//       beforeEach(() => {
-//         page.getSliderPointer().sendKeys(Key.END);
-//       });
+  await expect(getSliderPointer(page)).toHaveRelativeLocationWithoutMargins({ x: 440, y: 21 }, { relativeTo: getSlider(page) });
+});
 
-//       it('moves the slider to the last tick', () => {
-//         expect(page.getSliderPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 726, y: 21});
-//       });
-//     });
-//   });
-// });
+test('ticks slider keyboard input after pressing up arrow moves the slider up one tick', async ({ page }) => {
+  await setUp(page);
+
+  await getSliderPointer(page).press('ArrowUp');
+
+  await expect(getSliderPointer(page)).toHaveRelativeLocationWithoutMargins({ x: 440, y: 21 }, { relativeTo: getSlider(page) });
+});
+
+test('ticks slider keyboard input after pressing left arrow moves the slider down one tick', async ({ page }) => {
+  await setUp(page);
+
+  await getSliderPointer(page).press('ArrowLeft');
+
+  await expect(getSliderPointer(page)).toHaveRelativeLocationWithoutMargins({ x: 294, y: 21 }, { relativeTo: getSlider(page) });
+});
+
+test('ticks slider keyboard input after pressing down arrow moves the slider down one tick', async ({ page }) => {
+  await setUp(page);
+
+  await getSliderPointer(page).press('ArrowDown');
+
+  await expect(getSliderPointer(page)).toHaveRelativeLocationWithoutMargins({ x: 294, y: 21 }, { relativeTo: getSlider(page) });
+});
+
+test('ticks slider keyboard input after pressing page up moves the slider up one tick', async ({ page }) => {
+  await setUp(page);
+
+  await getSliderPointer(page).press('PageUp');
+
+  await expect(getSliderPointer(page)).toHaveRelativeLocationWithoutMargins({ x: 440, y: 21 }, { relativeTo: getSlider(page) });
+});
+
+test('ticks slider keyboard input after pressing page down moves the slider down one tick', async ({ page }) => {
+  await setUp(page);
+
+  await getSliderPointer(page).press('PageDown');
+
+  await expect(getSliderPointer(page)).toHaveRelativeLocationWithoutMargins({ x: 294, y: 21 }, { relativeTo: getSlider(page) });
+});
+
+test('ticks slider keyboard input after pressing home moves the slider to the first tick', async ({ page }) => {
+  await setUp(page);
+
+  await getSliderPointer(page).press('Home');
+
+  await expect(getSliderPointer(page)).toHaveRelativeLocationWithoutMargins({ x: 0, y: 21 }, { relativeTo: getSlider(page) });
+});
+
+test('ticks slider keyboard input after pressing end moves the slider to the last tick', async ({ page }) => {
+  await setUp(page);
+
+  await getSliderPointer(page).press('End');
+
+  await expect(getSliderPointer(page)).toHaveRelativeLocationWithoutMargins({ x: 734, y: 21 }, { relativeTo: getSlider(page) });
+});
