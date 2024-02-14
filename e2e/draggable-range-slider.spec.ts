@@ -1,180 +1,157 @@
-// TODO: convert the tests from protractor to playwright
+import { test, Page, Locator } from '@playwright/test';
+import { expect, mouseDragRelative, touchDragRelative } from './utils';
 
-// import { BaseRangeSliderDemoPage } from '../base-range-slider-demo.po';
-// import { approximateGeometryMatchers, expect } from '../utils';
+async function setUp(page: Page) {
+  await page.setViewportSize({ width: 800, height: 600 });
+  await page.goto('/draggable-range-slider?testMode=true');
+}
 
-// describe('draggable range slider', () => {
-//   let page: BaseRangeSliderDemoPage;
+function getSlider(page: Page): Locator {
+  return page.locator('ngx-slider');
+}
 
-//   beforeEach(() => {
-//     jasmine.addMatchers(approximateGeometryMatchers);
+function getSliderFloorLabel(page: Page): Locator {
+  return getSlider(page).locator('span.ngx-slider-floor');
+}
 
-//     page = new BaseRangeSliderDemoPage();
-//     page.navigateTo('draggable-range-slider');
-//   });
+function getSliderCeilLabel(page: Page): Locator {
+  return getSlider(page).locator('span.ngx-slider-ceil');
+}
 
-//   describe('initial state', () => {
-//     it('displays starting values', () => {
-//       expect(page.getSliderFloorLabel().getText()).toBe('0');
-//       expect(page.getSliderCeilLabel().getText()).toBe('10');
-//       expect(page.getSliderLowPointerLabel().getText()).toBe('1');
-//       expect(page.getSliderHighPointerLabel().getText()).toBe('8');
-//     });
-//   });
+function getSliderLowPointer(page: Page): Locator {
+  return getSlider(page).locator('span.ngx-slider-pointer-min');
+}
 
-//   describe('low pointer interactions', () => {
-//     describe('after dragging the low slider pointer to the left', () => {
-//       const testCases: () => void = (): void => {
-//         it('moves only the low pointer along', () => {
-//           expect(page.getSliderLowPointerLabel().getText()).toBe('0');
-//           expect(page.getSliderHighPointerLabel().getText()).toBe('8');
-//         });
-//       };
+function getSliderHighPointer(page: Page): Locator {
+  return getSlider(page).locator('span.ngx-slider-pointer-max');
+}
 
-//       describe('with a mouse', () => {
-//         beforeEach(() => {
-//           page.getSliderLowPointer().mouseDragSync(-50, -50);
-//         });
+function getSliderLowPointerLabel(page: Page): Locator {
+  return getSlider(page).locator('span.ngx-slider-model-value');
+}
 
-//         testCases();
-//       });
+function getSliderHighPointerLabel(page: Page): Locator {
+  return getSlider(page).locator('span.ngx-slider-model-high');
+}
 
-//       describe('with a touch gesture', () => {
-//         beforeEach(() => {
-//           page.getSliderLowPointer().touchDragSync(-50, -50);
-//         });
+function getSliderSelectionBar(page: Page): Locator {
+  return getSlider(page).locator('span.ngx-slider-selection-bar');
+}
 
-//         testCases();
-//       });
-//     });
 
-//     describe('after dragging the low slider pointer to the right', () => {
-//       const testCases: () => void = (): void => {
-//         it('moves only the low pointer along', () => {
-//           expect(page.getSliderLowPointerLabel().getText()).toBe('2');
-//           expect(page.getSliderHighPointerLabel().getText()).toBe('8');
-//         });
-//       };
+test('draggable range slider initial state displays starting values', async ({ page }) => {
+  await setUp(page);
 
-//       describe('with a mouse', () => {
-//         beforeEach(() => {
-//           page.getSliderLowPointer().mouseDragSync(50, -50);
-//         });
+  await expect(getSliderFloorLabel(page)).toHaveText('0');
+  await expect(getSliderCeilLabel(page)).toHaveText('10');
+  await expect(getSliderLowPointerLabel(page)).toHaveText('1');
+  await expect(getSliderHighPointerLabel(page)).toHaveText('8');
+});
 
-//         testCases();
-//       });
+test('draggable range slider low pointer interactions after dragging the low slider pointer to the left with mouse moves only the low pointer along', async ({ page }) => {
+  await setUp(page);
 
-//       describe('with a touch gesture', () => {
-//         beforeEach(() => {
-//           page.getSliderLowPointer().touchDragSync(50, -50);
-//         });
+  await mouseDragRelative(getSliderLowPointer(page), {offsetX: -50, offsetY: -50});
+  
+  await expect(getSliderLowPointerLabel(page)).toHaveText('0');
+  await expect(getSliderHighPointerLabel(page)).toHaveText('8');
+});
 
-//         testCases();
-//       });
-//     });
-//   });
+test('draggable range slider low pointer interactions after dragging the low slider pointer to the left with touch gesture moves only the low pointer along', async ({ page }) => {
+  await setUp(page);
 
-//   describe('high pointer interactions', () => {
-//     describe('after dragging the high slider pointer to the left', () => {
-//       const testCases: () => void = (): void => {
-//         it('moves only the high pointer along', () => {
-//           expect(page.getSliderLowPointerLabel().getText()).toBe('1');
-//           expect(page.getSliderHighPointerLabel().getText()).toBe('7');
-//         });
-//       };
+  await touchDragRelative(getSliderLowPointer(page), {offsetX: -50, offsetY: -50});
+  
+  await expect(getSliderLowPointerLabel(page)).toHaveText('0');
+  await expect(getSliderHighPointerLabel(page)).toHaveText('8');
+});
 
-//       describe('with a mouse', () => {
-//         beforeEach(() => {
-//           page.getSliderHighPointer().mouseDragSync(-50, -50);
-//         });
+test('draggable range slider low pointer interactions after dragging the low slider pointer to the right with mouse moves only the low pointer along', async ({ page }) => {
+  await setUp(page);
 
-//         testCases();
-//       });
+  await mouseDragRelative(getSliderLowPointer(page), {offsetX: 50, offsetY: -50});
+  
+  await expect(getSliderLowPointerLabel(page)).toHaveText('2');
+  await expect(getSliderHighPointerLabel(page)).toHaveText('8');
+});
 
-//       describe('with a touch gesture', () => {
-//         beforeEach(() => {
-//           page.getSliderHighPointer().touchDragSync(-50, -50);
-//         });
+test('draggable range slider low pointer interactions after dragging the low slider pointer to the right with touch gesture moves only the low pointer along', async ({ page }) => {
+  await setUp(page);
 
-//         testCases();
-//       });
-//     });
+  await touchDragRelative(getSliderLowPointer(page), {offsetX: 50, offsetY: -50});
+  
+  await expect(getSliderLowPointerLabel(page)).toHaveText('2');
+  await expect(getSliderHighPointerLabel(page)).toHaveText('8');
+});
 
-//     describe('after dragging the high slider pointer to the right', () => {
-//       const testCases: () => void = (): void => {
-//         it('moves only the high pointer along', () => {
-//           expect(page.getSliderLowPointerLabel().getText()).toBe('1');
-//           expect(page.getSliderHighPointerLabel().getText()).toBe('9');
-//         });
-//       };
+test('draggable range slider high pointer interactions after dragging the high slider pointer to the left with mouse moves only the high pointer along', async ({ page }) => {
+  await setUp(page);
 
-//       describe('with a mouse', () => {
-//         beforeEach(() => {
-//           page.getSliderHighPointer().mouseDragSync(50, -50);
-//         });
+  await mouseDragRelative(getSliderHighPointer(page), {offsetX: -50, offsetY: -50});
+  
+  await expect(getSliderLowPointerLabel(page)).toHaveText('1');
+  await expect(getSliderHighPointerLabel(page)).toHaveText('7');
+});
 
-//         testCases();
-//       });
+test('draggable range slider high pointer interactions after dragging the high slider pointer to the left with touch gesture moves only the high pointer along', async ({ page }) => {
+  await setUp(page);
 
-//       describe('with a touch gesture', () => {
-//         beforeEach(() => {
-//           page.getSliderHighPointer().touchDragSync(50, -50);
-//         });
+  await touchDragRelative(getSliderHighPointer(page), {offsetX: -50, offsetY: -50});
+  
+  await expect(getSliderLowPointerLabel(page)).toHaveText('1');
+  await expect(getSliderHighPointerLabel(page)).toHaveText('7');
+});
 
-//         testCases();
-//       });
-//     });
-//   });
+test('draggable range slider high pointer interactions after dragging the high slider pointer to the right with mouse moves only the high pointer along', async ({ page }) => {
+  await setUp(page);
 
-//   describe('selection bar interactions', () => {
-//     describe('after dragging the selection bar to the left', () => {
-//       const testCases: () => void = (): void => {
-//         it('moves both the low and high pointer along', () => {
-//           expect(page.getSliderLowPointerLabel().getText()).toBe('0');
-//           expect(page.getSliderHighPointerLabel().getText()).toBe('7');
-//         });
-//       };
+  await mouseDragRelative(getSliderHighPointer(page), {offsetX: 50, offsetY: -50});
+  
+  await expect(getSliderLowPointerLabel(page)).toHaveText('1');
+  await expect(getSliderHighPointerLabel(page)).toHaveText('9');
+});
 
-//       describe('with a mouse', () => {
-//         beforeEach(() => {
-//           page.getSliderSelectionBar().mouseDragSync(-50, -50);
-//         });
+test('draggable range slider high pointer interactions after dragging the high slider pointer to the right with touch gesture moves only the high pointer along', async ({ page }) => {
+  await setUp(page);
 
-//         testCases();
-//       });
+  await touchDragRelative(getSliderHighPointer(page), {offsetX: 50, offsetY: -50});
+  
+  await expect(getSliderLowPointerLabel(page)).toHaveText('1');
+  await expect(getSliderHighPointerLabel(page)).toHaveText('9');
+});
 
-//       describe('with a touch gesture', () => {
-//         beforeEach(() => {
-//           page.getSliderSelectionBar().touchDragSync(-50, -50);
-//         });
+test('draggable range slider selection bar interactions after dragging the selection bar to the left with mouse moves both pointers along', async ({ page }) => {
+  await setUp(page);
 
-//         testCases();
-//       });
-//     });
+  await mouseDragRelative(getSliderSelectionBar(page), {offsetX: -50, offsetY: -50});
+  
+  await expect(getSliderLowPointerLabel(page)).toHaveText('0');
+  await expect(getSliderHighPointerLabel(page)).toHaveText('7');
+});
 
-//     describe('after dragging the selection bar to the right', () => {
-//       const testCases: () => void = (): void => {
-//         it('moves both the low and high pointer along', () => {
-//           expect(page.getSliderLowPointerLabel().getText()).toBe('2');
-//           expect(page.getSliderHighPointerLabel().getText()).toBe('9');
-//         });
-//       };
+test('draggable range slider selection bar interactions after dragging the selection bar to the left with touch gesture moves both pointers along', async ({ page }) => {
+  await setUp(page);
 
-//       describe('with a mouse', () => {
-//         beforeEach(() => {
-//           page.getSliderSelectionBar().mouseDragSync(50, -50);
-//         });
+  await touchDragRelative(getSliderSelectionBar(page), {offsetX: -50, offsetY: -50});
+  
+  await expect(getSliderLowPointerLabel(page)).toHaveText('0');
+  await expect(getSliderHighPointerLabel(page)).toHaveText('7');
+});
 
-//         testCases();
-//       });
+test('draggable range slider selection bar interactions after dragging the selection bar to the right with mouse moves both pointers along', async ({ page }) => {
+  await setUp(page);
 
-//       describe('with a touch gesture', () => {
-//         beforeEach(() => {
-//           page.getSliderSelectionBar().touchDragSync(50, -50);
-//         });
+  await mouseDragRelative(getSliderSelectionBar(page), {offsetX: 50, offsetY: -50});
+  
+  await expect(getSliderLowPointerLabel(page)).toHaveText('2');
+  await expect(getSliderHighPointerLabel(page)).toHaveText('9');
+});
 
-//         testCases();
-//       });
-//     });
-//   });
-// });
+test('draggable range slider selection bar interactions after dragging the selection bar to the right with touch gesture moves both pointers along', async ({ page }) => {
+  await setUp(page);
+
+  await touchDragRelative(getSliderSelectionBar(page), {offsetX: 50, offsetY: -50});
+  
+  await expect(getSliderLowPointerLabel(page)).toHaveText('2');
+  await expect(getSliderHighPointerLabel(page)).toHaveText('9');
+});
