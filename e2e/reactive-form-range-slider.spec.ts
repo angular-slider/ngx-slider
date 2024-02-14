@@ -1,138 +1,173 @@
-// TODO: convert the tests from protractor to playwright
+import { test, Page, Locator } from '@playwright/test';
+import { expect, mouseDragRelative } from './utils';
 
-// import { ReactiveFormRangeSliderDemoPage } from './reactive-form-range-slider-demo.po';
-// import { approximateGeometryMatchers, expect } from '../utils';
+async function setUp(page: Page) {
+  await page.setViewportSize({ width: 800, height: 600 });
+  await page.goto('/reactive-form-range-slider?testMode=true');
+}
 
-// describe('reactive form range slider', () => {
-//   let page: ReactiveFormRangeSliderDemoPage;
+function getSlider(page: Page): Locator {
+  return page.locator('ngx-slider');
+}
 
-//   beforeEach(() => {
-//     jasmine.addMatchers(approximateGeometryMatchers);
+function getSliderFloorLabel(page: Page): Locator {
+  return getSlider(page).locator('span.ngx-slider-floor');
+}
 
-//     page = new ReactiveFormRangeSliderDemoPage();
-//     page.navigateTo('reactive-form-range-slider');
-//   });
+function getSliderCeilLabel(page: Page): Locator {
+  return getSlider(page).locator('span.ngx-slider-ceil');
+}
 
-//   describe('initial state', () => {
-//     it('displays starting values in labels and positions the slider elements correctly', () => {
-//       expect(page.getSliderFloorLabel().getText()).toBe('0');
-//       expect(page.getSliderCeilLabel().getText()).toBe('100');
+function getSliderLowPointer(page: Page): Locator {
+  return getSlider(page).locator('span.ngx-slider-pointer-min');
+}
 
-//       expect(page.getSliderLowPointerLabel().getText()).toBe('20');
-//       expect(page.getSliderHighPointerLabel().getText()).toBe('80');
+function getSliderHighPointer(page: Page): Locator {
+  return getSlider(page).locator('span.ngx-slider-pointer-max');
+}
 
-//       expect(page.getSliderFullBar().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 0, y: 3});
-//       expect(page.getSliderFullBar().getSize()).toBeApproximateSize({width: 758, height: 32});
+function getSliderLowPointerLabel(page: Page): Locator {
+  return getSlider(page).locator('span.ngx-slider-model-value');
+}
 
-//       expect(page.getSliderFloorLabel().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 0, y: -3});
-//       expect(page.getSliderCeilLabel().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 725, y: -3});
+function getSliderHighPointerLabel(page: Page): Locator {
+  return getSlider(page).locator('span.ngx-slider-model-high');
+}
 
-//       expect(page.getSliderLowPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 145, y: 21});
-//       expect(page.getSliderLowPointer().getSize()).toBeApproximateSize({width: 32, height: 32});
+function getSliderFullBar(page: Page): Locator {
+  return getSlider(page).locator('span.ngx-slider-full-bar');
+}
 
-//       expect(page.getSliderLowPointerLabel().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 149, y: -3});
+function getSliderSelectionBar(page: Page): Locator {
+  return getSlider(page).locator('span.ngx-slider-selection-bar');
+}
 
-//       expect(page.getSliderHighPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 581, y: 21});
-//       expect(page.getSliderHighPointer().getSize()).toBeApproximateSize({width: 32, height: 32});
+function getLowValueTextElement(page: Page): Locator {
+  return page.locator('p:nth-child(1)');
+}
 
-//       expect(page.getSliderHighPointerLabel().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 585, y: -3});
+function getHighValueTextElement(page: Page): Locator {
+  return page.locator('p:nth-child(2)');
+}
 
-//       expect(page.getSliderSelectionBar().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 161, y: 3});
-//       expect(page.getSliderSelectionBar().getSize()).toBeApproximateSize({width: 436, height: 32});
-//     });
-//   });
+function getFormResetButton(page: Page): Locator {
+  return page.locator('button');
+}
 
-//   describe('after dragging the low slider pointer', () => {
-//     beforeEach(() => {
-//       page.getSliderLowPointer().mouseDragSync(220, -50);
-//     });
 
-//     it('moves the low pointer to new position', () => {
-//       expect(page.getSliderLowPointerLabel().getText()).toBe('50');
-//       expect(page.getLowValueTextElement().getText()).toBe('Low value: 50');
 
-//       expect(page.getSliderHighPointerLabel().getText()).toBe('80');
-//       expect(page.getHighValueTextElement().getText()).toBe('High value: 80');
+test('reactive form range slider initial state displays starting values and position elements correctly', async ({ page }) => {
+  await setUp(page);
 
-//       expect(page.getSliderLowPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 363, y: 21});
-//       expect(page.getSliderLowPointerLabel().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 367, y: -3});
+  await expect(getSliderFloorLabel(page)).toHaveText('0');
+  await expect(getSliderCeilLabel(page)).toHaveText('100');
 
-//       expect(page.getSliderHighPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 581, y: 21});
-//       expect(page.getSliderHighPointerLabel().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 585, y: -3});
+  await expect(getSliderLowPointerLabel(page)).toHaveText('20');
+  await expect(getLowValueTextElement(page)).toHaveText('Low value: 20');
 
-//       expect(page.getSliderSelectionBar().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 379, y: 3});
-//       expect(page.getSliderSelectionBar().getSize()).toBeApproximateSize({width: 218, height: 32});
-//     });
+  await expect(getSliderHighPointerLabel(page)).toHaveText('80');
+  await expect(getHighValueTextElement(page)).toHaveText('High value: 80');
 
-//     describe('after resetting the form', () => {
-//       beforeEach(() => {
-//         page.getSliderHighPointer().mouseDragSync(-220, -50);
-//         page.getFormResetButton().click();
-//       });
+  await expect(getSliderFullBar(page)).toHaveRelativeLocationWithoutMargins({ x: 0, y: 3 }, { relativeTo: getSlider(page) });
+  await expect(getSliderFullBar(page)).toHaveApproximateSize({ width: 766, height: 32 });
 
-//       it('reverts the slider to starting state', () => {
-//         expect(page.getSliderLowPointerLabel().getText()).toBe('20');
-//         expect(page.getLowValueTextElement().getText()).toBe('Low value: 20');
+  await expect(getSliderFloorLabel(page)).toHaveRelativeLocationWithoutMargins({ x: 0, y: -3 }, { relativeTo: getSlider(page) });
+  await expect(getSliderCeilLabel(page)).toHaveRelativeLocationWithoutMargins({ x: 733, y: -3 }, { relativeTo: getSlider(page) });
 
-//         expect(page.getSliderHighPointerLabel().getText()).toBe('80');
-//         expect(page.getHighValueTextElement().getText()).toBe('High value: 80');
+  await expect(getSliderLowPointer(page)).toHaveRelativeLocationWithoutMargins({ x: 147, y: 21 }, { relativeTo: getSlider(page) });
+  await expect(getSliderLowPointer(page)).toHaveApproximateSize({ width: 32, height: 32 });
+  await expect(getSliderLowPointerLabel(page)).toHaveRelativeLocationWithoutMargins({ x: 151, y: -3 }, { relativeTo: getSlider(page) });
 
-//         expect(page.getSliderLowPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 145, y: 21});
-//         expect(page.getSliderLowPointerLabel().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 149, y: -3});
+  await expect(getSliderHighPointer(page)).toHaveRelativeLocationWithoutMargins({ x: 587, y: 21 }, { relativeTo: getSlider(page) });
+  await expect(getSliderHighPointer(page)).toHaveApproximateSize({ width: 32, height: 32 });
+  await expect(getSliderHighPointerLabel(page)).toHaveRelativeLocationWithoutMargins({ x: 591, y: -3 }, { relativeTo: getSlider(page) });
 
-//         expect(page.getSliderHighPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 581, y: 21});
-//         expect(page.getSliderHighPointerLabel().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 585, y: -3});
+  await expect(getSliderSelectionBar(page)).toHaveRelativeLocationWithoutMargins({ x: 163, y: 3 }, { relativeTo: getSlider(page) });
+  await expect(getSliderSelectionBar(page)).toHaveApproximateSize({ width: 440, height: 32 });
+});
 
-//         expect(page.getSliderSelectionBar().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 161, y: 3});
-//         expect(page.getSliderSelectionBar().getSize()).toBeApproximateSize({width: 436, height: 32});
-//       });
-//     });
-//   });
+test('reactive form range slider after dragging the low slider pointer moves the low pointer to new position', async ({ page }) => {
+  await setUp(page);
 
-//   describe('after dragging the high slider pointer', () => {
-//     beforeEach(() => {
-//       page.getSliderHighPointer().mouseDragSync(-220, -50);
-//     });
+  await mouseDragRelative(getSliderLowPointer(page), {offsetX: 220, offsetY: 50});
 
-//     it('moves the high pointer to new position', () => {
-//       expect(page.getSliderLowPointerLabel().getText()).toBe('20');
-//       expect(page.getLowValueTextElement().getText()).toBe('Low value: 20');
+  await expect(getSliderLowPointerLabel(page)).toHaveText('50');
+  await expect(getLowValueTextElement(page)).toHaveText('Low value: 50');
 
-//       expect(page.getSliderHighPointerLabel().getText()).toBe('50');
-//       expect(page.getHighValueTextElement().getText()).toBe('High value: 50');
+  await expect(getSliderHighPointerLabel(page)).toHaveText('80');
+  await expect(getHighValueTextElement(page)).toHaveText('High value: 80');
 
-//       expect(page.getSliderLowPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 145, y: 21});
-//       expect(page.getSliderLowPointerLabel().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 149, y: -3});
+  await expect(getSliderLowPointer(page)).toHaveRelativeLocationWithoutMargins({ x: 367, y: 21 }, { relativeTo: getSlider(page) });
+  await expect(getSliderLowPointerLabel(page)).toHaveRelativeLocationWithoutMargins({ x: 371, y: -3 }, { relativeTo: getSlider(page) });
 
-//       expect(page.getSliderHighPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 363, y: 21});
-//       expect(page.getSliderHighPointerLabel().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 367, y: -3});
+  await expect(getSliderHighPointer(page)).toHaveRelativeLocationWithoutMargins({ x: 587, y: 21 }, { relativeTo: getSlider(page) });
+  await expect(getSliderHighPointerLabel(page)).toHaveRelativeLocationWithoutMargins({ x: 591, y: -3 }, { relativeTo: getSlider(page) });
 
-//       expect(page.getSliderSelectionBar().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 161, y: 3});
-//       expect(page.getSliderSelectionBar().getSize()).toBeApproximateSize({width: 218, height: 32});
-//     });
+  await expect(getSliderSelectionBar(page)).toHaveRelativeLocationWithoutMargins({ x: 383, y: 3 }, { relativeTo: getSlider(page) });
+  await expect(getSliderSelectionBar(page)).toHaveApproximateSize({ width: 220, height: 32 });
+});
 
-//     describe('after resetting the form', () => {
-//       beforeEach(() => {
-//         page.getSliderHighPointer().mouseDragSync(-220, -50);
-//         page.getFormResetButton().click();
-//       });
+test('reactive form range slider after dragging the low slider pointer and after resetting the form reverts the slider to starting state', async ({ page }) => {
+  await setUp(page);
 
-//       it('reverts the slider to starting state', () => {
-//         expect(page.getSliderLowPointerLabel().getText()).toBe('20');
-//         expect(page.getLowValueTextElement().getText()).toBe('Low value: 20');
+  await mouseDragRelative(getSliderLowPointer(page), {offsetX: 220, offsetY: 50});
+  await getFormResetButton(page).click();
 
-//         expect(page.getSliderHighPointerLabel().getText()).toBe('80');
-//         expect(page.getHighValueTextElement().getText()).toBe('High value: 80');
+  await expect(getSliderLowPointerLabel(page)).toHaveText('20');
+  await expect(getLowValueTextElement(page)).toHaveText('Low value: 20');
 
-//         expect(page.getSliderLowPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 145, y: 21});
-//         expect(page.getSliderLowPointerLabel().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 149, y: -3});
+  await expect(getSliderHighPointerLabel(page)).toHaveText('80');
+  await expect(getHighValueTextElement(page)).toHaveText('High value: 80');
 
-//         expect(page.getSliderHighPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 581, y: 21});
-//         expect(page.getSliderHighPointerLabel().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 585, y: -3});
+  await expect(getSliderLowPointer(page)).toHaveRelativeLocationWithoutMargins({ x: 147, y: 21 }, { relativeTo: getSlider(page) });
+  await expect(getSliderLowPointerLabel(page)).toHaveRelativeLocationWithoutMargins({ x: 151, y: -3 }, { relativeTo: getSlider(page) });
 
-//         expect(page.getSliderSelectionBar().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 161, y: 3});
-//         expect(page.getSliderSelectionBar().getSize()).toBeApproximateSize({width: 436, height: 32});
-//       });
-//     });
-//   });
-// });
+  await expect(getSliderHighPointer(page)).toHaveRelativeLocationWithoutMargins({ x: 587, y: 21 }, { relativeTo: getSlider(page) });
+  await expect(getSliderHighPointerLabel(page)).toHaveRelativeLocationWithoutMargins({ x: 591, y: -3 }, { relativeTo: getSlider(page) });
+
+  await expect(getSliderSelectionBar(page)).toHaveRelativeLocationWithoutMargins({ x: 163, y: 3 }, { relativeTo: getSlider(page) });
+  await expect(getSliderSelectionBar(page)).toHaveApproximateSize({ width: 440, height: 32 });
+});
+
+test('reactive form range slider after dragging the high slider pointer moves the high pointer to new position', async ({ page }) => {
+  await setUp(page);
+
+  await mouseDragRelative(getSliderHighPointer(page), {offsetX: -220, offsetY: 50});
+
+  await expect(getSliderLowPointerLabel(page)).toHaveText('20');
+  await expect(getLowValueTextElement(page)).toHaveText('Low value: 20');
+
+  await expect(getSliderHighPointerLabel(page)).toHaveText('50');
+  await expect(getHighValueTextElement(page)).toHaveText('High value: 50');
+
+  await expect(getSliderLowPointer(page)).toHaveRelativeLocationWithoutMargins({ x: 147, y: 21 }, { relativeTo: getSlider(page) });
+  await expect(getSliderLowPointerLabel(page)).toHaveRelativeLocationWithoutMargins({ x: 151, y: -3 }, { relativeTo: getSlider(page) });
+
+  await expect(getSliderHighPointer(page)).toHaveRelativeLocationWithoutMargins({ x: 367, y: 21 }, { relativeTo: getSlider(page) });
+  await expect(getSliderHighPointerLabel(page)).toHaveRelativeLocationWithoutMargins({ x: 371, y: -3 }, { relativeTo: getSlider(page) });
+
+  await expect(getSliderSelectionBar(page)).toHaveRelativeLocationWithoutMargins({ x: 163, y: 3 }, { relativeTo: getSlider(page) });
+  await expect(getSliderSelectionBar(page)).toHaveApproximateSize({ width: 220, height: 32 });
+});
+
+test('reactive form range slider after dragging the high slider pointer and after resetting the form reverts the slider to starting state', async ({ page }) => {
+  await setUp(page);
+
+  await mouseDragRelative(getSliderHighPointer(page), {offsetX: -220, offsetY: 50});
+  await getFormResetButton(page).click();
+
+  await expect(getSliderLowPointerLabel(page)).toHaveText('20');
+  await expect(getLowValueTextElement(page)).toHaveText('Low value: 20');
+
+  await expect(getSliderHighPointerLabel(page)).toHaveText('80');
+  await expect(getHighValueTextElement(page)).toHaveText('High value: 80');
+
+  await expect(getSliderLowPointer(page)).toHaveRelativeLocationWithoutMargins({ x: 147, y: 21 }, { relativeTo: getSlider(page) });
+  await expect(getSliderLowPointerLabel(page)).toHaveRelativeLocationWithoutMargins({ x: 151, y: -3 }, { relativeTo: getSlider(page) });
+
+  await expect(getSliderHighPointer(page)).toHaveRelativeLocationWithoutMargins({ x: 587, y: 21 }, { relativeTo: getSlider(page) });
+  await expect(getSliderHighPointerLabel(page)).toHaveRelativeLocationWithoutMargins({ x: 591, y: -3 }, { relativeTo: getSlider(page) });
+
+  await expect(getSliderSelectionBar(page)).toHaveRelativeLocationWithoutMargins({ x: 163, y: 3 }, { relativeTo: getSlider(page) });
+  await expect(getSliderSelectionBar(page)).toHaveApproximateSize({ width: 440, height: 32 });
+});

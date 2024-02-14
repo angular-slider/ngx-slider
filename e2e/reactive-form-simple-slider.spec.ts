@@ -1,60 +1,84 @@
-// TODO: convert the tests from protractor to playwright
+import { test, Page, Locator } from '@playwright/test';
+import { expect, mouseDragRelative } from './utils';
 
-// import { ReactiveFormSimpleSliderDemoPage } from './reactive-form-simple-slider-demo.po';
-// import { approximateGeometryMatchers, expect } from '../utils';
+async function setUp(page: Page) {
+  await page.setViewportSize({ width: 800, height: 600 });
+  await page.goto('/reactive-form-simple-slider?testMode=true');
+}
 
-// describe('reactive form simple slider', () => {
-//   let page: ReactiveFormSimpleSliderDemoPage;
+function getSlider(page: Page): Locator {
+  return page.locator('ngx-slider');
+}
 
-//   beforeEach(() => {
-//     jasmine.addMatchers(approximateGeometryMatchers);
+function getSliderFloorLabel(page: Page): Locator {
+  return getSlider(page).locator('span.ngx-slider-floor');
+}
 
-//     page = new ReactiveFormSimpleSliderDemoPage();
-//     page.navigateTo('reactive-form-simple-slider');
-//   });
+function getSliderCeilLabel(page: Page): Locator {
+  return getSlider(page).locator('span.ngx-slider-ceil');
+}
 
-//   describe('initial state', () => {
-//     it('displays starting values in labels and positions the slider elements correctly', () => {
-//       expect(page.getSliderFloorLabel().getText()).toBe('0');
-//       expect(page.getSliderCeilLabel().getText()).toBe('250');
-//       expect(page.getSliderPointerLabel().getText()).toBe('100');
+function getSliderPointer(page: Page): Locator {
+  return getSlider(page).locator('span.ngx-slider-pointer-min');
+}
 
-//       expect(page.getSliderFullBar().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 0, y: 3});
-//       expect(page.getSliderFullBar().getSize()).toBeApproximateSize({width: 758, height: 32});
+function getSliderPointerLabel(page: Page): Locator {
+  return getSlider(page).locator('span.ngx-slider-model-value');
+}
 
-//       expect(page.getSliderFloorLabel().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 0, y: -3});
-//       expect(page.getSliderCeilLabel().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 725, y: -3});
+function getSliderFullBar(page: Page): Locator {
+  return getSlider(page).locator('span.ngx-slider-full-bar');
+}
 
-//       expect(page.getSliderPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 290, y: 21});
-//       expect(page.getSliderPointer().getSize()).toBeApproximateSize({width: 32, height: 32});
+function getValueTextElement(page: Page): Locator {
+  return page.locator('p:nth-child(1)');
+}
 
-//       expect(page.getSliderPointerLabel().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 290, y: -3});
-//     });
-//   });
+function getFormResetButton(page: Page): Locator {
+  return page.locator('button');
+}
 
-//   describe('after dragging the slider pointer', () => {
-//     beforeEach(() => {
-//       page.getSliderPointer().mouseDragSync(-144, 0);
-//     });
 
-//     it('updates the pointer to new position', () => {
-//       expect(page.getSliderPointerLabel().getText()).toBe('50');
-//       expect(page.getValueTextElement().getText()).toBe('Value: 50');
-//       expect(page.getSliderPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 145, y: 21});
-//       expect(page.getSliderPointerLabel().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 149, y: -3});
-//     });
+test('reactive form simple slider initial state displays starting values in labels and positions the slider elements correctly', async ({ page }) => {
+  await setUp(page);
 
-//     describe('after resetting the form', () => {
-//       beforeEach(() => {
-//         page.getFormResetButton().click();
-//       });
+  await expect(getSliderFloorLabel(page)).toHaveText('0');
+  await expect(getSliderCeilLabel(page)).toHaveText('250');
+  await expect(getSliderPointerLabel(page)).toHaveText('100');
+  await expect(getValueTextElement(page)).toHaveText('Value: 100');
 
-//       it('reverts the slider to starting state', () => {
-//         expect(page.getSliderPointerLabel().getText()).toBe('100');
-//         expect(page.getValueTextElement().getText()).toBe('Value: 100');
-//         expect(page.getSliderPointer().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 290, y: 21});
-//         expect(page.getSliderPointerLabel().getRelativeLocationWithoutMargins()).toBeApproximateLocation({x: 290, y: -3});
-//       });
-//     });
-//   });
-// });
+  await expect(getSliderFullBar(page)).toHaveRelativeLocationWithoutMargins({ x: 0, y: 3 }, { relativeTo: getSlider(page) });
+  await expect(getSliderFullBar(page)).toHaveApproximateSize({ width: 766, height: 32 });
+
+  await expect(getSliderFloorLabel(page)).toHaveRelativeLocationWithoutMargins({ x: 0, y: -3 }, { relativeTo: getSlider(page) });
+  await expect(getSliderCeilLabel(page)).toHaveRelativeLocationWithoutMargins({ x: 733, y: -3 }, { relativeTo: getSlider(page) });
+
+  await expect(getSliderPointer(page)).toHaveRelativeLocationWithoutMargins({ x: 294, y: 21 }, { relativeTo: getSlider(page) });
+  await expect(getSliderPointer(page)).toHaveApproximateSize({ width: 32, height: 32 });
+  await expect(getSliderPointerLabel(page)).toHaveRelativeLocationWithoutMargins({ x: 293, y: -3 }, { relativeTo: getSlider(page) });
+});
+
+test('reactive form simple slider after dragging the slider pointer updates the pointer to new position', async ({ page }) => {
+  await setUp(page);
+
+  await mouseDragRelative(getSliderPointer(page), {offsetX: -146, offsetY: 0});
+
+  await expect(getSliderPointerLabel(page)).toHaveText('50');
+  await expect(getValueTextElement(page)).toHaveText('Value: 50');
+
+  await expect(getSliderPointer(page)).toHaveRelativeLocationWithoutMargins({ x: 147, y: 21 }, { relativeTo: getSlider(page) });
+  await expect(getSliderPointerLabel(page)).toHaveRelativeLocationWithoutMargins({ x: 151, y: -3 }, { relativeTo: getSlider(page) });
+});
+
+test('reactive form simple slider after dragging the slider pointer and after resetting the form reverts the slider to starting state', async ({ page }) => {
+  await setUp(page);
+
+  await mouseDragRelative(getSliderPointer(page), {offsetX: -146, offsetY: 0});
+  await getFormResetButton(page).click();
+
+  await expect(getSliderPointerLabel(page)).toHaveText('100');
+  await expect(getValueTextElement(page)).toHaveText('Value: 100');
+
+  await expect(getSliderPointer(page)).toHaveRelativeLocationWithoutMargins({ x: 294, y: 21 }, { relativeTo: getSlider(page) });
+  await expect(getSliderPointerLabel(page)).toHaveRelativeLocationWithoutMargins({ x: 293, y: -3 }, { relativeTo: getSlider(page) });
+});
