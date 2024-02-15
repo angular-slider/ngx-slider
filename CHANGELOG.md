@@ -1,3 +1,6 @@
+# 17.0.1
+ * replace expired Discord link in README
+
 # 17.0.0
  * added support for Angular 17
  * added new 'AllowUnsafeHtmlInSlider' option
