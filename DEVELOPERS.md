@@ -92,3 +92,79 @@ This branch is not meant for manual updates. It is managed automatically based o
 ```
 npm run publish-gh
 ```
+
+# Release checklist
+
+1. Check that all tests pass and build is successful:
+    ```
+    npm run ci
+    ```
+
+2. Build slider library:
+    ```
+    npm run build:lib
+    ```
+
+3. Test the built library files locally:
+
+   3.1. In another folder, create a fresh Angular project:
+    ```
+     ng new ngx-slider-demo
+    ```
+   3.2. Install ngx-slider as a dependency:
+    ```
+    ng install @angular-slider/ngx-slider
+    ```
+   3.3. Add the slider as module and use it somewhere in an Angular component to see it working.
+
+   3.4. Overwrite the installed files by manually copying over the built files: \
+   `<ngx-slider-folder>/dist/ngx-slider` -> `<ngx-slider-demo-folder>/node_modules/ngx-slider`
+
+   3.5. Check that the slider continues working in the app.
+
+4. Update `package.json` bumping the version number.
+
+5. Update `CHANGELOG.md` referencing all changes made since last release.
+
+6. Create a release commit and tag it in git:
+    ```
+    git add -u
+    git commit -m "<version number> Release"
+    git tag v<version number>
+    git push origin master
+    git push --tags origin master
+    ```
+    Note the format of the commit message and tag name for consistency.
+
+7. Publish new package to npm:
+    ```
+    npm publish ./dist/ngx-slider/
+    ```
+    **Warning: Be absolutely sure you have the correct built files in place as there is no undoing this action.**
+
+8. Go to [package page on npmjs.org](https://www.npmjs.com/package/@angular-slider/ngx-slider) and check that the new version is available and the README page displays correctly.
+
+9. Go back to the demo app from step 3. and check that published package works with it:
+
+   9.1. Update the slider version in `package.json` to the published version.
+
+   9.2. Re-run `npm install`.
+
+   9.3. Check that the slider still works correctly in the app.
+
+10. Go through each Github issue resolved by this release mentioned in `CHANGELOG.md` and close the issue with a comment mentioning the fix version.
+
+11. Build demo app:
+    ```
+    npm run build:demo-app
+    ```
+
+12. Update Github pages:
+    ```
+    npm run publish-gh
+    ```
+    This command will automatically manage the `gh-pages` branch on git, pushing new files to it.
+
+13. Go to [published Github pages](https://angular-slider.github.io/ngx-slider/) for slider and check they behave as expected.
+
+14. Go through StackBlitz examples referenced in the landing page of Github pages and update them to use newest slider version. Note: You may have to wait a while for the version to be available due to NPM caching employed by StackBlitz.
