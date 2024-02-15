@@ -28,22 +28,35 @@ The demo app should build and start on default URL `http://localhost:4200`.
 
 # Running tests
 
-To run unit tests, use:
+## Unit tests
+
+There are a number of unit tests under `src/ngx-slider/` written in standard Angular convention using jasmine framework. To run them, use:
 ```
 npm run test
 ```
 
-To run e2e tests, use:
+Note: Currently (v1.2.1) most functionality is tested with end-to-end tests. This is not ideal for development, as running through the whole suite takes quite a long time. The plan for the future is to add more unit tests, so that development is easier.
+
+## End-to-end (e2e) tests
+
+End-to-end tests are inside `e2e/` folder and are written using playwright framework. When setting up for the first time, you may need to install additional browser executables that playwright manages separately from its npm installation:
+```
+npx playwright install
+```
+
+To run all end-to-end tests, use:
 ```
 npm run e2e
 ```
 
-To run tslint, use:
+## Lint
+
+The project uses eslint for lint checking. If you are using an IDE such as Visual Studio Code, you will likely see eslint problems highlighted by the IDE. However, you can always run eslint from commandline.
+
+To run eslint, use:
 ```
 npm run lint
 ```
-
-Note: Currently (v1.2.1) most functionality is tested with e2e tests. This is not ideal for development, as running through the whole suite takes quite a long time. The plan for the future is to add more unit tests, so that development is easier.
 
 # Continuous Integration (CI)
 
@@ -52,7 +65,7 @@ The project is also set up to enable continuous integration, although there is c
 npm run ci
 ```
 
-This is a shorthand for running unit tests, e2e tests, building the project with production config and running tslint.
+This is a shorthand for running unit tests, e2e tests, building the project with production config and running eslint.
 
 # How generated code works
 
@@ -69,4 +82,13 @@ This script prepares the demo snippets shown in demo app by pasting code from th
 
 ## `scripts/generate-demo-app-docs.js`
 
-This script generates the API documentation pages in demo app. This is done by running [typedoc](https://typedoc.org/) and doing a bit of work to get the resulting HTML files in shape to be included as Angular components in the demo app. This is a bit hacky at the moment, as this is not a usual use-case for typedoc, but it works for now.
+This script generates the API documentation pages in demo app. This is done by running [typedoc](https://typedoc.org/). The pages are then embedded inside an iframe in the demo app.
+
+# Githb pages
+
+The content displayed on Github pages for the slider (https://angular-slider.github.io/ngx-slider/) is contained on `gh-pages` branch as per standard Github convention.
+
+This branch is not meant for manual updates. It is managed automatically based on built demo app files by invoking:
+```
+npm run publish-gh
+```
