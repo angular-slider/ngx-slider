@@ -118,7 +118,7 @@ npm run publish-gh
    3.3. Add the slider as module and use it somewhere in an Angular component to see it working.
 
    3.4. Overwrite the installed files by manually copying over the built files: \
-   `<ngx-slider-folder>/dist/ngx-slider` -> `<ngx-slider-demo-folder>/node_modules/ngx-slider`
+   `<ngx-slider-folder>/dist/ngx-slider` -> `<ngx-slider-demo-folder>/node_modules/@angular-slider/ngx-slider`
 
    3.5. Check that the slider continues working in the app.
 
