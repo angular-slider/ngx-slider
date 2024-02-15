@@ -1,6 +1,9 @@
 # 17.0.0
  * added support for Angular 17
  * added new 'AllowUnsafeHtmlInSlider' option
+ * fix misalignment in horizontal slider due to improper scss code (#356)
+ * export SliderComponent in public API (#294)
+ * fix minor typo in STYLING.md (#331)
 
 # 2.0.4
  * apply changes only when options object really changes
