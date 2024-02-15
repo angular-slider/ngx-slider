@@ -3,7 +3,7 @@
 
 Website: https://angular-slider.github.io/ngx-slider/
 
-Discord: https://discord.gg/C6K9S9r7
+Discord: https://discord.gg/DSey8F96
 
 Self-contained, mobile friendly slider component for Angular based on [angularjs-slider](https://github.com/angular-slider/angularjs-slider).
 
