@@ -8,6 +8,9 @@
  * export SliderComponent in public API (#294)
  * fix minor typo in STYLING.md (#331)
 
+# 16.0.0
+ * backport created from 17.0.1 targeting Angular 16
+
 # 2.0.4
  * apply changes only when options object really changes
  * remove throttling options (#282, #283)
