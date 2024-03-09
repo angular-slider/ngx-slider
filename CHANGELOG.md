@@ -14,6 +14,9 @@
 # 15.0.0
  * backport created from 17.0.1 targeting Angular 15
 
+# 14.0.0
+ * backport created from 17.0.1 targeting Angular 14
+
 # 2.0.4
  * apply changes only when options object really changes
  * remove throttling options (#282, #283)
