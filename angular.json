@@ -16,9 +16,7 @@
             "outputPath": "dist/demo-app",
             "index": "src/demo-app/index.html",
             "main": "src/demo-app/main.ts",
-            "polyfills": [
-              "zone.js"
-            ],
+            "polyfills": "src/demo-app/polyfills.ts",
             "tsConfig": "src/demo-app/tsconfig.app.json",
             "assets": [
               "src/demo-app/favicon.ico",
@@ -57,28 +55,25 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "buildTarget": "ngx-slider-demo-app:build"
+            "browserTarget": "ngx-slider-demo-app:build"
           },
           "configurations": {
             "production": {
-              "buildTarget": "ngx-slider-demo-app:build:production"
+              "browserTarget": "ngx-slider-demo-app:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "ngx-slider-demo-app:build"
+            "browserTarget": "ngx-slider-demo-app:build"
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
             "main": "src/demo-app/test.ts",
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ],
+            "polyfills": "src/demo-app/polyfills.ts",
             "tsConfig": "src/demo-app/tsconfig.spec.json",
             "karmaConfig": "src/demo-app/karma.conf.js",
             "include": [
