@@ -12,8 +12,10 @@ Self-contained, mobile friendly slider component for Angular based on [angularjs
 
 ## Dependencies
 
-| ngx-slider | Angular     | RxJS        | Actively supported |
+| ngx-slider    | Angular     | RxJS        | Actively supported |
 | ------------- | ----------- | ----------- | ------------------ |
+| 2.0.x         | 6.x - 12.x  | 6.x         | No                 |
+| 13.x          | 13.x        | 6.x         | No                 |
 | 14.x          | 14.x        | 6.x         | No                 |
 | 15.x          | 15.x        | 7.x         | Yes                |
 | 16.x          | 16.x        | 7.x         | Yes                |
