@@ -1370,6 +1370,10 @@ export class SliderComponent
   }
 
   private getTicksArray(): number[] {
+    if (!this.viewOptions.showTicks) {
+      return [];
+    }
+
     const step: number = !ValueHelper.isNullOrUndefined(
       this.viewOptions.tickStep
     )
