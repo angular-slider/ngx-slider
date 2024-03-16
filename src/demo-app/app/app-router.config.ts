@@ -5,8 +5,9 @@ import { DocsComponent } from './docs.component';
 import { HomeComponent } from './home.component';
 import {
   CustomTicksLegendSliderComponent,
-  DraggableRangeSliderComponent,
   DraggableRangeOnlySliderComponent,
+  DraggableRangeSliderComponent,
+  NoSwitchingRangeSliderComponent,
   PushRangeSliderComponent,
   RangeSliderComponent,
   ReactiveFormRangeSliderComponent,
@@ -26,8 +27,9 @@ export const routerConfig: Routes = [
 
   // pages for e2e testing
   { path: 'custom-ticks-legend-slider', component: CustomTicksLegendSliderComponent },
-  { path: 'draggable-range-slider', component: DraggableRangeSliderComponent },
   { path: 'draggable-range-only-slider', component: DraggableRangeOnlySliderComponent },
+  { path: 'draggable-range-slider', component: DraggableRangeSliderComponent },
+  { path: 'no-switching-range-slider', component: NoSwitchingRangeSliderComponent },
   { path: 'push-range-slider', component: PushRangeSliderComponent },
   { path: 'range-slider', component: RangeSliderComponent },
   { path: 'reactive-form-range-slider', component: ReactiveFormRangeSliderComponent },
