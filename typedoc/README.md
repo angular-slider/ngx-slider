@@ -9,10 +9,6 @@ The public API is made up of all declarations made available when importing the 
 import { Options } from '@angular-slider/ngx-slider';
 ```
 
-You can see that Typedoc organises the files into global "modules", but it is only an artefact of code organisation. All declarations described here are available directly by importing them from `ngx-slider`.
-
-**NOTE:** If you are looking for old documentation of v1.2.x releases under the old name of ng5-slider, they are [archived in the Github repository](https://raw.githubusercontent.com/angular-slider/ngx-slider/master/archive/ng5-slider-v1.2.6-site-archive.zip).
-
 ## Slider directive
 
 The slider component takes the following inputs and outputs:
@@ -68,3 +64,7 @@ For a complete example, see the [dynamic options slider demo](routerLink:///demo
 ### Value change events
 
 `valueChange` and `highValueChange` outputs are emitted whenever the model values change (including programmatically). They are provided to support two-way binding of the model values but they can also be used to attach custom event handlers.
+
+### Old documentation
+
+If you are looking for old documentation of v1.2.x releases under the old name of ng5-slider, they are [archived in the Github repository](https://raw.githubusercontent.com/angular-slider/ngx-slider/master/archive/ng5-slider-v1.2.6-site-archive.zip).
