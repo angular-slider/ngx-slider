@@ -1,3 +1,6 @@
+# 17.0.2
+ * fix bad performance with large ceil values (issue #366)
+
 # 17.0.1
  * replace expired Discord link in README
 
@@ -8,8 +11,23 @@
  * export SliderComponent in public API (#294)
  * fix minor typo in STYLING.md (#331)
 
- # 16.0.0
-  * backport created from 17.0.1 targeting Angular 16
+# 16.0.1
+ * fix bad performance with large ceil values (issue #366)
+
+# 16.0.0
+ * backport created from 17.0.1 targeting Angular 16
+
+# 15.0.1
+ * fix bad performance with large ceil values (issue #366)
+
+# 15.0.0
+ * backport created from 17.0.1 targeting Angular 15
+
+# 14.0.0
+ * backport created from 17.0.1 targeting Angular 14
+
+# 13.0.0
+ * backport created from 17.0.1 targeting Angular 13
 
 # 2.0.4
  * apply changes only when options object really changes
