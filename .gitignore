@@ -30,9 +30,6 @@
 #!.vscode/launch.json
 !.vscode/extensions.json
 
-# NVM
-.nvmrc
-
 # misc
 /.angular/cache
 /.sass-cache
