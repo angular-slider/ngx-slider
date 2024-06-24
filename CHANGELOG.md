@@ -1,3 +1,6 @@
+# 18.0.0
+ * add support for Angular 18 (issue #379)
+
 # 17.0.2
  * fix bad performance with large ceil values (issue #366)
 
