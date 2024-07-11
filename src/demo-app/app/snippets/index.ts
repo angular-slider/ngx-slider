@@ -25,6 +25,7 @@ export * from './limited-slider/limited-slider.component';
 export * from './log-scale-slider/log-scale-slider.component';
 export * from './manual-refresh-slider/manual-refresh-slider.component';
 export * from './no-switching-range-slider/no-switching-range-slider.component';
+export * from './prevent-change-on-scroll-slider/prevent-change-on-scroll-slider.component';
 export * from './push-range-slider/push-range-slider.component';
 export * from './range-slider/range-slider.component';
 export * from './reactive-form-range-slider/reactive-form-range-slider.component';
