@@ -195,6 +195,16 @@ export class SliderComponent
     );
   }
 
+  private cancelHandleMovementSubscription: any;
+  @Input() set cancelHandleMovement(cancelHandleMovement: EventEmitter<void>) {
+    this.unsubscribeCancelHandleMovement();
+
+    this.cancelHandleMovementSubscription = cancelHandleMovement.subscribe(() => {
+      this.positionTrackingHandle(this.preStartHandleValue);
+      this.forceEnd(true);
+    });
+  }
+
   // Slider type, true means range slider
   public get range(): boolean {
     return (
@@ -240,6 +250,8 @@ export class SliderComponent
   private touchId: number = null;
   // Values recorded when first dragging the bar
   private dragging: Dragging = new Dragging();
+  // Value of hanlde at the beginning of onStart()
+  private preStartHandleValue: number = null;
 
   /* Slider DOM elements */
 
@@ -572,6 +584,13 @@ export class SliderComponent
     if (!ValueHelper.isNullOrUndefined(this.triggerFocusSubscription)) {
       this.triggerFocusSubscription.unsubscribe();
       this.triggerFocusSubscription = null;
+    }
+  }
+
+  private unsubscribeCancelHandleMovement(): void {
+    if (!ValueHelper.isNullOrUndefined(this.cancelHandleMovementSubscription)) {
+      this.cancelHandleMovementSubscription.unsubscribe();
+      this.cancelHandleMovementSubscription = null;
     }
   }
 
@@ -2165,6 +2184,10 @@ export class SliderComponent
       this.getPointerElement(pointerType);
     pointerElement.active = true;
 
+    // Store currentTrackingValue as soon as it is available to allow
+    // the slide to be canceled. (E.g. on scroll detected.)
+    this.preStartHandleValue = this.getCurrentTrackingValue();
+
     if (this.viewOptions.keyboardSupport) {
       pointerElement.focus();
     }
@@ -2294,17 +2317,15 @@ export class SliderComponent
     this.positionTrackingHandle(newValue);
   }
 
-  private onEnd(event: MouseEvent | TouchEvent): void {
-    if (CompatibilityHelper.isTouchEvent(event)) {
-      const changedTouches: TouchList = (event as TouchEvent).changedTouches;
-      if (changedTouches[0].identifier !== this.touchId) {
-        return;
-      }
-    }
-
+  private forceEnd(disableAnimation: boolean = false): void {
     this.moving = false;
     if (this.viewOptions.animate) {
       this.sliderElementAnimateClass = true;
+    }
+    if (disableAnimation) {
+      this.sliderElementAnimateClass = false;
+      // make sure the slider animate class is set according to the viewOptions after forceEnd() with disabled animations finishes
+      setTimeout(() => {this.sliderElementAnimateClass = this.viewOptions.animate});
     }
 
     this.touchId = null;
@@ -2320,6 +2341,17 @@ export class SliderComponent
     this.unsubscribeOnEnd();
 
     this.userChangeEnd.emit(this.getChangeContext());
+  }
+
+  private onEnd(event: MouseEvent | TouchEvent): void {
+    if (CompatibilityHelper.isTouchEvent(event)) {
+      const changedTouches: TouchList = (event as TouchEvent).changedTouches;
+      if (changedTouches[0].identifier !== this.touchId) {
+        return;
+      }
+    }
+
+    this.forceEnd();
   }
 
   private onPointerFocus(pointerType: PointerType): void {
