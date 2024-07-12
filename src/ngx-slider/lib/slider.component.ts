@@ -200,8 +200,10 @@ export class SliderComponent
     this.unsubscribeCancelHandleMovement();
 
     this.cancelHandleMovementSubscription = cancelHandleMovement.subscribe(() => {
-      this.positionTrackingHandle(this.preStartHandleValue);
-      this.forceEnd(true);
+      if (this.moving) {
+        this.positionTrackingHandle(this.preStartHandleValue);
+        this.forceEnd(true);
+      }
     });
   }
 
