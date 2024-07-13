@@ -195,11 +195,11 @@ export class SliderComponent
     );
   }
 
-  private cancelHandleMovementSubscription: any;
-  @Input() set cancelHandleMovement(cancelHandleMovement: EventEmitter<void>) {
-    this.unsubscribeCancelHandleMovement();
+  private cancelUserChangeSubscription: any;
+  @Input() set cancelUserChange(cancelUserChange: EventEmitter<void>) {
+    this.unsubscribeCancelUserChange();
 
-    this.cancelHandleMovementSubscription = cancelHandleMovement.subscribe(() => {
+    this.cancelUserChangeSubscription = cancelUserChange.subscribe(() => {
       if (this.moving) {
         this.positionTrackingHandle(this.preStartHandleValue);
         this.forceEnd(true);
@@ -589,10 +589,10 @@ export class SliderComponent
     }
   }
 
-  private unsubscribeCancelHandleMovement(): void {
-    if (!ValueHelper.isNullOrUndefined(this.cancelHandleMovementSubscription)) {
-      this.cancelHandleMovementSubscription.unsubscribe();
-      this.cancelHandleMovementSubscription = null;
+  private unsubscribeCancelUserChange(): void {
+    if (!ValueHelper.isNullOrUndefined(this.cancelUserChangeSubscription)) {
+      this.cancelUserChangeSubscription.unsubscribe();
+      this.cancelUserChangeSubscription = null;
     }
   }
 

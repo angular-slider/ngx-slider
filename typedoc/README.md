@@ -19,6 +19,7 @@ The slider component takes the following inputs and outputs:
   [options]="<options object>"
   [manualRefresh]="<event emitter>"
   [triggerFocus]="<event emitter>"
+  [cancelUserChange]="<event emitter>"
   (userChangeStart)="<event handler>"
   (userChange)="<event handler>"
   (userChangeEnd)="<event handler>"
@@ -56,6 +57,10 @@ For a complete example, see the [dynamic options slider demo](routerLink:///demo
 ### Trigger focus
 
 `triggerFocus` input is provided to set the focus programmatically on a slider handle. The emitter takes a `PointerType` as argument, or if left `undefined`, will default to `PointerType.Min`. Refer to the [example demo](routerLink:///demos#trigger-focus-slider) to see how it works.
+
+### Cancel user change
+
+`cancelUserChange` input ends current user intraction and restores value of a slider handle that was present before `userChangeStart` triggered. Refer to the [example demo](routerLink:///demos#prevent-change-on-scroll-slider) to see how it works.
 
 ### User change events
 
