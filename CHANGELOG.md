@@ -1,3 +1,5 @@
+ * added cancelUserChange input EventEmitter (issue #139)
+
 # 18.0.0
  * add support for Angular 18 (issue #379)
 
