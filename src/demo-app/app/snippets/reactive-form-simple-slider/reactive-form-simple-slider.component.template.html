@@ -1,3 +1,9 @@
-<p>Value: {{sliderControl.value}}</p>
-<p><button (click)="resetForm()">Reset</button></p>
+<p>Value: {{ sliderControl.value }}</p>
+
+<p>
+  <button id="reset" (click)="resetForm()">Reset</button>
+  <button id="disable" (click)="disable()" [disabled]="sliderControl.disabled">Disable</button>
+  <button id="enable" (click)="enable()" [disabled]="sliderControl.enabled">Enable</button>
+</p>
+
 <ngx-slider [options]="options" [formControl]="sliderControl"></ngx-slider>
