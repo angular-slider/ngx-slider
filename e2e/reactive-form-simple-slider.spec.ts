@@ -34,6 +34,10 @@ function getValueTextElement(page: Page): Locator {
   return page.locator('p:nth-child(1)');
 }
 
+function getResetTextElement(page: Page): Locator {
+  return page.locator('p:nth-child(2)');
+}
+
 function getFormButton(page: Page, id: string): Locator {
   return page.locator(`button#${id}`);
 }
@@ -64,6 +68,7 @@ test('reactive form simple slider after dragging the slider pointer updates the 
 
   await expect(getSliderPointerLabel(page)).toHaveText('50');
   await expect(getValueTextElement(page)).toHaveText('Value: 50');
+  await expect(getResetTextElement(page)).toHaveText('Dirty: true')
 
   await expect(getSliderPointer(page)).toHaveRelativeLocationWithoutMargins({ x: 147, y: 21 }, { relativeTo: getSlider(page) });
   await expect(getSliderPointerLabel(page)).toHaveRelativeLocationWithoutMargins({ x: 151, y: -3 }, { relativeTo: getSlider(page) });
@@ -77,6 +82,7 @@ test('reactive form simple slider after dragging the slider pointer and after re
 
   await expect(getSliderPointerLabel(page)).toHaveText('100');
   await expect(getValueTextElement(page)).toHaveText('Value: 100');
+  await expect(getResetTextElement(page)).toHaveText('Dirty: false')
 
   await expect(getSliderPointer(page)).toHaveRelativeLocationWithoutMargins({ x: 294, y: 21 }, { relativeTo: getSlider(page) });
   await expect(getSliderPointerLabel(page)).toHaveRelativeLocationWithoutMargins({ x: 293, y: -3 }, { relativeTo: getSlider(page) });
