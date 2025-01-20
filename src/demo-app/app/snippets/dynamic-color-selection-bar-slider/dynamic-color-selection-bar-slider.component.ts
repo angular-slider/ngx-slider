@@ -2,8 +2,9 @@ import { Component } from '@angular/core';
 import { Options } from '@local/ngx-slider';
 
 @Component({
-  selector: 'app-dynamic-color-selection-bar-slider',
-  templateUrl: './dynamic-color-selection-bar-slider.component.html'
+    selector: 'app-dynamic-color-selection-bar-slider',
+    templateUrl: './dynamic-color-selection-bar-slider.component.html',
+    standalone: false
 })
 export class DynamicColorSelectionBarSliderComponent {
   value: number = 12;

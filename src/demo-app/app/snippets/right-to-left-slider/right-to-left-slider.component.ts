@@ -2,8 +2,9 @@ import { Component } from '@angular/core';
 import { Options } from '@local/ngx-slider';
 
 @Component({
-  selector: 'app-right-to-left-slider',
-  templateUrl: './right-to-left-slider.component.html'
+    selector: 'app-right-to-left-slider',
+    templateUrl: './right-to-left-slider.component.html',
+    standalone: false
 })
 export class RightToLeftSliderComponent {
   value: number = 20;

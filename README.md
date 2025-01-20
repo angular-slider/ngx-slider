@@ -18,9 +18,10 @@ Self-contained, mobile friendly slider component for Angular based on [angularjs
 | 13.x          | 13.x        | 6.x         | No                 |
 | 14.x          | 14.x        | 6.x         | No                 |
 | 15.x          | 15.x        | 7.x         | No                 |
-| 16.x          | 16.x        | 7.x         | Yes                |
+| 16.x          | 16.x        | 7.x         | No                 |
 | 17.x          | 17.x        | 7.x         | Yes                |
 | 18.x          | 18.x        | 7.x         | Yes                |
+| 19.x          | 18.x        | 7.x         | Yes                |
 
 *Note:* Like with Angular only the latest 3 versions are actively supported.
 
@@ -55,11 +56,13 @@ Self-contained, mobile friendly slider component for Angular based on [angularjs
 ## Installation
 
 To add the slider to your Angular project:
+
 ```
 npm install --save @angular-slider/ngx-slider
 ```
 
 Once installed, add the slider to your `app.module.ts`:
+
 ```typescript
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
 
@@ -80,6 +83,7 @@ export class AppModule {}
 ## Sample usage
 
 Now you can use the slider component in your app components, for example in `app.component.ts`:
+
 ```typescript
 import { Options } from '@angular-slider/ngx-slider';
 ...
@@ -100,6 +104,7 @@ And in template file `app.component.html`:
 ```
 
 ## Documentation
+
 Full API documentation is available on [official website](https://angular-slider.github.io/ngx-slider/docs).
 
 ## Styling
@@ -113,6 +118,7 @@ As of v1.2.0 the slider features CSS animations of slider movement. If you prefe
 ## Keyboard Shortcuts
 
 In addition to mouse/touch events, the slider can also be controlled through keyboard. The available shortcuts are:
+
  - right/up arrow - increase by single step,
  - left/down arrow - decrease by single step,
  - page up - increase by 10% of slider range,

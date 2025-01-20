@@ -13,8 +13,9 @@ interface RangeSliderModel {
 }
 
 @Component({
-  selector: 'app-vertical-sliders',
-  templateUrl: './vertical-sliders.component.html'
+    selector: 'app-vertical-sliders',
+    templateUrl: './vertical-sliders.component.html',
+    standalone: false
 })
 export class VerticalSlidersComponent {
   verticalSlider1: SimpleSliderModel = {

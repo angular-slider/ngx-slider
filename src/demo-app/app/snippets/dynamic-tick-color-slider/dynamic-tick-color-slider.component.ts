@@ -2,8 +2,9 @@ import { Component } from '@angular/core';
 import { Options } from '@local/ngx-slider';
 
 @Component({
-  selector: 'app-dynamic-tick-color-slider',
-  templateUrl: './dynamic-tick-color-slider.component.html'
+    selector: 'app-dynamic-tick-color-slider',
+    templateUrl: './dynamic-tick-color-slider.component.html',
+    standalone: false
 })
 export class DynamicTickColorSliderComponent {
   value: number = 0;

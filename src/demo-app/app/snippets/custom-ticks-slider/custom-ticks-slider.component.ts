@@ -2,8 +2,9 @@ import { Component } from '@angular/core';
 import { Options } from '@local/ngx-slider';
 
 @Component({
-  selector: 'app-custom-ticks-slider',
-  templateUrl: './custom-ticks-slider.component.html'
+    selector: 'app-custom-ticks-slider',
+    templateUrl: './custom-ticks-slider.component.html',
+    standalone: false
 })
 export class CustomTicksSliderComponent {
   value: number = 55;

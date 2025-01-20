@@ -2,8 +2,9 @@ import { Component } from '@angular/core';
 import { Options } from '@local/ngx-slider';
 
 @Component({
-  selector: 'app-selection-bar-from-value-slider',
-  templateUrl: './selection-bar-from-value-slider.component.html'
+    selector: 'app-selection-bar-from-value-slider',
+    templateUrl: './selection-bar-from-value-slider.component.html',
+    standalone: false
 })
 export class SelectionBarFromValueSliderComponent {
   value: number = 5;

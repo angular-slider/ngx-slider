@@ -2,8 +2,9 @@ import { Component } from '@angular/core';
 import { Options } from '@local/ngx-slider';
 
 @Component({
-  selector: 'app-limited-slider',
-  templateUrl: './limited-slider.component.html'
+    selector: 'app-limited-slider',
+    templateUrl: './limited-slider.component.html',
+    standalone: false
 })
 export class LimitedSliderComponent {
   value: number = 50;

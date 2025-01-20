@@ -2,8 +2,9 @@ import { Component } from '@angular/core';
 import { Options } from '@local/ngx-slider';
 
 @Component({
-  selector: 'app-read-only-slider',
-  templateUrl: './read-only-slider.component.html'
+    selector: 'app-read-only-slider',
+    templateUrl: './read-only-slider.component.html',
+    standalone: false
 })
 export class ReadOnlySliderComponent {
   readOnly: boolean = true;

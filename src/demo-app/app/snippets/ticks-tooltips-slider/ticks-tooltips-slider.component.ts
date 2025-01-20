@@ -2,8 +2,9 @@ import { Component } from '@angular/core';
 import { Options } from '@local/ngx-slider';
 
 @Component({
-  selector: 'app-ticks-tooltips-slider',
-  templateUrl: './ticks-tooltips-slider.component.html'
+    selector: 'app-ticks-tooltips-slider',
+    templateUrl: './ticks-tooltips-slider.component.html',
+    standalone: false
 })
 export class TicksTooltipsSliderComponent {
   value: number = 5;

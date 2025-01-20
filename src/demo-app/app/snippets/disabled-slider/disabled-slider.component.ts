@@ -2,8 +2,9 @@ import { Component } from '@angular/core';
 import { Options } from '@local/ngx-slider';
 
 @Component({
-  selector: 'app-disabled-slider',
-  templateUrl: './disabled-slider.component.html'
+    selector: 'app-disabled-slider',
+    templateUrl: './disabled-slider.component.html',
+    standalone: false
 })
 export class DisabledSliderComponent {
   disabled: boolean = true;

@@ -3,8 +3,9 @@ import { UntypedFormControl } from '@angular/forms';
 import { Options } from '@local/ngx-slider';
 
 @Component({
-  selector: 'app-reactive-form-simple-slider',
-  templateUrl: './reactive-form-simple-slider.component.html',
+    selector: 'app-reactive-form-simple-slider',
+    templateUrl: './reactive-form-simple-slider.component.html',
+    standalone: false
 })
 export class ReactiveFormSimpleSliderComponent {
   sliderControl: UntypedFormControl = new UntypedFormControl(100);

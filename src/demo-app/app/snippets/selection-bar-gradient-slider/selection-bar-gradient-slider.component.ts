@@ -2,8 +2,9 @@ import { Component } from '@angular/core';
 import { Options } from '@local/ngx-slider';
 
 @Component({
-  selector: 'app-selection-bar-gradient-slider',
-  templateUrl: './selection-bar-gradient-slider.component.html'
+    selector: 'app-selection-bar-gradient-slider',
+    templateUrl: './selection-bar-gradient-slider.component.html',
+    standalone: false
 })
 export class SelectionBarGradientSliderComponent {
   minValue: number = 0;

@@ -11,7 +11,8 @@ import { ValueHelper } from './value-helper';
 import { AllowUnsafeHtmlInSlider } from './options';
 
 @Directive({
-  selector: '[ngxSliderLabel]',
+    selector: '[ngxSliderLabel]',
+    standalone: false
 })
 export class SliderLabelDirective extends SliderElementDirective {
   private _value: string = null;

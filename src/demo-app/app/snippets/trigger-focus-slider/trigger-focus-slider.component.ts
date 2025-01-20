@@ -2,8 +2,9 @@ import { Component, EventEmitter } from '@angular/core';
 import { Options, PointerType } from '@local/ngx-slider';
 
 @Component({
-  selector: 'app-trigger-focus-slider',
-  templateUrl: './trigger-focus-slider.component.html'
+    selector: 'app-trigger-focus-slider',
+    templateUrl: './trigger-focus-slider.component.html',
+    standalone: false
 })
 export class TriggerFocusSliderComponent {
   triggerFocus: EventEmitter<PointerType> = new EventEmitter<PointerType>();

@@ -2,8 +2,9 @@ import { Component } from '@angular/core';
 import { Options, LabelType, CustomStepDefinition } from '@local/ngx-slider';
 
 @Component({
-  selector: 'app-alphabet-slider',
-  templateUrl: './alphabet-slider.component.html'
+    selector: 'app-alphabet-slider',
+    templateUrl: './alphabet-slider.component.html',
+    standalone: false
 })
 export class AlphabetSliderComponent {
   alphabet: string = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';

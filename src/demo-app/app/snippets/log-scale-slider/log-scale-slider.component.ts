@@ -2,8 +2,9 @@ import { Component } from '@angular/core';
 import { Options } from '@local/ngx-slider';
 
 @Component({
-  selector: 'app-log-scale-slider',
-  templateUrl: './log-scale-slider.component.html'
+    selector: 'app-log-scale-slider',
+    templateUrl: './log-scale-slider.component.html',
+    standalone: false
 })
 export class LogScaleSliderComponent {
   value: number = 1;
