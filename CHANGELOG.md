@@ -1,5 +1,7 @@
 # Changelog
 
+## 19.0.0
+
 * add support for Angular 19 (issue #389)
 * fixed disabling form controls with reactive forms (issue #223)
 * fixed reset marking as dirty with reactive forms (issue #255)
