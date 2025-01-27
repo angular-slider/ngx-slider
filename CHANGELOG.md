@@ -1,3 +1,5 @@
+ * fixed disabling form controls with reactive forms (issue #223)
+ * fixed reset marking as dirty with reactive forms (issue #255)
  * added cancelUserChange input EventEmitter (issue #139)
 
 # 18.0.0
