@@ -8,7 +8,7 @@ Discord: https://discord.gg/DHsDghZRwZ
 
 Self-contained, mobile friendly slider component for Angular based on [angularjs-slider](https://github.com/angular-slider/angularjs-slider).
 
-**NOTE:** As of v19.0.0, this project is not being actively maintained. If you wish to become a maintainer, get in touch on [the dedicated Discord server](https://discord.gg/C6K9S9r7).
+**NOTE:** As of v19.0.0, this project is not being actively maintained. If you wish to become a maintainer, get in touch on [the dedicated Discord server](https://discord.gg/DHsDghZRwZ).
 
 ## Dependencies
 
