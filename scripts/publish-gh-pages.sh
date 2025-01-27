@@ -25,7 +25,7 @@ git pull --ff upstream gh-pages
 # Start fresh
 rm -rf *
 # Add demo app files
-cp -R ../dist/demo-app/* ./
+cp -R ../dist/demo-app/browser/* ./
 cp index.html 404.html
 # Workaround for files starting with underscore not showing up
 touch .nojekyll
