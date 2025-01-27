@@ -2,8 +2,9 @@ import { Component } from '@angular/core';
 import { Options } from '@local/ngx-slider';
 
 @Component({
-  selector: 'app-custom-combine-labels-function-slider',
-  templateUrl: './custom-combine-labels-function-slider.component.html'
+    selector: 'app-custom-combine-labels-function-slider',
+    templateUrl: './custom-combine-labels-function-slider.component.html',
+    standalone: false
 })
 export class CustomCombineLabelsFunctionSliderComponent {
   minValue: number = 100;

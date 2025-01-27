@@ -2,8 +2,9 @@ import { Component, EventEmitter } from '@angular/core';
 import { Options } from '@local/ngx-slider';
 
 @Component({
-  selector: 'app-manual-refresh-slider',
-  templateUrl: './manual-refresh-slider.component.html'
+    selector: 'app-manual-refresh-slider',
+    templateUrl: './manual-refresh-slider.component.html',
+    standalone: false
 })
 export class ManualRefreshSliderComponent {
   // 2019-06-11 UPDATE: The use-case in this example is now resolved on newest browser version which support ResizeObserver API

@@ -2,8 +2,9 @@ import { Component } from '@angular/core';
 import { Options } from '@local/ngx-slider';
 
 @Component({
-  selector: 'app-disabled-normalisation-slider',
-  templateUrl: './disabled-normalisation-slider.component.html'
+    selector: 'app-disabled-normalisation-slider',
+    templateUrl: './disabled-normalisation-slider.component.html',
+    standalone: false
 })
 export class DisabledNormalisationSliderComponent {
   minValue: number = 50;

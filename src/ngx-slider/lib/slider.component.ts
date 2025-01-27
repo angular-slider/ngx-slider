@@ -131,11 +131,12 @@ const NGX_SLIDER_CONTROL_VALUE_ACCESSOR: any = {
 };
 
 @Component({
-  selector: 'ngx-slider',
-  templateUrl: './slider.component.html',
-  styleUrls: ['./slider.component.scss'],
-  providers: [NGX_SLIDER_CONTROL_VALUE_ACCESSOR],
-  changeDetection: ChangeDetectionStrategy.Default,
+    selector: 'ngx-slider',
+    templateUrl: './slider.component.html',
+    styleUrls: ['./slider.component.scss'],
+    providers: [NGX_SLIDER_CONTROL_VALUE_ACCESSOR],
+    changeDetection: ChangeDetectionStrategy.Default,
+    standalone: false
 })
 export class SliderComponent
   implements OnInit, AfterViewInit, OnChanges, OnDestroy, ControlValueAccessor

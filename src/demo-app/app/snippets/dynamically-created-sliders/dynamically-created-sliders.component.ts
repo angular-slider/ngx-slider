@@ -9,8 +9,9 @@ interface SliderDetails {
 }
 
 @Component({
-  selector: 'app-dynamically-created-sliders',
-  templateUrl: './dynamically-created-sliders.component.html'
+    selector: 'app-dynamically-created-sliders',
+    templateUrl: './dynamically-created-sliders.component.html',
+    standalone: false
 })
 export class DynamicallyCreatedSlidersComponent {
   sliders: SliderDetails[] = [

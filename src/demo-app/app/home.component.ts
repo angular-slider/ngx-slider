@@ -2,9 +2,10 @@ import { Component } from '@angular/core';
 import { Options, LabelType } from '@local/ngx-slider';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+    selector: 'app-home',
+    templateUrl: './home.component.html',
+    styleUrls: ['./home.component.scss'],
+    standalone: false
 })
 export class HomeComponent {
   simpleSliderValue: number = 50;

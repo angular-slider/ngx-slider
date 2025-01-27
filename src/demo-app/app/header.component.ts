@@ -4,9 +4,10 @@ import { Router, NavigationEnd, Event } from '@angular/router';
 import { environment } from '../environments/environment';
 
 @Component({
-  selector: 'app-header',
-  templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss'],
+    selector: 'app-header',
+    templateUrl: './header.component.html',
+    styleUrls: ['./header.component.scss'],
+    standalone: false
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   navbarCollapsed: boolean = true;

@@ -3,7 +3,8 @@ import { Options } from '@local/ngx-slider';
 
 @Component({
   selector: 'app-prevent-change-on-scroll-slider',
-  templateUrl: './prevent-change-on-scroll-slider.component.html'
+  templateUrl: './prevent-change-on-scroll-slider.component.html',
+  standalone: false,
 })
 export class PreventChangeOnScrollSliderComponent {
   value: number = 100;

@@ -2,8 +2,9 @@ import { Component } from '@angular/core';
 import { Options } from '@local/ngx-slider';
 
 @Component({
-  selector: 'app-custom-scale-slider',
-  templateUrl: './custom-scale-slider.component.html'
+    selector: 'app-custom-scale-slider',
+    templateUrl: './custom-scale-slider.component.html',
+    standalone: false
 })
 export class CustomScaleSliderComponent {
   value: number = 50;

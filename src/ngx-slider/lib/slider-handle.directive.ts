@@ -8,7 +8,8 @@ import {
 import { SliderElementDirective } from './slider-element.directive';
 
 @Directive({
-  selector: '[ngxSliderHandle]',
+    selector: '[ngxSliderHandle]',
+    standalone: false
 })
 export class SliderHandleDirective extends SliderElementDirective {
   @HostBinding('class.ngx-slider-active')

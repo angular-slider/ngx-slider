@@ -2,8 +2,9 @@ import { Component } from '@angular/core';
 import { Options } from '@local/ngx-slider';
 
 @Component({
-  selector: 'app-push-range-slider',
-  templateUrl: './push-range-slider.component.html'
+    selector: 'app-push-range-slider',
+    templateUrl: './push-range-slider.component.html',
+    standalone: false
 })
 export class PushRangeSliderComponent {
   minValue: number = 60;

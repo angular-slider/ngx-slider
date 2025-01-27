@@ -2,8 +2,9 @@ import { Component } from '@angular/core';
 import { Options } from '@local/ngx-slider';
 
 @Component({
-  selector: 'app-custom-ticks-legend-slider',
-  templateUrl: './custom-ticks-legend-slider.component.html'
+    selector: 'app-custom-ticks-legend-slider',
+    templateUrl: './custom-ticks-legend-slider.component.html',
+    standalone: false
 })
 export class CustomTicksLegendSliderComponent {
   value: number = 5;

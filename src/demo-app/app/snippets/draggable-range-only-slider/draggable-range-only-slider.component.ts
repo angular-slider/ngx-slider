@@ -2,8 +2,9 @@ import { Component } from '@angular/core';
 import { Options } from '@local/ngx-slider';
 
 @Component({
-  selector: 'app-draggable-range-only-slider',
-  templateUrl: './draggable-range-only-slider.component.html'
+    selector: 'app-draggable-range-only-slider',
+    templateUrl: './draggable-range-only-slider.component.html',
+    standalone: false
 })
 export class DraggableRangeOnlySliderComponent {
   minValue: number = 4;

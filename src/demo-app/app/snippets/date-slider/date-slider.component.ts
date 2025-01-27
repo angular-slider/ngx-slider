@@ -2,8 +2,9 @@ import { Component } from '@angular/core';
 import { Options, LabelType } from '@local/ngx-slider';
 
 @Component({
-  selector: 'app-date-slider',
-  templateUrl: './date-slider.component.html'
+    selector: 'app-date-slider',
+    templateUrl: './date-slider.component.html',
+    standalone: false
 })
 export class DateSliderComponent {
   dateRange: Date[] = this.createDateRange();

@@ -2,8 +2,9 @@ import { Component } from '@angular/core';
 import { Options } from '@local/ngx-slider';
 
 @Component({
-  selector: 'app-simple-slider',
-  templateUrl: './simple-slider.component.html'
+    selector: 'app-simple-slider',
+    templateUrl: './simple-slider.component.html',
+    standalone: false
 })
 export class SimpleSliderComponent {
   value: number = 100;

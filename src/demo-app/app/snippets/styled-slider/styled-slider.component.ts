@@ -2,9 +2,10 @@ import { Component } from '@angular/core';
 import { Options } from '@local/ngx-slider';
 
 @Component({
-  selector: 'app-styled-slider',
-  templateUrl: './styled-slider.component.html',
-  styleUrls: ['./styled-slider.component.scss']
+    selector: 'app-styled-slider',
+    templateUrl: './styled-slider.component.html',
+    styleUrls: ['./styled-slider.component.scss'],
+    standalone: false
 })
 export class StyledSliderComponent {
   minValue: number = 10;

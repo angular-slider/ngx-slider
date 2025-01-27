@@ -2,8 +2,9 @@ import { Component } from '@angular/core';
 import { Options } from '@local/ngx-slider';
 
 @Component({
-  selector: 'app-limited-range-slider',
-  templateUrl: './limited-range-slider.component.html'
+    selector: 'app-limited-range-slider',
+    templateUrl: './limited-range-slider.component.html',
+    standalone: false
 })
 export class LimitedRangeSliderComponent {
   minValue: number = 40;

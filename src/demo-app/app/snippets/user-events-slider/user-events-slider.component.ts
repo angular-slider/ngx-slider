@@ -2,8 +2,9 @@ import { Component } from '@angular/core';
 import { Options, ChangeContext, PointerType } from '@local/ngx-slider';
 
 @Component({
-  selector: 'app-user-events-slider',
-  templateUrl: './user-events-slider.component.html'
+    selector: 'app-user-events-slider',
+    templateUrl: './user-events-slider.component.html',
+    standalone: false
 })
 export class UserEventsSliderComponent {
   minValue: number = 20;

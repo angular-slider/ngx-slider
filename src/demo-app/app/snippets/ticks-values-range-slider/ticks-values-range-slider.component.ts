@@ -2,8 +2,9 @@ import { Component } from '@angular/core';
 import { Options } from '@local/ngx-slider';
 
 @Component({
-  selector: 'app-ticks-values-range-slider',
-  templateUrl: './ticks-values-range-slider.component.html'
+    selector: 'app-ticks-values-range-slider',
+    templateUrl: './ticks-values-range-slider.component.html',
+    standalone: false
 })
 export class TicksValuesRangeSliderComponent {
   minValue: number = 1;
