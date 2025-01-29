@@ -21,7 +21,7 @@ Self-contained, mobile friendly slider component for Angular based on [angularjs
 | 16.x          | 16.x        | 7.x         | No                 |
 | 17.x          | 17.x        | 7.x         | Yes                |
 | 18.x          | 18.x        | 7.x         | Yes                |
-| 19.x          | 18.x        | 7.x         | Yes                |
+| 19.x          | 19.x        | 7.x         | Yes                |
 
 *Note:* Like with Angular only the latest 3 versions are actively supported.
 
