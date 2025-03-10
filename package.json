@@ -78,7 +78,7 @@
     "karma-jasmine-html-reporter": "^2.1.0",
     "mkdirp": "^3.0.1",
     "ng-packagr": "^19.0.0",
-    "prismjs": "^1.29.0",
+    "prismjs": "^1.30.0",
     "rimraf": "^5.0.5",
     "ts-node": "~10.9.2",
     "typedoc": "~0.27.6",
