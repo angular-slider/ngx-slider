@@ -1,34 +1,20 @@
-import {
-  ChangeDetectorRef,
-  Directive,
-  ElementRef,
-  Inject,
-  Optional,
-  Renderer2,
-} from '@angular/core';
+import { Directive, inject } from '@angular/core';
 import { SliderElementDirective } from './slider-element.directive';
 import { ValueHelper } from './value-helper';
 import { AllowUnsafeHtmlInSlider } from './options';
 
 @Directive({
-    selector: '[ngxSliderLabel]',
-    standalone: false
+  selector: '[ngxSliderLabel]',
+  standalone: false,
 })
 export class SliderLabelDirective extends SliderElementDirective {
+  private allowUnsafeHtmlInSlider = inject(AllowUnsafeHtmlInSlider, {
+    optional: true,
+  });
+
   private _value: string = null;
   get value(): string {
     return this._value;
-  }
-
-  constructor(
-    elemRef: ElementRef,
-    renderer: Renderer2,
-    changeDetectionRef: ChangeDetectorRef,
-    @Inject(AllowUnsafeHtmlInSlider)
-    @Optional()
-    private allowUnsafeHtmlInSlider: boolean
-  ) {
-    super(elemRef, renderer, changeDetectionRef);
   }
 
   setValue(value: string): void {

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, HostBinding } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostBinding, inject } from '@angular/core';
 import { ActivatedRoute, Router, Event, NavigationEnd } from '@angular/router';
 
 @Component({
@@ -8,6 +8,9 @@ import { ActivatedRoute, Router, Event, NavigationEnd } from '@angular/router';
     standalone: false
 })
 export class AppComponent implements OnInit, OnDestroy {
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+
   private static REDIRECT_IDS: string[] = [
     'simple-slider',
     'range-slider',
@@ -58,8 +61,6 @@ export class AppComponent implements OnInit, OnDestroy {
   private queryParamsSub: any;
   private fragmentSub: any;
   private eventsSub: any;
-
-  constructor(private route: ActivatedRoute, private router: Router) {}
 
   ngOnInit(): void {
     this.queryParamsSub = this.route.queryParams.subscribe((params: any): void => {
