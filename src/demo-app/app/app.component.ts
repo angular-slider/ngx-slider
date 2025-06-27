@@ -1,16 +1,19 @@
-import { Component, OnInit, OnDestroy, HostBinding, inject } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  HostBinding,
+  inject,
+} from '@angular/core';
 import { ActivatedRoute, Router, Event, NavigationEnd } from '@angular/router';
 
 @Component({
-    selector: 'app-root',
-    templateUrl: './app.component.html',
-    styleUrls: ['./app.component.scss'],
-    standalone: false
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss'],
+  standalone: false,
 })
 export class AppComponent implements OnInit, OnDestroy {
-  private route = inject(ActivatedRoute);
-  private router = inject(Router);
-
   private static REDIRECT_IDS: string[] = [
     'simple-slider',
     'range-slider',
@@ -52,7 +55,7 @@ export class AppComponent implements OnInit, OnDestroy {
     'read-only-slider',
     'vertical-sliders',
     'user-events-slider',
-    'manual-refresh-slider'
+    'manual-refresh-slider',
   ];
 
   @HostBinding('class.test-mode')
@@ -62,14 +65,21 @@ export class AppComponent implements OnInit, OnDestroy {
   private fragmentSub: any;
   private eventsSub: any;
 
+  constructor(private route: ActivatedRoute, private router: Router) {}
+
   ngOnInit(): void {
-    this.queryParamsSub = this.route.queryParams.subscribe((params: any): void => {
-      this.testMode = params['testMode'] === 'true';
-    });
+    this.queryParamsSub = this.route.queryParams.subscribe(
+      (params: any): void => {
+        this.testMode = params['testMode'] === 'true';
+      }
+    );
 
     // Provide redirects for old site links
     this.fragmentSub = this.route.fragment.subscribe((fragment: string) => {
-      if (this.route.snapshot.url.length === 0 && AppComponent.REDIRECT_IDS.indexOf(fragment) !== -1) {
+      if (
+        this.route.snapshot.url.length === 0 &&
+        AppComponent.REDIRECT_IDS.indexOf(fragment) !== -1
+      ) {
         this.router.navigateByUrl('/demos#' + fragment);
       }
     });
