@@ -1,29 +1,23 @@
 <!-- // 0 Left selection bar outside two handles -->
-<span ngxSliderElement #leftOuterSelectionBar
-  class="ngx-slider-span ngx-slider-bar-wrapper ngx-slider-left-out-selection">
+<span ngxSliderElement #leftOuterSelectionBar class="ngx-slider-span ngx-slider-bar-wrapper ngx-slider-left-out-selection">
   <span class="ngx-slider-span ngx-slider-bar"></span>
 </span>
 <!-- // 1 Right selection bar outside two handles -->
-<span ngxSliderElement #rightOuterSelectionBar
-  class="ngx-slider-span ngx-slider-bar-wrapper ngx-slider-right-out-selection">
+<span ngxSliderElement #rightOuterSelectionBar class="ngx-slider-span ngx-slider-bar-wrapper ngx-slider-right-out-selection">
   <span class="ngx-slider-span ngx-slider-bar"></span>
 </span>
 <!-- // 2 The whole slider bar -->
-<span ngxSliderElement #fullBar [class.ngx-slider-transparent]="fullBarTransparentClass"
-  class="ngx-slider-span ngx-slider-bar-wrapper ngx-slider-full-bar">
+<span ngxSliderElement #fullBar [class.ngx-slider-transparent]="fullBarTransparentClass" class="ngx-slider-span ngx-slider-bar-wrapper ngx-slider-full-bar">
   <span class="ngx-slider-span ngx-slider-bar"></span>
 </span>
 <!-- // 3 Selection bar between two handles -->
-<span ngxSliderElement #selectionBar [class.ngx-slider-draggable]="selectionBarDraggableClass"
-  class="ngx-slider-span ngx-slider-bar-wrapper ngx-slider-selection-bar">
+<span ngxSliderElement #selectionBar [class.ngx-slider-draggable]="selectionBarDraggableClass" class="ngx-slider-span ngx-slider-bar-wrapper ngx-slider-selection-bar">
   <span class="ngx-slider-span ngx-slider-bar ngx-slider-selection" [ngStyle]="barStyle"></span>
 </span>
 <!-- // 4 Low slider handle -->
-<span ngxSliderHandle #minHandle class="ngx-slider-span ngx-slider-pointer ngx-slider-pointer-min"
-  [ngStyle]=minPointerStyle></span>
+<span ngxSliderHandle #minHandle class="ngx-slider-span ngx-slider-pointer ngx-slider-pointer-min" [ngStyle]=minPointerStyle></span>
 <!-- // 5 High slider handle -->
-<span ngxSliderHandle #maxHandle [style.display]="range ? 'inherit' : 'none'"
-  class="ngx-slider-span ngx-slider-pointer ngx-slider-pointer-max" [ngStyle]=maxPointerStyle></span>
+<span ngxSliderHandle #maxHandle [style.display]="range ? 'inherit' : 'none'" class="ngx-slider-span ngx-slider-pointer ngx-slider-pointer-max" [ngStyle]=maxPointerStyle></span>
 <!-- // 6 Floor label -->
 <span ngxSliderLabel #floorLabel class="ngx-slider-span ngx-slider-bubble ngx-slider-limit ngx-slider-floor"></span>
 <!-- // 7 Ceiling label -->
@@ -35,23 +29,20 @@
 <!-- // 10 Combined range label when the slider handles are close ex. 15 - 17 -->
 <span ngxSliderLabel #combinedLabel class="ngx-slider-span ngx-slider-bubble ngx-slider-combined"></span>
 <!-- // 11 The ticks -->
-<span ngxSliderElement #ticksElement [hidden]="!showTicks" [class.ngx-slider-ticks-values-under]="ticksUnderValuesClass"
-  class="ngx-slider-ticks">
+<span ngxSliderElement #ticksElement [hidden]="!showTicks" [class.ngx-slider-ticks-values-under]="ticksUnderValuesClass" class="ngx-slider-ticks">
   @for (t of ticks; track t) {
-  <span class="ngx-slider-tick" [ngClass]="{'ngx-slider-selected': t.selected}" [ngStyle]="t.style">
-    <ngx-slider-tooltip-wrapper [template]="tooltipTemplate" [tooltip]="t.tooltip"
-      [placement]="t.tooltipPlacement"></ngx-slider-tooltip-wrapper>
-    @if (t.value !== null && t.value !== undefined) {
-    <ngx-slider-tooltip-wrapper class="ngx-slider-span ngx-slider-tick-value" [template]="tooltipTemplate"
-      [tooltip]="t.valueTooltip" [placement]="t.valueTooltipPlacement" [content]="t.value"></ngx-slider-tooltip-wrapper>
-    }
-    @if (t.legend !== null && t.legend !== undefined && allowUnsafeHtmlInSlider === false) {
-    <span class="ngx-slider-span ngx-slider-tick-legend" [innerText]="t.legend"></span>
-    }
-    @if (t.legend !== null && t.legend !== undefined && (allowUnsafeHtmlInSlider === null || allowUnsafeHtmlInSlider ===
-    undefined || allowUnsafeHtmlInSlider)) {
-    <span class="ngx-slider-span ngx-slider-tick-legend" [innerHTML]="t.legend"></span>
-    }
-  </span>
+    <span class="ngx-slider-tick" [ngClass]="{'ngx-slider-selected': t.selected}" [ngStyle]="t.style">
+      <ngx-slider-tooltip-wrapper [template]="tooltipTemplate" [tooltip]="t.tooltip" [placement]="t.tooltipPlacement"></ngx-slider-tooltip-wrapper>
+      @if (t.value !== null && t.value !== undefined) {
+        <ngx-slider-tooltip-wrapper class="ngx-slider-span ngx-slider-tick-value"
+        [template]="tooltipTemplate" [tooltip]="t.valueTooltip" [placement]="t.valueTooltipPlacement" [content]="t.value"></ngx-slider-tooltip-wrapper>
+      }
+      @if (t.legend !== null && t.legend !== undefined && allowUnsafeHtmlInSlider === false) {
+        <span class="ngx-slider-span ngx-slider-tick-legend" [innerText]="t.legend"></span>
+      }
+      @if (t.legend !== null && t.legend !== undefined && (allowUnsafeHtmlInSlider === null || allowUnsafeHtmlInSlider === undefined || allowUnsafeHtmlInSlider)) {
+        <span class="ngx-slider-span ngx-slider-tick-legend" [innerHTML]="t.legend"></span>
+      }
+    </span>
   }
 </span>

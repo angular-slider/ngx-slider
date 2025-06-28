@@ -1,28 +1,4 @@
-import {
-  Component,
-  OnInit,
-  ViewChild,
-  AfterViewInit,
-  OnChanges,
-  OnDestroy,
-  HostBinding,
-  HostListener,
-  Input,
-  ElementRef,
-  Renderer2,
-  EventEmitter,
-  Output,
-  ContentChild,
-  TemplateRef,
-  ChangeDetectorRef,
-  SimpleChanges,
-  forwardRef,
-  NgZone,
-  ChangeDetectionStrategy,
-  inject,
-  Inject,
-  Optional,
-} from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, OnChanges, OnDestroy, HostBinding, HostListener, Input, ElementRef, Renderer2, EventEmitter, Output, ContentChild, TemplateRef, ChangeDetectorRef, SimpleChanges, forwardRef, NgZone, ChangeDetectionStrategy, inject } from '@angular/core';
 
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
@@ -132,16 +108,22 @@ const NGX_SLIDER_CONTROL_VALUE_ACCESSOR: any = {
 };
 
 @Component({
-  selector: 'ngx-slider',
-  templateUrl: './slider.component.html',
-  styleUrls: ['./slider.component.scss'],
-  providers: [NGX_SLIDER_CONTROL_VALUE_ACCESSOR],
-  changeDetection: ChangeDetectionStrategy.Default,
-  standalone: false,
+    selector: 'ngx-slider',
+    templateUrl: './slider.component.html',
+    styleUrls: ['./slider.component.scss'],
+    providers: [NGX_SLIDER_CONTROL_VALUE_ACCESSOR],
+    changeDetection: ChangeDetectionStrategy.Default,
+    standalone: false
 })
 export class SliderComponent
   implements OnInit, AfterViewInit, OnChanges, OnDestroy, ControlValueAccessor
 {
+  private renderer = inject(Renderer2);
+  private elementRef = inject(ElementRef);
+  private changeDetectionRef = inject(ChangeDetectorRef);
+  private zone = inject(NgZone);
+  allowUnsafeHtmlInSlider = inject(AllowUnsafeHtmlInSlider, { optional: true });
+
   // Add ngx-slider class to the host element - this is static, should never change
   @HostBinding('class.ngx-slider')
   private sliderElementNgxSliderClass: boolean = true;
@@ -364,15 +346,7 @@ export class SliderComponent
   private onTouchedCallback: (value: any) => void = null;
   private onChangeCallback: (value: any) => void = null;
 
-  public constructor(
-    private renderer: Renderer2,
-    private elementRef: ElementRef,
-    private changeDetectionRef: ChangeDetectorRef,
-    private zone: NgZone,
-    @Inject(AllowUnsafeHtmlInSlider)
-    @Optional()
-    public allowUnsafeHtmlInSlider: boolean
-  ) {
+  public constructor() {
     this.eventListenerHelper = new EventListenerHelper(this.renderer);
   }
 
@@ -2347,9 +2321,7 @@ export class SliderComponent
     if (disableAnimation) {
       this.sliderElementAnimateClass = false;
       // make sure the slider animate class is set according to the viewOptions after forceEnd() with disabled animations finishes
-      setTimeout(() => {
-        this.sliderElementAnimateClass = this.viewOptions.animate;
-      });
+      setTimeout(() => {this.sliderElementAnimateClass = this.viewOptions.animate});
     }
 
     this.touchId = null;

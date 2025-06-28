@@ -1,10 +1,4 @@
-import {
-  ChangeDetectorRef,
-  Directive,
-  ElementRef,
-  HostBinding,
-  Renderer2,
-} from '@angular/core';
+import { Directive, HostBinding } from '@angular/core';
 import { SliderElementDirective } from './slider-element.directive';
 
 @Directive({
@@ -50,13 +44,5 @@ export class SliderHandleDirective extends SliderElementDirective {
     if (document.activeElement !== this.elemRef.nativeElement) {
       this.elemRef.nativeElement.focus();
     }
-  }
-
-  constructor(
-    elemRef: ElementRef,
-    renderer: Renderer2,
-    changeDetectionRef: ChangeDetectorRef
-  ) {
-    super(elemRef, renderer, changeDetectionRef);
   }
 }
