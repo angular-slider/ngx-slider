@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterViewInit, OnChanges, OnDestroy, HostBinding, HostListener, Input, ElementRef, Renderer2, EventEmitter, Output, ContentChild, TemplateRef, ChangeDetectorRef, SimpleChanges, forwardRef, NgZone, ChangeDetectionStrategy, inject } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, OnChanges, OnDestroy, HostBinding, HostListener, Input, ElementRef, Renderer2, EventEmitter, Output, ContentChild, TemplateRef, ChangeDetectorRef, SimpleChanges, forwardRef, NgZone, ChangeDetectionStrategy, inject, Inject } from '@angular/core';
 
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
@@ -24,6 +24,7 @@ import { EventListenerHelper } from './event-listener-helper';
 import { SliderElementDirective } from './slider-element.directive';
 import { SliderHandleDirective } from './slider-handle.directive';
 import { SliderLabelDirective } from './slider-label.directive';
+import { DOCUMENT } from '@angular/common';
 
 // Declaration for ResizeObserver a new API available in some of newest browsers:
 // https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver
@@ -344,6 +345,8 @@ export class SliderComponent
   // Callbacks for reactive forms support
   private onTouchedCallback: (value: any) => void = null;
   private onChangeCallback: (value: any) => void = null;
+
+  private document: Document = inject(DOCUMENT);
 
   public constructor() {
     this.eventListenerHelper = new EventListenerHelper(this.renderer);
@@ -2169,13 +2172,13 @@ export class SliderComponent
       if (event.pointerType === 'touch') {
         this.onMoveEventListener =
           this.eventListenerHelper.attachPassiveEventListener(
-            document,
+            this.document,
               'pointermove',
               onMoveCallback
             );
       } else {
         this.onMoveEventListener = this.eventListenerHelper.attachEventListener(
-          document,
+          this.document,
           'pointermove',
           onMoveCallback
         );
@@ -2192,14 +2195,14 @@ export class SliderComponent
       if (event.pointerType === 'touch') {
         this.onEndEventListener =
           this.eventListenerHelper.attachPassiveEventListener(
-            document,
-              'touchend',
-              onEndCallback
-            );
+            this.document,
+            'pointerup',
+            onEndCallback
+          );
       } else {
         this.onEndEventListener = this.eventListenerHelper.attachEventListener(
-          document,
-          'mouseup',
+          this.document,
+          'pointerup',
           onEndCallback
         );
       }
