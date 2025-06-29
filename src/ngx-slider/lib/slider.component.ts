@@ -18,7 +18,6 @@ import {
 import { PointerType } from './pointer-type';
 import { ChangeContext } from './change-context';
 import { ValueHelper } from './value-helper';
-import { CompatibilityHelper } from './compatibility-helper';
 import { MathHelper } from './math-helper';
 import { EventListener } from './event-listener';
 import { EventListenerHelper } from './event-listener-helper';
@@ -513,22 +512,15 @@ export class SliderComponent
   }
 
   private subscribeResizeObserver(): void {
-    if (CompatibilityHelper.isResizeObserverAvailable()) {
-      this.resizeObserver = new ResizeObserver((): void =>
-        this.calculateViewDimensionsAndDetectChanges()
-      );
-      this.resizeObserver.observe(this.elementRef.nativeElement);
-    }
+    this.resizeObserver = new ResizeObserver((): void =>
+      this.calculateViewDimensionsAndDetectChanges()
+    );
+    this.resizeObserver.observe(this.elementRef.nativeElement);
   }
 
   private unsubscribeResizeObserver(): void {
-    if (
-      CompatibilityHelper.isResizeObserverAvailable() &&
-      this.resizeObserver !== null
-    ) {
-      this.resizeObserver.disconnect();
-      this.resizeObserver = null;
-    }
+    this.resizeObserver.disconnect();
+    this.resizeObserver = null;
   }
 
   private unsubscribeOnMove(): void {
