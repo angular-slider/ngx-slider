@@ -1939,37 +1939,16 @@ export class SliderComponent
 
   // Get the X-coordinate or Y-coordinate of an event
   private getEventXY(
-    event: MouseEvent | TouchEvent,
-    targetTouchId?: number
+    event: PointerEvent,
   ): number {
-    if (event instanceof MouseEvent) {
-      return this.viewOptions.vertical || this.viewOptions.rotate !== 0
-        ? event.clientY
-        : event.clientX;
-    }
-
-    let touchIndex: number = 0;
-    const touches: TouchList = event.touches;
-    if (!ValueHelper.isNullOrUndefined(targetTouchId)) {
-      for (let i: number = 0; i < touches.length; i++) {
-        if (touches[i].identifier === targetTouchId) {
-          touchIndex = i;
-          break;
-        }
-      }
-    }
-
-    // Return the target touch or if the target touch was not found in the event
-    // returns the coordinates of the first touch
     return this.viewOptions.vertical || this.viewOptions.rotate !== 0
-      ? touches[touchIndex].clientY
-      : touches[touchIndex].clientX;
+      ? event.clientY
+      : event.clientX;
   }
 
   // Compute the event position depending on whether the slider is horizontal or vertical
   private getEventPosition(
-    event: MouseEvent | TouchEvent,
-    targetTouchId?: number
+    event: PointerEvent,
   ): number {
     const sliderElementBoundingRect: ClientRect =
       this.elementRef.nativeElement.getBoundingClientRect();
@@ -1981,16 +1960,16 @@ export class SliderComponent
     let eventPos: number = 0;
 
     if (this.viewOptions.vertical || this.viewOptions.rotate !== 0) {
-      eventPos = -this.getEventXY(event, targetTouchId) + sliderPos;
+      eventPos = -this.getEventXY(event) + sliderPos;
     } else {
-      eventPos = this.getEventXY(event, targetTouchId) - sliderPos;
+      eventPos = this.getEventXY(event) - sliderPos;
     }
 
     return eventPos * this.viewOptions.scale - this.handleHalfDimension;
   }
 
   // Get the handle closest to an event
-  private getNearestHandle(event: MouseEvent | TouchEvent): PointerType {
+  private getNearestHandle(event: PointerEvent): PointerType {
     if (!this.range) {
       return PointerType.Min;
     }
@@ -2019,38 +1998,38 @@ export class SliderComponent
       : PointerType.Max;
   }
 
-  // Bind mouse and touch events to slider handles
+  // Bind pointer events to slider handles
   private bindEvents(): void {
     const draggableRange: boolean = this.viewOptions.draggableRange;
 
     if (!this.viewOptions.onlyBindHandles) {
-      this.selectionBarElement.on('mousedown', (event: MouseEvent): void =>
+      this.selectionBarElement.on('pointerdown', (event: PointerEvent): void =>
         this.onBarStart(null, draggableRange, event, true, true, true)
       );
     }
 
     if (this.viewOptions.draggableRangeOnly) {
-      this.minHandleElement.on('mousedown', (event: MouseEvent): void =>
+      this.minHandleElement.on('pointerdown', (event: PointerEvent): void =>
         this.onBarStart(PointerType.Min, draggableRange, event, true, true)
       );
-      this.maxHandleElement.on('mousedown', (event: MouseEvent): void =>
+      this.maxHandleElement.on('pointerdown', (event: PointerEvent): void =>
         this.onBarStart(PointerType.Max, draggableRange, event, true, true)
       );
     } else {
-      this.minHandleElement.on('mousedown', (event: MouseEvent): void =>
+      this.minHandleElement.on('pointerdown', (event: PointerEvent): void =>
         this.onStart(PointerType.Min, event, true, true)
       );
 
       if (this.range) {
-        this.maxHandleElement.on('mousedown', (event: MouseEvent): void =>
+        this.maxHandleElement.on('pointerdown', (event: PointerEvent): void =>
           this.onStart(PointerType.Max, event, true, true)
         );
       }
       if (!this.viewOptions.onlyBindHandles) {
-        this.fullBarElement.on('mousedown', (event: MouseEvent): void =>
+        this.fullBarElement.on('pointerdown', (event: PointerEvent): void =>
           this.onStart(null, event, true, true, true)
         );
-        this.ticksElement.on('mousedown', (event: MouseEvent): void =>
+        this.ticksElement.on('pointerdown', (event: PointerEvent): void =>
           this.onStart(null, event, true, true, true, true)
         );
       }
@@ -2058,34 +2037,34 @@ export class SliderComponent
 
     if (!this.viewOptions.onlyBindHandles) {
       this.selectionBarElement.onPassive(
-        'touchstart',
-        (event: TouchEvent): void =>
+        'pointerdown',
+        (event: PointerEvent): void =>
           this.onBarStart(null, draggableRange, event, true, true, true)
       );
     }
     if (this.viewOptions.draggableRangeOnly) {
-      this.minHandleElement.onPassive('touchstart', (event: TouchEvent): void =>
+      this.minHandleElement.onPassive('pointerdown', (event: PointerEvent): void =>
         this.onBarStart(PointerType.Min, draggableRange, event, true, true)
       );
-      this.maxHandleElement.onPassive('touchstart', (event: TouchEvent): void =>
+      this.maxHandleElement.onPassive('pointerdown', (event: PointerEvent): void =>
         this.onBarStart(PointerType.Max, draggableRange, event, true, true)
       );
     } else {
-      this.minHandleElement.onPassive('touchstart', (event: TouchEvent): void =>
+      this.minHandleElement.onPassive('pointerdown', (event: PointerEvent): void =>
         this.onStart(PointerType.Min, event, true, true)
       );
       if (this.range) {
         this.maxHandleElement.onPassive(
-          'touchstart',
-          (event: TouchEvent): void =>
+          'pointerdown',
+          (event: PointerEvent): void =>
             this.onStart(PointerType.Max, event, true, true)
         );
       }
       if (!this.viewOptions.onlyBindHandles) {
-        this.fullBarElement.onPassive('touchstart', (event: TouchEvent): void =>
+        this.fullBarElement.onPassive('pointerdown', (event: PointerEvent): void =>
           this.onStart(null, event, true, true, true)
         );
-        this.ticksElement.onPassive('touchstart', (event: TouchEvent): void =>
+        this.ticksElement.onPassive('pointerdown', (event: PointerEvent): void =>
           this.onStart(null, event, false, false, true, true)
         );
       }
@@ -2129,7 +2108,7 @@ export class SliderComponent
   private onBarStart(
     pointerType: PointerType,
     draggableRange: boolean,
-    event: MouseEvent | TouchEvent,
+    event: PointerEvent,
     bindMove: boolean,
     bindEnd: boolean,
     simulateImmediateMove?: boolean,
@@ -2152,7 +2131,7 @@ export class SliderComponent
   // onStart event handler
   private onStart(
     pointerType: PointerType,
-    event: MouseEvent | TouchEvent,
+    event: PointerEvent,
     bindMove: boolean,
     bindEnd: boolean,
     simulateImmediateMove?: boolean,
@@ -2160,7 +2139,7 @@ export class SliderComponent
   ): void {
     event.stopPropagation();
     // Only call preventDefault() when handling non-passive events (passive events don't need it)
-    if (!CompatibilityHelper.isTouchEvent(event) && !supportsPassiveEvents) {
+    if (event.pointerType !== 'touch' && !supportsPassiveEvents) {
       event.preventDefault();
     }
 
@@ -2191,21 +2170,21 @@ export class SliderComponent
     if (bindMove) {
       this.unsubscribeOnMove();
 
-      const onMoveCallback: (e: MouseEvent | TouchEvent) => void = (
-        e: MouseEvent | TouchEvent
+      const onMoveCallback: (e: PointerEvent) => void = (
+        e: PointerEvent
       ): void => (this.dragging.active ? this.onDragMove(e) : this.onMove(e));
 
-      if (CompatibilityHelper.isTouchEvent(event)) {
+      if (event.pointerType === 'touch') {
         this.onMoveEventListener =
           this.eventListenerHelper.attachPassiveEventListener(
             document,
-            'touchmove',
-            onMoveCallback
-          );
+              'pointermove',
+              onMoveCallback
+            );
       } else {
         this.onMoveEventListener = this.eventListenerHelper.attachEventListener(
           document,
-          'mousemove',
+          'pointermove',
           onMoveCallback
         );
       }
@@ -2214,17 +2193,17 @@ export class SliderComponent
     if (bindEnd) {
       this.unsubscribeOnEnd();
 
-      const onEndCallback: (e: MouseEvent | TouchEvent) => void = (
-        e: MouseEvent | TouchEvent
+      const onEndCallback: (e: PointerEvent) => void = (
+        e: PointerEvent
       ): void => this.onEnd(e);
 
-      if (CompatibilityHelper.isTouchEvent(event)) {
+      if (event.pointerType === 'touch') {
         this.onEndEventListener =
           this.eventListenerHelper.attachPassiveEventListener(
             document,
-            'touchend',
-            onEndCallback
-          );
+              'touchend',
+              onEndCallback
+            );
       } else {
         this.onEndEventListener = this.eventListenerHelper.attachEventListener(
           document,
@@ -2237,17 +2216,14 @@ export class SliderComponent
     this.userChangeStart.emit(this.getChangeContext());
 
     if (
-      CompatibilityHelper.isTouchEvent(event) &&
-      !ValueHelper.isNullOrUndefined((event as TouchEvent).changedTouches)
+      event.pointerType === 'touch' && event.isPrimary
     ) {
       // Store the touch identifier
-      if (ValueHelper.isNullOrUndefined(this.touchId)) {
-        this.touchId = (event as TouchEvent).changedTouches[0].identifier;
-      }
+      this.touchId = event.pointerId;
     }
 
     // Click events, either with mouse or touch gesture are weird. Sometimes they result in full
-    // start, move, end sequence, and sometimes, they don't - they only invoke mousedown
+    // start, move, end sequence, and sometimes, they don't - they only invoke pointerdown
     // As a workaround, we simulate the first move event and the end event if it's necessary
     if (simulateImmediateMove) {
       this.onMove(event, true);
@@ -2259,21 +2235,9 @@ export class SliderComponent
   }
 
   // onMove event handler
-  private onMove(event: MouseEvent | TouchEvent, fromTick?: boolean): void {
-    let touchForThisSlider: Touch = null;
-
-    if (CompatibilityHelper.isTouchEvent(event)) {
-      const changedTouches: TouchList = (event as TouchEvent).changedTouches;
-      for (let i: number = 0; i < changedTouches.length; i++) {
-        if (changedTouches[i].identifier === this.touchId) {
-          touchForThisSlider = changedTouches[i];
-          break;
-        }
-      }
-
-      if (ValueHelper.isNullOrUndefined(touchForThisSlider)) {
-        return;
-      }
+  private onMove(event: PointerEvent, fromTick?: boolean): void {
+    if (event.pointerType === 'touch' && !event.isPrimary) {
+      return;
     }
 
     if (this.viewOptions.animate && !this.viewOptions.animateOnMove) {
@@ -2284,9 +2248,7 @@ export class SliderComponent
 
     this.moving = true;
 
-    const newPos: number = !ValueHelper.isNullOrUndefined(touchForThisSlider)
-      ? this.getEventPosition(event, touchForThisSlider.identifier)
-      : this.getEventPosition(event);
+    const newPos: number = this.getEventPosition(event);
     let newValue: number;
     const ceilValue: number = this.viewOptions.rightToLeft
       ? this.viewOptions.floor
@@ -2339,12 +2301,9 @@ export class SliderComponent
     this.userChangeEnd.emit(this.getChangeContext());
   }
 
-  private onEnd(event: MouseEvent | TouchEvent): void {
-    if (CompatibilityHelper.isTouchEvent(event)) {
-      const changedTouches: TouchList = (event as TouchEvent).changedTouches;
-      if (changedTouches[0].identifier !== this.touchId) {
-        return;
-      }
+  private onEnd(event: PointerEvent): void {
+    if (event.pointerType === 'touch' && !event.isPrimary) {
+      return;
     }
 
     this.forceEnd();
@@ -2491,7 +2450,7 @@ export class SliderComponent
   // onDragStart event handler, handles dragging of the middle bar
   private onDragStart(
     pointerType: PointerType,
-    event: MouseEvent | TouchEvent,
+    event: PointerEvent,
     bindMove: boolean,
     bindEnd: boolean
   ): void {
@@ -2572,7 +2531,7 @@ export class SliderComponent
     return this.roundStep(value);
   }
 
-  private onDragMove(event?: MouseEvent | TouchEvent): void {
+  private onDragMove(event?: PointerEvent): void {
     const newPos: number = this.getEventPosition(event);
 
     if (this.viewOptions.animate && !this.viewOptions.animateOnMove) {
