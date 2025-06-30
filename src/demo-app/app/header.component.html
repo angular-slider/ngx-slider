@@ -3,20 +3,24 @@
     <div class="container">
       <div class="d-flex flex-row">
         <div class="mr-3">
-            <img alt="logo" src="assets/logo.png" style="height: 5rem;">
+          <img alt="logo" src="assets/logo.png" style="height: 5rem;">
         </div>
 
         <div>
           <h1 class="display-4">ngx-slider</h1>
 
-          <a *ngIf="enableExternalImages"
-            class="github-fork-ribbon"
-            href="https://github.com/angular-slider/ngx-slider"
-            data-ribbon="Fork me on GitHub"
+          @if (enableExternalImages) {
+            <a
+              class="github-fork-ribbon"
+              href="https://github.com/angular-slider/ngx-slider"
+              data-ribbon="Fork me on GitHub"
             title="Fork me on GitHub">Fork me on GitHub</a>
+          }
 
           <p class="lead">Self-contained, mobile-friendly slider component for Angular based on <a href="https://github.com/angular-slider/angularjs-slider">angularjs-slider</a></p>
-          <p><a *ngIf="enableExternalImages" href="https://badge.fury.io/js/%40angular-slider%2Fngx-slider" rel="nofollow"><img src="https://badge.fury.io/js/%40angular-slider%2Fngx-slider.svg" alt="npm version"></a></p>
+          <p>@if (enableExternalImages) {
+            <a href="https://badge.fury.io/js/%40angular-slider%2Fngx-slider" rel="nofollow"><img src="https://badge.fury.io/js/%40angular-slider%2Fngx-slider.svg" alt="npm version"></a>
+          }</p>
 
           <div class="alert alert-warning" role="alert">
             As of v19.0.0 this project is not actively maintained. If you wish to become a maintainer, please get in touch on the <a href="https://discord.gg/DHsDghZRwZ" rel="nofollow">dedicated Discord server</a>.
@@ -30,7 +34,7 @@
     <a class="navbar-brand d-block d-sm-none" href="#">ngx-slider</a>
 
     <button class="navbar-toggler navbar-toggler-right" type="button" (click)="navbarCollapsed = !navbarCollapsed"
-            [attr.aria-expanded]="!navbarCollapsed" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+      [attr.aria-expanded]="!navbarCollapsed" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
