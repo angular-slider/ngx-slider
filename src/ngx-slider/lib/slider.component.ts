@@ -2196,9 +2196,9 @@ export class SliderComponent
         this.onEndEventListener =
           this.eventListenerHelper.attachPassiveEventListener(
             this.document,
-            'pointerup',
-            onEndCallback
-          );
+              'pointerup',
+              onEndCallback
+            );
       } else {
         this.onEndEventListener = this.eventListenerHelper.attachEventListener(
           this.document,
