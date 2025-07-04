@@ -2193,13 +2193,13 @@ export class SliderComponent
         this.onEndEventListener =
           this.eventListenerHelper.attachPassiveEventListener(
             document,
-              'touchend',
+              'pointerup',
               onEndCallback
             );
       } else {
         this.onEndEventListener = this.eventListenerHelper.attachEventListener(
           document,
-          'mouseup',
+          'pointerup',
           onEndCallback
         );
       }
