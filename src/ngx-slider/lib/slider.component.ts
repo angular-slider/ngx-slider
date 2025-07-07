@@ -335,6 +335,7 @@ export class SliderComponent
   private eventListenerHelper: EventListenerHelper = null;
   private onMoveEventListener: EventListener = null;
   private onEndEventListener: EventListener = null;
+  private onCancelEventListener: EventListener = null;
   // Whether currently moving the slider (between onStart() and onEnd())
   private moving: boolean = false;
 
@@ -534,6 +535,10 @@ export class SliderComponent
     if (!ValueHelper.isNullOrUndefined(this.onEndEventListener)) {
       this.eventListenerHelper.detachEventListener(this.onEndEventListener);
       this.onEndEventListener = null;
+    }
+    if (!ValueHelper.isNullOrUndefined(this.onCancelEventListener)) {
+      this.eventListenerHelper.detachEventListener(this.onCancelEventListener);
+      this.onCancelEventListener = null;
     }
   }
 
@@ -2196,10 +2201,25 @@ export class SliderComponent
               'pointerup',
               onEndCallback
             );
+        // Touch event that triggers browser scrolling won't call `pointerup` on the original element that initiated it (the slider).
+        // But `pointercancel` will be called once all touch events finish.
+        this.onCancelEventListener =
+          this.eventListenerHelper.attachPassiveEventListener(
+            document,
+              'pointercancel',
+              onEndCallback
+            );
       } else {
         this.onEndEventListener = this.eventListenerHelper.attachEventListener(
           document,
           'pointerup',
+          onEndCallback
+        );
+        // Opening context-menu in safari - in mouse context - doesn't trigger `pointerup`, so still need to listen for
+        // `pointercancel` to clear up any lingering listeners.
+        this.onCancelEventListener = this.eventListenerHelper.attachPassiveEventListener(
+          document,
+          'pointercancel',
           onEndCallback
         );
       }
