@@ -24,6 +24,7 @@ import { EventListenerHelper } from './event-listener-helper';
 import { SliderElementDirective } from './slider-element.directive';
 import { SliderHandleDirective } from './slider-handle.directive';
 import { SliderLabelDirective } from './slider-label.directive';
+import { DOCUMENT } from '@angular/common';
 
 // Declaration for ResizeObserver a new API available in some of newest browsers:
 // https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver
@@ -345,6 +346,8 @@ export class SliderComponent
   // Callbacks for reactive forms support
   private onTouchedCallback: (value: any) => void = null;
   private onChangeCallback: (value: any) => void = null;
+
+  private document: Document = inject(DOCUMENT);
 
   public constructor() {
     this.eventListenerHelper = new EventListenerHelper(this.renderer);
@@ -2174,13 +2177,13 @@ export class SliderComponent
       if (event.pointerType === 'touch') {
         this.onMoveEventListener =
           this.eventListenerHelper.attachPassiveEventListener(
-            document,
+            this.document,
               'pointermove',
               onMoveCallback
             );
       } else {
         this.onMoveEventListener = this.eventListenerHelper.attachEventListener(
-          document,
+          this.document,
           'pointermove',
           onMoveCallback
         );
@@ -2197,7 +2200,7 @@ export class SliderComponent
       if (event.pointerType === 'touch') {
         this.onEndEventListener =
           this.eventListenerHelper.attachPassiveEventListener(
-            document,
+            this.document,
               'pointerup',
               onEndCallback
             );
@@ -2205,20 +2208,20 @@ export class SliderComponent
         // But `pointercancel` will be called once all touch events finish.
         this.onCancelEventListener =
           this.eventListenerHelper.attachPassiveEventListener(
-            document,
+            this.document,
               'pointercancel',
               onEndCallback
             );
       } else {
         this.onEndEventListener = this.eventListenerHelper.attachEventListener(
-          document,
+          this.document,
           'pointerup',
           onEndCallback
         );
         // Opening context-menu in safari - in mouse context - doesn't trigger `pointerup`, so still need to listen for
         // `pointercancel` to clear up any lingering listeners.
         this.onCancelEventListener = this.eventListenerHelper.attachPassiveEventListener(
-          document,
+          this.document,
           'pointercancel',
           onEndCallback
         );
