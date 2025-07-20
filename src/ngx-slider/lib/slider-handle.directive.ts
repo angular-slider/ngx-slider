@@ -1,4 +1,4 @@
-import { Directive, HostBinding, inject, Inject } from '@angular/core';
+import { Directive, HostBinding, inject } from '@angular/core';
 import { SliderElementDirective } from './slider-element.directive';
 import { DOCUMENT } from '@angular/common';
 
