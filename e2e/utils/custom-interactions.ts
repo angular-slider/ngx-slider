@@ -23,48 +23,40 @@ export async function touchDragRelative(locator: Locator, options: {offsetX: num
   // Playwright doesn't support touch gestures yet, so this is a crude workaround
   await page.evaluate(
     ([centerX, centerY, offsetX, offsetY]) => {
-      const touchAtStart = new Touch({ identifier: 1, target: document.documentElement, clientX: centerX, clientY: centerY });
-      const touchAtEnd = new Touch({ identifier: 1, target: document.documentElement, clientX: centerX + offsetX, clientY: centerY + offsetY });
+      const element = document.elementFromPoint(centerX, centerY);
 
-      const touchStartEvent = new TouchEvent("touchstart", {
+      const touchStartEvent = new PointerEvent("pointerdown", {
         bubbles: true,
         cancelable: true,
         composed: true,
-        touches: [touchAtStart],
-        changedTouches: [touchAtStart],
-        targetTouches: [touchAtStart],
+        isPrimary: true,
+        pointerType: 'touch',
+        clientX: centerX,
+        clientY: centerY,
       });
-      document.elementFromPoint(centerX, centerY).dispatchEvent(touchStartEvent);
+      element.dispatchEvent(touchStartEvent);
 
-      const touchMoveEvent1 = new TouchEvent("touchmove", {
+      const touchMoveEvent1 = new PointerEvent("pointermove", {
         bubbles: true,
         cancelable: true,
         composed: true,
-        touches: [touchAtStart],
-        changedTouches: [touchAtStart],
-        targetTouches: [touchAtStart],
+        isPrimary: true,
+        pointerType: 'touch',
+        clientX: centerX + offsetX,
+        clientY: centerY + offsetY,
       });
-      document.elementFromPoint(centerX, centerY).dispatchEvent(touchMoveEvent1);
+      element.dispatchEvent(touchMoveEvent1);
 
-      const touchMoveEvent2 = new TouchEvent("touchmove", {
+      const touchEndEvent = new PointerEvent("pointerup", {
         bubbles: true,
         cancelable: true,
         composed: true,
-        touches: [touchAtEnd],
-        changedTouches: [touchAtEnd],
-        targetTouches: [touchAtEnd],
+        isPrimary: true,
+        pointerType: 'touch',
+        clientX: centerX + offsetX,
+        clientY: centerY + offsetY
       });
-      document.elementFromPoint(centerX + offsetX, centerY + offsetY).dispatchEvent(touchMoveEvent2);
-
-      const touchEndEvent = new TouchEvent("touchend", {
-        bubbles: true,
-        cancelable: true,
-        composed: true,
-        touches: [],
-        changedTouches: [touchAtEnd],
-        targetTouches: [],
-      });
-      document.elementFromPoint(centerX + offsetX, centerY + offsetY).dispatchEvent(touchEndEvent);
+      element.dispatchEvent(touchEndEvent);
     },
     [centerX, centerY, options.offsetX, options.offsetY]
   );

@@ -1,15 +1,10 @@
-import {
-  Directive,
-  ElementRef,
-  Renderer2,
-  HostBinding,
-  ChangeDetectorRef,
-} from '@angular/core';
+import { Directive, HostBinding, inject } from '@angular/core';
 import { SliderElementDirective } from './slider-element.directive';
+import { DOCUMENT } from '@angular/common';
 
 @Directive({
-    selector: '[ngxSliderHandle]',
-    standalone: false
+  selector: '[ngxSliderHandle]',
+  standalone: false,
 })
 export class SliderHandleDirective extends SliderElementDirective {
   @HostBinding('class.ngx-slider-active')
@@ -42,21 +37,15 @@ export class SliderHandleDirective extends SliderElementDirective {
   @HostBinding('attr.aria-valuemax')
   ariaValueMax: string = '';
 
+  private document: Document = inject(DOCUMENT);
+
   focus(): void {
     this.elemRef.nativeElement.focus();
   }
 
   focusIfNeeded(): void {
-    if (document.activeElement !== this.elemRef.nativeElement) {
+    if (this.document.activeElement !== this.elemRef.nativeElement) {
       this.elemRef.nativeElement.focus();
     }
-  }
-
-  constructor(
-    elemRef: ElementRef,
-    renderer: Renderer2,
-    changeDetectionRef: ChangeDetectorRef
-  ) {
-    super(elemRef, renderer, changeDetectionRef);
   }
 }

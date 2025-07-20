@@ -1,4 +1,4 @@
-import { Directive, ElementRef, Renderer2, HostBinding, ChangeDetectorRef } from '@angular/core';
+import { Directive, ElementRef, Renderer2, HostBinding, ChangeDetectorRef, inject } from '@angular/core';
 import { EventListenerHelper } from './event-listener-helper';
 import { EventListener } from './event-listener';
 import { ValueHelper } from './value-helper';
@@ -8,6 +8,10 @@ import { ValueHelper } from './value-helper';
     standalone: false
 })
 export class SliderElementDirective {
+  protected elemRef = inject(ElementRef);
+  protected renderer = inject(Renderer2);
+  protected changeDetectionRef = inject(ChangeDetectorRef);
+
   private _position: number = 0;
   get position(): number {
     return this._position;
@@ -62,7 +66,7 @@ export class SliderElementDirective {
   private eventListenerHelper: EventListenerHelper;
   private eventListeners: EventListener[] = [];
 
-  constructor(protected elemRef: ElementRef, protected renderer: Renderer2, protected changeDetectionRef: ChangeDetectorRef) {
+  constructor() {
     this.eventListenerHelper = new EventListenerHelper(this.renderer);
   }
 
