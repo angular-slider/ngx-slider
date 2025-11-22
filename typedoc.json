@@ -1,7 +1,6 @@
 {
   "exclude": ["**/e2e/**"],
   "compilerOptions": {
-    "exclude": ["**/e2e/**"],
     "paths": {
       "@local/ngx-slider": [
         "./src/ngx-slider/lib/public_api.ts"
