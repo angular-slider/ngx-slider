@@ -21,6 +21,18 @@
     "url": "https://github.com/angular-slider/ngx-slider/issues"
   },
   "homepage": "https://github.com/angular-slider/ngx-slider#readme",
+  "module": "./dist/ngx-slider/fesm2022/angular-slider-ngx-slider.mjs",
+  "typings": "./dist/ngx-slider/index.d.ts",
+  "exports": {
+    "./package.json": {
+      "default": "./package.json"
+    },
+    ".": {
+      "types": "./dist/ngx-slider/index.d.ts",
+      "default": "./dist/ngx-slider/fesm2022/angular-slider-ngx-slider.mjs"
+    }
+  },
+  "sideEffects": false,
   "scripts": {
     "prepare": "npm run prepare:lib && npm run prepare:demo-app",
     "prepare:lib": "node scripts/generate-lib-files.js",
