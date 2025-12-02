@@ -11,10 +11,10 @@ export class RestrictedRangeSliderComponent {
   options: Options = {
     floor: 0,
     ceil: 100,
-    restrictedRange: {
-      from: 30,
-      to: 70,
-    },
+    restrictedRange: [
+      { from: 20, to: 35 },
+      { from: 65, to: 80 },
+    ],
     skipRestrictedRangesWithArrowKeys: true,
   };
 }
