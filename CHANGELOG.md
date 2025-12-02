@@ -3,6 +3,8 @@
 ## 21.0.0
 
 * add support for Angular 21
+* replace touch/mouse events with pointer event (issue #400)
+* fixed ngx-slider not working when opened within a new browser window (issue #400)
 
 ## 20.0.0
 
