@@ -52,6 +52,18 @@ export interface CustomStepDefinition {
   legend?: string;
 }
 
+/**
+ * Restricted range definition
+ *
+ * This can be used to define restricted areas on the slider where handles cannot be placed
+ */
+export interface RestrictedRangeDefinition {
+  /** Start value of the restricted range */
+  from: number;
+  /** End value of the restricted range */
+  to: number;
+}
+
 /** Slider options */
 export class Options {
   /** Minimum value for a slider.
@@ -89,6 +101,15 @@ export class Options {
   /** The maximum value authorized on the slider.
     When using stepsArray, expressed as index into stepsArray. */
   maxLimit?: number = null;
+
+  /** Restricted range(s) on the slider where handles cannot be placed.
+    Can be a single RestrictedRangeDefinition object or an array of them.
+    Each restricted range has 'from' and 'to' properties defining the restricted area. */
+  restrictedRange?: RestrictedRangeDefinition | RestrictedRangeDefinition[] = null;
+
+  /** Set to true to skip restricted ranges when using arrow keys.
+    When enabled, pressing arrow keys will jump over restricted ranges. */
+  skipRestrictedRangesWithArrowKeys?: boolean = false;
 
   /** Custom translate function. Use this if you want to translate values displayed
       on the slider. */

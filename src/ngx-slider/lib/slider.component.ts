@@ -13,6 +13,7 @@ import {
   ValueToPositionFunction,
   PositionToValueFunction,
   CustomStepDefinition,
+  RestrictedRangeDefinition,
   AllowUnsafeHtmlInSlider,
 } from './options';
 import { PointerType } from './pointer-type';
@@ -320,6 +321,9 @@ export class SliderComponent
   public fullBarTransparentClass: boolean = false;
   public selectionBarDraggableClass: boolean = false;
   public ticksUnderValuesClass: boolean = false;
+
+  // Restricted range bars styles
+  public restrictedBars: { style: any }[] = [];
 
   // Whether to show/hide ticks
   public get showTicks(): boolean {
@@ -1774,6 +1778,40 @@ export class SliderComponent
           this.fullBarElement.dimension - this.handleHalfDimension + 'px 100%';
       }
     }
+    this.updateRestrictionBar();
+  }
+
+  // Update restricted area bar(s)
+  private updateRestrictionBar(): void {
+    if (ValueHelper.isNullOrUndefined(this.viewOptions.restrictedRange)) {
+      this.restrictedBars = [];
+      return;
+    }
+
+    // Normalize restrictedRange to always be an array
+    const restrictedRanges: RestrictedRangeDefinition[] = Array.isArray(this.viewOptions.restrictedRange)
+      ? this.viewOptions.restrictedRange
+      : [this.viewOptions.restrictedRange];
+
+    this.restrictedBars = restrictedRanges.map((range: RestrictedRangeDefinition) => {
+      const from: number = this.valueToPosition(range.from);
+      const to: number = this.valueToPosition(range.to);
+      const dimension: number = Math.abs(to - from);
+      const position: number = this.viewOptions.rightToLeft
+        ? to + this.handleHalfDimension
+        : from + this.handleHalfDimension;
+
+      const style: any = {};
+      if (this.viewOptions.vertical) {
+        style.bottom = position + 'px';
+        style.height = dimension + 'px';
+      } else {
+        style.left = position + 'px';
+        style.width = dimension + 'px';
+      }
+
+      return { style };
+    });
   }
 
   // Wrapper around the getSelectionBarColor of the user to pass to correct parameters
@@ -2341,6 +2379,10 @@ export class SliderComponent
 
   private onKeyUp(): void {
     this.firstKeyDown = true;
+    // Re-enable animation after keyboard navigation ends
+    if (this.viewOptions.animate) {
+      this.sliderElementAnimateClass = true;
+    }
     this.userChangeEnd.emit(this.getChangeContext());
   }
 
@@ -2435,7 +2477,13 @@ export class SliderComponent
       this.viewOptions.floor,
       this.viewOptions.ceil
     );
-    const newValue: number = this.roundStep(actionValue);
+    let newValue: number = this.roundStep(actionValue);
+    // Apply skipRestrictedRangesWithArrowKeys if enabled
+    if (this.viewOptions.skipRestrictedRangesWithArrowKeys) {
+      newValue = this.skipRestrictedRanges(keyCode, newValue);
+    }
+    // Disable animation during keyboard navigation
+    this.sliderElementAnimateClass = false;
     if (!this.viewOptions.draggableRangeOnly) {
       this.positionTrackingHandle(newValue);
     } else {
@@ -2632,6 +2680,7 @@ export class SliderComponent
   // Set the new value and position to the current tracking handle
   private positionTrackingHandle(newValue: number): void {
     newValue = this.applyMinMaxLimit(newValue);
+    newValue = this.applyRestrictedRange(newValue);
     if (this.range) {
       if (this.viewOptions.pushRange) {
         newValue = this.applyPushRange(newValue);
@@ -2825,6 +2874,64 @@ export class SliderComponent
       }
       this.updateAriaAttributes();
     }
+    return newValue;
+  }
+
+  // Apply restricted range constraint to the new value
+  private applyRestrictedRange(newValue: number): number {
+    if (ValueHelper.isNullOrUndefined(this.viewOptions.restrictedRange)) {
+      return newValue;
+    }
+
+    // Normalize restrictedRange to always be an array
+    const restrictedRanges: RestrictedRangeDefinition[] = Array.isArray(this.viewOptions.restrictedRange)
+      ? this.viewOptions.restrictedRange
+      : [this.viewOptions.restrictedRange];
+
+    for (const range of restrictedRanges) {
+      if (newValue > range.from && newValue < range.to) {
+        const halfWidth: number = (range.to - range.from) / 2;
+        if (this.currentTrackingPointer === PointerType.Min) {
+          // For min handle, snap to the closer edge
+          return newValue > range.from + halfWidth ? range.to : range.from;
+        }
+        if (this.currentTrackingPointer === PointerType.Max) {
+          // For max handle, snap to the closer edge
+          return newValue < range.to - halfWidth ? range.from : range.to;
+        }
+      }
+    }
+
+    return newValue;
+  }
+
+  // Skip restricted ranges when using arrow keys
+  private skipRestrictedRanges(keyCode: number, newValue: number): number {
+    if (ValueHelper.isNullOrUndefined(this.viewOptions.restrictedRange)) {
+      return newValue;
+    }
+
+    // Normalize restrictedRange to always be an array
+    const restrictedRanges: RestrictedRangeDefinition[] = Array.isArray(this.viewOptions.restrictedRange)
+      ? this.viewOptions.restrictedRange
+      : [this.viewOptions.restrictedRange];
+
+    const isLeftOrDown: boolean = keyCode === 37 || keyCode === 40; // LEFT or DOWN
+    const isRightOrUp: boolean = keyCode === 38 || keyCode === 39; // UP or RIGHT
+
+    for (const range of restrictedRanges) {
+      // If new value falls inside a restricted range, jump to the appropriate edge
+      if (newValue > range.from && newValue < range.to) {
+        if (isRightOrUp) {
+          // Moving right/up: jump to the end of restricted range
+          newValue = range.to;
+        } else if (isLeftOrDown) {
+          // Moving left/down: jump to the start of restricted range
+          newValue = range.from;
+        }
+      }
+    }
+
     return newValue;
   }
 

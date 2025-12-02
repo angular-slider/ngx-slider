@@ -31,6 +31,7 @@ export * from './range-slider/range-slider.component';
 export * from './reactive-form-range-slider/reactive-form-range-slider.component';
 export * from './reactive-form-simple-slider/reactive-form-simple-slider.component';
 export * from './read-only-slider/read-only-slider.component';
+export * from './restricted-range-slider/restricted-range-slider.component';
 export * from './right-to-left-slider/right-to-left-slider.component';
 export * from './selection-bar-at-end-slider/selection-bar-at-end-slider.component';
 export * from './selection-bar-from-value-slider/selection-bar-from-value-slider.component';

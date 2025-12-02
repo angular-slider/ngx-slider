@@ -94,6 +94,12 @@
       @include rounded(math.div($barDimension, 2));
     }
 
+    .ngx-slider-restricted {
+      z-index: 3;
+      background: $restrictedBarColor;
+      @include rounded(math.div($barDimension, 2));
+    }
+
     .ngx-slider-pointer {
       cursor: pointer;
       width: $handleSize;

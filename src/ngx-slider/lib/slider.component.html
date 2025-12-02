@@ -14,7 +14,13 @@
 <span ngxSliderElement #selectionBar [class.ngx-slider-draggable]="selectionBarDraggableClass" class="ngx-slider-span ngx-slider-bar-wrapper ngx-slider-selection-bar">
   <span class="ngx-slider-span ngx-slider-bar ngx-slider-selection" [ngStyle]="barStyle"></span>
 </span>
-<!-- // 4 Low slider handle -->
+<!-- // 4 Restricted range bars -->
+@for (bar of restrictedBars; track bar) {
+  <span class="ngx-slider-span ngx-slider-bar-wrapper ngx-slider-restricted-bar">
+    <span class="ngx-slider-span ngx-slider-bar ngx-slider-restricted" [ngStyle]="bar.style"></span>
+  </span>
+}
+<!-- // 5 Low slider handle -->
 <span ngxSliderHandle #minHandle class="ngx-slider-span ngx-slider-pointer ngx-slider-pointer-min" [ngStyle]=minPointerStyle></span>
 <!-- // 5 High slider handle -->
 <span ngxSliderHandle #maxHandle [style.display]="range ? 'inherit' : 'none'" class="ngx-slider-span ngx-slider-pointer ngx-slider-pointer-max" [ngStyle]=maxPointerStyle></span>
