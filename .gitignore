@@ -2,7 +2,6 @@
 
 # compiled output
 /dist
-!/dist/ngx-slider
 /dist-server
 /docs
 /tmp
