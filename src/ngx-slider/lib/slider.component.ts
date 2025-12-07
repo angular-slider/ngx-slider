@@ -37,6 +37,7 @@ declare class ResizeObserver {
 }
 
 export class Tick {
+  id: number = 0;
   selected: boolean = false;
   style: any = {};
   tooltip: string = null;
@@ -323,7 +324,7 @@ export class SliderComponent
   public ticksUnderValuesClass: boolean = false;
 
   // Restricted range bars styles
-  public restrictedBars: { style: any }[] = [];
+  public restrictedBars: { id: number; style: any }[] = [];
 
   // Whether to show/hide ticks
   public get showTicks(): boolean {
@@ -1293,7 +1294,7 @@ export class SliderComponent
 
     let hasAtLeastOneLegend: boolean = false;
 
-    const newTicks: Tick[] = ticksArray.map((value: number): Tick => {
+    const newTicks: Tick[] = ticksArray.map((value: number, index: number): Tick => {
       let position: number = this.valueToPosition(value);
 
       if (this.viewOptions.vertical) {
@@ -1303,6 +1304,7 @@ export class SliderComponent
       const translation: string =
         translate + '(' + Math.round(position) + 'px)';
       const tick: Tick = new Tick();
+      tick.id = index;
       tick.selected = this.isTickSelected(value);
       tick.style = {
         '-webkit-transform': translation,
@@ -1793,7 +1795,7 @@ export class SliderComponent
       ? this.viewOptions.restrictedRange
       : [this.viewOptions.restrictedRange];
 
-    this.restrictedBars = restrictedRanges.map((range: RestrictedRangeDefinition) => {
+    this.restrictedBars = restrictedRanges.map((range: RestrictedRangeDefinition, index: number) => {
       const from: number = this.valueToPosition(range.from);
       const to: number = this.valueToPosition(range.to);
       const dimension: number = Math.abs(to - from);
@@ -1810,7 +1812,7 @@ export class SliderComponent
         style.width = dimension + 'px';
       }
 
-      return { style };
+      return { id: index, style };
     });
   }
 

@@ -15,7 +15,7 @@
   <span class="ngx-slider-span ngx-slider-bar ngx-slider-selection" [ngStyle]="barStyle"></span>
 </span>
 <!-- // 4 Restricted range bars -->
-@for (bar of restrictedBars; track bar) {
+@for (bar of restrictedBars; track bar.id) {
   <span class="ngx-slider-span ngx-slider-bar-wrapper ngx-slider-restricted-bar">
     <span class="ngx-slider-span ngx-slider-bar ngx-slider-restricted" [ngStyle]="bar.style"></span>
   </span>
@@ -36,7 +36,7 @@
 <span ngxSliderLabel #combinedLabel class="ngx-slider-span ngx-slider-bubble ngx-slider-combined"></span>
 <!-- // 11 The ticks -->
 <span ngxSliderElement #ticksElement [hidden]="!showTicks" [class.ngx-slider-ticks-values-under]="ticksUnderValuesClass" class="ngx-slider-ticks">
-  @for (t of ticks; track t) {
+  @for (t of ticks; track t.id) {
     <span class="ngx-slider-tick" [ngClass]="{'ngx-slider-selected': t.selected}" [ngStyle]="t.style">
       <ngx-slider-tooltip-wrapper [template]="tooltipTemplate" [tooltip]="t.tooltip" [placement]="t.tooltipPlacement"></ngx-slider-tooltip-wrapper>
       @if (t.value !== null && t.value !== undefined) {
