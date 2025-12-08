@@ -8,14 +8,14 @@ import { Component, Input, TemplateRef } from '@angular/core';
 })
 export class TooltipWrapperComponent {
   @Input()
-  template: TemplateRef<any>;
+  template!: TemplateRef<any>;
 
   @Input()
-  tooltip: string;
+  tooltip: string = '';
 
   @Input()
-  placement: string;
+  placement: string = 'top';
 
   @Input()
-  content: string;
+  content: string = '';
 }
