@@ -2,7 +2,11 @@
 
 ## 21.0.0
 
-* add support for Angular 21
+* add support for Angular 21 (issue #417)
+* replace touch mouse event with pointer event (issue #411)
+* replace browser's document reference with Angular's abstraction (issue #412)
+* bump prismjs from 1.29.0 to 1.30.0 (issue #399)
+* bump brace-expansion in /scripts/scss-bundle-workspace (issue #410)
 
 ## 20.0.0
 
