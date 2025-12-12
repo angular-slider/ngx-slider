@@ -18,10 +18,6 @@
     "target": "ES2022",
     "module": "ES2022",
     "useDefineForClassFields": false,
-    "lib": [
-      "ES2022",
-      "dom"
-    ],
     "paths": {
       "@local/ngx-slider": [
         "./src/ngx-slider/lib/public_api.ts"
