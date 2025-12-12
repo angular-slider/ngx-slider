@@ -126,7 +126,7 @@ export class SliderComponent
 
   // Add ngx-slider class to the host element - this is static, should never change
   @HostBinding('class.ngx-slider')
-  private sliderElementNgxSliderClass: boolean = true;
+  protected sliderElementNgxSliderClass: boolean = true;
 
   // Model for low value of slider. For simple slider, this is the only input. For range slider, this is the low value.
   @Input()
