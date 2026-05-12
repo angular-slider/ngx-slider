@@ -5,7 +5,7 @@ import { ValueHelper } from './value-helper';
 
 @Directive({
     selector: '[ngxSliderElement]',
-    standalone: false
+    standalone: true
 })
 export class SliderElementDirective {
   protected elemRef = inject(ElementRef);

@@ -4,7 +4,7 @@ import { DOCUMENT } from '@angular/common';
 
 @Directive({
   selector: '[ngxSliderHandle]',
-  standalone: false,
+  standalone: true,
 })
 export class SliderHandleDirective extends SliderElementDirective {
   @HostBinding('class.ngx-slider-active')

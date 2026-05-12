@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { SliderComponent } from './slider.component';
 import { SliderElementDirective } from './slider-element.directive';
 import { SliderHandleDirective } from './slider-handle.directive';
@@ -13,17 +12,12 @@ import { TooltipWrapperComponent } from './tooltip-wrapper.component';
  */
 @NgModule({
   imports: [
-    CommonModule
-  ],
-  declarations: [
     SliderComponent,
     SliderElementDirective,
     SliderHandleDirective,
     SliderLabelDirective,
-    TooltipWrapperComponent
+    TooltipWrapperComponent,
   ],
-  exports: [
-    SliderComponent
-  ]
+  exports: [SliderComponent],
 })
-export class NgxSliderModule { }
+export class NgxSliderModule {}

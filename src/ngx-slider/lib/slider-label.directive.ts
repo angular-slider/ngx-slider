@@ -5,7 +5,7 @@ import { AllowUnsafeHtmlInSlider } from './options';
 
 @Directive({
   selector: '[ngxSliderLabel]',
-  standalone: false,
+  standalone: true,
 })
 export class SliderLabelDirective extends SliderElementDirective {
   private allowUnsafeHtmlInSlider = inject(AllowUnsafeHtmlInSlider, {

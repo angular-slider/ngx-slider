@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild, AfterViewInit, OnChanges, OnDestroy, HostBinding, HostListener, Input, ElementRef, Renderer2, EventEmitter, Output, ContentChild, TemplateRef, ChangeDetectorRef, SimpleChanges, forwardRef, NgZone, ChangeDetectionStrategy, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
@@ -113,7 +114,8 @@ const NGX_SLIDER_CONTROL_VALUE_ACCESSOR: any = {
     styleUrls: ['./slider.component.scss'],
     providers: [NGX_SLIDER_CONTROL_VALUE_ACCESSOR],
     changeDetection: ChangeDetectionStrategy.Default,
-    standalone: false
+    standalone: true,
+    imports: [CommonModule]
 })
 export class SliderComponent
   implements OnInit, AfterViewInit, OnChanges, OnDestroy, ControlValueAccessor
