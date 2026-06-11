@@ -26,6 +26,7 @@ import { SliderElementDirective } from './slider-element.directive';
 import { SliderHandleDirective } from './slider-handle.directive';
 import { SliderLabelDirective } from './slider-label.directive';
 import { DOCUMENT } from '@angular/common';
+import { TooltipWrapperComponent } from './tooltip-wrapper.component';
 
 // Declaration for ResizeObserver a new API available in some of newest browsers:
 // https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver
@@ -109,13 +110,13 @@ const NGX_SLIDER_CONTROL_VALUE_ACCESSOR: any = {
 };
 
 @Component({
-    selector: 'ngx-slider',
-    templateUrl: './slider.component.html',
-    styleUrls: ['./slider.component.scss'],
-    providers: [NGX_SLIDER_CONTROL_VALUE_ACCESSOR],
-    changeDetection: ChangeDetectionStrategy.Default,
-    standalone: true,
-    imports: [CommonModule]
+  selector: 'ngx-slider',
+  templateUrl: './slider.component.html',
+  styleUrls: ['./slider.component.scss'],
+  providers: [NGX_SLIDER_CONTROL_VALUE_ACCESSOR],
+  changeDetection: ChangeDetectionStrategy.Default,
+  standalone: true,
+  imports: [CommonModule, TooltipWrapperComponent],
 })
 export class SliderComponent
   implements OnInit, AfterViewInit, OnChanges, OnDestroy, ControlValueAccessor
@@ -1940,18 +1941,14 @@ export class SliderComponent
   }
 
   // Get the X-coordinate or Y-coordinate of an event
-  private getEventXY(
-    event: PointerEvent,
-  ): number {
+  private getEventXY(event: PointerEvent): number {
     return this.viewOptions.vertical || this.viewOptions.rotate !== 0
       ? event.clientY
       : event.clientX;
   }
 
   // Compute the event position depending on whether the slider is horizontal or vertical
-  private getEventPosition(
-    event: PointerEvent,
-  ): number {
+  private getEventPosition(event: PointerEvent): number {
     const sliderElementBoundingRect: ClientRect =
       this.elementRef.nativeElement.getBoundingClientRect();
 
@@ -2045,15 +2042,21 @@ export class SliderComponent
       );
     }
     if (this.viewOptions.draggableRangeOnly) {
-      this.minHandleElement.onPassive('pointerdown', (event: PointerEvent): void =>
-        this.onBarStart(PointerType.Min, draggableRange, event, true, true)
+      this.minHandleElement.onPassive(
+        'pointerdown',
+        (event: PointerEvent): void =>
+          this.onBarStart(PointerType.Min, draggableRange, event, true, true)
       );
-      this.maxHandleElement.onPassive('pointerdown', (event: PointerEvent): void =>
-        this.onBarStart(PointerType.Max, draggableRange, event, true, true)
+      this.maxHandleElement.onPassive(
+        'pointerdown',
+        (event: PointerEvent): void =>
+          this.onBarStart(PointerType.Max, draggableRange, event, true, true)
       );
     } else {
-      this.minHandleElement.onPassive('pointerdown', (event: PointerEvent): void =>
-        this.onStart(PointerType.Min, event, true, true)
+      this.minHandleElement.onPassive(
+        'pointerdown',
+        (event: PointerEvent): void =>
+          this.onStart(PointerType.Min, event, true, true)
       );
       if (this.range) {
         this.maxHandleElement.onPassive(
@@ -2063,11 +2066,15 @@ export class SliderComponent
         );
       }
       if (!this.viewOptions.onlyBindHandles) {
-        this.fullBarElement.onPassive('pointerdown', (event: PointerEvent): void =>
-          this.onStart(null, event, true, true, true)
+        this.fullBarElement.onPassive(
+          'pointerdown',
+          (event: PointerEvent): void =>
+            this.onStart(null, event, true, true, true)
         );
-        this.ticksElement.onPassive('pointerdown', (event: PointerEvent): void =>
-          this.onStart(null, event, false, false, true, true)
+        this.ticksElement.onPassive(
+          'pointerdown',
+          (event: PointerEvent): void =>
+            this.onStart(null, event, false, false, true, true)
         );
       }
     }
@@ -2180,9 +2187,9 @@ export class SliderComponent
         this.onMoveEventListener =
           this.eventListenerHelper.attachPassiveEventListener(
             this.document,
-              'pointermove',
-              onMoveCallback
-            );
+            'pointermove',
+            onMoveCallback
+          );
       } else {
         this.onMoveEventListener = this.eventListenerHelper.attachEventListener(
           this.document,
@@ -2203,17 +2210,17 @@ export class SliderComponent
         this.onEndEventListener =
           this.eventListenerHelper.attachPassiveEventListener(
             this.document,
-              'pointerup',
-              onEndCallback
-            );
+            'pointerup',
+            onEndCallback
+          );
         // Touch event that triggers browser scrolling won't call `pointerup` on the original element that initiated it (the slider).
         // But `pointercancel` will be called once all touch events finish.
         this.onCancelEventListener =
           this.eventListenerHelper.attachPassiveEventListener(
             this.document,
-              'pointercancel',
-              onEndCallback
-            );
+            'pointercancel',
+            onEndCallback
+          );
       } else {
         this.onEndEventListener = this.eventListenerHelper.attachEventListener(
           this.document,
@@ -2222,19 +2229,18 @@ export class SliderComponent
         );
         // Opening context-menu in safari - in mouse context - doesn't trigger `pointerup`, so still need to listen for
         // `pointercancel` to clear up any lingering listeners.
-        this.onCancelEventListener = this.eventListenerHelper.attachPassiveEventListener(
-          this.document,
-          'pointercancel',
-          onEndCallback
-        );
+        this.onCancelEventListener =
+          this.eventListenerHelper.attachPassiveEventListener(
+            this.document,
+            'pointercancel',
+            onEndCallback
+          );
       }
     }
 
     this.userChangeStart.emit(this.getChangeContext());
 
-    if (
-      event.pointerType === 'touch' && event.isPrimary
-    ) {
+    if (event.pointerType === 'touch' && event.isPrimary) {
       // Store the touch identifier
       this.touchId = event.pointerId;
     }
@@ -2300,7 +2306,9 @@ export class SliderComponent
     if (disableAnimation) {
       this.sliderElementAnimateClass = false;
       // make sure the slider animate class is set according to the viewOptions after forceEnd() with disabled animations finishes
-      setTimeout(() => {this.sliderElementAnimateClass = this.viewOptions.animate});
+      setTimeout(() => {
+        this.sliderElementAnimateClass = this.viewOptions.animate;
+      });
     }
 
     this.touchId = null;
