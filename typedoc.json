@@ -1,5 +1,6 @@
 {
   "exclude": ["**/e2e/**"],
+  "tsconfig": "tsconfig.typedoc.json",
   "compilerOptions": {
     "paths": {
       "@local/ngx-slider": [
