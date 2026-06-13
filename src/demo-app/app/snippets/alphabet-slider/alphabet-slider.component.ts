@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Options, LabelType, CustomStepDefinition } from '@local/ngx-slider';
 
 @Component({
     selector: 'app-alphabet-slider',
     templateUrl: './alphabet-slider.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class AlphabetSliderComponent {

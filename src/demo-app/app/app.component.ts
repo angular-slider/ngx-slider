@@ -1,10 +1,11 @@
-import { Component, OnInit, OnDestroy, HostBinding, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostBinding, inject, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router, Event, NavigationEnd } from '@angular/router';
 
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class AppComponent implements OnInit, OnDestroy {

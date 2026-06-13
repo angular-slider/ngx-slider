@@ -113,7 +113,7 @@ const NGX_SLIDER_CONTROL_VALUE_ACCESSOR: any = {
     templateUrl: './slider.component.html',
     styleUrls: ['./slider.component.scss'],
     providers: [NGX_SLIDER_CONTROL_VALUE_ACCESSOR],
-    changeDetection: ChangeDetectionStrategy.Default,
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: true,
     imports: [CommonModule]
 })

@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
 import { Options } from '@local/ngx-slider';
 
 @Component({
     selector: 'app-reactive-form-simple-slider',
     templateUrl: './reactive-form-simple-slider.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ReactiveFormSimpleSliderComponent {

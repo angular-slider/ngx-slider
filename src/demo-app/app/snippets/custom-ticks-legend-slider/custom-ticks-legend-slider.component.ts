@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Options } from '@local/ngx-slider';
 
 @Component({
     selector: 'app-custom-ticks-legend-slider',
     templateUrl: './custom-ticks-legend-slider.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class CustomTicksLegendSliderComponent {

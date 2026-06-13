@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Options } from '@local/ngx-slider';
 
 @Component({
     selector: 'app-stepped-slider',
     templateUrl: './stepped-slider.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class SteppedSliderComponent {

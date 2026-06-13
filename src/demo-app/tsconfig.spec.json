@@ -13,5 +13,13 @@
   "include": [
     "../ngx-slider/**/*.spec.ts",
     "../ngx-slider/**/*.d.ts"
-  ]
+  ],
+  "angularCompilerOptions": {
+    "extendedDiagnostics": {
+      "checks": {
+        "nullishCoalescingNotNullable": "suppress",
+        "optionalChainNotNullable": "suppress"
+      }
+    }
+  }
 }

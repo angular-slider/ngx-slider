@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Options, LabelType } from '@local/ngx-slider';
 
 @Component({
     selector: 'app-custom-html-display-function-slider',
     templateUrl: './custom-html-display-function-slider.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class CustomHtmlDisplayFunctionSliderComponent {

@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { UntypedFormGroup, UntypedFormControl } from '@angular/forms';
 import { Options } from '@local/ngx-slider';
 
 @Component({
     selector: 'app-reactive-form-range-slider',
     templateUrl: './reactive-form-range-slider.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ReactiveFormRangeSliderComponent {
