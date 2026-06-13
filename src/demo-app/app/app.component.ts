@@ -40,7 +40,6 @@ export class AppComponent implements OnInit, OnDestroy {
     'custom-ticks-legend-slider',
     'custom-legend-function-slider',
     'ticks-tooltips-slider',
-    'ticks-custom-tooltips-slider',
     'ticks-values-tooltips-slider',
     'ticks-values-range-slider',
     'intermediate-ticks-values-range-slider',

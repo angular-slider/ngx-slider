@@ -17,5 +17,3 @@ The syntax for specifying the custom template is the following:
   </ng-template>
 </ngx-slider>
 ```
-
-For more concrete examples, please refer to tooltip samples on [official site](https://angular-slider.github.io/ngx-slider/demos#ticks-custom-tooltips-slider).

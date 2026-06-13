@@ -39,7 +39,6 @@ export * from './selection-bar-slider/selection-bar-slider.component';
 export * from './simple-slider/simple-slider.component';
 export * from './stepped-slider/stepped-slider.component';
 export * from './styled-slider/styled-slider.component';
-export * from './ticks-custom-tooltips-slider/ticks-custom-tooltips-slider.component';
 export * from './ticks-slider/ticks-slider.component';
 export * from './ticks-tooltips-slider/ticks-tooltips-slider.component';
 export * from './ticks-values-range-slider/ticks-values-range-slider.component';

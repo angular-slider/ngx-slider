@@ -2,7 +2,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { NgxSliderModule } from '@local/ngx-slider';
 
@@ -52,7 +51,6 @@ import {
   SimpleSliderComponent,
   SteppedSliderComponent,
   StyledSliderComponent,
-  TicksCustomTooltipsSliderComponent,
   TicksSliderComponent,
   TicksTooltipsSliderComponent,
   TicksValuesRangeSliderComponent,
@@ -111,7 +109,6 @@ import { routerConfig, routerOptions } from './app-router.config';
     SimpleSliderComponent,
     SteppedSliderComponent,
     StyledSliderComponent,
-    TicksCustomTooltipsSliderComponent,
     TicksSliderComponent,
     TicksTooltipsSliderComponent,
     TicksValuesRangeSliderComponent,
@@ -126,7 +123,6 @@ import { routerConfig, routerOptions } from './app-router.config';
     FormsModule,
     ReactiveFormsModule,
     RouterModule.forRoot(routerConfig, routerOptions),
-    NgbModule,
     NgxSliderModule,
   ],
   providers: [],
