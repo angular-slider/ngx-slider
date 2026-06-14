@@ -1,9 +1,10 @@
-import { Component, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { Options, PointerType } from '@local/ngx-slider';
 
 @Component({
     selector: 'app-trigger-focus-slider',
     templateUrl: './trigger-focus-slider.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class TriggerFocusSliderComponent {
