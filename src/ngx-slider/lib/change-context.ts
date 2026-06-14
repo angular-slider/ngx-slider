@@ -1,7 +1,7 @@
 import { PointerType } from './pointer-type';
 
 export class ChangeContext {
-  value: number;
+  value!: number;
   highValue?: number;
-  pointerType: PointerType;
+  pointerType!: PointerType;
 }

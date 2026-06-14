@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterViewInit, OnChanges, OnDestroy, HostBinding, HostListener, Input, ElementRef, Renderer2, EventEmitter, Output, ContentChild, TemplateRef, ChangeDetectorRef, SimpleChanges, forwardRef, NgZone, ChangeDetectionStrategy, inject } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, OnChanges, OnDestroy, HostBinding, HostListener, Input, ElementRef, Renderer2, EventEmitter, Output, ContentChild, TemplateRef, ChangeDetectorRef, SimpleChanges, forwardRef, NgZone, ChangeDetectionStrategy, inject, ViewRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -40,12 +40,12 @@ declare class ResizeObserver {
 export class Tick {
   selected: boolean = false;
   style: any = {};
-  tooltip: string = null;
-  tooltipPlacement: string = null;
-  value: string = null;
-  valueTooltip: string = null;
-  valueTooltipPlacement: string = null;
-  legend: string = null;
+  tooltip: string = '';
+  tooltipPlacement: string = '';
+  value: string = '';
+  valueTooltip: string = '';
+  valueTooltipPlacement: string = '';
+  legend: string = '';
 }
 
 class Dragging {
@@ -58,8 +58,8 @@ class Dragging {
 }
 
 class ModelValues {
-  value: number;
-  highValue: number;
+  value!: number;
+  highValue!: number;
 
   public static compare(x?: ModelValues, y?: ModelValues): boolean {
     if (ValueHelper.isNullOrUndefined(x) && ValueHelper.isNullOrUndefined(y)) {
@@ -68,14 +68,14 @@ class ModelValues {
     if (ValueHelper.isNullOrUndefined(x) !== ValueHelper.isNullOrUndefined(y)) {
       return false;
     }
-    return x.value === y.value && x.highValue === y.highValue;
+    return x!.value === y!.value && x!.highValue === y!.highValue;
   }
 }
 
 class ModelChange extends ModelValues {
   // Flag used to by-pass distinctUntilChanged() filter on input values
   // (sometimes there is a need to pass values through even though the model values have not changed)
-  forceChange: boolean;
+  forceChange!: boolean;
 
   public static override compare(x?: ModelChange, y?: ModelChange): boolean {
     if (ValueHelper.isNullOrUndefined(x) && ValueHelper.isNullOrUndefined(y)) {
@@ -85,21 +85,21 @@ class ModelChange extends ModelValues {
       return false;
     }
     return (
-      x.value === y.value &&
-      x.highValue === y.highValue &&
-      x.forceChange === y.forceChange
+      x!.value === y!.value &&
+      x!.highValue === y!.highValue &&
+      x!.forceChange === y!.forceChange
     );
   }
 }
 
 class InputModelChange extends ModelChange {
-  controlAccessorChange: boolean;
-  internalChange: boolean;
+  controlAccessorChange!: boolean;
+  internalChange!: boolean;
 }
 
 class OutputModelChange extends ModelChange {
-  controlAccessorChange: boolean;
-  userEventInitiated: boolean;
+  controlAccessorChange!: boolean;
+  userEventInitiated!: boolean;
 }
 
 const NGX_SLIDER_CONTROL_VALUE_ACCESSOR: any = {
@@ -133,14 +133,14 @@ export class SliderComponent
 
   // Model for low value of slider. For simple slider, this is the only input. For range slider, this is the low value.
   @Input()
-  public value: number = null;
+  public value: number | null = null;
   // Output for low value slider to support two-way bindings
   @Output()
   public valueChange: EventEmitter<number> = new EventEmitter();
 
   // Model for high value of slider. Not used in simple slider. For range slider, this is the high value.
   @Input()
-  public highValue: number = null;
+  public highValue: number | null = null;
   // Output for high value slider to support two-way bindings
   @Output()
   public highValueChange: EventEmitter<number> = new EventEmitter();
@@ -190,7 +190,7 @@ export class SliderComponent
 
     this.cancelUserChangeSubscription = cancelUserChange.subscribe(() => {
       if (this.moving) {
-        this.positionTrackingHandle(this.preStartHandleValue);
+        this.positionTrackingHandle(this.preStartHandleValue!);
         this.forceEnd(true);
       }
     });
@@ -211,18 +211,18 @@ export class SliderComponent
   // These are all changes coming in from outside the component through input bindings or reactive form inputs
   private inputModelChangeSubject: Subject<InputModelChange> =
     new Subject<InputModelChange>();
-  private inputModelChangeSubscription: Subscription = null;
+  private inputModelChangeSubscription: Subscription | null = null;
 
   // Changes to model outputs are passed through this subject
   // These are all changes that need to be communicated to output emitters and registered callbacks
   private outputModelChangeSubject: Subject<OutputModelChange> =
     new Subject<OutputModelChange>();
-  private outputModelChangeSubscription: Subscription = null;
+  private outputModelChangeSubscription: Subscription | null = null;
 
   // Low value synced to model low value
-  private viewLowValue: number = null;
+  private viewLowValue: number | null = null;
   // High value synced to model high value
-  private viewHighValue: number = null;
+  private viewHighValue: number | null = null;
   // Options synced to model options, based on defaults
   private viewOptions: Options = new Options();
 
@@ -232,17 +232,17 @@ export class SliderComponent
   private maxHandlePosition: number = 0;
 
   // Which handle is currently tracked for move events
-  private currentTrackingPointer: PointerType = null;
+  private currentTrackingPointer: PointerType | null = null;
   // Internal variable to keep track of the focus element
-  private currentFocusPointer: PointerType = null;
+  private currentFocusPointer: PointerType | null = null;
   // Used to call onStart on the first keydown event
   private firstKeyDown: boolean = false;
   // Current touch id of touch event being handled
-  private touchId: number = null;
+  private touchId: number | null = null;
   // Values recorded when first dragging the bar
   private dragging: Dragging = new Dragging();
   // Value of hanlde at the beginning of onStart()
-  private preStartHandleValue: number = null;
+  private preStartHandleValue: number | null = null;
 
   /* Slider DOM elements */
 
@@ -251,58 +251,58 @@ export class SliderComponent
     read: SliderElementDirective,
     static: false,
   })
-  private leftOuterSelectionBarElement: SliderElementDirective;
+  private leftOuterSelectionBarElement!: SliderElementDirective;
 
   // Right selection bar outside two handles
   @ViewChild('rightOuterSelectionBar', {
     read: SliderElementDirective,
     static: false,
   })
-  private rightOuterSelectionBarElement: SliderElementDirective;
+  private rightOuterSelectionBarElement!: SliderElementDirective;
 
   // The whole slider bar
   @ViewChild('fullBar', { read: SliderElementDirective, static: false })
-  private fullBarElement: SliderElementDirective;
+  private fullBarElement!: SliderElementDirective;
 
   // Highlight between two handles
   @ViewChild('selectionBar', { read: SliderElementDirective, static: false })
-  private selectionBarElement: SliderElementDirective;
+  private selectionBarElement!: SliderElementDirective;
 
   // Left slider handle
   @ViewChild('minHandle', { read: SliderHandleDirective, static: false })
-  private minHandleElement: SliderHandleDirective;
+  private minHandleElement!: SliderHandleDirective;
 
   // Right slider handle
   @ViewChild('maxHandle', { read: SliderHandleDirective, static: false })
-  private maxHandleElement: SliderHandleDirective;
+  private maxHandleElement!: SliderHandleDirective;
 
   // Floor label
   @ViewChild('floorLabel', { read: SliderLabelDirective, static: false })
-  private floorLabelElement: SliderLabelDirective;
+  private floorLabelElement!: SliderLabelDirective;
 
   // Ceiling label
   @ViewChild('ceilLabel', { read: SliderLabelDirective, static: false })
-  private ceilLabelElement: SliderLabelDirective;
+  private ceilLabelElement!: SliderLabelDirective;
 
   // Label above the low value
   @ViewChild('minHandleLabel', { read: SliderLabelDirective, static: false })
-  private minHandleLabelElement: SliderLabelDirective;
+  private minHandleLabelElement!: SliderLabelDirective;
 
   // Label above the high value
   @ViewChild('maxHandleLabel', { read: SliderLabelDirective, static: false })
-  private maxHandleLabelElement: SliderLabelDirective;
+  private maxHandleLabelElement!: SliderLabelDirective;
 
   // Combined label
   @ViewChild('combinedLabel', { read: SliderLabelDirective, static: false })
-  private combinedLabelElement: SliderLabelDirective;
+  private combinedLabelElement!: SliderLabelDirective;
 
   // The ticks
   @ViewChild('ticksElement', { read: SliderElementDirective, static: false })
-  private ticksElement: SliderElementDirective;
+  private ticksElement!: SliderElementDirective;
 
   // Optional custom template for displaying tooltips
   @ContentChild('tooltipTemplate', { static: false })
-  public tooltipTemplate: TemplateRef<any>;
+  public tooltipTemplate!: TemplateRef<any>;
 
   // Host element class bindings
   @HostBinding('class.vertical')
@@ -312,7 +312,7 @@ export class SliderComponent
   @HostBinding('class.with-legend')
   public sliderElementWithLegendClass: boolean = false;
   @HostBinding('attr.disabled')
-  public sliderElementDisabledAttr: string = null;
+  public sliderElementDisabledAttr: string | null = null;
   @HostBinding('attr.aria-label')
   public sliderElementAriaLabel: string = 'ngx-slider';
 
@@ -326,7 +326,7 @@ export class SliderComponent
 
   // Whether to show/hide ticks
   public get showTicks(): boolean {
-    return this.viewOptions.showTicks;
+    return this.viewOptions.showTicks ?? false;
   }
 
   /* If tickStep is set or ticksArray is specified.
@@ -336,19 +336,19 @@ export class SliderComponent
   public ticks: Tick[] = [];
 
   // Event listeners
-  private eventListenerHelper: EventListenerHelper = null;
-  private onMoveEventListener: EventListener = null;
-  private onEndEventListener: EventListener = null;
-  private onCancelEventListener: EventListener = null;
+  private eventListenerHelper: EventListenerHelper | null = null;
+  private onMoveEventListener: EventListener | null = null;
+  private onEndEventListener: EventListener | null = null;
+  private onCancelEventListener: EventListener | null = null;
   // Whether currently moving the slider (between onStart() and onEnd())
   private moving: boolean = false;
 
   // Observer for slider element resize events
-  private resizeObserver: ResizeObserver = null;
+  private resizeObserver: ResizeObserver | null = null;
 
   // Callbacks for reactive forms support
-  private onTouchedCallback: (value: any) => void = null;
-  private onChangeCallback: (value: any) => void = null;
+  private onTouchedCallback: ((value: any) => void) | null = null;
+  private onChangeCallback: ((value: any) => void) | null = null;
 
   private document: Document = inject(DOCUMENT);
 
@@ -359,7 +359,19 @@ export class SliderComponent
   // OnInit interface
   public ngOnInit(): void {
     this.viewOptions = new Options();
+    // Ensure all options are properly initialized with defaults before merging user options
     Object.assign(this.viewOptions, this.options);
+    
+    // Ensure critical properties have values
+    if (this.viewOptions.floor === undefined || this.viewOptions.floor === null) {
+      this.viewOptions.floor = 0;
+    }
+    if (this.viewOptions.ceil === undefined || this.viewOptions.ceil === null) {
+      this.viewOptions.ceil = 100;
+    }
+    if (this.viewOptions.step === undefined || this.viewOptions.step === null) {
+      this.viewOptions.step = 1;
+    }
 
     // We need to run these two things first, before the rest of the init in ngAfterViewInit(),
     // because these two settings are set through @HostBinding and Angular change detection
@@ -380,9 +392,9 @@ export class SliderComponent
     // Once we apply options, we need to normalise model values for the first time
     this.renormaliseModelValues();
 
-    this.viewLowValue = this.modelValueToViewValue(this.value);
+    this.viewLowValue = this.modelValueToViewValue(this.value!);
     if (this.range) {
-      this.viewHighValue = this.modelValueToViewValue(this.highValue);
+      this.viewHighValue = this.modelValueToViewValue(this.highValue!);
     } else {
       this.viewHighValue = null;
     }
@@ -425,8 +437,8 @@ export class SliderComponent
       !ValueHelper.isNullOrUndefined(changes.highValue)
     ) {
       this.inputModelChangeSubject.next({
-        value: this.value,
-        highValue: this.highValue,
+        value: this.value!,
+        highValue: this.highValue!,
         controlAccessorChange: false,
         forceChange: false,
         internalChange: false,
@@ -456,8 +468,8 @@ export class SliderComponent
 
     // ngOnChanges() is not called in this instance, so we need to communicate the change manually
     this.inputModelChangeSubject.next({
-      value: this.value,
-      highValue: this.highValue,
+      value: this.value!,
+      highValue: this.highValue!,
       forceChange: false,
       internalChange: false,
       controlAccessorChange: true,
@@ -497,7 +509,7 @@ export class SliderComponent
   private subscribeInputModelChangeSubject(): void {
     this.inputModelChangeSubscription = this.inputModelChangeSubject
       .pipe(
-        distinctUntilChanged(ModelChange.compare),
+        distinctUntilChanged((a, b) => ModelChange.compare(a, b)),
         // Hack to reset the status of the distinctUntilChanged() - if a "fake" event comes through with forceChange=true,
         // we forcefully by-pass distinctUntilChanged(), but otherwise drop the event
         filter(
@@ -512,7 +524,7 @@ export class SliderComponent
 
   private subscribeOutputModelChangeSubject(): void {
     this.outputModelChangeSubscription = this.outputModelChangeSubject
-      .pipe(distinctUntilChanged(ModelChange.compare))
+      .pipe(distinctUntilChanged((a, b) => ModelChange.compare(a, b)))
       .subscribe((modelChange: OutputModelChange) =>
         this.publishOutputModelChange(modelChange)
       );
@@ -526,38 +538,40 @@ export class SliderComponent
   }
 
   private unsubscribeResizeObserver(): void {
-    this.resizeObserver.disconnect();
-    this.resizeObserver = null;
+    if (this.resizeObserver) {
+      this.resizeObserver.disconnect();
+      this.resizeObserver = null;
+    }
   }
 
   private unsubscribeOnMove(): void {
     if (!ValueHelper.isNullOrUndefined(this.onMoveEventListener)) {
-      this.eventListenerHelper.detachEventListener(this.onMoveEventListener);
+      this.eventListenerHelper!.detachEventListener(this.onMoveEventListener!);
       this.onMoveEventListener = null;
     }
   }
 
   private unsubscribeOnEnd(): void {
     if (!ValueHelper.isNullOrUndefined(this.onEndEventListener)) {
-      this.eventListenerHelper.detachEventListener(this.onEndEventListener);
+      this.eventListenerHelper!.detachEventListener(this.onEndEventListener!);
       this.onEndEventListener = null;
     }
     if (!ValueHelper.isNullOrUndefined(this.onCancelEventListener)) {
-      this.eventListenerHelper.detachEventListener(this.onCancelEventListener);
+      this.eventListenerHelper!.detachEventListener(this.onCancelEventListener!);
       this.onCancelEventListener = null;
     }
   }
 
   private unsubscribeInputModelChangeSubject(): void {
     if (!ValueHelper.isNullOrUndefined(this.inputModelChangeSubscription)) {
-      this.inputModelChangeSubscription.unsubscribe();
+      this.inputModelChangeSubscription!.unsubscribe();
       this.inputModelChangeSubscription = null;
     }
   }
 
   private unsubscribeOutputModelChangeSubject(): void {
     if (!ValueHelper.isNullOrUndefined(this.outputModelChangeSubscription)) {
-      this.outputModelChangeSubscription.unsubscribe();
+      this.outputModelChangeSubscription!.unsubscribe();
       this.outputModelChangeSubscription = null;
     }
   }
@@ -583,7 +597,7 @@ export class SliderComponent
     }
   }
 
-  private getPointerElement(pointerType: PointerType): SliderHandleDirective {
+  private getPointerElement(pointerType: PointerType | null): SliderHandleDirective | null {
     if (pointerType === PointerType.Min) {
       return this.minHandleElement;
     } else if (pointerType === PointerType.Max) {
@@ -592,7 +606,7 @@ export class SliderComponent
     return null;
   }
 
-  private getCurrentTrackingValue(): number {
+  private getCurrentTrackingValue(): number | null {
     if (this.currentTrackingPointer === PointerType.Min) {
       return this.viewLowValue;
     } else if (this.currentTrackingPointer === PointerType.Max) {
@@ -608,11 +622,11 @@ export class SliderComponent
 
     if (
       !ValueHelper.isNullOrUndefined(this.viewOptions.stepsArray) &&
-      !this.viewOptions.bindIndexForStepsArray
+      !(this.viewOptions.bindIndexForStepsArray ?? false)
     ) {
       return ValueHelper.findStepIndex(
         +modelValue,
-        this.viewOptions.stepsArray
+        this.viewOptions.stepsArray!
       );
     }
     return +modelValue;
@@ -629,19 +643,19 @@ export class SliderComponent
   }
 
   private getStepValue(sliderValue: number): number {
-    const step: CustomStepDefinition = this.viewOptions.stepsArray[sliderValue];
+    const step: CustomStepDefinition = this.viewOptions.stepsArray![sliderValue];
     return !ValueHelper.isNullOrUndefined(step) ? step.value : NaN;
   }
 
   private applyViewChange(): void {
-    this.value = this.viewValueToModelValue(this.viewLowValue);
+    this.value = this.viewValueToModelValue(this.viewLowValue!);
     if (this.range) {
-      this.highValue = this.viewValueToModelValue(this.viewHighValue);
+      this.highValue = this.viewValueToModelValue(this.viewHighValue!);
     }
 
     this.outputModelChangeSubject.next({
-      value: this.value,
-      highValue: this.highValue,
+      value: this.value!,
+      highValue: this.highValue!,
       controlAccessorChange: false,
       userEventInitiated: true,
       forceChange: false,
@@ -652,8 +666,8 @@ export class SliderComponent
     // act on the next input change even if it is exactly the same as last input change.
     // Therefore, we send a special event to reset the stream.
     this.inputModelChangeSubject.next({
-      value: this.value,
-      highValue: this.highValue,
+      value: this.value!,
+      highValue: this.highValue!,
       controlAccessorChange: false,
       forceChange: false,
       internalChange: true,
@@ -684,9 +698,9 @@ export class SliderComponent
       this.viewHighValue = null;
     }
 
-    this.updateLowHandle(this.valueToPosition(this.viewLowValue));
+    this.updateLowHandle(this.valueToPosition(this.viewLowValue!));
     if (this.range) {
-      this.updateHighHandle(this.valueToPosition(this.viewHighValue));
+      this.updateHighHandle(this.valueToPosition(this.viewHighValue!));
     }
     this.updateSelectionBar();
     this.updateTicksScale();
@@ -722,16 +736,16 @@ export class SliderComponent
 
       if (!ValueHelper.isNullOrUndefined(this.onChangeCallback)) {
         if (this.range) {
-          this.onChangeCallback([modelChange.value, modelChange.highValue]);
+          this.onChangeCallback!([modelChange.value, modelChange.highValue]);
         } else {
-          this.onChangeCallback(modelChange.value);
+          this.onChangeCallback!(modelChange.value);
         }
       }
       if (!ValueHelper.isNullOrUndefined(this.onTouchedCallback)) {
         if (this.range) {
-          this.onTouchedCallback([modelChange.value, modelChange.highValue]);
+          this.onTouchedCallback!([modelChange.value, modelChange.highValue]);
         } else {
-          this.onTouchedCallback(modelChange.value);
+          this.onTouchedCallback!(modelChange.value);
         }
       }
     };
@@ -757,27 +771,27 @@ export class SliderComponent
     if (!ValueHelper.isNullOrUndefined(this.viewOptions.stepsArray)) {
       // When using steps array, only round to nearest step in the array
       // No other enforcement can be done, as the step array may be out of order, and that is perfectly fine
-      if (this.viewOptions.enforceStepsArray) {
+      if (this.viewOptions.enforceStepsArray ?? false) {
         const valueIndex: number = ValueHelper.findStepIndex(
           normalisedInput.value,
-          this.viewOptions.stepsArray
+          this.viewOptions.stepsArray!
         );
-        normalisedInput.value = this.viewOptions.stepsArray[valueIndex].value;
+        normalisedInput.value = this.viewOptions.stepsArray![valueIndex].value;
 
         if (this.range) {
           const highValueIndex: number = ValueHelper.findStepIndex(
             normalisedInput.highValue,
-            this.viewOptions.stepsArray
+            this.viewOptions.stepsArray!
           );
           normalisedInput.highValue =
-            this.viewOptions.stepsArray[highValueIndex].value;
+            this.viewOptions.stepsArray![highValueIndex].value;
         }
       }
 
       return normalisedInput;
     }
 
-    if (this.viewOptions.enforceStep) {
+    if (this.viewOptions.enforceStep ?? false) {
       normalisedInput.value = this.roundStep(normalisedInput.value);
       if (this.range) {
         normalisedInput.highValue = this.roundStep(normalisedInput.highValue);
@@ -786,16 +800,16 @@ export class SliderComponent
 
     if (this.viewOptions.enforceRange) {
       normalisedInput.value = MathHelper.clampToRange(
-        normalisedInput.value,
-        this.viewOptions.floor,
-        this.viewOptions.ceil
+        normalisedInput.value!,
+        this.viewOptions.floor!,
+        this.viewOptions.ceil!
       );
 
       if (this.range) {
         normalisedInput.highValue = MathHelper.clampToRange(
-          normalisedInput.highValue,
-          this.viewOptions.floor,
-          this.viewOptions.ceil
+          normalisedInput.highValue!,
+          this.viewOptions.floor!,
+          this.viewOptions.ceil!
         );
       }
 
@@ -818,8 +832,8 @@ export class SliderComponent
 
   private renormaliseModelValues(): void {
     const previousModelValues: ModelValues = {
-      value: this.value,
-      highValue: this.highValue,
+      value: this.value!,
+      highValue: this.highValue!,
     };
     const normalisedModelValues: ModelValues =
       this.normaliseModelValues(previousModelValues);
@@ -828,8 +842,8 @@ export class SliderComponent
       this.highValue = normalisedModelValues.highValue;
 
       this.outputModelChangeSubject.next({
-        value: this.value,
-        highValue: this.highValue,
+        value: this.value!,
+        highValue: this.highValue!,
         controlAccessorChange: false,
         forceChange: true,
         userEventInitiated: false,
@@ -859,9 +873,9 @@ export class SliderComponent
     // With new options, we need to re-normalise model values if necessary
     this.renormaliseModelValues();
 
-    this.viewLowValue = this.modelValueToViewValue(this.value);
+    this.viewLowValue = this.modelValueToViewValue(this.value!);
     if (this.range) {
-      this.viewHighValue = this.modelValueToViewValue(this.highValue);
+      this.viewHighValue = this.modelValueToViewValue(this.highValue!);
     } else {
       this.viewHighValue = null;
     }
@@ -923,7 +937,7 @@ export class SliderComponent
 
   private applyStepsArrayOptions(): void {
     this.viewOptions.floor = 0;
-    this.viewOptions.ceil = this.viewOptions.stepsArray.length - 1;
+    this.viewOptions.ceil = this.viewOptions!.stepsArray!.length - 1;
     this.viewOptions.step = 1;
 
     if (ValueHelper.isNullOrUndefined(this.viewOptions.translate)) {
@@ -937,23 +951,23 @@ export class SliderComponent
   }
 
   private applyFloorCeilOptions(): void {
-    if (ValueHelper.isNullOrUndefined(this.viewOptions.step)) {
+    if (ValueHelper.isNullOrUndefined(this.viewOptions!.step!)) {
       this.viewOptions.step = 1;
     } else {
-      this.viewOptions.step = +this.viewOptions.step;
+      this.viewOptions.step = +this.viewOptions!.step!;
       if (this.viewOptions.step <= 0) {
         this.viewOptions.step = 1;
       }
     }
 
     if (
-      ValueHelper.isNullOrUndefined(this.viewOptions.ceil) ||
-      ValueHelper.isNullOrUndefined(this.viewOptions.floor)
+      ValueHelper.isNullOrUndefined(this.viewOptions.ceil!) ||
+      ValueHelper.isNullOrUndefined(this.viewOptions.floor!)
     ) {
       throw Error('floor and ceil options must be supplied');
     }
-    this.viewOptions.ceil = +this.viewOptions.ceil;
-    this.viewOptions.floor = +this.viewOptions.floor;
+    this.viewOptions.ceil = +this.viewOptions.ceil!;
+    this.viewOptions.floor = +this.viewOptions.floor!;
 
     if (ValueHelper.isNullOrUndefined(this.viewOptions.translate)) {
       this.viewOptions.translate = (value: number): string => String(value);
@@ -992,10 +1006,10 @@ export class SliderComponent
 
   private refocusPointerIfNeeded(): void {
     if (!ValueHelper.isNullOrUndefined(this.currentFocusPointer)) {
-      const element: SliderHandleDirective = this.getPointerElement(
-        this.currentFocusPointer
+      const element: SliderHandleDirective | null = this.getPointerElement(
+        this.currentFocusPointer!
       );
-      element.focusIfNeeded();
+      element?.focusIfNeeded();
     }
   }
 
@@ -1003,41 +1017,41 @@ export class SliderComponent
   private manageElementsStyle(): void {
     this.updateScale();
     this.floorLabelElement.setAlwaysHide(
-      this.viewOptions.showTicksValues || this.viewOptions.hideLimitLabels
+      (this.viewOptions.showTicksValues ?? false) || (this.viewOptions.hideLimitLabels ?? false)
     );
     this.ceilLabelElement.setAlwaysHide(
-      this.viewOptions.showTicksValues || this.viewOptions.hideLimitLabels
+      (this.viewOptions.showTicksValues ?? false) || (this.viewOptions.hideLimitLabels ?? false)
     );
 
     const hideLabelsForTicks: boolean =
-      this.viewOptions.showTicksValues && !this.intermediateTicks;
+      (this.viewOptions.showTicksValues ?? false) && !this.intermediateTicks;
     this.minHandleLabelElement.setAlwaysHide(
-      hideLabelsForTicks || this.viewOptions.hidePointerLabels
+      hideLabelsForTicks || (this.viewOptions.hidePointerLabels ?? false)
     );
     this.maxHandleLabelElement.setAlwaysHide(
-      hideLabelsForTicks || !this.range || this.viewOptions.hidePointerLabels
+      hideLabelsForTicks || !this.range || (this.viewOptions.hidePointerLabels ?? false)
     );
     this.combinedLabelElement.setAlwaysHide(
-      hideLabelsForTicks || !this.range || this.viewOptions.hidePointerLabels
+      hideLabelsForTicks || !this.range || (this.viewOptions.hidePointerLabels ?? false)
     );
     this.selectionBarElement.setAlwaysHide(
-      !this.range && !this.viewOptions.showSelectionBar
+      !this.range && !(this.viewOptions.showSelectionBar ?? false)
     );
     this.leftOuterSelectionBarElement.setAlwaysHide(
-      !this.range || !this.viewOptions.showOuterSelectionBars
+      !this.range || !(this.viewOptions.showOuterSelectionBars ?? false)
     );
     this.rightOuterSelectionBarElement.setAlwaysHide(
-      !this.range || !this.viewOptions.showOuterSelectionBars
+      !this.range || !(this.viewOptions.showOuterSelectionBars ?? false)
     );
 
     this.fullBarTransparentClass =
-      this.range && this.viewOptions.showOuterSelectionBars;
+      this.range && (this.viewOptions.showOuterSelectionBars ?? false);
     this.selectionBarDraggableClass =
-      this.viewOptions.draggableRange && !this.viewOptions.onlyBindHandles;
+      (this.viewOptions.draggableRange ?? false) && !(this.viewOptions.onlyBindHandles ?? false);
     this.ticksUnderValuesClass =
-      this.intermediateTicks && this.options.showTicksValues;
+      this.intermediateTicks && (this.options.showTicksValues ?? false);
 
-    if (this.sliderElementVerticalClass !== this.viewOptions.vertical) {
+    if (this.sliderElementVerticalClass !== (this.viewOptions.vertical ?? false)) {
       this.updateVerticalState();
       // The above change in host component class will not be applied until the end of this cycle
       // However, functions calculating the slider position expect the slider to be already styled as vertical
@@ -1049,9 +1063,9 @@ export class SliderComponent
 
     // Changing animate class may interfere with slider reset/initialisation, so we should set it separately,
     // after all is properly set up
-    if (this.sliderElementAnimateClass !== this.viewOptions.animate) {
+    if (this.sliderElementAnimateClass !== this.viewOptions.animate!) {
       setTimeout((): void => {
-        this.sliderElementAnimateClass = this.viewOptions.animate;
+        this.sliderElementAnimateClass = this.viewOptions.animate!;
       });
     }
     this.updateRotate();
@@ -1080,24 +1094,24 @@ export class SliderComponent
 
   // Set vertical state based on vertical option
   private updateVerticalState(): void {
-    this.sliderElementVerticalClass = this.viewOptions.vertical;
+    this.sliderElementVerticalClass = this.viewOptions.vertical!;
     for (const element of this.getAllSliderElements()) {
       // This is also called before ngAfterInit, so need to check that view child bindings work
       if (!ValueHelper.isNullOrUndefined(element)) {
-        element.setVertical(this.viewOptions.vertical);
+        element.setVertical(this.viewOptions.vertical!);
       }
     }
   }
 
   private updateScale(): void {
     for (const element of this.getAllSliderElements()) {
-      element.setScale(this.viewOptions.scale);
+      element.setScale(this.viewOptions.scale!);
     }
   }
 
   private updateRotate(): void {
     for (const element of this.getAllSliderElements()) {
-      element.setRotate(this.viewOptions.rotate);
+      element.setRotate(this.viewOptions.rotate!);
     }
   }
 
@@ -1121,14 +1135,14 @@ export class SliderComponent
   // Initialize slider handles positions and labels
   // Run only once during initialization and every time view port changes size
   private initHandles(): void {
-    this.updateLowHandle(this.valueToPosition(this.viewLowValue));
+    this.updateLowHandle(this.valueToPosition(this.viewLowValue!));
 
     /*
    the order here is important since the selection bar should be
    updated after the high handle but before the combined label
    */
     if (this.range) {
-      this.updateHighHandle(this.valueToPosition(this.viewHighValue));
+      this.updateHighHandle(this.valueToPosition(this.viewHighValue!));
     }
 
     this.updateSelectionBar();
@@ -1148,7 +1162,7 @@ export class SliderComponent
 
     if (
       this.viewOptions.keyboardSupport &&
-      !(this.viewOptions.readOnly || this.viewOptions.disabled)
+      !(this.viewOptions.readOnly! || this.viewOptions.disabled!)
     ) {
       this.minHandleElement.tabindex = '0';
     } else {
@@ -1160,12 +1174,12 @@ export class SliderComponent
         ? 'vertical'
         : 'horizontal';
 
-    if (!ValueHelper.isNullOrUndefined(this.viewOptions.ariaLabel)) {
-      this.minHandleElement.ariaLabel = this.viewOptions.ariaLabel;
+    if (!ValueHelper.isNullOrUndefined(this.viewOptions.ariaLabel!)) {
+      this.minHandleElement.ariaLabel = this.viewOptions.ariaLabel!;
     } else if (
-      !ValueHelper.isNullOrUndefined(this.viewOptions.ariaLabelledBy)
+      !ValueHelper.isNullOrUndefined(this.viewOptions.ariaLabelledBy!)
     ) {
-      this.minHandleElement.ariaLabelledBy = this.viewOptions.ariaLabelledBy;
+      this.minHandleElement.ariaLabelledBy = this.viewOptions.ariaLabelledBy!;
     }
 
     if (this.range) {
@@ -1173,7 +1187,7 @@ export class SliderComponent
 
       if (
         this.viewOptions.keyboardSupport &&
-        !(this.viewOptions.readOnly || this.viewOptions.disabled)
+        !(this.viewOptions.readOnly! || this.viewOptions.disabled!)
       ) {
         this.maxHandleElement.tabindex = '0';
       } else {
@@ -1186,34 +1200,34 @@ export class SliderComponent
           : 'horizontal';
 
       if (!ValueHelper.isNullOrUndefined(this.viewOptions.ariaLabelHigh)) {
-        this.maxHandleElement.ariaLabel = this.viewOptions.ariaLabelHigh;
+        this.maxHandleElement.ariaLabel = this.viewOptions.ariaLabelHigh!;
       } else if (
         !ValueHelper.isNullOrUndefined(this.viewOptions.ariaLabelledByHigh)
       ) {
         this.maxHandleElement.ariaLabelledBy =
-          this.viewOptions.ariaLabelledByHigh;
+          this.viewOptions.ariaLabelledByHigh!;
       }
     }
   }
 
   // Updates aria attributes according to current values
   private updateAriaAttributes(): void {
-    this.minHandleElement.ariaValueNow = (+this.value).toString();
-    this.minHandleElement.ariaValueText = this.viewOptions.translate(
-      +this.value,
+    this.minHandleElement.ariaValueNow = (+this.value!).toString();
+    this.minHandleElement.ariaValueText = this.viewOptions.translate!(
+      +this.value!,
       LabelType.Low
     );
-    this.minHandleElement.ariaValueMin = this.viewOptions.floor.toString();
-    this.minHandleElement.ariaValueMax = this.viewOptions.ceil.toString();
+    this.minHandleElement.ariaValueMin = this.viewOptions.floor!.toString();
+    this.minHandleElement.ariaValueMax = this.viewOptions.ceil!.toString();
 
     if (this.range) {
-      this.maxHandleElement.ariaValueNow = (+this.highValue).toString();
-      this.maxHandleElement.ariaValueText = this.viewOptions.translate(
-        +this.highValue,
+      this.maxHandleElement.ariaValueNow = (+this.highValue!).toString();
+      this.maxHandleElement.ariaValueText = this.viewOptions.translate!(
+        +this.highValue!,
         LabelType.High
       );
-      this.maxHandleElement.ariaValueMin = this.viewOptions.floor.toString();
-      this.maxHandleElement.ariaValueMax = this.viewOptions.ceil.toString();
+      this.maxHandleElement.ariaValueMin = this.viewOptions.floor!.toString();
+      this.maxHandleElement.ariaValueMax = this.viewOptions.ceil!.toString();
     }
   }
 
@@ -1221,7 +1235,7 @@ export class SliderComponent
   // Run once during initialization and every time view port changes size.
   private calculateViewDimensions(): void {
     if (!ValueHelper.isNullOrUndefined(this.viewOptions.handleDimension)) {
-      this.minHandleElement.setDimension(this.viewOptions.handleDimension);
+      this.minHandleElement.setDimension(this.viewOptions.handleDimension!);
     } else {
       this.minHandleElement.calculateDimension();
     }
@@ -1231,7 +1245,7 @@ export class SliderComponent
     this.handleHalfDimension = handleWidth / 2;
 
     if (!ValueHelper.isNullOrUndefined(this.viewOptions.barDimension)) {
-      this.fullBarElement.setDimension(this.viewOptions.barDimension);
+      this.fullBarElement.setDimension(this.viewOptions.barDimension!);
     } else {
       this.fullBarElement.calculateDimension();
     }
@@ -1257,7 +1271,7 @@ export class SliderComponent
    * @returns boolean - true if ref is destroyed
    */
   private isRefDestroyed(): boolean {
-    return this.changeDetectionRef['destroyed'];
+    return (this.changeDetectionRef as ViewRef).destroyed;
   }
 
   // Update the ticks position
@@ -1270,9 +1284,9 @@ export class SliderComponent
     }
 
     const ticksArray: number[] = !ValueHelper.isNullOrUndefined(
-      this.viewOptions.ticksArray
+      this.viewOptions.ticksArray ?? []
     )
-      ? this.viewOptions.ticksArray
+      ? this.viewOptions.ticksArray ?? []
       : this.getTicksArray();
     const translate: string = this.viewOptions.vertical
       ? 'translateY'
@@ -1282,13 +1296,13 @@ export class SliderComponent
       ticksArray.reverse();
     }
 
-    const tickValueStep: number = !ValueHelper.isNullOrUndefined(
-      this.viewOptions.tickValueStep
+    const tickValueStep: number | null = !ValueHelper.isNullOrUndefined(
+      this.viewOptions.tickValueStep!
     )
-      ? this.viewOptions.tickValueStep
-      : !ValueHelper.isNullOrUndefined(this.viewOptions.tickStep)
-      ? this.viewOptions.tickStep
-      : this.viewOptions.step;
+      ? this.viewOptions.tickValueStep! 
+      : !ValueHelper.isNullOrUndefined(this.viewOptions.tickStep!)
+      ? this.viewOptions.tickStep!
+      : this.viewOptions.step!;
 
     let hasAtLeastOneLegend: boolean = false;
 
@@ -1323,7 +1337,7 @@ export class SliderComponent
         tick.style['background-color'] = this.getTickColor(value);
       }
       if (!ValueHelper.isNullOrUndefined(this.viewOptions.ticksTooltip)) {
-        tick.tooltip = this.viewOptions.ticksTooltip(value);
+        tick.tooltip = this.viewOptions.ticksTooltip!(value);
         tick.tooltipPlacement = this.viewOptions.vertical ? 'right' : 'top';
       }
       if (
@@ -1332,33 +1346,33 @@ export class SliderComponent
         MathHelper.isModuloWithinPrecisionLimit(
           value,
           tickValueStep,
-          this.viewOptions.precisionLimit
+          this.viewOptions.precisionLimit!
         )
       ) {
         tick.value = this.getDisplayValue(value, LabelType.TickValue);
         if (
           !ValueHelper.isNullOrUndefined(this.viewOptions.ticksValuesTooltip)
         ) {
-          tick.valueTooltip = this.viewOptions.ticksValuesTooltip(value);
+          tick.valueTooltip = this.viewOptions.ticksValuesTooltip!(value);
           tick.valueTooltipPlacement = this.viewOptions.vertical
             ? 'right'
             : 'top';
         }
       }
 
-      let legend: string = null;
+      let legend: string | null = null;
       if (!ValueHelper.isNullOrUndefined(this.viewOptions.stepsArray)) {
-        const step: CustomStepDefinition = this.viewOptions.stepsArray[value];
+        const step: CustomStepDefinition = this.viewOptions.stepsArray![value];
         if (!ValueHelper.isNullOrUndefined(this.viewOptions.getStepLegend)) {
-          legend = this.viewOptions.getStepLegend(step);
-        } else if (!ValueHelper.isNullOrUndefined(step)) {
-          legend = step.legend;
+          legend = this.viewOptions.getStepLegend!(step);
+        } else if (!ValueHelper.isNullOrUndefined(step!)) {
+          legend = step.legend!;
         }
       } else if (!ValueHelper.isNullOrUndefined(this.viewOptions.getLegend)) {
-        legend = this.viewOptions.getLegend(value);
+        legend = this.viewOptions.getLegend!(value!);
       }
       if (!ValueHelper.isNullOrUndefined(legend)) {
-        tick.legend = legend;
+        tick.legend = legend!;
         hasAtLeastOneLegend = true;
       }
 
@@ -1395,23 +1409,23 @@ export class SliderComponent
     const step: number = !ValueHelper.isNullOrUndefined(
       this.viewOptions.tickStep
     )
-      ? this.viewOptions.tickStep
-      : this.viewOptions.step;
+      ? this.viewOptions.tickStep!
+      : this.viewOptions.step!;
     const ticksArray: number[] = [];
 
     const numberOfValues: number =
       1 +
       Math.floor(
         MathHelper.roundToPrecisionLimit(
-          Math.abs(this.viewOptions.ceil - this.viewOptions.floor) / step,
-          this.viewOptions.precisionLimit
+          Math.abs(this.viewOptions.ceil! - this.viewOptions.floor!) / step,
+          this.viewOptions.precisionLimit!
         )
       );
     for (let index: number = 0; index < numberOfValues; ++index) {
       ticksArray.push(
         MathHelper.roundToPrecisionLimit(
-          this.viewOptions.floor + step * index,
-          this.viewOptions.precisionLimit
+          this.viewOptions.floor! + step * index,
+          this.viewOptions.precisionLimit!
         )
       );
     }
@@ -1426,27 +1440,27 @@ export class SliderComponent
           this.viewOptions.showSelectionBarFromValue
         )
       ) {
-        const center: number = this.viewOptions.showSelectionBarFromValue;
+        const center: number = this.viewOptions.showSelectionBarFromValue!;
         if (
-          this.viewLowValue > center &&
+          this.viewLowValue! > center &&
           value >= center &&
-          value <= this.viewLowValue
+          value <= this.viewLowValue!
         ) {
           return true;
         } else if (
-          this.viewLowValue < center &&
-          value <= center &&
-          value >= this.viewLowValue
+          this.viewLowValue! < center! &&
+          value! <= center! &&
+          value! >= this.viewLowValue!
         ) {
           return true;
         }
       } else if (this.viewOptions.showSelectionBarEnd) {
-        if (value >= this.viewLowValue) {
+        if (value! >= this.viewLowValue!) {
           return true;
         }
       } else if (
-        this.viewOptions.showSelectionBar &&
-        value <= this.viewLowValue
+        this.viewOptions.showSelectionBar! &&
+        value! <= this.viewLowValue!
       ) {
         return true;
       }
@@ -1454,8 +1468,8 @@ export class SliderComponent
 
     if (
       this.range &&
-      value >= this.viewLowValue &&
-      value <= this.viewHighValue
+      value! >= this.viewLowValue! &&
+      value! <= this.viewHighValue!
     ) {
       return true;
     }
@@ -1467,7 +1481,7 @@ export class SliderComponent
   private updateFloorLabel(): void {
     if (!this.floorLabelElement.alwaysHide) {
       this.floorLabelElement.setValue(
-        this.getDisplayValue(this.viewOptions.floor, LabelType.Floor)
+        this.getDisplayValue(this.viewOptions.floor!, LabelType.Floor)
       );
       this.floorLabelElement.calculateDimension();
       const position: number = this.viewOptions.rightToLeft
@@ -1481,7 +1495,7 @@ export class SliderComponent
   private updateCeilLabel(): void {
     if (!this.ceilLabelElement.alwaysHide) {
       this.ceilLabelElement.setValue(
-        this.getDisplayValue(this.viewOptions.ceil, LabelType.Ceil)
+        this.getDisplayValue(this.viewOptions.ceil!, LabelType.Ceil)
       );
       this.ceilLabelElement.calculateDimension();
       const position: number = this.viewOptions.rightToLeft
@@ -1534,7 +1548,7 @@ export class SliderComponent
   private updateLowHandle(newPos: number): void {
     this.minHandleElement.setPosition(newPos);
     this.minHandleLabelElement.setValue(
-      this.getDisplayValue(this.viewLowValue, LabelType.Low)
+      this.getDisplayValue(this.viewLowValue!, LabelType.Low!)
     );
     this.minHandleLabelElement.setPosition(
       this.getHandleLabelPos(PointerType.Min, newPos)
@@ -1555,7 +1569,7 @@ export class SliderComponent
   private updateHighHandle(newPos: number): void {
     this.maxHandleElement.setPosition(newPos);
     this.maxHandleLabelElement.setValue(
-      this.getDisplayValue(this.viewHighValue, LabelType.High)
+      this.getDisplayValue(this.viewHighValue!, LabelType.High!)
     );
     this.maxHandleLabelElement.setPosition(
       this.getHandleLabelPos(PointerType.Max, newPos)
@@ -1658,9 +1672,9 @@ export class SliderComponent
   private updateSelectionBar(): void {
     let position: number = 0;
     let dimension: number = 0;
-    const isSelectionBarFromRight: boolean = this.viewOptions.rightToLeft
-      ? !this.viewOptions.showSelectionBarEnd
-      : this.viewOptions.showSelectionBarEnd;
+    const isSelectionBarFromRight: boolean = this.viewOptions.rightToLeft!
+      ? !this.viewOptions.showSelectionBarEnd!
+      : this.viewOptions.showSelectionBarEnd!;
     const positionForRange: number = this.viewOptions.rightToLeft
       ? this.maxHandleElement.position + this.handleHalfDimension
       : this.minHandleElement.position + this.handleHalfDimension;
@@ -1676,11 +1690,11 @@ export class SliderComponent
           this.viewOptions.showSelectionBarFromValue
         )
       ) {
-        const center: number = this.viewOptions.showSelectionBarFromValue;
-        const centerPosition: number = this.valueToPosition(center);
-        const isModelGreaterThanCenter: boolean = this.viewOptions.rightToLeft
-          ? this.viewLowValue <= center
-          : this.viewLowValue > center;
+        const center: number = this.viewOptions.showSelectionBarFromValue!;
+        const centerPosition: number = this.valueToPosition(center!);
+        const isModelGreaterThanCenter: boolean = this.viewOptions.rightToLeft!
+          ? this.viewLowValue! <= center!
+          : this.viewLowValue! > center!;
         if (isModelGreaterThanCenter) {
           dimension = this.minHandleElement.position - centerPosition;
           position = centerPosition + this.handleHalfDimension;
@@ -1733,7 +1747,7 @@ export class SliderComponent
       const offset: number = !ValueHelper.isNullOrUndefined(
         this.viewOptions.showSelectionBarFromValue
       )
-        ? this.valueToPosition(this.viewOptions.showSelectionBarFromValue)
+        ? this.valueToPosition(this.viewOptions.showSelectionBarFromValue!)
         : 0;
       const reversed: boolean =
         (offset - position > 0 && !isSelectionBarFromRight) ||
@@ -1750,9 +1764,9 @@ export class SliderComponent
           'linear-gradient(to ' +
           direction +
           ', ' +
-          this.viewOptions.selectionBarGradient.from +
+          this.viewOptions.selectionBarGradient!.from! +
           ' 0%,' +
-          this.viewOptions.selectionBarGradient.to +
+          this.viewOptions.selectionBarGradient!.to! +
           ' 100%)',
       };
       if (this.viewOptions.vertical) {
@@ -1782,28 +1796,28 @@ export class SliderComponent
   // Wrapper around the getSelectionBarColor of the user to pass to correct parameters
   private getSelectionBarColor(): string {
     if (this.range) {
-      return this.viewOptions.getSelectionBarColor(this.value, this.highValue);
+      return this.viewOptions.getSelectionBarColor!(this.value!, this.highValue!);
     }
-    return this.viewOptions.getSelectionBarColor(this.value);
+    return this.viewOptions.getSelectionBarColor!(this.value!);
   }
 
   // Wrapper around the getPointerColor of the user to pass to  correct parameters
   private getPointerColor(pointerType: PointerType): string {
     if (pointerType === PointerType.Max) {
-      return this.viewOptions.getPointerColor(this.highValue, pointerType);
+      return this.viewOptions.getPointerColor!(this.highValue!, pointerType);
     }
-    return this.viewOptions.getPointerColor(this.value, pointerType);
+    return this.viewOptions.getPointerColor!(this.value!, pointerType);
   }
 
   // Wrapper around the getTickColor of the user to pass to correct parameters
   private getTickColor(value: number): string {
-    return this.viewOptions.getTickColor(value);
+    return this.viewOptions.getTickColor!(value);
   }
 
   // Update combined label position and value
   private updateCombinedLabel(): void {
-    let isLabelOverlap: boolean = null;
-    if (this.viewOptions.rightToLeft) {
+    let isLabelOverlap: boolean = false;
+    if (this.viewOptions.rightToLeft ?? false) {
       isLabelOverlap =
         this.minHandleLabelElement.position -
           this.minHandleLabelElement.dimension -
@@ -1819,19 +1833,19 @@ export class SliderComponent
 
     if (isLabelOverlap) {
       const lowDisplayValue: string = this.getDisplayValue(
-        this.viewLowValue,
+        this.viewLowValue!,
         LabelType.Low
       );
       const highDisplayValue: string = this.getDisplayValue(
-        this.viewHighValue,
+        this.viewHighValue!,
         LabelType.High
       );
-      const combinedLabelValue: string = this.viewOptions.rightToLeft
-        ? this.viewOptions.combineLabels(highDisplayValue, lowDisplayValue)
-        : this.viewOptions.combineLabels(lowDisplayValue, highDisplayValue);
+      const combinedLabelValue: string = (this.viewOptions.rightToLeft ?? false)
+        ? this.viewOptions.combineLabels!(highDisplayValue!, lowDisplayValue!)
+        : this.viewOptions.combineLabels!(lowDisplayValue!, highDisplayValue!);
 
       this.combinedLabelElement.setValue(combinedLabelValue);
-      const pos: number = this.viewOptions.boundPointerLabels
+      const pos: number = (this.viewOptions.boundPointerLabels ?? false)
         ? Math.min(
             Math.max(
               this.selectionBarElement.position +
@@ -1850,13 +1864,13 @@ export class SliderComponent
       this.maxHandleLabelElement.hide();
       this.combinedLabelElement.show();
     } else {
-      this.updateHighHandle(this.valueToPosition(this.viewHighValue));
-      this.updateLowHandle(this.valueToPosition(this.viewLowValue));
+      this.updateHighHandle(this.valueToPosition(this.viewHighValue!));
+      this.updateLowHandle(this.valueToPosition(this.viewLowValue!));
       this.maxHandleLabelElement.show();
       this.minHandleLabelElement.show();
       this.combinedLabelElement.hide();
     }
-    if (this.viewOptions.autoHideLimitLabels) {
+    if (this.viewOptions.autoHideLimitLabels!) {
       this.updateFloorAndCeilLabelsVisibility();
     }
   }
@@ -1865,26 +1879,26 @@ export class SliderComponent
   private getDisplayValue(value: number, which: LabelType): string {
     if (
       !ValueHelper.isNullOrUndefined(this.viewOptions.stepsArray) &&
-      !this.viewOptions.bindIndexForStepsArray
+      !(this.viewOptions.bindIndexForStepsArray ?? false)
     ) {
       value = this.getStepValue(value);
     }
-    return this.viewOptions.translate(value, which);
+    return this.viewOptions.translate!(value, which);
   }
 
   // Round value to step and precision based on minValue
   private roundStep(value: number, customStep?: number): number {
     const step: number = !ValueHelper.isNullOrUndefined(customStep)
-      ? customStep
-      : this.viewOptions.step;
+      ? customStep!
+      : this.viewOptions.step!;
     let steppedDifference: number = MathHelper.roundToPrecisionLimit(
-      (value - this.viewOptions.floor) / step,
-      this.viewOptions.precisionLimit
+      (value - this.viewOptions.floor!) / step,
+      this.viewOptions.precisionLimit!
     );
     steppedDifference = Math.round(steppedDifference) * step;
     return MathHelper.roundToPrecisionLimit(
-      this.viewOptions.floor + steppedDifference,
-      this.viewOptions.precisionLimit
+      this.viewOptions.floor! + steppedDifference,
+      this.viewOptions.precisionLimit!
     );
   }
 
@@ -1894,20 +1908,20 @@ export class SliderComponent
     if (
       !ValueHelper.isNullOrUndefined(this.viewOptions.customValueToPosition)
     ) {
-      fn = this.viewOptions.customValueToPosition;
+      fn = this.viewOptions.customValueToPosition!;
     } else if (this.viewOptions.logScale) {
       fn = ValueHelper.logValueToPosition;
     }
 
     val = MathHelper.clampToRange(
       val,
-      this.viewOptions.floor,
-      this.viewOptions.ceil
+      this.viewOptions.floor!,
+      this.viewOptions.ceil!
     );
     let percent: number = fn(
       val,
-      this.viewOptions.floor,
-      this.viewOptions.ceil
+      this.viewOptions.floor!,
+      this.viewOptions.ceil!
     );
     if (ValueHelper.isNullOrUndefined(percent)) {
       percent = 0;
@@ -1924,18 +1938,18 @@ export class SliderComponent
     if (this.viewOptions.rightToLeft) {
       percent = 1 - percent;
     }
-    let fn: PositionToValueFunction = ValueHelper.linearPositionToValue;
+    let fn: PositionToValueFunction = ValueHelper.linearPositionToValue!;
     if (
       !ValueHelper.isNullOrUndefined(this.viewOptions.customPositionToValue)
     ) {
-      fn = this.viewOptions.customPositionToValue;
+      fn = this.viewOptions.customPositionToValue!;
     } else if (this.viewOptions.logScale) {
       fn = ValueHelper.logPositionToValue;
     }
     const value: number = fn(
       percent,
-      this.viewOptions.floor,
-      this.viewOptions.ceil
+      this.viewOptions.floor!,
+      this.viewOptions.ceil!
     );
     return !ValueHelper.isNullOrUndefined(value) ? value : 0;
   }
@@ -1964,7 +1978,7 @@ export class SliderComponent
       eventPos = this.getEventXY(event) - sliderPos;
     }
 
-    return eventPos * this.viewOptions.scale - this.handleHalfDimension;
+    return eventPos * this.viewOptions.scale! - this.handleHalfDimension!;
   }
 
   // Get the handle closest to an event
@@ -1999,7 +2013,7 @@ export class SliderComponent
 
   // Bind pointer events to slider handles
   private bindEvents(): void {
-    const draggableRange: boolean = this.viewOptions.draggableRange;
+    const draggableRange: boolean = this.viewOptions.draggableRange!;
 
     if (!this.viewOptions.onlyBindHandles) {
       this.selectionBarElement.on('pointerdown', (event: PointerEvent): void =>
@@ -2093,12 +2107,12 @@ export class SliderComponent
 
   private getOptionsInfluencingEventBindings(options: Options): boolean[] {
     return [
-      options.disabled,
-      options.readOnly,
-      options.draggableRange,
-      options.draggableRangeOnly,
-      options.onlyBindHandles,
-      options.keyboardSupport,
+      options.disabled!,
+      options.readOnly!,
+      options.draggableRange!,
+      options.draggableRangeOnly!,
+      options.onlyBindHandles!,
+      options.keyboardSupport!,
     ];
   }
 
@@ -2115,7 +2129,7 @@ export class SliderComponent
   }
 
   private onBarStart(
-    pointerType: PointerType,
+    pointerType: PointerType | null,
     draggableRange: boolean,
     event: PointerEvent,
     bindMove: boolean,
@@ -2139,7 +2153,7 @@ export class SliderComponent
 
   // onStart event handler
   private onStart(
-    pointerType: PointerType,
+    pointerType: PointerType | null,
     event: PointerEvent,
     bindMove: boolean,
     bindEnd: boolean,
@@ -2164,16 +2178,18 @@ export class SliderComponent
 
     this.currentTrackingPointer = pointerType;
 
-    const pointerElement: SliderHandleDirective =
+    const pointerElement: SliderHandleDirective | null =
       this.getPointerElement(pointerType);
-    pointerElement.active = true;
+    if (pointerElement) {
+      pointerElement.active = true;
+    }
 
     // Store currentTrackingValue as soon as it is available to allow
     // the slide to be canceled. (E.g. on scroll detected.)
     this.preStartHandleValue = this.getCurrentTrackingValue();
 
     if (this.viewOptions.keyboardSupport) {
-      pointerElement.focus();
+      pointerElement?.focus();
     }
 
     if (bindMove) {
@@ -2185,16 +2201,16 @@ export class SliderComponent
 
       if (event.pointerType === 'touch') {
         this.onMoveEventListener =
-          this.eventListenerHelper.attachPassiveEventListener(
-            this.document,
+          this.eventListenerHelper!.attachPassiveEventListener(
+            this.document!,
             'pointermove',
-            onMoveCallback
+            onMoveCallback!
           );
       } else {
-        this.onMoveEventListener = this.eventListenerHelper.attachEventListener(
-          this.document,
+        this.onMoveEventListener = this.eventListenerHelper!.attachEventListener(
+          this.document!,
           'pointermove',
-          onMoveCallback
+          onMoveCallback!
         );
       }
     }
@@ -2208,30 +2224,30 @@ export class SliderComponent
 
       if (event.pointerType === 'touch') {
         this.onEndEventListener =
-          this.eventListenerHelper.attachPassiveEventListener(
-            this.document,
+          this.eventListenerHelper!.attachPassiveEventListener(
+            this.document!,
             'pointerup',
             onEndCallback
           );
         // Touch event that triggers browser scrolling won't call `pointerup` on the original element that initiated it (the slider).
         // But `pointercancel` will be called once all touch events finish.
         this.onCancelEventListener =
-          this.eventListenerHelper.attachPassiveEventListener(
-            this.document,
+          this.eventListenerHelper!.attachPassiveEventListener(
+            this.document!,
             'pointercancel',
             onEndCallback
           );
       } else {
-        this.onEndEventListener = this.eventListenerHelper.attachEventListener(
-          this.document,
+        this.onEndEventListener = this.eventListenerHelper!.attachEventListener(
+          this.document!,
           'pointerup',
           onEndCallback
         );
         // Opening context-menu in safari - in mouse context - doesn't trigger `pointerup`, so still need to listen for
         // `pointercancel` to clear up any lingering listeners.
         this.onCancelEventListener =
-          this.eventListenerHelper.attachPassiveEventListener(
-            this.document,
+          this.eventListenerHelper!.attachPassiveEventListener(
+            this.document!,
             'pointercancel',
             onEndCallback
           );
@@ -2263,7 +2279,7 @@ export class SliderComponent
       return;
     }
 
-    if (this.viewOptions.animate && !this.viewOptions.animateOnMove) {
+    if (this.viewOptions.animate && !this.viewOptions.animateOnMove!) {
       if (this.moving) {
         this.sliderElementAnimateClass = false;
       }
@@ -2273,12 +2289,12 @@ export class SliderComponent
 
     const newPos: number = this.getEventPosition(event);
     let newValue: number;
-    const ceilValue: number = this.viewOptions.rightToLeft
-      ? this.viewOptions.floor
-      : this.viewOptions.ceil;
-    const floorValue: number = this.viewOptions.rightToLeft
-      ? this.viewOptions.ceil
-      : this.viewOptions.floor;
+    const ceilValue: number = this.viewOptions.rightToLeft!
+      ? this.viewOptions.floor!
+      : this.viewOptions.ceil!;
+    const floorValue: number = this.viewOptions.rightToLeft!
+      ? this.viewOptions.ceil!
+      : this.viewOptions.floor!;
 
     if (newPos <= 0) {
       newValue = floorValue;
@@ -2288,9 +2304,9 @@ export class SliderComponent
       newValue = this.positionToValue(newPos);
       if (
         fromTick &&
-        !ValueHelper.isNullOrUndefined(this.viewOptions.tickStep)
+        !ValueHelper.isNullOrUndefined(this.viewOptions.tickStep!)
       ) {
-        newValue = this.roundStep(newValue, this.viewOptions.tickStep);
+        newValue = this.roundStep(newValue, this.viewOptions.tickStep!);
       } else {
         newValue = this.roundStep(newValue);
       }
@@ -2307,7 +2323,7 @@ export class SliderComponent
       this.sliderElementAnimateClass = false;
       // make sure the slider animate class is set according to the viewOptions after forceEnd() with disabled animations finishes
       setTimeout(() => {
-        this.sliderElementAnimateClass = this.viewOptions.animate;
+        this.sliderElementAnimateClass = this.viewOptions.animate!;
       });
     }
 
@@ -2335,9 +2351,12 @@ export class SliderComponent
   }
 
   private onPointerFocus(pointerType: PointerType): void {
-    const pointerElement: SliderHandleDirective =
+    const pointerElement: SliderHandleDirective | null =
       this.getPointerElement(pointerType);
-    pointerElement.on('blur', (): void => this.onPointerBlur(pointerElement));
+    if (!pointerElement) {
+      return;
+    }
+    pointerElement.on('blur', (): void => this.onPointerBlur(pointerElement!));
     pointerElement.on('keydown', (event: KeyboardEvent): void =>
       this.onKeyboardEvent(event)
     );
@@ -2366,16 +2385,16 @@ export class SliderComponent
   }
 
   private getKeyActions(currentValue: number): { [key: string]: number } {
-    const valueRange: number = this.viewOptions.ceil - this.viewOptions.floor;
+    const valueRange: number = this.viewOptions.ceil! - this.viewOptions.floor!;
 
-    let increaseStep: number = currentValue + this.viewOptions.step;
-    let decreaseStep: number = currentValue - this.viewOptions.step;
+    let increaseStep: number = currentValue + this.viewOptions.step!;
+    let decreaseStep: number = currentValue - this.viewOptions.step!;
     let increasePage: number = currentValue + valueRange / 10;
     let decreasePage: number = currentValue - valueRange / 10;
 
-    if (this.viewOptions.reversedControls) {
-      increaseStep = currentValue - this.viewOptions.step;
-      decreaseStep = currentValue + this.viewOptions.step;
+    if (this.viewOptions.reversedControls ?? false) {
+      increaseStep = currentValue - this.viewOptions.step!;
+      decreaseStep = currentValue + this.viewOptions.step!;
       increasePage = currentValue - valueRange / 10;
       decreasePage = currentValue + valueRange / 10;
     }
@@ -2388,19 +2407,19 @@ export class SliderComponent
       RIGHT: increaseStep,
       PAGEUP: increasePage,
       PAGEDOWN: decreasePage,
-      HOME: this.viewOptions.reversedControls
-        ? this.viewOptions.ceil
-        : this.viewOptions.floor,
-      END: this.viewOptions.reversedControls
-        ? this.viewOptions.floor
-        : this.viewOptions.ceil,
+      HOME: (this.viewOptions.reversedControls ?? false)
+        ? this.viewOptions.ceil!
+        : this.viewOptions.floor!,
+      END: (this.viewOptions.reversedControls ?? false)
+        ? this.viewOptions.floor!
+        : this.viewOptions.ceil!,
     };
     // right to left means swapping right and left arrows
-    if (this.viewOptions.rightToLeft) {
+    if (this.viewOptions.rightToLeft ?? false) {
       actions.LEFT = increaseStep;
       actions.RIGHT = decreaseStep;
       // right to left and vertical means we also swap up and down
-      if (this.viewOptions.vertical || this.viewOptions.rotate !== 0) {
+      if ((this.viewOptions.vertical ?? false) || (this.viewOptions.rotate ?? 0) !== 0) {
         actions.UP = decreaseStep;
         actions.DOWN = increaseStep;
       }
@@ -2409,7 +2428,7 @@ export class SliderComponent
   }
 
   private onKeyboardEvent(event: KeyboardEvent): void {
-    const currentValue: number = this.getCurrentTrackingValue();
+    const currentValue: number = this.getCurrentTrackingValue() ?? 0;
     const keyCode: number = !ValueHelper.isNullOrUndefined(event.keyCode)
       ? event.keyCode
       : event.which;
@@ -2442,39 +2461,39 @@ export class SliderComponent
 
     const actionValue: number = MathHelper.clampToRange(
       action,
-      this.viewOptions.floor,
-      this.viewOptions.ceil
+      this.viewOptions.floor!,
+      this.viewOptions.ceil!
     );
     const newValue: number = this.roundStep(actionValue);
     if (!this.viewOptions.draggableRangeOnly) {
       this.positionTrackingHandle(newValue);
     } else {
-      const difference: number = this.viewHighValue - this.viewLowValue;
+      const difference: number = this.viewHighValue! - this.viewLowValue!;
       let newMinValue: number;
       let newMaxValue: number;
 
       if (this.currentTrackingPointer === PointerType.Min) {
         newMinValue = newValue;
         newMaxValue = newValue + difference;
-        if (newMaxValue > this.viewOptions.ceil) {
-          newMaxValue = this.viewOptions.ceil;
+        if (newMaxValue > this.viewOptions.ceil!) {
+          newMaxValue = this.viewOptions.ceil!;
           newMinValue = newMaxValue - difference;
         }
       } else if (this.currentTrackingPointer === PointerType.Max) {
         newMaxValue = newValue;
         newMinValue = newValue - difference;
-        if (newMinValue < this.viewOptions.floor) {
-          newMinValue = this.viewOptions.floor;
+        if (newMinValue < this.viewOptions.floor!) {
+          newMinValue = this.viewOptions.floor!;
           newMaxValue = newMinValue + difference;
         }
       }
-      this.positionTrackingBar(newMinValue, newMaxValue);
+      this.positionTrackingBar(newMinValue!, newMaxValue!);
     }
   }
 
   // onDragStart event handler, handles dragging of the middle bar
   private onDragStart(
-    pointerType: PointerType,
+    pointerType: PointerType | null,
     event: PointerEvent,
     bindMove: boolean,
     bindEnd: boolean
@@ -2484,11 +2503,11 @@ export class SliderComponent
     this.dragging = new Dragging();
     this.dragging.active = true;
     this.dragging.value = this.positionToValue(position);
-    this.dragging.difference = this.viewHighValue - this.viewLowValue;
-    this.dragging.lowLimit = this.viewOptions.rightToLeft
+    this.dragging.difference = this.viewHighValue! - this.viewLowValue!;
+    this.dragging.lowLimit = (this.viewOptions.rightToLeft ?? false)
       ? this.minHandleElement.position - position
       : position - this.minHandleElement.position;
-    this.dragging.highLimit = this.viewOptions.rightToLeft
+    this.dragging.highLimit = (this.viewOptions.rightToLeft ?? false)
       ? position - this.maxHandleElement.position
       : this.maxHandleElement.position - position;
 
@@ -2501,18 +2520,18 @@ export class SliderComponent
     outOfBounds: boolean,
     isAbove: boolean
   ): number {
-    const isRTL: boolean = this.viewOptions.rightToLeft;
-    let value: number = null;
+    const isRTL: boolean = this.viewOptions.rightToLeft ?? false;
+    let value: number | null = null;
 
     if (outOfBounds) {
       if (isAbove) {
         value = isRTL
-          ? this.viewOptions.floor
-          : this.viewOptions.ceil - this.dragging.difference;
+          ? this.viewOptions.floor!
+          : this.viewOptions.ceil! - this.dragging.difference;
       } else {
         value = isRTL
-          ? this.viewOptions.ceil - this.dragging.difference
-          : this.viewOptions.floor;
+          ? this.viewOptions.ceil! - this.dragging.difference
+          : this.viewOptions.floor!;
       }
     } else {
       value = isRTL
@@ -2528,18 +2547,18 @@ export class SliderComponent
     outOfBounds: boolean,
     isAbove: boolean
   ): number {
-    const isRTL: boolean = this.viewOptions.rightToLeft;
-    let value: number = null;
+    const isRTL: boolean = this.viewOptions.rightToLeft ?? false;
+    let value: number | null = null;
 
     if (outOfBounds) {
       if (isAbove) {
         value = isRTL
-          ? this.viewOptions.floor + this.dragging.difference
-          : this.viewOptions.ceil;
+          ? this.viewOptions.floor! + this.dragging.difference
+          : this.viewOptions.ceil!;
       } else {
         value = isRTL
-          ? this.viewOptions.ceil
-          : this.viewOptions.floor + this.dragging.difference;
+          ? this.viewOptions.ceil!
+          : this.viewOptions.floor! + this.dragging.difference;
       }
     } else {
       if (isRTL) {
@@ -2557,7 +2576,7 @@ export class SliderComponent
   }
 
   private onDragMove(event?: PointerEvent): void {
-    const newPos: number = this.getEventPosition(event);
+    const newPos: number = this.getEventPosition(event!);
 
     if (this.viewOptions.animate && !this.viewOptions.animateOnMove) {
       if (this.moving) {
@@ -2613,22 +2632,22 @@ export class SliderComponent
   private positionTrackingBar(newMinValue: number, newMaxValue: number): void {
     if (
       !ValueHelper.isNullOrUndefined(this.viewOptions.minLimit) &&
-      newMinValue < this.viewOptions.minLimit
+      newMinValue < this.viewOptions.minLimit!
     ) {
-      newMinValue = this.viewOptions.minLimit;
+      newMinValue = this.viewOptions.minLimit!;
       newMaxValue = MathHelper.roundToPrecisionLimit(
         newMinValue + this.dragging.difference,
-        this.viewOptions.precisionLimit
+        this.viewOptions.precisionLimit!
       );
     }
     if (
       !ValueHelper.isNullOrUndefined(this.viewOptions.maxLimit) &&
-      newMaxValue > this.viewOptions.maxLimit
+      newMaxValue > this.viewOptions.maxLimit!
     ) {
-      newMaxValue = this.viewOptions.maxLimit;
+      newMaxValue = this.viewOptions.maxLimit!;
       newMinValue = MathHelper.roundToPrecisionLimit(
         newMaxValue - this.dragging.difference,
-        this.viewOptions.precisionLimit
+        this.viewOptions.precisionLimit!
       );
     }
 
@@ -2649,21 +2668,21 @@ export class SliderComponent
         if (this.viewOptions.noSwitching) {
           if (
             this.currentTrackingPointer === PointerType.Min &&
-            newValue > this.viewHighValue
+            newValue > this.viewHighValue!
           ) {
-            newValue = this.applyMinMaxRange(this.viewHighValue);
+            newValue = this.applyMinMaxRange(this.viewHighValue!);
           } else if (
             this.currentTrackingPointer === PointerType.Max &&
-            newValue < this.viewLowValue
+            newValue < this.viewLowValue!
           ) {
-            newValue = this.applyMinMaxRange(this.viewLowValue);
+            newValue = this.applyMinMaxRange(this.viewLowValue!);
           }
         }
         newValue = this.applyMinMaxRange(newValue);
         /* This is to check if we need to switch the min and max handles */
         if (
           this.currentTrackingPointer === PointerType.Min &&
-          newValue > this.viewHighValue
+          newValue > this.viewHighValue!
         ) {
           this.viewLowValue = this.viewHighValue;
           this.applyViewChange();
@@ -2677,7 +2696,7 @@ export class SliderComponent
           }
         } else if (
           this.currentTrackingPointer === PointerType.Max &&
-          newValue < this.viewLowValue
+          newValue < this.viewLowValue!
         ) {
           this.viewHighValue = this.viewLowValue;
           this.applyViewChange();
@@ -2702,7 +2721,7 @@ export class SliderComponent
         this.applyViewChange();
       }
       this.updateHandles(
-        this.currentTrackingPointer,
+        this.currentTrackingPointer!,
         this.valueToPosition(newValue)
       );
       this.updateAriaAttributes();
@@ -2712,15 +2731,15 @@ export class SliderComponent
   private applyMinMaxLimit(newValue: number): number {
     if (
       !ValueHelper.isNullOrUndefined(this.viewOptions.minLimit) &&
-      newValue < this.viewOptions.minLimit
+      newValue < this.viewOptions.minLimit!
     ) {
-      return this.viewOptions.minLimit;
+      return this.viewOptions.minLimit!;
     }
     if (
       !ValueHelper.isNullOrUndefined(this.viewOptions.maxLimit) &&
-      newValue > this.viewOptions.maxLimit
+      newValue > this.viewOptions.maxLimit!
     ) {
-      return this.viewOptions.maxLimit;
+      return this.viewOptions.maxLimit!;
     }
     return newValue;
   }
@@ -2728,35 +2747,35 @@ export class SliderComponent
   private applyMinMaxRange(newValue: number): number {
     const oppositeValue: number =
       this.currentTrackingPointer === PointerType.Min
-        ? this.viewHighValue
-        : this.viewLowValue;
+        ? this.viewHighValue!
+        : this.viewLowValue!;
     const difference: number = Math.abs(newValue - oppositeValue);
     if (!ValueHelper.isNullOrUndefined(this.viewOptions.minRange)) {
-      if (difference < this.viewOptions.minRange) {
+      if (difference < this.viewOptions.minRange!) {
         if (this.currentTrackingPointer === PointerType.Min) {
           return MathHelper.roundToPrecisionLimit(
-            this.viewHighValue - this.viewOptions.minRange,
-            this.viewOptions.precisionLimit
+            this.viewHighValue! - this.viewOptions.minRange!,
+            this.viewOptions.precisionLimit!
           );
         } else if (this.currentTrackingPointer === PointerType.Max) {
           return MathHelper.roundToPrecisionLimit(
-            this.viewLowValue + this.viewOptions.minRange,
-            this.viewOptions.precisionLimit
+            this.viewLowValue! + this.viewOptions.minRange!,
+            this.viewOptions.precisionLimit!
           );
         }
       }
     }
     if (!ValueHelper.isNullOrUndefined(this.viewOptions.maxRange)) {
-      if (difference > this.viewOptions.maxRange) {
+      if (difference > this.viewOptions.maxRange!) {
         if (this.currentTrackingPointer === PointerType.Min) {
           return MathHelper.roundToPrecisionLimit(
-            this.viewHighValue - this.viewOptions.maxRange,
-            this.viewOptions.precisionLimit
+            this.viewHighValue! - this.viewOptions.maxRange!,
+            this.viewOptions.precisionLimit!
           );
         } else if (this.currentTrackingPointer === PointerType.Max) {
           return MathHelper.roundToPrecisionLimit(
-            this.viewLowValue + this.viewOptions.maxRange,
-            this.viewOptions.precisionLimit
+            this.viewLowValue! + this.viewOptions.maxRange!,
+            this.viewOptions.precisionLimit!
           );
         }
       }
@@ -2767,24 +2786,24 @@ export class SliderComponent
   private applyPushRange(newValue: number): number {
     const difference: number =
       this.currentTrackingPointer === PointerType.Min
-        ? this.viewHighValue - newValue
-        : newValue - this.viewLowValue;
+        ? this.viewHighValue! - newValue
+        : newValue - this.viewLowValue!;
     const minRange: number = !ValueHelper.isNullOrUndefined(
       this.viewOptions.minRange
     )
-      ? this.viewOptions.minRange
-      : this.viewOptions.step;
-    const maxRange: number = this.viewOptions.maxRange;
+      ? this.viewOptions.minRange!
+      : this.viewOptions.step!;
+    const maxRange: number = this.viewOptions.maxRange ?? 0;
     // if smaller than minRange
     if (difference < minRange) {
       if (this.currentTrackingPointer === PointerType.Min) {
         this.viewHighValue = MathHelper.roundToPrecisionLimit(
-          Math.min(newValue + minRange, this.viewOptions.ceil),
-          this.viewOptions.precisionLimit
+          Math.min(newValue + minRange, this.viewOptions.ceil!),
+          this.viewOptions.precisionLimit!
         );
         newValue = MathHelper.roundToPrecisionLimit(
           this.viewHighValue - minRange,
-          this.viewOptions.precisionLimit
+          this.viewOptions.precisionLimit!
         );
         this.applyViewChange();
         this.updateHandles(
@@ -2793,12 +2812,12 @@ export class SliderComponent
         );
       } else if (this.currentTrackingPointer === PointerType.Max) {
         this.viewLowValue = MathHelper.roundToPrecisionLimit(
-          Math.max(newValue - minRange, this.viewOptions.floor),
-          this.viewOptions.precisionLimit
+          Math.max(newValue - minRange, this.viewOptions.floor!),
+          this.viewOptions.precisionLimit!
         );
         newValue = MathHelper.roundToPrecisionLimit(
           this.viewLowValue + minRange,
-          this.viewOptions.precisionLimit
+          this.viewOptions.precisionLimit!
         );
         this.applyViewChange();
         this.updateHandles(
@@ -2815,7 +2834,7 @@ export class SliderComponent
       if (this.currentTrackingPointer === PointerType.Min) {
         this.viewHighValue = MathHelper.roundToPrecisionLimit(
           newValue + maxRange,
-          this.viewOptions.precisionLimit
+          this.viewOptions.precisionLimit!
         );
         this.applyViewChange();
         this.updateHandles(
@@ -2825,7 +2844,7 @@ export class SliderComponent
       } else if (this.currentTrackingPointer === PointerType.Max) {
         this.viewLowValue = MathHelper.roundToPrecisionLimit(
           newValue - maxRange,
-          this.viewOptions.precisionLimit
+          this.viewOptions.precisionLimit!
         );
         this.applyViewChange();
         this.updateHandles(
@@ -2840,10 +2859,10 @@ export class SliderComponent
 
   private getChangeContext(): ChangeContext {
     const changeContext: ChangeContext = new ChangeContext();
-    changeContext.pointerType = this.currentTrackingPointer;
-    changeContext.value = +this.value;
+    changeContext.pointerType = this.currentTrackingPointer!;
+    changeContext.value = +this.value!;
     if (this.range) {
-      changeContext.highValue = +this.highValue;
+      changeContext.highValue = +this.highValue!;
     }
     return changeContext;
   }

@@ -12,8 +12,8 @@ export class SliderLabelDirective extends SliderElementDirective {
     optional: true,
   });
 
-  private _value: string = null;
-  get value(): string {
+  private _value: string | null = null;
+  get value(): string | null {
     return this._value;
   }
 
@@ -23,8 +23,8 @@ export class SliderLabelDirective extends SliderElementDirective {
     if (
       !this.alwaysHide &&
       (ValueHelper.isNullOrUndefined(this.value) ||
-        this.value.length !== value.length ||
-        (this.value.length > 0 && this.dimension === 0))
+        this.value!.length !== value.length ||
+        (this.value!.length > 0 && this.dimension === 0))
     ) {
       recalculateDimension = true;
     }

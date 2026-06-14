@@ -11,14 +11,14 @@ import { CommonModule } from '@angular/common';
 })
 export class TooltipWrapperComponent {
   @Input()
-  template: TemplateRef<any>;
+  template!: TemplateRef<any>;
 
   @Input()
-  tooltip: string;
+  tooltip!: string;
 
   @Input()
-  placement: string;
+  placement!: string;
 
   @Input()
-  content: string;
+  content!: string;
 }

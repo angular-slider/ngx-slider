@@ -60,7 +60,7 @@ export class Options {
 
   /** Maximum value for a slider.
     Not applicable when using stepsArray. */
-  ceil?: number = null;
+  ceil?: number | null = null;
 
   /** Step between each value.
     Not applicable when using stepsArray. */
@@ -69,12 +69,12 @@ export class Options {
   /** The minimum range authorized on the slider.
     Applies to range slider only.
     When using stepsArray, expressed as index into stepsArray. */
-  minRange?: number = null;
+  minRange?: number | null = null;
 
   /** The maximum range authorized on the slider.
     Applies to range slider only.
     When using stepsArray, expressed as index into stepsArray. */
-  maxRange?: number = null;
+  maxRange?: number | null = null;
 
   /** Set to true to have a push behavior. When the min handle goes above the max,
     the max is moved as well (and vice-versa). The range between min and max is
@@ -84,22 +84,22 @@ export class Options {
 
   /** The minimum value authorized on the slider.
     When using stepsArray, expressed as index into stepsArray. */
-  minLimit?: number = null;
+  minLimit?: number | null = null;
 
   /** The maximum value authorized on the slider.
     When using stepsArray, expressed as index into stepsArray. */
-  maxLimit?: number = null;
+  maxLimit?: number | null = null;
 
   /** Custom translate function. Use this if you want to translate values displayed
       on the slider. */
-  translate?: TranslateFunction = null;
+  translate?: TranslateFunction | null = null;
 
   /** Custom function for combining overlapping labels in range slider.
       It takes the min and max values (already translated with translate fuction)
       and should return how these two values should be combined.
       If not provided, the default function will join the two values with
       ' - ' as separator. */
-  combineLabels?: CombineLabelsFunction = null;
+  combineLabels?: CombineLabelsFunction | null = null;
 
   /** Use to display legend under ticks (thus, it needs to be used along with
      showTicks or showTicksValues). The function will be called with each tick
@@ -107,11 +107,11 @@ export class Options {
      If the returned value is null, then no legend is displayed under
      the corresponding tick.You can also directly provide the legend values
      in the stepsArray option. */
-  getLegend?: GetLegendFunction = null;
+  getLegend?: GetLegendFunction | null = null;
 
   /** Use to display a custom legend of a stepItem from stepsArray.
     It will be the same as getLegend but for stepsArray. */
-  getStepLegend?: GetStepLegendFunction = null;
+  getStepLegend?: GetStepLegendFunction | null = null;
 
   /** If you want to display a slider with non linear/number steps.
      Just pass an array with each slider value and that's it; the floor, ceil and step settings
@@ -120,7 +120,7 @@ export class Options {
      in the stepsArray.
      They can also be bound to the index of the selected item by setting the bindIndexForStepsArray
      option to true. */
-  stepsArray?: CustomStepDefinition[] = null;
+  stepsArray?: CustomStepDefinition[] | null = null;
 
   /** Set to true to bind the index of the selected item to value model and valueHigh model. */
   bindIndexForStepsArray?: boolean = false;
@@ -141,7 +141,7 @@ export class Options {
 
   /**  Set a number to draw the selection bar between this value and the slider handle.
     When using stepsArray, expressed as index into stepsArray. */
-  showSelectionBarFromValue?: number = null;
+  showSelectionBarFromValue?: number | null = null;
 
   /**  Only for range slider. Set to true to visualize in different colour the areas
     on the left/right (top/bottom for vertical range slider) of selection bar between the handles. */
@@ -170,23 +170,23 @@ export class Options {
 
   /* The step between each tick to display. If not set, the step value is used.
     Not used when ticksArray is specified. */
-  tickStep?: number = null;
+  tickStep?: number | null = null;
 
   /* The step between displaying each tick step value.
     If not set, then tickStep or step is used, depending on which one is set. */
-  tickValueStep?: number = null;
+  tickValueStep?: number | null = null;
 
   /** Use to display ticks at specific positions.
     The array contains the index of the ticks that should be displayed.
     For example, [0, 1, 5] will display a tick for the first, second and sixth values. */
-  ticksArray?: number[] = null;
+  ticksArray?: number[] | null = null;
 
   /** Used to display a tooltip when a tick is hovered.
     Set to a function that returns the tooltip content for a given value. */
-  ticksTooltip?: (value: number) => string = null;
+  ticksTooltip?: ((value: number) => string) | null = null;
 
   /** Same as ticksTooltip but for ticks values. */
-  ticksValuesTooltip?: (value: number) => string = null;
+  ticksValuesTooltip?: ((value: number) => string) | null = null;
 
   /** Set to true to display the slider vertically.
     The slider will take the full height of its parent.
@@ -199,10 +199,10 @@ export class Options {
     you should use the argument passed to the function.
     Indeed, when the function is called, there is no certainty that the model
     has already been updated.*/
-  getSelectionBarColor?: (minValue: number, maxValue?: number) => string = null;
+  getSelectionBarColor?: ((minValue: number, maxValue?: number) => string) | null = null;
 
   /** Function that returns the color of a tick. showTicks must be enabled. */
-  getTickColor?: (value: number) => string = null;
+  getTickColor?: ((value: number) => string) | null = null;
 
   /** Function that returns the current color of a pointer.
     If your color won't change, don't use this option but set it through CSS.
@@ -211,7 +211,7 @@ export class Options {
     Indeed, when the function is called, there is no certainty that the model has already been updated.
     To handle range slider pointers independently, you should evaluate pointerType within the given
     function where "min" stands for value model and "max" for valueHigh model values. */
-  getPointerColor?: (value: number, pointerType: PointerType) => string = null;
+  getPointerColor?: ((value: number, pointerType: PointerType) => string) | null = null;
 
   /** Handles are focusable (on click or with tab) and can be modified using the following keyboard controls:
     Left/bottom arrows: -1
@@ -275,12 +275,12 @@ export class Options {
   /** Function that returns the position on the slider for a given value.
     The position must be a percentage between 0 and 1.
     The function should be monotonically increasing or decreasing; otherwise the slider may behave incorrectly. */
-  customValueToPosition?: ValueToPositionFunction = null;
+  customValueToPosition?: ValueToPositionFunction | null = null;
 
   /** Function that returns the value for a given position on the slider.
     The position is a percentage between 0 and 1.
     The function should be monotonically increasing or decreasing; otherwise the slider may behave incorrectly. */
-  customPositionToValue?: PositionToValueFunction = null;
+  customPositionToValue?: PositionToValueFunction | null = null;
 
   /** Precision limit for calculated values.
     Values used in calculations will be rounded to this number of significant digits
@@ -289,27 +289,27 @@ export class Options {
 
   /** Use to display the selection bar as a gradient.
     The given object must contain from and to properties which are colors. */
-  selectionBarGradient?: { from: string; to: string } = null;
+  selectionBarGradient?: { from: string; to: string } | null = null;
 
   /** Use to add a label directly to the slider for accessibility. Adds the aria-label attribute. */
   ariaLabel?: string = 'ngx-slider';
 
   /** Use instead of ariaLabel to reference the id of an element which will be used to label the slider.
     Adds the aria-labelledby attribute. */
-  ariaLabelledBy?: string = null;
+  ariaLabelledBy?: string | null = null;
 
   /** Use to add a label directly to the slider range for accessibility. Adds the aria-label attribute. */
   ariaLabelHigh?: string = 'ngx-slider-max';
 
   /** Use instead of ariaLabelHigh to reference the id of an element which will be used to label the slider range.
     Adds the aria-labelledby attribute. */
-  ariaLabelledByHigh?: string = null;
+  ariaLabelledByHigh?: string | null = null;
 
   /** Use to increase rendering performance. If the value is not provided, the slider calculates the with/height of the handle */
-  handleDimension?: number = null;
+  handleDimension?: number | null = null;
 
   /** Use to increase rendering performance. If the value is not provided, the slider calculates the with/height of the bar */
-  barDimension?: number = null;
+  barDimension?: number | null = null;
 
   /** Enable/disable CSS animations */
   animate?: boolean = true;

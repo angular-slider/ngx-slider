@@ -26,7 +26,7 @@ export class EventListenerHelper {
     listener.events = new Subject<Event>();
 
     const observerCallback: (event: Event) => void = (event: Event): void => {
-      listener.events.next(event);
+      listener.events!.next(event);
     };
     nativeElement.addEventListener(eventName, observerCallback, {passive: true, capture: false});
 
@@ -36,7 +36,7 @@ export class EventListenerHelper {
 
     listener.eventsSubscription = listener.events
       .pipe((!ValueHelper.isNullOrUndefined(throttleInterval))
-        ? throttleTime(throttleInterval, undefined, { leading: true, trailing: true})
+        ? throttleTime(throttleInterval!, undefined, { leading: true, trailing: true})
         : tap(() => {}) // no-op
       )
       .subscribe((event: Event) => {
@@ -48,17 +48,17 @@ export class EventListenerHelper {
 
   public detachEventListener(eventListener: EventListener): void {
     if (!ValueHelper.isNullOrUndefined(eventListener.eventsSubscription)) {
-      eventListener.eventsSubscription.unsubscribe();
+      eventListener.eventsSubscription!.unsubscribe();
       eventListener.eventsSubscription = null;
     }
 
     if (!ValueHelper.isNullOrUndefined(eventListener.events)) {
-      eventListener.events.complete();
+      eventListener.events!.complete();
       eventListener.events = null;
     }
 
     if (!ValueHelper.isNullOrUndefined(eventListener.teardownCallback)) {
-      eventListener.teardownCallback();
+      eventListener.teardownCallback!();
       eventListener.teardownCallback = null;
     }
   }
@@ -70,14 +70,14 @@ export class EventListenerHelper {
     listener.events = new Subject<Event>();
 
     const observerCallback: (event: Event) => void = (event: Event): void => {
-      listener.events.next(event);
+      listener.events!.next(event);
     };
 
     listener.teardownCallback = this.renderer.listen(nativeElement, eventName, observerCallback);
 
     listener.eventsSubscription = listener.events
       .pipe((!ValueHelper.isNullOrUndefined(throttleInterval))
-          ? throttleTime(throttleInterval, undefined, { leading: true, trailing: true})
+          ? throttleTime(throttleInterval!, undefined, { leading: true, trailing: true})
           : tap(() => {}) // no-op
       )
       .subscribe((event: Event) => { callback(event); });

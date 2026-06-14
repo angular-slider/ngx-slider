@@ -195,6 +195,6 @@ export class SliderElementDirective {
   }
 
   private isRefDestroyed(): boolean {
-    return ValueHelper.isNullOrUndefined(this.changeDetectionRef) || this.changeDetectionRef['destroyed'];
+    return ValueHelper.isNullOrUndefined(this.changeDetectionRef) || (this.changeDetectionRef as any)['destroyed'];
   }
 }
