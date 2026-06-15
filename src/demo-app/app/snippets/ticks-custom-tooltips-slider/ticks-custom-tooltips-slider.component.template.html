@@ -1,0 +1,6 @@
+<ngx-slider [(value)]="value" [options]="options">
+  <!-- Use custom template to render tooltips using ng-bootstrap -->
+  <ng-template #tooltipTemplate let-tooltip="tooltip" let-placement="placement" let-content="content">
+    <div class="h-100" [ngbTooltip]="tooltip" [placement]="placement">{{content}}</div>
+  </ng-template>
+</ngx-slider>
