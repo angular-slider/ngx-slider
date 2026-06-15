@@ -54,22 +54,22 @@
     "zone.js": "~0.15.1"
   },
   "devDependencies": {
-    "@angular-eslint/builder": "21.0.0",
-    "@angular-eslint/eslint-plugin": "21.0.0",
-    "@angular-eslint/eslint-plugin-template": "21.0.0",
-    "@angular-eslint/schematics": "21.0.0",
-    "@angular-eslint/template-parser": "21.0.0",
+    "@angular-eslint/builder": "^22.0.0",
+    "@angular-eslint/eslint-plugin": "^22.0.0",
+    "@angular-eslint/eslint-plugin-template": "^22.0.0",
+    "@angular-eslint/schematics": "^22.0.0",
+    "@angular-eslint/template-parser": "^22.0.0",
     "@angular/build": "^22.0.1",
     "@angular/cli": "^22.0.1",
     "@angular/compiler-cli": "^22.0.1",
     "@playwright/test": "^1.41.2",
     "@types/jasmine": "~5.1.13",
-    "@types/node": "^22.10.10",
+    "@types/node": "^24.0.0",
     "@typescript-eslint/eslint-plugin": "^8.34.1",
     "@typescript-eslint/parser": "^8.34.1",
     "@typescript-eslint/utils": "^8.34.1",
     "escape-html": "^1.0.3",
-    "eslint": "^8.56.0",
+    "eslint": "^10.0.0",
     "istanbul-lib-instrument": "^6.0.3",
     "jasmine-core": "~5.5.0",
     "jasmine-spec-reporter": "~7.0.0",
@@ -85,5 +85,14 @@
     "ts-node": "~10.9.2",
     "typedoc": "~0.28.15",
     "typescript": "6.0.3"
+  },
+  "overrides": {
+    "@ng-bootstrap/ng-bootstrap": {
+      "@angular/common": "^22.0.0",
+      "@angular/core": "^22.0.0",
+      "@angular/forms": "^22.0.0",
+      "@angular/localize": "^22.0.0",
+      "@angular/typescript": "6.0.3"
+    }
   }
 }
