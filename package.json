@@ -27,7 +27,7 @@
     "prepare:demo-app": "node scripts/generate-demo-app-snippets.js && node scripts/esm/generate-demo-app-docs.mjs && node scripts/copy-assets-from-node-modules.js",
     "start": "npm run prepare && ng serve",
     "build": "npm run build:lib && npm run build:demo-app",
-    "build:lib": "npm run prepare:lib && rimraf dist/ngx-slider && ng-packagr -p src/ngx-slider/ng-package.json && node scripts/bundle-scss.js",
+    "build:lib": "npm run prepare:lib && rimraf dist/ngx-slider && ng-packagr -p src/ngx-slider/ng-package.json -c src/ngx-slider/tsconfig.lib.json && node scripts/bundle-scss.js",
     "build:demo-app": "npm run prepare:demo-app && rimraf dist/demo-app && ng build --configuration production --base-href /ngx-slider/",
     "publish-gh": "scripts/publish-gh-pages.sh",
     "test": "npm run prepare && ng test",
