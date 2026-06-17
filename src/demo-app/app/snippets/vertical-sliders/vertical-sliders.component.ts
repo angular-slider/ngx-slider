@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Options } from '@local/ngx-slider';
 
 interface SimpleSliderModel {
@@ -15,6 +15,7 @@ interface RangeSliderModel {
 @Component({
     selector: 'app-vertical-sliders',
     templateUrl: './vertical-sliders.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class VerticalSlidersComponent {

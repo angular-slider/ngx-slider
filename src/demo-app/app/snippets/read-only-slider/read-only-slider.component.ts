@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Options } from '@local/ngx-slider';
 
 @Component({
     selector: 'app-read-only-slider',
     templateUrl: './read-only-slider.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ReadOnlySliderComponent {

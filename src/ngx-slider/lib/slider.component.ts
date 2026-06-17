@@ -26,6 +26,7 @@ import { SliderElementDirective } from './slider-element.directive';
 import { SliderHandleDirective } from './slider-handle.directive';
 import { SliderLabelDirective } from './slider-label.directive';
 import { DOCUMENT } from '@angular/common';
+import { TooltipWrapperComponent } from './tooltip-wrapper.component';
 
 // Declaration for ResizeObserver a new API available in some of newest browsers:
 // https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver
@@ -113,9 +114,9 @@ const NGX_SLIDER_CONTROL_VALUE_ACCESSOR: any = {
     templateUrl: './slider.component.html',
     styleUrls: ['./slider.component.scss'],
     providers: [NGX_SLIDER_CONTROL_VALUE_ACCESSOR],
-    changeDetection: ChangeDetectionStrategy.Default,
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: true,
-    imports: [CommonModule]
+    imports: [CommonModule, TooltipWrapperComponent, SliderElementDirective, SliderHandleDirective, SliderLabelDirective]
 })
 export class SliderComponent
   implements OnInit, AfterViewInit, OnChanges, OnDestroy, ControlValueAccessor

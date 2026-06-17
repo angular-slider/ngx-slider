@@ -1,6 +1,6 @@
 {
   "name": "@angular-slider/ngx-slider",
-  "version": "21.0.0",
+  "version": "22.0.0",
   "private": true,
   "description": "Self-contained, mobile friendly slider component for Angular based on angularjs-slider",
   "keywords": [
@@ -27,7 +27,7 @@
     "prepare:demo-app": "node scripts/generate-demo-app-snippets.js && node scripts/esm/generate-demo-app-docs.mjs && node scripts/copy-assets-from-node-modules.js",
     "start": "npm run prepare && ng serve",
     "build": "npm run build:lib && npm run build:demo-app",
-    "build:lib": "npm run prepare:lib && rimraf dist/ngx-slider && ng-packagr -p src/ngx-slider/ng-package.json && node scripts/bundle-scss.js",
+    "build:lib": "npm run prepare:lib && rimraf dist/ngx-slider && ng-packagr -p src/ngx-slider/ng-package.json -c src/ngx-slider/tsconfig.lib.json && node scripts/bundle-scss.js",
     "build:demo-app": "npm run prepare:demo-app && rimraf dist/demo-app && ng build --configuration production --base-href /ngx-slider/",
     "publish-gh": "scripts/publish-gh-pages.sh",
     "test": "npm run prepare && ng test",
@@ -37,14 +37,14 @@
     "ci": "npm run test:once && playwright test && npm run lint && npm run build:lib && npm run build:demo-app"
   },
   "dependencies": {
-    "@angular/animations": "^21.0.0",
-    "@angular/common": "^21.0.0",
-    "@angular/compiler": "^21.0.0",
-    "@angular/core": "^21.0.0",
-    "@angular/forms": "^21.0.0",
-    "@angular/platform-browser": "^21.0.0",
-    "@angular/platform-browser-dynamic": "^21.0.0",
-    "@angular/router": "^21.0.0",
+    "@angular/animations": "^22.0.1",
+    "@angular/common": "^22.0.1",
+    "@angular/compiler": "^22.0.1",
+    "@angular/core": "^22.0.1",
+    "@angular/forms": "^22.0.1",
+    "@angular/platform-browser": "^22.0.1",
+    "@angular/platform-browser-dynamic": "^22.0.1",
+    "@angular/router": "^22.0.1",
     "@ng-bootstrap/ng-bootstrap": "^20.0.0-rc.0",
     "bootstrap": "^5.3.8",
     "bootstrap-icons": "^1.11.3",
@@ -54,22 +54,23 @@
     "zone.js": "~0.15.1"
   },
   "devDependencies": {
-    "@angular-eslint/builder": "21.0.0",
-    "@angular-eslint/eslint-plugin": "21.0.0",
-    "@angular-eslint/eslint-plugin-template": "21.0.0",
-    "@angular-eslint/schematics": "21.0.0",
-    "@angular-eslint/template-parser": "21.0.0",
-    "@angular/build": "^21.0.0",
-    "@angular/cli": "^21.0.0",
-    "@angular/compiler-cli": "^21.0.0",
+    "@angular-eslint/builder": "^22.0.0",
+    "@angular-eslint/eslint-plugin": "^22.0.0",
+    "@angular-eslint/eslint-plugin-template": "^22.0.0",
+    "@angular-eslint/schematics": "^22.0.0",
+    "@angular-eslint/template-parser": "^22.0.0",
+    "@angular/build": "^22.0.1",
+    "@angular/cli": "^22.0.1",
+    "@angular/compiler-cli": "^22.0.1",
     "@playwright/test": "^1.41.2",
     "@types/jasmine": "~5.1.13",
-    "@types/node": "^22.10.10",
+    "@types/node": "^24.0.0",
     "@typescript-eslint/eslint-plugin": "^8.34.1",
     "@typescript-eslint/parser": "^8.34.1",
     "@typescript-eslint/utils": "^8.34.1",
     "escape-html": "^1.0.3",
-    "eslint": "^8.56.0",
+    "eslint": "^10.0.0",
+    "istanbul-lib-instrument": "^6.0.3",
     "jasmine-core": "~5.5.0",
     "jasmine-spec-reporter": "~7.0.0",
     "karma": "~6.4.4",
@@ -78,11 +79,20 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "^2.1.0",
     "mkdirp": "^3.0.1",
-    "ng-packagr": "^21.0.0",
+    "ng-packagr": "^22.0.0",
     "prismjs": "^1.30.0",
     "rimraf": "^6.1.2",
     "ts-node": "~10.9.2",
     "typedoc": "~0.28.15",
-    "typescript": "~5.9.3"
+    "typescript": "6.0.3"
+  },
+  "overrides": {
+    "@ng-bootstrap/ng-bootstrap": {
+      "@angular/common": "^22.0.0",
+      "@angular/core": "^22.0.0",
+      "@angular/forms": "^22.0.0",
+      "@angular/localize": "^22.0.0",
+      "@angular/typescript": "6.0.3"
+    }
   }
 }

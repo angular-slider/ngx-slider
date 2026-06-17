@@ -1,9 +1,10 @@
-import { Component, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { Options } from '@local/ngx-slider';
 
 @Component({
     selector: 'app-manual-refresh-slider',
     templateUrl: './manual-refresh-slider.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ManualRefreshSliderComponent {

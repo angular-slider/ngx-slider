@@ -1,9 +1,10 @@
-import { Component, HostListener, EventEmitter } from '@angular/core';
+import { Component, HostListener, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { Options } from '@local/ngx-slider';
 
 @Component({
   selector: 'app-prevent-change-on-scroll-slider',
   templateUrl: './prevent-change-on-scroll-slider.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class PreventChangeOnScrollSliderComponent {

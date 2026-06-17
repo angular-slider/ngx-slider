@@ -1,5 +1,9 @@
 # Changelog
 
+## 22.0.0
+
+* add support for Angular 22
+
 ## 21.0.0
 
 * add support for Angular 21 (issue #417)
