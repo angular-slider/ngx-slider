@@ -10,5 +10,8 @@
   "exclude": [
     "**/*.spec.ts",
     "**/*.test.ts"
-  ]
+  ],
+  "angularCompilerOptions": {
+    "compilationMode": "partial"
+  }
 }
