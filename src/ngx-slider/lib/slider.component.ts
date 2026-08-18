@@ -491,6 +491,12 @@ export class SliderComponent
 
   @HostListener('window:resize', ['$event'])
   public onResize(event: any): void {
+    // A resize arriving before ngAfterViewInit has no view children to measure yet, so
+    // calculateViewDimensions() throws on the undefined minHandleElement. Initialisation calculates
+    // the dimensions itself, so there is nothing to recalculate until it has run.
+    if (!this.initHasRun) {
+      return;
+    }
     this.calculateViewDimensionsAndDetectChanges();
   }
 
