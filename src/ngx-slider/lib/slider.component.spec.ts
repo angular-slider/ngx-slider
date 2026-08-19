@@ -37,4 +37,19 @@ describe('SliderComponent', () => {
 
     expect(() => uninitialised.componentInstance.onResize(new Event('resize'))).not.toThrow();
   });
+
+  it('should survive being destroyed before the view is initialised', () => {
+    // The resize observer is only created in ngAfterViewInit, but ngOnDestroy always
+    // disconnects it - a slider inside a short-lived conditional view hits exactly this.
+    const uninitialised: ComponentFixture<SliderComponent> = TestBed.createComponent(SliderComponent);
+
+    expect(() => uninitialised.destroy()).not.toThrow();
+  });
+
+  it('should keep the model value as-is when enforceStepsArray meets an empty stepsArray', () => {
+    component.options = { stepsArray: [], enforceStepsArray: true };
+
+    expect(() => fixture.detectChanges()).not.toThrow();
+    expect(component.value).toBe(5);
+  });
 });
