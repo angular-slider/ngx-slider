@@ -491,6 +491,12 @@ export class SliderComponent
 
   @HostListener('window:resize', ['$event'])
   public onResize(event: any): void {
+    // A resize arriving before ngAfterViewInit has no view children to measure yet, so
+    // calculateViewDimensions() throws on the undefined minHandleElement. Initialisation calculates
+    // the dimensions itself, so there is nothing to recalculate until it has run.
+    if (!this.initHasRun) {
+      return;
+    }
     this.calculateViewDimensionsAndDetectChanges();
   }
 
@@ -526,8 +532,12 @@ export class SliderComponent
   }
 
   private unsubscribeResizeObserver(): void {
-    this.resizeObserver.disconnect();
-    this.resizeObserver = null;
+    // ngOnDestroy calls this unconditionally, but the observer is only created in
+    // ngAfterViewInit - a slider destroyed before view init has nothing to disconnect.
+    if (this.resizeObserver !== null) {
+      this.resizeObserver.disconnect();
+      this.resizeObserver = null;
+    }
   }
 
   private unsubscribeOnMove(): void {
@@ -757,7 +767,9 @@ export class SliderComponent
     if (!ValueHelper.isNullOrUndefined(this.viewOptions.stepsArray)) {
       // When using steps array, only round to nearest step in the array
       // No other enforcement can be done, as the step array may be out of order, and that is perfectly fine
-      if (this.viewOptions.enforceStepsArray) {
+      // findStepIndex() returns 0 even for an empty stepsArray, so the lookup below would be
+      // undefined and reading .value throws. Keep the input as-is when there are no steps.
+      if (this.viewOptions.enforceStepsArray && this.viewOptions.stepsArray.length > 0) {
         const valueIndex: number = ValueHelper.findStepIndex(
           normalisedInput.value,
           this.viewOptions.stepsArray
