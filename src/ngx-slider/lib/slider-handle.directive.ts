@@ -7,8 +7,17 @@ import { DOCUMENT } from '@angular/common';
   standalone: true,
 })
 export class SliderHandleDirective extends SliderElementDirective {
+  private _active: boolean = false;
   @HostBinding('class.ngx-slider-active')
-  active: boolean = false;
+  get active(): boolean {
+    return this._active;
+  }
+  set active(value: boolean) {
+    if (this._active !== value && !this.isRefDestroyed()) {
+      this.changeDetectionRef.markForCheck();
+    }
+    this._active = value;
+  }
 
   @HostBinding('attr.role')
   role: string = '';
