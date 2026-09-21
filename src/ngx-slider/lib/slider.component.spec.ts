@@ -52,4 +52,25 @@ describe('SliderComponent', () => {
     expect(() => fixture.detectChanges()).not.toThrow();
     expect(component.value).toBe(5);
   });
+
+  it('should mark for check when the animate host binding changes', () => {
+    // Under zoneless change detection, the animate class is toggled from event
+    // handlers and setTimeouts, so it must schedule change detection to avoid
+    // ExpressionChangedAfterItHasBeenCheckedError (NG0100).
+    const changeDetectorRef: { markForCheck: () => void } = (component as any).changeDetectionRef;
+    const markForCheck: jasmine.Spy = spyOn(changeDetectorRef, 'markForCheck');
+
+    component.sliderElementAnimateClass = !component.sliderElementAnimateClass;
+
+    expect(markForCheck).toHaveBeenCalled();
+  });
+
+  it('should not mark for check when the animate host binding is set to the same value', () => {
+    const changeDetectorRef: { markForCheck: () => void } = (component as any).changeDetectionRef;
+    const markForCheck: jasmine.Spy = spyOn(changeDetectorRef, 'markForCheck');
+
+    component.sliderElementAnimateClass = component.sliderElementAnimateClass;
+
+    expect(markForCheck).not.toHaveBeenCalled();
+  });
 });

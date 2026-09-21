@@ -194,7 +194,7 @@ export class SliderElementDirective {
     this.eventListeners = listenersToKeep;
   }
 
-  private isRefDestroyed(): boolean {
+  protected isRefDestroyed(): boolean {
     return ValueHelper.isNullOrUndefined(this.changeDetectionRef) || this.changeDetectionRef['destroyed'];
   }
 }

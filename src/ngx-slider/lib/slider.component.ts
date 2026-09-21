@@ -307,8 +307,17 @@ export class SliderComponent
   // Host element class bindings
   @HostBinding('class.vertical')
   public sliderElementVerticalClass: boolean = false;
+  private _sliderElementAnimateClass: boolean = false;
   @HostBinding('class.animate')
-  public sliderElementAnimateClass: boolean = false;
+  public get sliderElementAnimateClass(): boolean {
+    return this._sliderElementAnimateClass;
+  }
+  public set sliderElementAnimateClass(value: boolean) {
+    if (this._sliderElementAnimateClass !== value && !this.isRefDestroyed()) {
+      this.changeDetectionRef.markForCheck();
+    }
+    this._sliderElementAnimateClass = value;
+  }
   @HostBinding('class.with-legend')
   public sliderElementWithLegendClass: boolean = false;
   @HostBinding('attr.disabled')
