@@ -306,4 +306,64 @@
       }
     }
   }
+
+  @media (forced-colors: active) {
+    .ngx-slider {
+      .ngx-slider-bar,
+      .ngx-slider-bar-wrapper.ngx-slider-left-out-selection .ngx-slider-bar,
+      .ngx-slider-bar-wrapper.ngx-slider-right-out-selection .ngx-slider-bar {
+        background-color: CanvasText;
+      }
+
+      .ngx-slider-selection {
+        background-color: Highlight;
+      }
+
+      .ngx-slider-pointer {
+        box-sizing: border-box;
+        background-color: ButtonFace;
+        border: 2px solid ButtonText;
+
+        &:after {
+          background-color: ButtonText;
+        }
+
+        &:hover:after,
+        &.ngx-slider-active:after {
+          background-color: Highlight;
+        }
+      }
+
+      .ngx-slider-bubble {
+        color: CanvasText;
+      }
+
+      .ngx-slider-tick {
+        background-color: CanvasText;
+        border: 1px solid Canvas;
+
+        &.ngx-slider-selected {
+          background-color: Highlight;
+        }
+      }
+
+      &[disabled] {
+        .ngx-slider-bar,
+        .ngx-slider-selection,
+        .ngx-slider-tick,
+        .ngx-slider-tick.ngx-slider-selected {
+          background-color: GrayText;
+        }
+
+        .ngx-slider-pointer {
+          background-color: ButtonFace;
+          border-color: GrayText;
+
+          &:after {
+            background-color: GrayText;
+          }
+        }
+      }
+    }
+  }
 }
